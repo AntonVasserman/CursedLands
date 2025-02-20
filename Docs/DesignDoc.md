@@ -1,0 +1,2 @@
+# Cursed Lands Design Document
+
