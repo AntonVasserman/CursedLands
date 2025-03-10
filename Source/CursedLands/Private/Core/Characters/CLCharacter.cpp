@@ -1,6 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
-#include "CursedLandsCharacter.h"
+
+#include "Core/Characters/CLCharacter.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -11,7 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 
-ACursedLandsCharacter::ACursedLandsCharacter()
+ACLCharacter::ACLCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
@@ -29,17 +30,17 @@ ACursedLandsCharacter::ACursedLandsCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 400.0f;	
 	CameraBoom->bUsePawnControlRotation = true;
 
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 }
 
-void ACursedLandsCharacter::NotifyControllerChanged()
+void ACLCharacter::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
 
@@ -52,11 +53,16 @@ void ACursedLandsCharacter::NotifyControllerChanged()
 	}
 }
 
-void ACursedLandsCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACLCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void ACLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACursedLandsCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACursedLandsCharacter::Look);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACLCharacter::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACLCharacter::Look);
 	}
 	else
 	{
@@ -64,7 +70,7 @@ void ACursedLandsCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	}
 }
 
-void ACursedLandsCharacter::Move(const FInputActionValue& Value)
+void ACLCharacter::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -80,7 +86,7 @@ void ACursedLandsCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-void ACursedLandsCharacter::Look(const FInputActionValue& Value)
+void ACLCharacter::Look(const FInputActionValue& Value)
 {
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -89,4 +95,10 @@ void ACursedLandsCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ACLCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
 }

@@ -4,16 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "CursedLandsGameMode.generated.h"
+#include "CLGameModeBase.generated.h"
 
-UCLASS(minimalapi)
-class ACursedLandsGameMode : public AGameModeBase
+UCLASS()
+class CURSEDLANDS_API ACLGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-
-public:
-	ACursedLandsGameMode();
+	
 };
-
-
-
