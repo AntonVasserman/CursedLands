@@ -3,10 +3,9 @@
 
 #include "Core/Characters/CLCharacter.h"
 #include "Engine/LocalPlayer.h"
-#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/GameplayCameraComponent.h"
 #include "GameFramework/Controller.h"
 
 ACLCharacter::ACLCharacter()
@@ -27,14 +26,8 @@ ACLCharacter::ACLCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f;	
-	CameraBoom->bUsePawnControlRotation = true;
-
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	FollowCamera->bUsePawnControlRotation = false;
+	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
+	GameplayCamera->SetupAttachment(GetMesh());
 }
 
 void ACLCharacter::Tick(float DeltaTime)

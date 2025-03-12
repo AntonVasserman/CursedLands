@@ -2,11 +2,14 @@
 
 ## Vision
 
-* A small Action-RPG Open World experience, including demos of all required systems and mechanics.
-* A polished (as much as possible) 3Cs and Gameplay experience.
-* Usage of Advanced Locomotion and Gameplay Camera System for better 3Cs.
-* Usage of GAS (Gameplay Ability System) for the game's Attribute System and Ability System.
-* Usage of State Trees for enemy AIs.
+* A small Action-RPG Open World experience, including demos of all required systems and mechanics
+* A polished (as much as possible) 3Cs and Gameplay experience
+  * Advanced Locomotion for better Character Movement Animations
+  * Gameplay Camera System for better Character Camera
+  * ??? for Better Character Control
+* Usage of GAS (Gameplay Ability System) for the game's Attribute System and Ability System
+* Usage of State Trees for enemy AIs
+* Usage of MetaSounds for better sound effects
 
 ## Controls
 

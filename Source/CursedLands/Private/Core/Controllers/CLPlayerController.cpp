@@ -6,39 +6,35 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Core/Characters/CLCharacter.h"
+#include "GameFramework/GameplayCameraComponent.h"
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 {
-	const FVector2D MovementVector = InValue.Get<FVector2D>();
+	if (!PossessedCharacter)
+	{
+		return;
+	}
 
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	if (PossessedCharacter)
-	{
-		PossessedCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
-		PossessedCharacter->AddMovementInput(RightDirection, MovementVector.X);
-	}
-	else
-	{
-		// TODO: Should we do something?
-	}
+	const FVector2D MovementVector = InValue.Get<FVector2D>();
+	PossessedCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
+	PossessedCharacter->AddMovementInput(RightDirection, MovementVector.X);
 }
 
 void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 {
+	if (!PossessedCharacter)
+	{
+		return;
+	}
+	
 	const FVector2D LookAxisVector = InValue.Get<FVector2D>();
-	if (PossessedCharacter)
-	{
-		PossessedCharacter->AddControllerYawInput(LookAxisVector.X);
-		PossessedCharacter->AddControllerPitchInput(LookAxisVector.Y);	
-	}
-	else
-	{
-		// TODO: Should we do something?
-	}
+	PossessedCharacter->AddControllerYawInput(LookAxisVector.X);
+	PossessedCharacter->AddControllerPitchInput(LookAxisVector.Y);
 }
 
 void ACLPlayerController::BeginPlay()
@@ -46,14 +42,11 @@ void ACLPlayerController::BeginPlay()
 	Super::BeginPlay();
 	
 	check(DefaultMappingContext);
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-	{
-		Subsystem->AddMappingContext(DefaultMappingContext, 0);
-	}
-	else
-	{
-		// TODO: Should we check anything here?
-	}
+
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	check(Subsystem);
+	
+	Subsystem->AddMappingContext(DefaultMappingContext, 0);
 }
 
 void ACLPlayerController::OnPossess(APawn* PawnToPossess)
@@ -61,12 +54,14 @@ void ACLPlayerController::OnPossess(APawn* PawnToPossess)
 	Super::OnPossess(PawnToPossess);
 
 	PossessedCharacter = Cast<ACLCharacter>(PawnToPossess);
+	PossessedCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
 }
 
 void ACLPlayerController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
+	PossessedCharacter->GetGameplayCamera()->DeactivateCamera();
 	PossessedCharacter = nullptr;
 }
 

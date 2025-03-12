@@ -7,6 +7,7 @@
 #include "CLCharacter.generated.h"
 
 class UCameraComponent;
+class UGameplayCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
@@ -17,8 +18,7 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter
 public:
 	ACLCharacter();
 
-	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 	
 	//~ ACharacter Begin
 	virtual void Tick(float DeltaTime) override;
@@ -31,8 +31,5 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USpringArmComponent> CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> FollowCamera;
+	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
 };
