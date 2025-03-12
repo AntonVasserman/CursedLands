@@ -7,7 +7,7 @@ This project's purpose is to serve as a portfolio piece, showcasing experience i
 * Gameplay Ability System
 * Advanced Locomotion System (TODO)
 * State Trees for AI (TODO)
-* Gameplay Camera System (TODO)
+* Gameplay Camera System
 * TODO...
 
 ##  Documents
