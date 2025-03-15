@@ -13,12 +13,6 @@ UCLASS()
 class CURSEDLANDS_API UCLAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-
-public:
-	//~ UAnimInstance Begin
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-	//~ UAnimInstance End
 	
 private:
 	UPROPERTY(BlueprintReadOnly, Category = "References", meta = (AllowPrivateAccess = "true"))
@@ -38,4 +32,13 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
 	bool bIsFalling;
+	
+	//~ UAnimInstance Begin
+	
+public:
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	//~ UAnimInstance End
+	
 };

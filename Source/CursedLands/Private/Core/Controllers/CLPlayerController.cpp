@@ -37,6 +37,8 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 	PossessedCharacter->AddControllerPitchInput(LookAxisVector.Y);
 }
 
+//~ APlayerController Begin
+
 void ACLPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -76,3 +78,5 @@ void ACLPlayerController::SetupInputComponent()
 	check(MoveAction);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestMoveAction);
 }
+
+//~ APlayerController End

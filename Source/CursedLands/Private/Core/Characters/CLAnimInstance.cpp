@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
+//~ UAnimInstance Begin
+
 void UCLAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
@@ -30,3 +32,5 @@ void UCLAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsFalling = MovementComponent->IsFalling();
 	}
 }
+
+//~ UAnimInstance End

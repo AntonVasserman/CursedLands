@@ -20,13 +20,6 @@ protected:
 	void RequestMoveAction(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 
-	//~ APlayerController Begin
-	virtual void BeginPlay() override;
-	virtual void OnPossess(APawn* PawnToPossess) override;
-	virtual void OnUnPossess() override;
-	virtual void SetupInputComponent() override;
-	//~ APlayerController End
-	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
@@ -38,4 +31,15 @@ private:
 	TObjectPtr<UInputAction> LookAction;
 
 	TObjectPtr<ACLCharacter> PossessedCharacter;
+
+	//~ APlayerController Begin
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* PawnToPossess) override;
+	virtual void OnUnPossess() override;
+	virtual void SetupInputComponent() override;
+	
+	//~ APlayerController End
+
 };
