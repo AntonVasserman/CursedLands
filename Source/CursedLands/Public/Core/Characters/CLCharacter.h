@@ -9,7 +9,6 @@
 class UCLAttributeSet;
 class UCLAbilitySystemComponent;
 class UGameplayEffect;
-class UGameplayCameraComponent;
 
 UCLASS()
 class CURSEDLANDS_API ACLCharacter : public ACharacter
@@ -18,8 +17,7 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter
 
 public:
 	ACLCharacter();
-
-	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
+	
 	FORCEINLINE UCLAbilitySystemComponent* GetAbilitySystem() const { return AbilitySystem; }
 	FORCEINLINE UCLAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
@@ -36,9 +34,6 @@ protected:
 	void InitializeDefaultAttributes() const;
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
-
 	UPROPERTY()
 	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
 
@@ -46,13 +41,9 @@ private:
 	TObjectPtr<UCLAttributeSet> AttributeSet;
 
 	//~ ACharacter Begin
-
+	
 public:
 	virtual void PossessedBy(AController* NewController) override;
-	virtual void Tick(float DeltaTime) override;
-
-protected:
-	virtual void BeginPlay() override;
-
+	
 	//~ ACharacter End
 };

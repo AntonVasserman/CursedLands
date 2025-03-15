@@ -6,7 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CLPlayerController.generated.h"
 
-class ACLCharacter;
+class ACLPlayerCharacter;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -30,7 +30,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
-	TObjectPtr<ACLCharacter> PossessedCharacter;
+	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
 
 	//~ APlayerController Begin
 

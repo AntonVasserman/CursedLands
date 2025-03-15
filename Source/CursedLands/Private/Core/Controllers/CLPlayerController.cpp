@@ -5,12 +5,12 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Core/Characters/CLCharacter.h"
+#include "Core/Characters/CLPlayerCharacter.h"
 #include "GameFramework/GameplayCameraComponent.h"
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 {
-	if (!PossessedCharacter)
+	if (!PossessedPlayerCharacter)
 	{
 		return;
 	}
@@ -21,20 +21,20 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	const FVector2D MovementVector = InValue.Get<FVector2D>();
-	PossessedCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
-	PossessedCharacter->AddMovementInput(RightDirection, MovementVector.X);
+	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
+	PossessedPlayerCharacter->AddMovementInput(RightDirection, MovementVector.X);
 }
 
 void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 {
-	if (!PossessedCharacter)
+	if (!PossessedPlayerCharacter)
 	{
 		return;
 	}
 	
 	const FVector2D LookAxisVector = InValue.Get<FVector2D>();
-	PossessedCharacter->AddControllerYawInput(LookAxisVector.X);
-	PossessedCharacter->AddControllerPitchInput(LookAxisVector.Y);
+	PossessedPlayerCharacter->AddControllerYawInput(LookAxisVector.X);
+	PossessedPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
 }
 
 //~ APlayerController Begin
@@ -55,16 +55,16 @@ void ACLPlayerController::OnPossess(APawn* PawnToPossess)
 {
 	Super::OnPossess(PawnToPossess);
 
-	PossessedCharacter = Cast<ACLCharacter>(PawnToPossess);
-	PossessedCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
+	PossessedPlayerCharacter = Cast<ACLPlayerCharacter>(PawnToPossess);
+	PossessedPlayerCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
 }
 
 void ACLPlayerController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
-	PossessedCharacter->GetGameplayCamera()->DeactivateCamera();
-	PossessedCharacter = nullptr;
+	PossessedPlayerCharacter->GetGameplayCamera()->DeactivateCamera();
+	PossessedPlayerCharacter = nullptr;
 }
 
 void ACLPlayerController::SetupInputComponent()
