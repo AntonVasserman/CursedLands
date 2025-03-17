@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Core/Characters/CLPlayerCharacter.h"
+#include "Core/HUDs/CLHUD.h"
 #include "GameFramework/GameplayCameraComponent.h"
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
@@ -55,8 +56,10 @@ void ACLPlayerController::OnPossess(APawn* PawnToPossess)
 {
 	Super::OnPossess(PawnToPossess);
 
-	PossessedPlayerCharacter = Cast<ACLPlayerCharacter>(PawnToPossess);
+	PossessedPlayerCharacter = CastChecked<ACLPlayerCharacter>(PawnToPossess);
 	PossessedPlayerCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
+	ACLHUD* CLHUD = CastChecked<ACLHUD>(GetHUD());
+	CLHUD->InitOverlay(PossessedPlayerCharacter->GetAbilitySystem(), PossessedPlayerCharacter->GetAttributeSet());
 }
 
 void ACLPlayerController::OnUnPossess()

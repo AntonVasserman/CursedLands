@@ -8,6 +8,11 @@
 
 UCLAttributeSet::UCLAttributeSet()
 {
+	// Secondary Attributes
+	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_Secondary_MaxHealth, GetMaxHealthAttribute);
+	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_Secondary_MaxStamina, GetMaxStaminaAttribute);
+	
+	// Vital Attributes
 	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_Vital_Health, GetHealthAttribute);
 	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_Vital_Stamina, GetStaminaAttribute);
 }

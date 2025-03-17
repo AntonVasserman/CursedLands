@@ -17,8 +17,11 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter
 
 public:
 	ACLCharacter();
-	
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCLAbilitySystemComponent* GetAbilitySystem() const { return AbilitySystem; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCLAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	void InitAbilityActorInfo();

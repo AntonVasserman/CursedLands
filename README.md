@@ -5,9 +5,9 @@ This project takes inspiration from [_Evil Islands: Curse of the Lost Soul_]((ht
 
 This project's purpose is to serve as a portfolio piece, showcasing experience in the next areas and systems:
 * Gameplay Ability System
+* Gameplay Camera System
 * Advanced Locomotion System (TODO)
 * State Trees for AI (TODO)
-* Gameplay Camera System
 * TODO...
 
 ##  Documents
@@ -16,13 +16,24 @@ This project's purpose is to serve as a portfolio piece, showcasing experience i
 
 [Metrics Doc](./Docs/MetricsDoc.md)
 
-## References
+##  References
 
 This project is inspired by and uses some lessons learned from the next Stephen Ulibarri's Udemy courses:
 * [Unreal Engine 5 C++ The Ultimate Game Developer Course](https://www.udemy.com/course/unreal-engine-5-the-ultimate-game-developer-course)
 * [Unreal Engine 5 - Gameplay Ability System - Top Down RPG](https://www.udemy.com/course/unreal-engine-5-gas-top-down-rpg/)
 
-## Credits
+##  Credits
+### Development Team
+
+Lead Gameplay Design & Engineering - Anton Vasserman 
+Gameplay Design - Danielle Nir Vasserman
+
+Lead UI Design - Danielle Nir Vasserman
+
+Lead Environment & Level Design - Danielle Nir Vasserman
+Level Design - Anton Vasserman
+
+### Other
 
 _Evil Islands_ Developers and Game:\
 [Nival Interactive](https://en.nival.com/)\
@@ -32,6 +43,3 @@ Stephen Ulibarri on Udemy and Courses:\
 [Stephen Ulibarri](https://www.udemy.com/user/stephen-ulibarri-3/)\
 [Unreal Engine 5 C++ The Ultimate Game Developer Course](https://www.udemy.com/course/unreal-engine-5-the-ultimate-game-developer-course/)\
 [Unreal Engine 5 - Gameplay Ability System - Top Down RPG](https://www.udemy.com/course/unreal-engine-5-gas-top-down-rpg/?couponCode=ST3MT200225B)
-
-Maximo
-- Additional Character Animations
