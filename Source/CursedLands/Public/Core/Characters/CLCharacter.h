@@ -27,14 +27,18 @@ public:
 	void InitAbilityActorInfo();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability System | Attributes")
-	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes")
+	TSubclassOf<UGameplayEffect> DefaultVitalAttributesEffectClass;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability System | Attributes")
-	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributesEffectClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Gameplay Ability System | Attributes")
+	TArray<TSubclassOf<UGameplayEffect>> DefaultPassiveEffectClasses;
+	
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level) const;
 	void InitializeDefaultAttributes() const;
+	void InitializeDefaultPassiveEffects() const;
 
 private:
 	UPROPERTY()

@@ -23,6 +23,7 @@ void ACLCharacter::InitAbilityActorInfo()
 	// TODO: Is this the correct place?
 	// This currently means each time we "Possess" the character by a controller it will reset his values...
 	InitializeDefaultAttributes();
+	InitializeDefaultPassiveEffects();
 }
 
 void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level) const
@@ -37,8 +38,16 @@ void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& Gamepla
 
 void ACLCharacter::InitializeDefaultAttributes() const
 {
-	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.0);
-	ApplyEffectToSelf(DefaultVitalAttributes, 1.0);
+	ApplyEffectToSelf(DefaultSecondaryAttributesEffectClass, 1.0);
+	ApplyEffectToSelf(DefaultVitalAttributesEffectClass, 1.0);
+}
+
+void ACLCharacter::InitializeDefaultPassiveEffects() const
+{
+	for (TSubclassOf<UGameplayEffect> PassiveEffectClass : DefaultPassiveEffectClasses)
+	{
+		ApplyEffectToSelf(PassiveEffectClass, 1.0);
+	}
 }
 
 //~ ACharacter Begin

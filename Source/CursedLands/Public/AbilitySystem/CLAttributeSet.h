@@ -23,19 +23,19 @@ public:
 
 	TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr> TagToAttributeMapping;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Secondary Attributes")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UCLAttributeSet, MaxHealth);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Secondary Attributes")
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS(UCLAttributeSet, MaxStamina);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Vital Attributes")
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UCLAttributeSet, Health);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Vital Attributes")
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Vital Attributes")
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(UCLAttributeSet, Stamina);
 

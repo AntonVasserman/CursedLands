@@ -34,10 +34,10 @@ public:
 	virtual void SetWidgetProperties(UCLAbilitySystemComponent* AbilitySystem, UCLAttributeSet* AttributeSet);
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Ability System")
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System")
 	TObjectPtr<UCLAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Ability System")
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System")
 	TObjectPtr<UCLAttributeSet> AttributeSet;
 
 	//~ UCLUserWidget Begin
