@@ -30,7 +30,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> ToggleSprintAction;
+
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
+
+	UFUNCTION()
+	void RequestToggleSprint();
 
 	//~ APlayerController Begin
 

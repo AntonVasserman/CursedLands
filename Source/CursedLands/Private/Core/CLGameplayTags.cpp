@@ -23,5 +23,16 @@ void FCLGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Attributes_Secondary_MaxStamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Vital.Stamina"),
 		FString("A resource used to do actions such as sprint and cast spells"));
+
+	// Locomotion States
+	GameplayTags.Locomotion_Sprinting = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Locomotion.Sprinting"),
+		FString("The tag owner is marked as in sprinting locomotion state."));
+
+	// Debuffs
+	// Debuff_Fatigue
+	GameplayTags.Debuff_Fatigue = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Fatigue"),
+		FString("The tag owner is marked as fatigued."));
 }
 

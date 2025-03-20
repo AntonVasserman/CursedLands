@@ -26,7 +26,7 @@ void ACLCharacter::InitAbilityActorInfo()
 	InitializeDefaultPassiveEffects();
 }
 
-void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level) const
+void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level)
 {
 	check(IsValid(AbilitySystem));
 	check(GameplayEffectClass);
@@ -36,13 +36,13 @@ void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& Gamepla
 	AbilitySystem->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystem);
 }
 
-void ACLCharacter::InitializeDefaultAttributes() const
+void ACLCharacter::InitializeDefaultAttributes()
 {
 	ApplyEffectToSelf(DefaultSecondaryAttributesEffectClass, 1.0);
 	ApplyEffectToSelf(DefaultVitalAttributesEffectClass, 1.0);
 }
 
-void ACLCharacter::InitializeDefaultPassiveEffects() const
+void ACLCharacter::InitializeDefaultPassiveEffects()
 {
 	for (TSubclassOf<UGameplayEffect> PassiveEffectClass : DefaultPassiveEffectClasses)
 	{

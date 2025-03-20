@@ -38,16 +38,25 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 	PossessedPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
 }
 
+
+void ACLPlayerController::RequestToggleSprint()
+{
+	if (PossessedPlayerCharacter->CanSprint())
+	{
+		PossessedPlayerCharacter->ToggleSprint();
+	}
+}
+
 //~ APlayerController Begin
 
 void ACLPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	check(DefaultMappingContext);
+	checkf(DefaultMappingContext, TEXT("DefaultMappingContext uninitialized in object: %s"), *GetFullName());
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
+	checkf(Subsystem, TEXT("Enhanced Input isn't set in Project Settings. Failure in object: %s"), *GetFullName());
 	
 	Subsystem->AddMappingContext(DefaultMappingContext, 0);
 }
@@ -76,10 +85,12 @@ void ACLPlayerController::SetupInputComponent()
 	
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
-	check(LookAction);
+	checkf(LookAction, TEXT("LookAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestLookAction);
-	check(MoveAction);
+	checkf(MoveAction, TEXT("MoveAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestMoveAction);
+	checkf(ToggleSprintAction, TEXT("ToggleSprintAction uninitialized in object: %s"), *GetFullName());
+	EnhancedInputComponent->BindAction(ToggleSprintAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestToggleSprint);
 }
 
 //~ APlayerController End

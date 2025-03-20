@@ -35,18 +35,18 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Gameplay Ability System | Attributes")
 	TArray<TSubclassOf<UGameplayEffect>> DefaultPassiveEffectClasses;
-	
-	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level) const;
-	void InitializeDefaultAttributes() const;
-	void InitializeDefaultPassiveEffects() const;
+
+	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level);
+	void InitializeDefaultAttributes();
+	void InitializeDefaultPassiveEffects();
 
 private:
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly)
 	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
 
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly)
 	TObjectPtr<UCLAttributeSet> AttributeSet;
-
+	
 	//~ ACharacter Begin
 	
 public:

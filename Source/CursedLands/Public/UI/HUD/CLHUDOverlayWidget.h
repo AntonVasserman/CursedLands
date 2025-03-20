@@ -9,8 +9,6 @@
 class UCLAbilitySystemComponent;
 class UCLAttributeSet;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
 UCLASS()
 class CURSEDLANDS_API UCLHUDOverlayWidget : public UCLUserWidget
 {
