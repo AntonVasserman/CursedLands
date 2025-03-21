@@ -17,6 +17,12 @@ UCLAttributeSet::UCLAttributeSet()
 	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_Vital_Stamina, GetStaminaAttribute);
 }
 
+FGameplayAttribute UCLAttributeSet::GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const
+{
+	checkf(AttributeGameplayTag.MatchesTag(FCLGameplayTags::Get().Attributes), TEXT("Trying to get Attribute by Gameplay Tag with a non-attribute Gameplay Tag: %s"), *AttributeGameplayTag.ToString());
+	return TagToAttributeMapping.FindChecked(AttributeGameplayTag)();
+}
+
 //~ UAttributeSet Begin
 
 void UCLAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

@@ -3,16 +3,13 @@
 
 #include "Core/HUDs/CLHUD.h"
 
-#include "UI/HUD/CLHUDOverlayWidget.h"
+#include "Core/UI/CLUserWidget.h"
 
-void ACLHUD::InitOverlay(UCLAbilitySystemComponent* AbilitySystem, UCLAttributeSet* AttributeSet)
+void ACLHUD::InitOverlay()
 {
 	checkf(OverlayWidgetClass, TEXT("Overlay Widget Class uninitialized in object: %s"), *GetFullName());
-
-	OverlayWidget = CreateWidget<UCLHUDOverlayWidget>(GetWorld(), OverlayWidgetClass);
-	OverlayWidget->SetWidgetProperties(AbilitySystem, AttributeSet);
-	OverlayWidget->BindCallbackToDependencies();
-	OverlayWidget->BroadcastInitialValues();
+	
+	OverlayWidget = CreateWidget<UCLUserWidget>(GetWorld(), OverlayWidgetClass);
 	OverlayWidget->AddToViewport();
 }
 

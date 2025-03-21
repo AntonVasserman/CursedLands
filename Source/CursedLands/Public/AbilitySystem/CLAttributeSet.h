@@ -20,7 +20,7 @@ class CURSEDLANDS_API UCLAttributeSet : public UAttributeSet
 	
 public:
 	UCLAttributeSet();
-
+	
 	TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr> TagToAttributeMapping;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Secondary Attributes")
@@ -39,10 +39,12 @@ public:
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(UCLAttributeSet, Stamina);
 
+	UFUNCTION(BlueprintPure, Category = "Gameplay Ability System | Attributes")
+	FGameplayAttribute GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const;
+	
+protected:
 	//~ UAttributeSet Begin
-
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-
 	//~ UAttributeSet End
 };

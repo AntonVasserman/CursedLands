@@ -8,7 +8,7 @@
 
 class UCLAttributeSet;
 class UCLAbilitySystemComponent;
-class UCLHUDOverlayWidget;
+class UCLUserWidget;
 
 UCLASS()
 class CURSEDLANDS_API ACLHUD : public AHUD
@@ -16,14 +16,14 @@ class CURSEDLANDS_API ACLHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	void InitOverlay(UCLAbilitySystemComponent* AbilitySystem, UCLAttributeSet* AttributeSet);
+	void InitOverlay();
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Overlay")
-	TSubclassOf<UCLHUDOverlayWidget> OverlayWidgetClass;
+	TSubclassOf<UCLUserWidget> OverlayWidgetClass;
 
 	UPROPERTY()
-	TObjectPtr<UCLHUDOverlayWidget> OverlayWidget;
+	TObjectPtr<UCLUserWidget> OverlayWidget;
 
 	//~ AHUD Begin
 	//~ AHUD End

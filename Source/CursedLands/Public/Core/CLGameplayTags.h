@@ -10,6 +10,9 @@ struct FCLGameplayTags
 	static const FCLGameplayTags& Get() { return GameplayTags; }
 	static void InitializeNativeGameplayTags();
 
+	// Attributes
+	FGameplayTag Attributes;
+	
 	// Secondary Attributes
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxStamina;

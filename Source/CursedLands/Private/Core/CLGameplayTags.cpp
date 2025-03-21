@@ -8,6 +8,11 @@ FCLGameplayTags FCLGameplayTags::GameplayTags;
 
 void FCLGameplayTags::InitializeNativeGameplayTags()
 {
+	// Attributes
+	GameplayTags.Attributes = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes"),
+			FString("The base parent for all Attribute Gameplay Tags"));
+	
 	// Secondary Attributes
 	GameplayTags.Attributes_Secondary_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxHealth"),
@@ -17,10 +22,10 @@ void FCLGameplayTags::InitializeNativeGameplayTags()
 		FString("Maximum amount of Stamina obtainable"));
 
 	// Vital Attributes
-	GameplayTags.Attributes_Secondary_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Vital_Health = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Vital.Health"),
 		FString("A resource used to indicate amount of damage a character can receive"));
-	GameplayTags.Attributes_Secondary_MaxStamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Vital_Stamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Vital.Stamina"),
 		FString("A resource used to do actions such as sprint and cast spells"));
 

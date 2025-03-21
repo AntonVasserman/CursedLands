@@ -16,10 +16,6 @@ class CURSEDLANDS_API ACLPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-protected:
-	void RequestMoveAction(const FInputActionValue& InValue);
-	void RequestLookAction(const FInputActionValue& InValue);
-
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
@@ -35,7 +31,8 @@ private:
 
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
 
-	UFUNCTION()
+	void RequestMoveAction(const FInputActionValue& InValue);
+	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleSprint();
 
 	//~ APlayerController Begin
