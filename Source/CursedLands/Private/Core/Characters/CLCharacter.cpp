@@ -36,6 +36,13 @@ void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& Gamepla
 	AbilitySystem->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystem);
 }
 
+void ACLCharacter::Die()
+{
+	const FGameplayEffectQuery Query; // Empty Query to affect all Active Effects
+	GetAbilitySystem()->RemoveActiveEffects(Query);
+	Die_BP();
+}
+
 void ACLCharacter::InitializeDefaultAttributes()
 {
 	ApplyEffectToSelf(DefaultSecondaryAttributesEffectClass, 1.0);
@@ -51,6 +58,20 @@ void ACLCharacter::InitializeDefaultPassiveEffects()
 }
 
 //~ ACharacter Begin
+
+void ACLCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetAbilitySystem()->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetHealthAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			if (Data.NewValue == 0)
+			{
+				Die();
+			}
+		});
+}
 
 void ACLCharacter::PossessedBy(AController* NewController)
 {

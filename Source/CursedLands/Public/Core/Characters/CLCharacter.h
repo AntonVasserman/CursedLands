@@ -37,6 +37,9 @@ protected:
 	TArray<TSubclassOf<UGameplayEffect>> DefaultPassiveEffectClasses;
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level);
+	virtual void Die();
+	UFUNCTION(BlueprintImplementableEvent, DisplayName = "Die")
+	void Die_BP();
 	void InitializeDefaultAttributes();
 	void InitializeDefaultPassiveEffects();
 
@@ -48,9 +51,8 @@ private:
 	TObjectPtr<UCLAttributeSet> AttributeSet;
 	
 	//~ ACharacter Begin
-	
 public:
+	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
-	
 	//~ ACharacter End
 };
