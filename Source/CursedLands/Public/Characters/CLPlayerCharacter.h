@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CLGameplayTags.h"
+#include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
 #include "CLPlayerCharacter.generated.h"
 
@@ -19,6 +21,7 @@ public:
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 
 	bool CanSprint() const;
+	FORCEINLINE bool IsSprinting() const { return GetAbilitySystem()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting); }
 	void ToggleSprint();
 	void UnToggleSprint();
 

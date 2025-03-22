@@ -41,7 +41,11 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 
 void ACLPlayerController::RequestToggleSprint()
 {
-	if (PossessedPlayerCharacter->CanSprint())
+	if (PossessedPlayerCharacter->IsSprinting())
+	{
+		PossessedPlayerCharacter->UnToggleSprint();
+	}
+	else if (PossessedPlayerCharacter->CanSprint())
 	{
 		PossessedPlayerCharacter->ToggleSprint();
 	}
