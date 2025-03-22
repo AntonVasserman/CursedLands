@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "Core/UI/CLUserWidget.h"
+#include "UI/CLUserWidget.h"
 #include "CLAttributeProgressBar.generated.h"
 
 class UCLAbilitySystemComponent;

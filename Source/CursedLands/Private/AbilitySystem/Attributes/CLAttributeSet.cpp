@@ -1,10 +1,10 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLAttributeSet.h"
 
+#include "CLGameplayTags.h"
 #include "GameplayAbilities/Public/GameplayEffectExtension.h"
-#include "Core/CLGameplayTags.h"
 
 UCLAttributeSet::UCLAttributeSet()
 {

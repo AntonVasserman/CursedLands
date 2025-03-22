@@ -1,9 +1,9 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/Characters/CLAnimInstance.h"
+#include "Animation/CLAnimInstance.h"
 
-#include "Core/Characters/CLCharacter.h"
+#include "Characters/CLCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 

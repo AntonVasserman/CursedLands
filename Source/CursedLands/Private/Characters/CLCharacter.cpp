@@ -1,10 +1,10 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/Characters/CLCharacter.h"
+#include "Characters/CLCharacter.h"
 
 #include "AbilitySystem/CLAbilitySystemComponent.h"
-#include "AbilitySystem/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/Controller.h"
 

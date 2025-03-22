@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Characters/CLCharacter.h"
+#include "Characters/CLCharacter.h"
 #include "CLPlayerCharacter.generated.h"
 
 class UGameplayCameraComponent;

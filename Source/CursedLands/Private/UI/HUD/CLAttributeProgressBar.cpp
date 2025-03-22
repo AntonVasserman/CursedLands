@@ -4,8 +4,8 @@
 #include "UI/HUD/CLAttributeProgressBar.h"
 
 #include "AbilitySystem/CLAbilitySystemComponent.h"
-#include "AbilitySystem/CLAttributeSet.h"
-#include "Core/Characters/CLPlayerCharacter.h"
+#include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "Characters/CLPlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 struct FOnAttributeChangeData;

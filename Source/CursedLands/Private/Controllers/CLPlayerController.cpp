@@ -1,12 +1,12 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/Controllers/CLPlayerController.h"
+#include "Controllers/CLPlayerController.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Core/Characters/CLPlayerCharacter.h"
-#include "Core/HUDs/CLHUD.h"
+#include "Characters/CLPlayerCharacter.h"
+#include "UI/HUD/CLHUD.h"
 #include "GameFramework/GameplayCameraComponent.h"
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)

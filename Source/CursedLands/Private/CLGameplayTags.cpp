@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/CLGameplayTags.h"
+#include "CLGameplayTags.h"
 #include "GameplayTagsManager.h"
 
 FCLGameplayTags FCLGameplayTags::GameplayTags;

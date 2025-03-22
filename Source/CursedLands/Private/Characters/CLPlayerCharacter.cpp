@@ -1,13 +1,13 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/Characters/CLPlayerCharacter.h"
+#include "Characters/CLPlayerCharacter.h"
 
+#include "CLGameplayTags.h"
 #include "GameplayEffect.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
-#include "AbilitySystem/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "Components/CapsuleComponent.h"
-#include "Core/CLGameplayTags.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"

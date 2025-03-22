@@ -1,9 +1,9 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/HUDs/CLHUD.h"
+#include "UI/HUD/CLHUD.h"
 
-#include "Core/UI/CLUserWidget.h"
+#include "UI/CLUserWidget.h"
 
 void ACLHUD::InitOverlay()
 {

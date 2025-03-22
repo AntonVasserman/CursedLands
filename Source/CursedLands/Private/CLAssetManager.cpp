@@ -1,9 +1,9 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Core/CLAssetManager.h"
+#include "CLAssetManager.h"
 
-#include "Core/CLGameplayTags.h"
+#include "CLGameplayTags.h"
 
 UCLAssetManager& UCLAssetManager::Get()
 {
