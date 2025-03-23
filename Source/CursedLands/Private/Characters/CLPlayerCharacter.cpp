@@ -5,7 +5,6 @@
 
 #include "CLGameplayTags.h"
 #include "GameplayEffect.h"
-#include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -39,7 +38,7 @@ bool ACLPlayerCharacter::CanSprint() const
 {
 	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint"));
 	// Check that the player isn't fatigued
-	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
+	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: Has Fatigue Debuff"));
 		return false;
@@ -58,25 +57,25 @@ bool ACLPlayerCharacter::CanSprint() const
 void ACLPlayerCharacter::ToggleSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	GetCLAbilitySystemComponent()->AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
 }
 
 void ACLPlayerCharacter::UnToggleSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-	GetCLAbilitySystemComponent()->RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
 }
 
 void ACLPlayerCharacter::ApplyFatigue()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::ApplyFatigue"));
-	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
+	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
 	{
 		return;
 	}
 	
 	ApplyEffectToSelf(FatigueGameplayEffectClass, 1.f);
-	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
+	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
 	{
 		UnToggleSprint();
 	}

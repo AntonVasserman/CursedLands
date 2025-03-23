@@ -16,6 +16,22 @@ ACLCharacter::ACLCharacter()
 	AttributeSet = CreateDefaultSubobject<UCLAttributeSet>("AttributeSet");
 }
 
+bool ACLCharacter::AddUniqueGameplayTag(const FGameplayTag& GameplayTag)
+{
+	if (HasMatchingGameplayTag(GameplayTag))
+	{
+		return false;
+	}
+	
+	AbilitySystem->AddLooseGameplayTag(GameplayTag);
+	return true;
+}
+
+void ACLCharacter::RemoveGameplayTag(const FGameplayTag& GameplayTag)
+{
+	AbilitySystem->RemoveLooseGameplayTag(GameplayTag);
+}
+
 void ACLCharacter::InitAbilityActorInfo()
 {
 	AbilitySystem->InitAbilityActorInfo(this, this);
@@ -90,3 +106,30 @@ UAbilitySystemComponent* ACLCharacter::GetAbilitySystemComponent() const
 }
 
 //~ IAbilitySystemInterface End
+
+//~ IGameplayTagAssetInterface Begin
+
+void ACLCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+{
+	if (AbilitySystem)
+	{
+		AbilitySystem->GetOwnedGameplayTags(TagContainer);
+	}
+}
+
+bool ACLCharacter::HasMatchingGameplayTag(FGameplayTag TagToCheck) const
+{
+	return AbilitySystem ? AbilitySystem->HasMatchingGameplayTag(TagToCheck) : false;
+}
+
+bool ACLCharacter::HasAllMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const
+{
+	return AbilitySystem ? AbilitySystem->HasAllMatchingGameplayTags(TagContainer) : false;
+}
+
+bool ACLCharacter::HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const
+{
+	return AbilitySystem ? AbilitySystem->HasAnyMatchingGameplayTags(TagContainer) : false;
+}
+
+//~ IGameplayTagAssetInterface End
