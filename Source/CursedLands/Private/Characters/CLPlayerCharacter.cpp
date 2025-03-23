@@ -39,7 +39,7 @@ bool ACLPlayerCharacter::CanSprint() const
 {
 	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint"));
 	// Check that the player isn't fatigued
-	if (GetAbilitySystem()->HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: Has Fatigue Debuff"));
 		return false;
@@ -58,25 +58,25 @@ bool ACLPlayerCharacter::CanSprint() const
 void ACLPlayerCharacter::ToggleSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	GetAbilitySystem()->AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	GetCLAbilitySystemComponent()->AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
 }
 
 void ACLPlayerCharacter::UnToggleSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-	GetAbilitySystem()->RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	GetCLAbilitySystemComponent()->RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
 }
 
 void ACLPlayerCharacter::ApplyFatigue()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::ApplyFatigue"));
-	if (GetAbilitySystem()->HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
 	{
 		return;
 	}
 	
 	ApplyEffectToSelf(FatigueGameplayEffectClass, 1.f);
-	if (GetAbilitySystem()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
 	{
 		UnToggleSprint();
 	}
@@ -88,7 +88,7 @@ void ACLPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetAbilitySystem()->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetStaminaAttribute()).AddLambda(
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetStaminaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			if (Data.NewValue == 0)
@@ -122,7 +122,7 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	// Check if character is sprinting
-	if (GetAbilitySystem()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
 	{
 		// If current speed is lower than regular running speed minus some delta then turn of sprinting
 		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < RunSpeed - 0.1f)

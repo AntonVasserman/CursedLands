@@ -21,7 +21,7 @@ public:
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 
 	bool CanSprint() const;
-	FORCEINLINE bool IsSprinting() const { return GetAbilitySystem()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting); }
+	FORCEINLINE bool IsSprinting() const { return GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting); }
 	void ToggleSprint();
 	void UnToggleSprint();
 

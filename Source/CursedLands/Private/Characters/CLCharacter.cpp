@@ -39,7 +39,7 @@ void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& Gamepla
 void ACLCharacter::Die()
 {
 	const FGameplayEffectQuery Query; // Empty Query to affect all Active Effects
-	GetAbilitySystem()->RemoveActiveEffects(Query);
+	AbilitySystem->RemoveActiveEffects(Query);
 	Die_BP();
 }
 
@@ -63,7 +63,7 @@ void ACLCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetAbilitySystem()->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetHealthAttribute()).AddLambda(
+	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			if (Data.NewValue == 0)
@@ -81,3 +81,12 @@ void ACLCharacter::PossessedBy(AController* NewController)
 }
 
 //~ ACharacter End
+
+//~ IAbilitySystemInterface Begin
+
+UAbilitySystemComponent* ACLCharacter::GetAbilitySystemComponent() const
+{
+	return GetCLAbilitySystemComponent();
+}
+
+//~ IAbilitySystemInterface End

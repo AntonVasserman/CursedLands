@@ -15,7 +15,7 @@ void UCLAttributeProgressBar::NativeConstruct()
 	Super::NativeConstruct();
 
 	const ACLPlayerCharacter* PlayerCharacter = CastChecked<ACLPlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent = PlayerCharacter->GetAbilitySystem();
+	UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent = PlayerCharacter->GetCLAbilitySystemComponent();
 	const UCLAttributeSet* AttributeSet = CastChecked<UCLAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLAttributeSet::StaticClass()));
 	const FGameplayAttribute& CurrentValueAttribute = AttributeSet->GetAttributeByGameplayTag(CurrentValueAttributeGameplayTag);
 	const FGameplayAttribute& MaxValueAttribute = AttributeSet->GetAttributeByGameplayTag(MaxValueAttributeGameplayTag);
