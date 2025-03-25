@@ -34,7 +34,10 @@ private:
 	bool bShouldMove;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
-	bool bIsFalling;
+	bool bFalling;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	float LastZVelocityBeforeLanding;
 	
 	//~ UAnimInstance Begin
 	

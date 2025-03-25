@@ -31,7 +31,11 @@ void UCLAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		GroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
 		Direction = UKismetAnimationLibrary::CalculateDirection(Velocity, Character->GetActorRotation());
 		bShouldMove = GroundSpeed > 3.0f && MovementComponent->GetCurrentAcceleration() != FVector::ZeroVector;
-		bIsFalling = MovementComponent->IsFalling();
+		bFalling = MovementComponent->IsFalling();
+		if (bFalling)
+		{
+			LastZVelocityBeforeLanding = Velocity.Z;
+		}
 	}
 }
 
