@@ -29,20 +29,22 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleSprintAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> JumpAction;
+	
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
 
 	void RequestMoveAction(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
-	void RequestToggleSprint();
+	void RequestToggleSprintAction();
+	void RequestJumpAction();
 
 	//~ APlayerController Begin
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* PawnToPossess) override;
 	virtual void OnUnPossess() override;
 	virtual void SetupInputComponent() override;
-	
 	//~ APlayerController End
 
 };
