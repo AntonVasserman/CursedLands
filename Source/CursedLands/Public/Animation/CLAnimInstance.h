@@ -28,6 +28,9 @@ private:
 	float GroundSpeed;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	float Direction;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
 	bool bShouldMove;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))

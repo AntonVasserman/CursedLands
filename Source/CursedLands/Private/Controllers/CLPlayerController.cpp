@@ -22,8 +22,20 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	const FVector2D MovementVector = InValue.Get<FVector2D>();
+
+	// In case Player Character is sprinting and changes direction from forward direction then stop sprinting
+	if (MovementVector.Y < 0.5 && PossessedPlayerCharacter->IsSprinting())
+	{
+		PossessedPlayerCharacter->UnToggleSprint();
+	}
+	
 	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
 	PossessedPlayerCharacter->AddMovementInput(RightDirection, MovementVector.X);
+
+	// Adjust the Pawn rotation on movement as we are using the Gameplay Camera instead of regular Camera
+	FRotator NewRotation = PossessedPlayerCharacter->GetActorRotation();
+	NewRotation.Yaw = GetControlRotation().Yaw;
+	PossessedPlayerCharacter->SetActorRotation(NewRotation);
 }
 
 void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
@@ -34,10 +46,9 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 	}
 	
 	const FVector2D LookAxisVector = InValue.Get<FVector2D>();
-	PossessedPlayerCharacter->AddControllerYawInput(LookAxisVector.X);
-	PossessedPlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
+	AddYawInput(LookAxisVector.X);
+	AddPitchInput(LookAxisVector.Y);
 }
-
 
 void ACLPlayerController::RequestToggleSprint()
 {
