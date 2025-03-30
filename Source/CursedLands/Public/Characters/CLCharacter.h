@@ -56,10 +56,10 @@ protected:
 	void InitializeDefaultPassiveEffects();
 
 private:
-	UPROPERTY(VisibleDefaultsOnly, Category = "Config | Gameplay Ability System")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")
 	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Config | Gameplay Ability System | Attributes")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System | Attributes")
 	TObjectPtr<UCLAttributeSet> AttributeSet;
 	
 	//~ ACharacter Begin

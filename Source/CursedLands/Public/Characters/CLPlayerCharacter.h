@@ -26,28 +26,28 @@ public:
 	void UnToggleSprint();
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Config | Gameplay Camera System", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay Camera System", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float VelocityForMinFallDamage = 1400.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float VelocityForMaxFallDamage = 2200.f;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FallDamageGameplayEffectClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float RunSpeed = 500.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", meta = (AllowPrivateAccess = "true"))
-	float SprintSpeed = 800.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
+	float SprintSpeed = 900.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FatigueGameplayEffectClass;
 
 	void ApplyFatigue();

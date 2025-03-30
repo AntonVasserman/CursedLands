@@ -17,19 +17,19 @@ class CURSEDLANDS_API ACLPlayerController : public APlayerController
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleSprintAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> JumpAction;
 	
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;

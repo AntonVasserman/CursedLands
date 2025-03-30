@@ -15,28 +15,28 @@ class CURSEDLANDS_API UCLAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 private:
-	UPROPERTY(BlueprintReadOnly, Category = "References", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "References", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACLCharacter> Character;
 
-	UPROPERTY(BlueprintReadOnly, Category = "References", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "References", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	float GroundSpeed;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	float Direction;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	bool bShouldMove;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	bool bFalling;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	float LastZVelocityBeforeLanding;
 	
 	//~ UAnimInstance Begin
