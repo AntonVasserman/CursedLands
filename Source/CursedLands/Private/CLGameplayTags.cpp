@@ -20,6 +20,12 @@ void FCLGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Attributes_General_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.General.MaxHealth"),
 		FString("Maximum amount of Health obtainable"));
+	GameplayTags.Attributes_General_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.General.Mana"),
+			FString("A resource used to do actions such as cast spells and buffs"));
+	GameplayTags.Attributes_General_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.General.MaxMana"),
+		FString("Maximum amount of Mana obtainable"));
 	GameplayTags.Attributes_General_Stamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.General.Stamina"),
 		FString("A resource used to do actions such as sprint and attack"));

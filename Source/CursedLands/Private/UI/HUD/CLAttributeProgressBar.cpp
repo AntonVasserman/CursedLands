@@ -6,6 +6,7 @@
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
+#include "AbilitySystem/Attributes/CLManaAttributeSet.h"
 #include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -45,15 +46,20 @@ void UCLAttributeProgressBar::NativeConstruct()
 
 const UCLAttributeSet* UCLAttributeProgressBar::GetAttributeSetByGameplayTag(const UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag)
 {
-	const UCLHealthAttributeSet* HealthAttributeSet = CastChecked<UCLHealthAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLHealthAttributeSet::StaticClass()));
-	const UCLStaminaAttributeSet* StaminaAttributeSet = CastChecked<UCLStaminaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLStaminaAttributeSet::StaticClass()));
-
-	if (HealthAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
+	if (const UCLHealthAttributeSet* HealthAttributeSet = CastChecked<UCLHealthAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLHealthAttributeSet::StaticClass()));
+		HealthAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
 	{
 		return HealthAttributeSet;
 	}
 
-	if (StaminaAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
+	if (const UCLManaAttributeSet* ManaAttributeSet = CastChecked<UCLManaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLManaAttributeSet::StaticClass()));
+		ManaAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
+	{
+		return ManaAttributeSet;
+	}
+
+	if (const UCLStaminaAttributeSet* StaminaAttributeSet = CastChecked<UCLStaminaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLStaminaAttributeSet::StaticClass()));
+		StaminaAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
 	{
 		return StaminaAttributeSet;
 	}

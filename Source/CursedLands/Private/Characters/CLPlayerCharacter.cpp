@@ -6,6 +6,7 @@
 #include "CLGameplayTags.h"
 #include "GameplayEffect.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLManaAttributeSet.h"
 #include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -34,6 +35,7 @@ ACLPlayerCharacter::ACLPlayerCharacter()
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
 
+	ManaAttributeSet = CreateDefaultSubobject<UCLManaAttributeSet>("ManaAttributeSet");
 	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
 }
 
