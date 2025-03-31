@@ -8,8 +8,8 @@
 #include "GameFramework/Character.h"
 #include "CLCharacter.generated.h"
 
-class UCLAttributeSet;
 class UCLAbilitySystemComponent;
+class UCLHealthAttributeSet;
 class UGameplayEffect;
 
 UCLASS()
@@ -23,7 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System | Attributes")
-	FORCEINLINE UCLAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	FORCEINLINE UCLHealthAttributeSet* GetHealthAttributeSet() const { return HealthAttributeSet; }
 	/**
 	 * Tries to add a GameplayTag only if this Ability System Component doesn't already have it
 	 * 
@@ -40,10 +40,10 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
-	TSubclassOf<UGameplayEffect> DefaultVitalAttributesEffectClass;
+	TSubclassOf<UGameplayEffect> DefaultGeneralAttributesValueEffectClass;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
-	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributesEffectClass;
+	TSubclassOf<UGameplayEffect> DefaultGeneralAttributesMaxValueEffectClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
 	TArray<TSubclassOf<UGameplayEffect>> DefaultPassiveEffectClasses;
@@ -60,7 +60,7 @@ private:
 	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System | Attributes")
-	TObjectPtr<UCLAttributeSet> AttributeSet;
+	TObjectPtr<UCLHealthAttributeSet> HealthAttributeSet;
 	
 	//~ ACharacter Begin
 public:

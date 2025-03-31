@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/Controller.h"
 
@@ -13,7 +14,7 @@ ACLCharacter::ACLCharacter()
 	AbilitySystem = CreateDefaultSubobject<UCLAbilitySystemComponent>("AbilitySystem");
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
-	AttributeSet = CreateDefaultSubobject<UCLAttributeSet>("AttributeSet");
+	HealthAttributeSet = CreateDefaultSubobject<UCLHealthAttributeSet>("HealthAttributeSet");
 }
 
 bool ACLCharacter::AddUniqueGameplayTag(const FGameplayTag& GameplayTag)
@@ -61,8 +62,8 @@ void ACLCharacter::Die()
 
 void ACLCharacter::InitializeDefaultAttributes()
 {
-	ApplyEffectToSelf(DefaultSecondaryAttributesEffectClass, 1.0);
-	ApplyEffectToSelf(DefaultVitalAttributesEffectClass, 1.0);
+	ApplyEffectToSelf(DefaultGeneralAttributesMaxValueEffectClass, 1.0);
+	ApplyEffectToSelf(DefaultGeneralAttributesValueEffectClass, 1.0);
 }
 
 void ACLCharacter::InitializeDefaultPassiveEffects()
@@ -79,7 +80,7 @@ void ACLCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetHealthAttribute()).AddLambda(
+	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			if (Data.NewValue == 0)

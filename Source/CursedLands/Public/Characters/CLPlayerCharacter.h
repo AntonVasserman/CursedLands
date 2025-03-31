@@ -8,6 +8,7 @@
 #include "Characters/CLCharacter.h"
 #include "CLPlayerCharacter.generated.h"
 
+class UCLStaminaAttributeSet;
 class UGameplayCameraComponent;
 
 UCLASS()
@@ -19,6 +20,8 @@ public:
 	ACLPlayerCharacter();
 	
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
+	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System | Attributes")
+	FORCEINLINE UCLStaminaAttributeSet* GetStaminaAttributeSet() const { return StaminaAttributeSet; }
 
 	bool CanSprint() const;
 	FORCEINLINE bool IsSprinting() const { return GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting); }
@@ -49,6 +52,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FatigueGameplayEffectClass;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System | Attributes")
+	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
 
 	void ApplyFatigue();
 	

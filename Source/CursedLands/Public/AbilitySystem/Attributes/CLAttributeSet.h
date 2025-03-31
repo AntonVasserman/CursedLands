@@ -23,28 +23,9 @@ public:
 	
 	TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr> TagToAttributeMapping;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Secondary Attributes")
-	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UCLAttributeSet, MaxHealth);
-
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Secondary Attributes")
-	FGameplayAttributeData MaxStamina;
-	ATTRIBUTE_ACCESSORS(UCLAttributeSet, MaxStamina);
-
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Vital Attributes")
-	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UCLAttributeSet, Health);
-
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Vital Attributes")
-	FGameplayAttributeData Stamina;
-	ATTRIBUTE_ACCESSORS(UCLAttributeSet, Stamina);
-
 	UFUNCTION(BlueprintPure, Category = "Gameplay Ability System | Attributes")
 	FGameplayAttribute GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const;
-	
-protected:
+
 	//~ UAttributeSet Begin
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	//~ UAttributeSet End
 };

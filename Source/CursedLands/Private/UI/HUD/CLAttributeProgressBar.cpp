@@ -5,6 +5,8 @@
 
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
+#include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -14,9 +16,12 @@ void UCLAttributeProgressBar::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	// TODO (CL-58): Remove the usage of GameplayTag here and instead pass the attribute in an Init function of a sort...
 	const ACLPlayerCharacter* PlayerCharacter = CastChecked<ACLPlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent = PlayerCharacter->GetCLAbilitySystemComponent();
-	const UCLAttributeSet* AttributeSet = CastChecked<UCLAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLAttributeSet::StaticClass()));
+	// NOTE: we have a constraint here where the CurrentValue and MaxValue attributes MUST be in the same AttributeSet
+	const UCLAttributeSet* AttributeSet = GetAttributeSetByGameplayTag(PlayerCharacterAbilitySystemComponent, CurrentValueAttributeGameplayTag);
+	checkf(AttributeSet, TEXT("No AttributeSet with attribute for tag: %s, was found in the PlayerCharacterAbilitySystemComponent"), *CurrentValueAttributeGameplayTag.ToString());
 	const FGameplayAttribute& CurrentValueAttribute = AttributeSet->GetAttributeByGameplayTag(CurrentValueAttributeGameplayTag);
 	const FGameplayAttribute& MaxValueAttribute = AttributeSet->GetAttributeByGameplayTag(MaxValueAttributeGameplayTag);
 
@@ -34,6 +39,24 @@ void UCLAttributeProgressBar::NativeConstruct()
 		});
 
 	// Broadcast Initial Values
-	AttributeCurrentValueChanged(AttributeSet->GetAttributeByGameplayTag(CurrentValueAttributeGameplayTag).GetNumericValue(AttributeSet));
-	AttributeMaxValueChanged(AttributeSet->GetAttributeByGameplayTag(MaxValueAttributeGameplayTag).GetNumericValue(AttributeSet));
+	AttributeCurrentValueChanged(CurrentValueAttribute.GetNumericValue(AttributeSet));
+	AttributeMaxValueChanged(MaxValueAttribute.GetNumericValue(AttributeSet));
+}
+
+const UCLAttributeSet* UCLAttributeProgressBar::GetAttributeSetByGameplayTag(const UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag)
+{
+	const UCLHealthAttributeSet* HealthAttributeSet = CastChecked<UCLHealthAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLHealthAttributeSet::StaticClass()));
+	const UCLStaminaAttributeSet* StaminaAttributeSet = CastChecked<UCLStaminaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLStaminaAttributeSet::StaticClass()));
+
+	if (HealthAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
+	{
+		return HealthAttributeSet;
+	}
+
+	if (StaminaAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
+	{
+		return StaminaAttributeSet;
+	}
+
+	return nullptr;
 }

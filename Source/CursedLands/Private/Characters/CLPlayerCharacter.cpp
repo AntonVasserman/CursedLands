@@ -6,6 +6,7 @@
 #include "CLGameplayTags.h"
 #include "GameplayEffect.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
@@ -32,6 +33,8 @@ ACLPlayerCharacter::ACLPlayerCharacter()
 	
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
+
+	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
 }
 
 bool ACLPlayerCharacter::CanSprint() const
@@ -45,7 +48,7 @@ bool ACLPlayerCharacter::CanSprint() const
 	}
 
 	// Check that there is stamina
-	if (GetAttributeSet()->GetStamina() <= 0)
+	if (GetStaminaAttributeSet()->GetStamina() <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: No Stamina"));
 		return false;
@@ -87,7 +90,7 @@ void ACLPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetAttributeSet()->GetStaminaAttribute()).AddLambda(
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			if (Data.NewValue == 0)

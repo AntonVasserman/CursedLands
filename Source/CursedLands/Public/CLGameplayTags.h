@@ -12,15 +12,13 @@ struct FCLGameplayTags
 
 	// Attributes
 	FGameplayTag Attributes;
+
+	// General Attributes
+	FGameplayTag Attributes_General_Health;
+	FGameplayTag Attributes_General_MaxHealth;
+	FGameplayTag Attributes_General_Stamina;
+	FGameplayTag Attributes_General_MaxStamina;
 	
-	// Secondary Attributes
-	FGameplayTag Attributes_Secondary_MaxHealth;
-	FGameplayTag Attributes_Secondary_MaxStamina;
-
-	// Vital Attributes
-	FGameplayTag Attributes_Vital_Health;
-	FGameplayTag Attributes_Vital_Stamina;
-
 	// Locomotion States
 	FGameplayTag Locomotion_Sprinting;
 

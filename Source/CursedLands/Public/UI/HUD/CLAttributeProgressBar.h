@@ -7,6 +7,7 @@
 #include "UI/CLUserWidget.h"
 #include "CLAttributeProgressBar.generated.h"
 
+class UCLAttributeSet;
 class UCLAbilitySystemComponent;
 
 UCLASS()
@@ -26,6 +27,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void AttributeMaxValueChanged(float NewValue);
+
+private:
+	const UCLAttributeSet* GetAttributeSetByGameplayTag(const UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag);
 	
 	//~ UCLUserWidget Begin
 protected:
