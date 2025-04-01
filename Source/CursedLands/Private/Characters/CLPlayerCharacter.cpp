@@ -34,6 +34,8 @@ ACLPlayerCharacter::ACLPlayerCharacter()
 	
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
+	GameplayCamera->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 
 	ManaAttributeSet = CreateDefaultSubobject<UCLManaAttributeSet>("ManaAttributeSet");
 	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
