@@ -24,6 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System | Attributes")
 	FORCEINLINE UCLStaminaAttributeSet* GetStaminaAttributeSet() const { return StaminaAttributeSet; }
 
+	FORCEINLINE bool CanLook() const { return IsAlive(); }
 	bool CanSprint() const;
 	FORCEINLINE bool IsSprinting() const { return GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting); }
 	void ToggleSprint();
@@ -67,6 +68,8 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Landed(const FHitResult& Hit) override;
 	virtual void Tick(float DeltaSeconds) override;
-	// ACLCharacter End
+protected:
+	virtual void Die() override;
+	//~ ACLCharacter End
 	
 };

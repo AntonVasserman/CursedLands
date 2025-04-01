@@ -55,8 +55,8 @@ void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& Gamepla
 
 void ACLCharacter::Die()
 {
-	const FGameplayEffectQuery Query; // Empty Query to affect all Active Effects
-	AbilitySystem->RemoveActiveEffects(Query);
+	AbilitySystem->RemoveActiveEffects(FGameplayEffectQuery()); // Empty Query to affect all Active Effects
+	bIsAlive = false;
 	Die_BP();
 }
 

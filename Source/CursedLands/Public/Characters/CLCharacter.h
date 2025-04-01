@@ -37,6 +37,9 @@ public:
 	void RemoveGameplayTag(const FGameplayTag& GameplayTag);
 	
 	void InitAbilityActorInfo();
+	
+	FORCEINLINE bool CanMove() const { return IsAlive(); }
+	FORCEINLINE bool IsAlive() const { return bIsAlive; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
@@ -61,6 +64,8 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System | Attributes")
 	TObjectPtr<UCLHealthAttributeSet> HealthAttributeSet;
+
+	bool bIsAlive = true;
 	
 	//~ ACharacter Begin
 public:

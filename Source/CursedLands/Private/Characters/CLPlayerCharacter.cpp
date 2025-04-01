@@ -41,6 +41,12 @@ ACLPlayerCharacter::ACLPlayerCharacter()
 
 bool ACLPlayerCharacter::CanSprint() const
 {
+	if (!CanMove())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: Can't Move"));
+		return false;
+	}
+	
 	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint"));
 	// Check that the player isn't fatigued
 	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
@@ -134,6 +140,14 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 			UnToggleSprint();
 		}
 	}
+}
+
+void ACLPlayerCharacter::Die()
+{
+	// In the case of death we would like to first execute our logic and only then the rest of the parent's logic
+	GetGameplayCamera()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
+	
+	Super::Die();
 }
 
 //~ ACLCharacter End

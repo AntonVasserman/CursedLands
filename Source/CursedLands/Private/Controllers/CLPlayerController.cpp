@@ -11,7 +11,7 @@
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 {
-	if (!PossessedPlayerCharacter)
+	if (!PossessedPlayerCharacter->CanMove())
 	{
 		return;
 	}
@@ -40,7 +40,7 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 
 void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 {
-	if (!PossessedPlayerCharacter)
+	if (!PossessedPlayerCharacter->CanLook())
 	{
 		return;
 	}
@@ -64,6 +64,7 @@ void ACLPlayerController::RequestToggleSprintAction()
 
 void ACLPlayerController::RequestJumpAction()
 {
+	// TODO: Consider overriding CanJump so we can check if Character is alive...
 	if (PossessedPlayerCharacter->CanJump())
 	{
 		PossessedPlayerCharacter->Jump();
