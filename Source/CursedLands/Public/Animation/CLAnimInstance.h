@@ -15,10 +15,10 @@ class CURSEDLANDS_API UCLAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 private:
-	UPROPERTY(BlueprintReadOnly, Category = "References", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	TObjectPtr<ACLCharacter> Character;
 
-	UPROPERTY(BlueprintReadOnly, Category = "References", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
@@ -40,11 +40,9 @@ private:
 	float LastZVelocityBeforeLanding;
 	
 	//~ UAnimInstance Begin
-	
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
 	//~ UAnimInstance End
 	
 };

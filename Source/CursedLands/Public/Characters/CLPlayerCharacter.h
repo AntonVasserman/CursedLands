@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "CLGameplayTags.h"
 #include "CLPlayerCharacterCameraMode.h"
+#include "CLPlayerCharacterMovementMode.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
 #include "CLPlayerCharacter.generated.h"
@@ -27,6 +28,10 @@ public:
 	FORCEINLINE ECLPlayerCharacterCameraMode GetCameraMode() const { return CameraMode; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")
 	FORCEINLINE void SetCameraMode(const ECLPlayerCharacterCameraMode InCameraMode) { CameraMode = InCameraMode; }
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	FORCEINLINE ECLPlayerCharacterMovementMode GetMovementMode() const { return MovementMode; }
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	void SetMovementMode(const ECLPlayerCharacterMovementMode InMovementMode);
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System | Attributes")
 	FORCEINLINE UCLStaminaAttributeSet* GetStaminaAttributeSet() const { return StaminaAttributeSet; }
 
@@ -42,6 +47,7 @@ private:
 	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
 
 	ECLPlayerCharacterCameraMode CameraMode = ECLPlayerCharacterCameraMode::Default;
+	ECLPlayerCharacterMovementMode MovementMode = ECLPlayerCharacterMovementMode::Default;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float VelocityForMinFallDamage = 1400.f;

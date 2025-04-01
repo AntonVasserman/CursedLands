@@ -41,6 +41,22 @@ ACLPlayerCharacter::ACLPlayerCharacter()
 	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
 }
 
+void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode InMovementMode)
+{
+	MovementMode = InMovementMode;
+	switch (MovementMode)
+	{
+	case ECLPlayerCharacterMovementMode::Default:
+		bUseControllerRotationYaw = false;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		break;
+	case ECLPlayerCharacterMovementMode::Strafing:
+		bUseControllerRotationYaw = true;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		break;
+	}
+}
+
 bool ACLPlayerCharacter::CanSprint() const
 {
 	if (!CanMove())

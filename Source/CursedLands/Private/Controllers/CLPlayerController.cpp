@@ -31,11 +31,15 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	
 	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
 	PossessedPlayerCharacter->AddMovementInput(RightDirection, MovementVector.X);
-
-	// Adjust the Pawn rotation on movement as we are using the Gameplay Camera instead of regular Camera
-	FRotator NewRotation = PossessedPlayerCharacter->GetActorRotation();
-	NewRotation.Yaw = GetControlRotation().Yaw;
-	PossessedPlayerCharacter->SetActorRotation(NewRotation);
+	
+	// On Strafing movement mode we need to adjust the Pawn rotation on movement.
+	// This is because we are using the Gameplay Camera instead of regular Camera
+	if (PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing)
+	{
+		FRotator NewRotation = PossessedPlayerCharacter->GetActorRotation();
+		NewRotation.Yaw = GetControlRotation().Yaw;
+		PossessedPlayerCharacter->SetActorRotation(NewRotation);
+	}
 }
 
 void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
