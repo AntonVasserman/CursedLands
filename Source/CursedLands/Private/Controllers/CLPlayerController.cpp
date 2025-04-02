@@ -23,8 +23,9 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 
 	const FVector2D MovementVector = InValue.Get<FVector2D>();
 
-	// In case Player Character is sprinting and changes direction from forward direction then stop sprinting
-	if (MovementVector.Y < 0.5 && PossessedPlayerCharacter->IsSprinting())
+	// In case Player Character is in strafing movement mode, sprinting and changes direction from forward direction then stop sprinting
+	if (PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing &&
+		MovementVector.Y < 0.5 && PossessedPlayerCharacter->IsSprinting())
 	{
 		PossessedPlayerCharacter->UnToggleSprint();
 	}
