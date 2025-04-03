@@ -80,10 +80,11 @@ void ACLCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// TODO: Consider Moving this to PostInitComponent
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
-			if (Data.NewValue == 0)
+			if (Data.NewValue == 0 && IsAlive())
 			{
 				Die();
 			}

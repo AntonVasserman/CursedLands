@@ -116,6 +116,7 @@ void ACLPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// TODO: Consider moving those to PostComponentInit
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
@@ -133,10 +134,8 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 	// We don't do a checkf() here because we might not want to apply any FallDamage in the game, so setting the effect isn't mandatory
 	if (FallDamageGameplayEffectClass)
 	{
-		const float ZVelocity = GetVelocity().Z;
-		const float AbsZVelocity = FMath::Abs(ZVelocity);
-		const float NormalizedZVelocity = UKismetMathLibrary::NormalizeToRange(AbsZVelocity, VelocityForMinFallDamage, VelocityForMaxFallDamage);
-		const float FallDamageLevel = FMath::Clamp(NormalizedZVelocity, 0.0f, 1.0f);
+		const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(FallHeight, FallHeightForMinFallDamage, FallHeightForMaxFallDamage);
+		const float FallDamageLevel = FMath::Clamp(NormalizedFallHeight, 0.0f, 1.0f);
 		ApplyEffectToSelf(FallDamageGameplayEffectClass, FallDamageLevel);
 	}
 	else
@@ -145,10 +144,27 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 	}
 }
 
+void ACLPlayerCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
+{
+	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
+
+	// If we previously weren't falling, and now we do, it means we just started falling
+	if (PrevMovementMode != MOVE_Falling && GetCharacterMovement()->MovementMode == MOVE_Falling)
+	{
+		FallBeginZ = GetActorLocation().Z;
+	}
+}
+
 void ACLPlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	// We want to always evaluate FallHeight as we use it for multiple falling animations 
+	if (GetCharacterMovement()->IsFalling())
+	{
+		FallHeight = FallBeginZ - GetActorLocation().Z;
+	}
+	
 	// Check if character is sprinting
 	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
 	{

@@ -20,7 +20,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
-
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity;
 
@@ -34,11 +34,11 @@ private:
 	bool bShouldMove;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	bool bFalling;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	float LastZVelocityBeforeLanding;
+	bool bAlive = true;
 	
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
+	bool bFalling = false;
+
 	//~ UAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;

@@ -21,6 +21,15 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	ECLPlayerCharacterMovementMode MovementMode;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
+	float FallHeight = 0.f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data | Constants", Meta = (AllowPrivateAccess = "true"))
+	float FallHeightForMinFallDamage;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data | Constants", Meta = (AllowPrivateAccess = "true"))
+	float FallHeightForMaxFallDamage;
+	
 	//~ UCLAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;

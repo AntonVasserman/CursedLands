@@ -41,6 +41,12 @@ public:
 	FORCEINLINE bool IsSprinting() const { return GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting); }
 	void ToggleSprint();
 	void UnToggleSprint();
+	UFUNCTION(BlueprintCallable, Category = "Character Locomotion")
+	FORCEINLINE float GetFallHeightForMinFallDamage() const { return FallHeightForMinFallDamage; }
+	UFUNCTION(BlueprintCallable, Category = "Character Locomotion")
+	FORCEINLINE float GetFallHeightForMaxFallDamage() const { return FallHeightForMaxFallDamage; }
+	UFUNCTION(BlueprintCallable, Category = "Character Locomotion")
+	FORCEINLINE float GetFallHeight() const { return FallHeight; }
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay Camera System", Meta = (AllowPrivateAccess = "true"))
@@ -50,10 +56,13 @@ private:
 	ECLPlayerCharacterMovementMode MovementMode = ECLPlayerCharacterMovementMode::Default;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
-	float VelocityForMinFallDamage = 1400.f;
+	float FallHeightForMinFallDamage = 800.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
-	float VelocityForMaxFallDamage = 2200.f;
+	float FallHeightForMaxFallDamage = 1500.f;
+
+	float FallHeight = 0.f;
+	float FallBeginZ = 0.f;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FallDamageGameplayEffectClass;
@@ -77,11 +86,12 @@ private:
 	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
 
 	void ApplyFatigue();
-	
+
 	//~ ACLCharacter Begin
 public:
 	virtual void BeginPlay() override;
 	virtual void Landed(const FHitResult& Hit) override;
+	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode = 0) override;
 	virtual void Tick(float DeltaSeconds) override;
 protected:
 	virtual void Die() override;

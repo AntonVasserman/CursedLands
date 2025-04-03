@@ -14,6 +14,8 @@ void UCLPlayerCharacterAnimInstance::NativeInitializeAnimation()
 	if (ACLPlayerCharacter* OwningPlayerCharacter = Cast<ACLPlayerCharacter>(GetOwningActor()))
 	{
 		PlayerCharacter = OwningPlayerCharacter;
+		FallHeightForMinFallDamage = PlayerCharacter->GetFallHeightForMinFallDamage();
+		FallHeightForMaxFallDamage = PlayerCharacter->GetFallHeightForMaxFallDamage();
 	}
 }
 
@@ -24,6 +26,7 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (PlayerCharacter)
 	{
 		MovementMode = PlayerCharacter->GetMovementMode();
+		FallHeight = PlayerCharacter->GetFallHeight();
 	}
 }
 
