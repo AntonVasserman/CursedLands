@@ -110,6 +110,12 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 }
 
+void ACLPlayerCharacter::PlayFallToRollAnimMontage()
+{
+	checkf(FallToRollAnimMontage, TEXT("FallToRollAnimMontage uninitialized in object: %s"), *GetFullName());
+	GetMesh()->GetAnimInstance()->Montage_Play(FallToRollAnimMontage);
+}
+
 //~ ACLCharacter Begin
 
 void ACLPlayerCharacter::BeginPlay()
@@ -131,16 +137,18 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 {
 	Super::Landed(Hit);
 
-	// We don't do a checkf() here because we might not want to apply any FallDamage in the game, so setting the effect isn't mandatory
-	if (FallDamageGameplayEffectClass)
+	if (FallHeight >= FallHeightForMinFallDamage)
 	{
+		if (FallHeight < FallHeightForMaxFallDamage)
+		{
+			PlayFallToRollAnimMontage();
+		}
+		
+		checkf(FallDamageGameplayEffectClass, TEXT("FallDamageGameplayEffectClass uninitialized in object: %s"), *GetFullName());
 		const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(FallHeight, FallHeightForMinFallDamage, FallHeightForMaxFallDamage);
-		const float FallDamageLevel = FMath::Clamp(NormalizedFallHeight, 0.0f, 1.0f);
+		const float FallDamageLevel = FMath::Clamp(NormalizedFallHeight, 0.f, 1.f);
+
 		ApplyEffectToSelf(FallDamageGameplayEffectClass, FallDamageLevel);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("ACLPlayerCharacter::Landed: FallDamageGameplayEffectClass isn't set so no damage applied on falling"));
 	}
 }
 

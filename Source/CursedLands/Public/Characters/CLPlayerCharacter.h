@@ -63,10 +63,13 @@ private:
 
 	float FallHeight = 0.f;
 	float FallBeginZ = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Animation", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> FallToRollAnimMontage;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FallDamageGameplayEffectClass;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
 
@@ -86,6 +89,7 @@ private:
 	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
 
 	void ApplyFatigue();
+	void PlayFallToRollAnimMontage();
 
 	//~ ACLCharacter Begin
 public:

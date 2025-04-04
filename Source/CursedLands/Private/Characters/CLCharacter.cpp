@@ -6,8 +6,6 @@
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
-#include "Engine/LocalPlayer.h"
-#include "GameFramework/Controller.h"
 
 ACLCharacter::ACLCharacter()
 {
@@ -84,6 +82,7 @@ void ACLCharacter::BeginPlay()
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
+			// TODO (CL-67): Investigate why this is always being called
 			if (Data.NewValue == 0 && IsAlive())
 			{
 				Die();
