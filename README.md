@@ -43,3 +43,24 @@ Stephen Ulibarri on Udemy and Courses:\
 [Stephen Ulibarri](https://www.udemy.com/user/stephen-ulibarri-3/)\
 [Unreal Engine 5 C++ The Ultimate Game Developer Course](https://www.udemy.com/course/unreal-engine-5-the-ultimate-game-developer-course/)\
 [Unreal Engine 5 - Gameplay Ability System - Top Down RPG](https://www.udemy.com/course/unreal-engine-5-gas-top-down-rpg/?couponCode=ST3MT200225B)
+
+## Credits - Assets
+
+### Advanced Locomotion System
+#### Animations
+- ALS_N_Run_X (B/F/LB/LF/RB/RF)
+- ALS_N_Sprint_F
+- ALS_N_Walk_X (B/F/LB/LF/RB/RF)
+
+### Mixamo
+#### Animations
+- Falling
+- Falling Flat Impact
+- Falling To Roll
+
+### Lyra Project - Epic Games
+#### Audio
+- ATT_Footstep_PC
+- Lyra_Plyr_Foot_L_0X (01 - 06)
+- Lyra_Plyr_Foot_R_0X (01 - 06)
+
