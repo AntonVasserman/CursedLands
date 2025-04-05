@@ -8,6 +8,11 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
+void UCLAnimInstance::CharacterMeshSimulatePhysics() const
+{
+	Character->SimulatePhysics();
+}
+
 //~ UAnimInstance Begin
 
 void UCLAnimInstance::NativeInitializeAnimation()

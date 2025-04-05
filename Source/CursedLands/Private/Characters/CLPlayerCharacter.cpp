@@ -110,10 +110,23 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 }
 
+// TODO: Consider improving this function to return a CLPlayerAnimInstance?
+UAnimInstance* ACLPlayerCharacter::GetAnimInstance()
+{
+	return GetMesh()->GetAnimInstance();
+}
+
 void ACLPlayerCharacter::PlayFallToRollAnimMontage()
 {
-	checkf(FallToRollAnimMontage, TEXT("FallToRollAnimMontage uninitialized in object: %s"), *GetFullName());
-	GetMesh()->GetAnimInstance()->Montage_Play(FallToRollAnimMontage);
+	checkf(FallToRollAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToRollAnimMontage), *GetFullName());
+	GetAnimInstance()->Montage_Play(FallToRollAnimMontage);
+}
+
+void ACLPlayerCharacter::PlayFallToDeathAnimMontage()
+{
+	checkf(FallToDeathAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToDeathAnimMontage), *GetFullName());
+	GetAnimInstance()->Montage_Play(FallToDeathAnimMontage);
+	GetAnimInstance()->Montage_JumpToSection(FallToDeathAnimMontage_SectionName_Impact, FallToDeathAnimMontage);
 }
 
 //~ ACLCharacter Begin
@@ -122,7 +135,6 @@ void ACLPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// TODO: Consider moving those to PostComponentInit
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
@@ -139,16 +151,21 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 
 	if (FallHeight >= FallHeightForMinFallDamage)
 	{
-		if (FallHeight < FallHeightForMaxFallDamage)
-		{
-			PlayFallToRollAnimMontage();
-		}
-		
 		checkf(FallDamageGameplayEffectClass, TEXT("FallDamageGameplayEffectClass uninitialized in object: %s"), *GetFullName());
 		const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(FallHeight, FallHeightForMinFallDamage, FallHeightForMaxFallDamage);
 		const float FallDamageLevel = FMath::Clamp(NormalizedFallHeight, 0.f, 1.f);
 
 		ApplyEffectToSelf(FallDamageGameplayEffectClass, FallDamageLevel);
+
+		// TODO: add IsAlive() here
+		if (FallHeight < FallHeightForMaxFallDamage)
+		{
+			PlayFallToRollAnimMontage();
+		}
+		else
+		{
+			PlayFallToDeathAnimMontage();
+		}
 	}
 }
 

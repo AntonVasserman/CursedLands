@@ -40,6 +40,7 @@ public:
 	
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
 	FORCEINLINE bool IsAlive() const { return bIsAlive; }
+	void SimulatePhysics() const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")

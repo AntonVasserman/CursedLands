@@ -41,6 +41,13 @@ void ACLCharacter::InitAbilityActorInfo()
 	InitializeDefaultPassiveEffects();
 }
 
+void ACLCharacter::SimulatePhysics() const
+{
+	GetMesh()->SetSimulatePhysics(true);
+	// TODO: Consider a const here, or even better, use my common logic plugin
+	GetMesh()->SetCollisionProfileName("Ragdoll");
+}
+
 void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level)
 {
 	check(IsValid(AbilitySystem));
@@ -77,8 +84,7 @@ void ACLCharacter::InitializeDefaultPassiveEffects()
 void ACLCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// TODO: Consider Moving this to PostInitComponent
+	
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{

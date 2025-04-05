@@ -66,6 +66,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Animation", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> FallToRollAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Animation", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> FallToDeathAnimMontage;
+
+	const FName FallToDeathAnimMontage_SectionName_Impact = FName("Impact");
+	const FName FallToDeathAnimMontage_SectionName_DeathLoop = FName("DeathLoop");
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FallDamageGameplayEffectClass;
@@ -89,7 +95,9 @@ private:
 	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
 
 	void ApplyFatigue();
+	UAnimInstance* GetAnimInstance();
 	void PlayFallToRollAnimMontage();
+	void PlayFallToDeathAnimMontage();
 
 	//~ ACLCharacter Begin
 public:

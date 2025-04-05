@@ -39,6 +39,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	bool bFalling = false;
 
+	UFUNCTION(BlueprintCallable, Category = "Character Physics")
+	void CharacterMeshSimulatePhysics() const;
+	
 	//~ UAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;
