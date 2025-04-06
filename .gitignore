@@ -76,14 +76,9 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-# Advanced Locomotion System V4
+# Additional Content
 Content/AdvancedLocomotionV4/*
-
-# Black Alder
 Content/BlackAlder/*
-
-# Mixamo
 Content/Mixamo/*
-
-# MSPresets
 Content/MSPresets/*
+Content/AncientContent/*

@@ -61,6 +61,13 @@ Stephen Ulibarri on Udemy and Courses:\
 ### Lyra Project - Epic Games
 #### Audio
 - ATT_Footstep_PC
-- Lyra_Plyr_Foot_L_0X (01 - 06)
-- Lyra_Plyr_Foot_R_0X (01 - 06)
+- Lyra_Plyr_Foot_L_0X (1-6)
+- Lyra_Plyr_Foot_R_0X (1-6)
 
+### Valley of the Ancients - Epic Games
+#### Audio
+- sfx_Char_Echo_Foley_Attenuation
+- sfx_Char_Echo_Foley_Cloth_Heavy_nl_meta
+- sfx_Char_Echo_Foley_Hand_Plant_nl_meta
+- sfx_Char_Echo_Foley_Cloth_Heavy_nl_0X (1-7)
+- sfx_Char_Echo_Foley_Hand_Plant_nl_0X (1-9)
