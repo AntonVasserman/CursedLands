@@ -52,6 +52,11 @@ Stephen Ulibarri on Udemy and Courses:\
 - ALS_N_Sprint_F
 - ALS_N_Walk_X (B/F/LB/LF/RB/RF)
 
+### Game Animation Sample - Epic Games
+#### Audio
+- Foley_bs_1p_body_concrete_tumble_0X (1-9)
+- Foley_fs_1p_sneaker_concrete_land_XX (01-20)
+
 ### Mixamo
 #### Animations
 - Falling
