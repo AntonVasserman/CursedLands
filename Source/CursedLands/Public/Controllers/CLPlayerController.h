@@ -7,6 +7,7 @@
 #include "CLPlayerController.generated.h"
 
 class ACLPlayerCharacter;
+class UCLUserWidget;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -31,13 +32,25 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> JumpAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> PauseMenuAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Menus", Meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UCLUserWidget> PauseMenuWidgetClass;
 	
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
+	TObjectPtr<UCLUserWidget> PauseMenuWidget = nullptr;
+	bool bInPausedMenu = false;
 
 	void RequestMoveAction(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleSprintAction();
 	void RequestJumpAction();
+	void RequestPauseMenuAction();
+
+	UFUNCTION(BlueprintCallable, Category = "Menus")
+	void TogglePauseMenu();
 
 	//~ APlayerController Begin
 protected:

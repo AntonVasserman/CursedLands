@@ -8,6 +8,8 @@
 #include "Characters/CLPlayerCharacter.h"
 #include "UI/HUD/CLHUD.h"
 #include "GameFramework/GameplayCameraComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "UI/CLUserWidget.h"
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 {
@@ -76,6 +78,40 @@ void ACLPlayerController::RequestJumpAction()
 	}
 }
 
+void ACLPlayerController::RequestPauseMenuAction()
+{
+	if (PauseMenuWidget == nullptr)
+	{
+		checkf(PauseMenuWidgetClass, TEXT("PauseMenuWidgetClass uninitialized in object: %s"), *GetFullName());
+		PauseMenuWidget = CreateWidget<UCLUserWidget>(this, PauseMenuWidgetClass);
+	}
+	
+	TogglePauseMenu();
+}
+
+void ACLPlayerController::TogglePauseMenu()
+{
+	if (!bInPausedMenu)
+	{
+		PauseMenuWidget->AddToViewport();
+		SetShowMouseCursor(true);
+		FInputModeGameAndUI InputMode;
+		InputMode.SetWidgetToFocus(PauseMenuWidget->TakeWidget());
+		InputMode.SetHideCursorDuringCapture(false);
+		SetInputMode(FInputModeGameAndUI());
+		UGameplayStatics::SetGamePaused(this, true);
+		bInPausedMenu = true;
+	}
+	else
+	{
+		UGameplayStatics::SetGamePaused(this, false);
+		SetInputMode(FInputModeGameOnly());
+		SetShowMouseCursor(false);
+		PauseMenuWidget->RemoveFromParent();
+		bInPausedMenu = false;
+	}
+}
+
 //~ APlayerController Begin
 
 void ACLPlayerController::BeginPlay()
@@ -122,6 +158,8 @@ void ACLPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ToggleSprintAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestToggleSprintAction);
 	checkf(JumpAction, TEXT("JumpAction uninitialized in object: %s"), *GetFullName())
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestJumpAction);
+	checkf(PauseMenuAction, TEXT("PauseMenuAction uninitialized in object: %s"), *GetFullName());
+	EnhancedInputComponent->BindAction(PauseMenuAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestPauseMenuAction);
 }
 
 //~ APlayerController End
