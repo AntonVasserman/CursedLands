@@ -66,6 +66,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Animation", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> FallToRollAnimMontage;
+	FOnMontageEnded FallToRollAnimMontageEndedDelegate;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config | Character Locomotion | Animation", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> FallToDeathAnimMontage;

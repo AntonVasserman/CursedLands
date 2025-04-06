@@ -72,7 +72,5 @@ Stephen Ulibarri on Udemy and Courses:\
 ### Valley of the Ancients - Epic Games
 #### Audio
 - sfx_Char_Echo_Foley_Attenuation
-- sfx_Char_Echo_Foley_Cloth_Heavy_nl_meta
-- sfx_Char_Echo_Foley_Hand_Plant_nl_meta
 - sfx_Char_Echo_Foley_Cloth_Heavy_nl_0X (1-7)
 - sfx_Char_Echo_Foley_Hand_Plant_nl_0X (1-9)

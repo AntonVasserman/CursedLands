@@ -119,7 +119,11 @@ UAnimInstance* ACLPlayerCharacter::GetAnimInstance()
 void ACLPlayerCharacter::PlayFallToRollAnimMontage()
 {
 	checkf(FallToRollAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToRollAnimMontage), *GetFullName());
-	GetAnimInstance()->Montage_Play(FallToRollAnimMontage);
+	if (GetAnimInstance()->Montage_Play(FallToRollAnimMontage) > 0.f)
+	{
+		AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Rolling);
+	}
+	GetAnimInstance()->Montage_SetEndDelegate(FallToRollAnimMontageEndedDelegate, FallToRollAnimMontage);
 }
 
 void ACLPlayerCharacter::PlayFallToDeathAnimMontage()
@@ -142,6 +146,12 @@ void ACLPlayerCharacter::BeginPlay()
 			{
 				ApplyFatigue();
 			}
+		});
+
+	FallToRollAnimMontageEndedDelegate.BindLambda(
+		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
+		{
+			RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Rolling);
 		});
 }
 
