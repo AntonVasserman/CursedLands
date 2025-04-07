@@ -110,12 +110,6 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 }
 
-// TODO: Consider improving this function to return a CLPlayerAnimInstance?
-UAnimInstance* ACLPlayerCharacter::GetAnimInstance()
-{
-	return GetMesh()->GetAnimInstance();
-}
-
 void ACLPlayerCharacter::PlayFallToRollAnimMontage()
 {
 	checkf(FallToRollAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToRollAnimMontage), *GetFullName());
@@ -167,9 +161,10 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 
 		ApplyEffectToSelf(FallDamageGameplayEffectClass, FallDamageLevel);
 
-		// TODO: add IsAlive() here
 		if (FallHeight < FallHeightForMaxFallDamage)
 		{
+			// We play the fall to roll animation even if falling results in death because the FallToRollAnimMontage is responsible for simulating
+			// physics upon death.
 			PlayFallToRollAnimMontage();
 		}
 		else

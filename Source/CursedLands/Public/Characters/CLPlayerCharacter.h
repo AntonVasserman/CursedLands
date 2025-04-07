@@ -96,7 +96,6 @@ private:
 	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
 
 	void ApplyFatigue();
-	UAnimInstance* GetAnimInstance();
 	void PlayFallToRollAnimMontage();
 	void PlayFallToDeathAnimMontage();
 

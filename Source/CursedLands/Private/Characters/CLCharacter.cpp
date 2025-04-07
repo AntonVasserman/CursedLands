@@ -3,9 +3,11 @@
 
 #include "Characters/CLCharacter.h"
 
+#include "AVCollisionProfileStatics.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACLCharacter::ACLCharacter()
 {
@@ -31,21 +33,10 @@ void ACLCharacter::RemoveGameplayTag(const FGameplayTag& GameplayTag)
 	AbilitySystem->RemoveLooseGameplayTag(GameplayTag);
 }
 
-void ACLCharacter::InitAbilityActorInfo()
-{
-	AbilitySystem->InitAbilityActorInfo(this, this);
-
-	// TODO: Is this the correct place?
-	// This currently means each time we "Possess" the character by a controller it will reset his values...
-	InitializeDefaultAttributes();
-	InitializeDefaultPassiveEffects();
-}
-
 void ACLCharacter::SimulatePhysics() const
 {
 	GetMesh()->SetSimulatePhysics(true);
-	// TODO: Consider a const here, or even better, use my common logic plugin
-	GetMesh()->SetCollisionProfileName("Ragdoll");
+	GetMesh()->SetCollisionProfileName(UAVCollisionProfileStatics::Ragdoll_ProfileName);
 }
 
 void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level)
@@ -60,9 +51,15 @@ void ACLCharacter::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& Gamepla
 
 void ACLCharacter::Die()
 {
+	GetCharacterMovement()->DisableMovement();
 	AbilitySystem->RemoveActiveEffects(FGameplayEffectQuery()); // Empty Query to affect all Active Effects
 	bIsAlive = false;
 	Die_BP();
+}
+
+UAnimInstance* ACLCharacter::GetAnimInstance()
+{
+	return GetMesh()->GetAnimInstance();
 }
 
 void ACLCharacter::InitializeDefaultAttributes()
@@ -99,7 +96,16 @@ void ACLCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	InitAbilityActorInfo();
+	// TODO (CL-77): Transition attribute initialization similar to how it's done in LyraGame
+	InitializeDefaultAttributes();
+	InitializeDefaultPassiveEffects();
+}
+
+void ACLCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AbilitySystem->InitAbilityActorInfo(this, this);
 }
 
 //~ ACharacter End

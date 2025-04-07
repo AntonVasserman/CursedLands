@@ -72,7 +72,6 @@ void ACLPlayerController::RequestToggleSprintAction()
 
 void ACLPlayerController::RequestJumpAction()
 {
-	// TODO: Consider overriding CanJump so we can check if Character is alive...
 	if (PossessedPlayerCharacter->CanJump())
 	{
 		PossessedPlayerCharacter->Jump();

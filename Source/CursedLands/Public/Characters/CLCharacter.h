@@ -36,8 +36,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameplayTags")
 	void RemoveGameplayTag(const FGameplayTag& GameplayTag);
 	
-	void InitAbilityActorInfo();
-	
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
 	FORCEINLINE bool IsAlive() const { return bIsAlive; }
 	void SimulatePhysics() const;
@@ -56,6 +54,7 @@ protected:
 	virtual void Die();
 	UFUNCTION(BlueprintImplementableEvent, DisplayName = "Die")
 	void Die_BP();
+	UAnimInstance* GetAnimInstance();
 	void InitializeDefaultAttributes();
 	void InitializeDefaultPassiveEffects();
 
@@ -72,10 +71,10 @@ private:
 public:
 	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void PostInitializeComponents() override;
 	//~ ACharacter End
 
 	//~ IAbilitySystemInterface Begin
-public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ IAbilitySystemInterface End
 	

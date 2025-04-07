@@ -9,6 +9,6 @@ public class CursedLands : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayCameras", "GameplayAbilities" });
-		PrivateDependencyModuleNames.AddRange(new string[] { "AnimGraphRuntime", "GameplayTags", "GameplayTasks", "AnimGraphRuntime" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "AnimGraphRuntime", "AVUtilities", "GameplayTags", "GameplayTasks", "AnimGraphRuntime" });
 	}
 }
