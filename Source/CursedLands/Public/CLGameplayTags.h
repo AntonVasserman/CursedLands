@@ -22,6 +22,7 @@ struct FCLGameplayTags
 	FGameplayTag Attributes_General_MaxStamina;
 
 	// Locomotion States
+	FGameplayTag Locomotion_Falling;
 	FGameplayTag Locomotion_Rolling;
 	FGameplayTag Locomotion_Sprinting;
 

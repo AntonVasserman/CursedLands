@@ -88,7 +88,6 @@ void ACLCharacter::BeginPlay()
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
-			// TODO (CL-67): Investigate why this is always being called
 			if (Data.NewValue == 0 && IsAlive())
 			{
 				Die();

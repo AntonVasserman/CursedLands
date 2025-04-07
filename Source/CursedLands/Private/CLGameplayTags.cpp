@@ -34,6 +34,9 @@ void FCLGameplayTags::InitializeNativeGameplayTags()
 		FString("Maximum amount of Stamina obtainable"));
 	
 	// Locomotion States
+	GameplayTags.Locomotion_Falling = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Locomotion.Falling"),
+		FString("The tag owner is marked as in falling locomotion state."));
 	GameplayTags.Locomotion_Rolling = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Locomotion.Rolling"),
 		FString("The tag owner is marked as in rolling locomotion state."));

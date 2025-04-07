@@ -183,10 +183,17 @@ void ACLPlayerCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, u
 {
 	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
 
-	// If we previously weren't falling, and now we do, it means we just started falling
+	// Previously weren't falling, and now we do, meaning we just started falling
 	if (PrevMovementMode != MOVE_Falling && GetCharacterMovement()->MovementMode == MOVE_Falling)
 	{
 		FallBeginZ = GetActorLocation().Z;
+		AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Falling);
+	}
+
+	// Previously were falling, and now we don't, meaning we just landed (stopped falling)
+	if (PrevMovementMode == MOVE_Falling && GetCharacterMovement()->MovementMode != MOVE_Falling)
+	{
+		RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Falling);
 	}
 }
 
