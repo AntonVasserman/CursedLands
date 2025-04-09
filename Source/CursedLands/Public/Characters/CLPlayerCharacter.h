@@ -21,7 +21,7 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 	GENERATED_BODY()
 
 public:
-	ACLPlayerCharacter();
+	ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer);
 	
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")

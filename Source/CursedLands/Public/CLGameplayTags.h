@@ -4,6 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "NativeGameplayTags.h"
+
+namespace CLGameplayTags
+{
+	// Movement Mode Tags
+	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> MovementModeTagMap;
+	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
+	
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_NavWalking);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Falling);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Swimming);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Flying);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Custom);
+
+	// Custom Movement Mode Tags
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Sprinting);
+}
 
 struct FCLGameplayTags
 {
@@ -22,7 +40,6 @@ struct FCLGameplayTags
 	FGameplayTag Attributes_General_MaxStamina;
 
 	// Locomotion States
-	FGameplayTag Locomotion_Falling;
 	FGameplayTag Locomotion_Rolling;
 	FGameplayTag Locomotion_Sprinting;
 

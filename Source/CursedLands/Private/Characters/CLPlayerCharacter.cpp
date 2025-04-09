@@ -13,7 +13,7 @@
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-ACLPlayerCharacter::ACLPlayerCharacter()
+ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -86,13 +86,13 @@ bool ACLPlayerCharacter::CanSprint() const
 void ACLPlayerCharacter::ToggleSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	GetAbilitySystemComponent()->SetLooseGameplayTagCount(FCLGameplayTags::Get().Locomotion_Sprinting, 1);
 }
 
 void ACLPlayerCharacter::UnToggleSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-	RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
 }
 
 void ACLPlayerCharacter::ApplyFatigue()
@@ -115,7 +115,7 @@ void ACLPlayerCharacter::PlayFallToRollAnimMontage()
 	checkf(FallToRollAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToRollAnimMontage), *GetFullName());
 	if (GetAnimInstance()->Montage_Play(FallToRollAnimMontage) > 0.f)
 	{
-		AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Rolling);
+		GetAbilitySystemComponent()->SetLooseGameplayTagCount(FCLGameplayTags::Get().Locomotion_Rolling, 1);
 	}
 	GetAnimInstance()->Montage_SetEndDelegate(FallToRollAnimMontageEndedDelegate, FallToRollAnimMontage);
 }
@@ -145,7 +145,7 @@ void ACLPlayerCharacter::BeginPlay()
 	FallToRollAnimMontageEndedDelegate.BindLambda(
 		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
 		{
-			RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Rolling);
+			GetAbilitySystemComponent()->RemoveLooseGameplayTag(FCLGameplayTags::Get().Locomotion_Rolling);
 		});
 }
 
@@ -182,14 +182,10 @@ void ACLPlayerCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, u
 	if (PrevMovementMode != MOVE_Falling && GetCharacterMovement()->MovementMode == MOVE_Falling)
 	{
 		FallBeginZ = GetActorLocation().Z;
-		AddUniqueGameplayTag(FCLGameplayTags::Get().Locomotion_Falling);
 	}
 
-	// Previously were falling, and now we don't, meaning we just landed (stopped falling)
-	if (PrevMovementMode == MOVE_Falling && GetCharacterMovement()->MovementMode != MOVE_Falling)
-	{
-		RemoveGameplayTag(FCLGameplayTags::Get().Locomotion_Falling);
-	}
+	SetMovementModeTag(PrevMovementMode, PreviousCustomMode, false);
+	SetMovementModeTag(GetCharacterMovement()->MovementMode, GetCharacterMovement()->CustomMovementMode, true);
 }
 
 void ACLPlayerCharacter::Tick(float DeltaSeconds)

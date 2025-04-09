@@ -18,24 +18,12 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter, public IAbilitySystemInt
 	GENERATED_BODY()
 
 public:
-	ACLCharacter();
+	ACLCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System | Attributes")
 	FORCEINLINE UCLHealthAttributeSet* GetHealthAttributeSet() const { return HealthAttributeSet; }
-	/**
-	 * Tries to add a GameplayTag only if this Ability System Component doesn't already have it
-	 * 
-	 * @param GameplayTag to add
-	 * 
-	 * @return true if GameplayTag was added. Returns false otherwise.
-	 */
-	UFUNCTION(BlueprintCallable, Category = "GameplayTags")
-	bool AddUniqueGameplayTag(const FGameplayTag& GameplayTag);
-	UFUNCTION(BlueprintCallable, Category = "GameplayTags")
-	void RemoveGameplayTag(const FGameplayTag& GameplayTag);
-	
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
 	FORCEINLINE bool IsAlive() const { return bIsAlive; }
 	void SimulatePhysics() const;
@@ -57,6 +45,7 @@ protected:
 	UAnimInstance* GetAnimInstance();
 	void InitializeDefaultAttributes();
 	void InitializeDefaultPassiveEffects();
+	void SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMovementMode, bool bTagEnabled);
 
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")

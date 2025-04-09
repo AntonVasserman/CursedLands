@@ -4,33 +4,20 @@
 #include "Characters/CLCharacter.h"
 
 #include "AVCollisionProfileStatics.h"
+#include "CLGameplayTags.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
+#include "Characters/CLCharacterMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-ACLCharacter::ACLCharacter()
+ACLCharacter::ACLCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCLCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	AbilitySystem = CreateDefaultSubobject<UCLAbilitySystemComponent>("AbilitySystem");
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
 	HealthAttributeSet = CreateDefaultSubobject<UCLHealthAttributeSet>("HealthAttributeSet");
-}
-
-bool ACLCharacter::AddUniqueGameplayTag(const FGameplayTag& GameplayTag)
-{
-	if (HasMatchingGameplayTag(GameplayTag))
-	{
-		return false;
-	}
-	
-	AbilitySystem->AddLooseGameplayTag(GameplayTag);
-	return true;
-}
-
-void ACLCharacter::RemoveGameplayTag(const FGameplayTag& GameplayTag)
-{
-	AbilitySystem->RemoveLooseGameplayTag(GameplayTag);
 }
 
 void ACLCharacter::SimulatePhysics() const
@@ -73,6 +60,21 @@ void ACLCharacter::InitializeDefaultPassiveEffects()
 	for (TSubclassOf<UGameplayEffect> PassiveEffectClass : DefaultPassiveEffectClasses)
 	{
 		ApplyEffectToSelf(PassiveEffectClass, 1.0);
+	}
+}
+
+void ACLCharacter::SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMovementMode, bool bTagEnabled)
+{
+	if (AbilitySystem)
+	{
+		const FGameplayTag* MovementModeTag = MovementMode == MOVE_Custom ?
+			CLGameplayTags::CustomMovementModeTagMap.Find(CustomMovementMode) :
+			CLGameplayTags::MovementModeTagMap.Find(MovementMode);
+
+		if (MovementModeTag && MovementModeTag->IsValid())
+		{
+			AbilitySystem->SetLooseGameplayTagCount(*MovementModeTag, bTagEnabled ? 1 : 0);
+		}
 	}
 }
 
