@@ -26,7 +26,7 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (PlayerCharacter)
 	{
 		MovementMode = PlayerCharacter->GetMovementMode();
-		FallHeight = PlayerCharacter->GetFallHeight();
+		FallHeight = PlayerCharacter->GetCLCharacterMovement()->GetFallHeight();
 	}
 }
 

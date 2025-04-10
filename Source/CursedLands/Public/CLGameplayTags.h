@@ -8,7 +8,7 @@
 
 namespace CLGameplayTags
 {
-	// Movement Mode Tags
+	// Movement Modes Tags
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> MovementModeTagMap;
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
 	
@@ -19,10 +19,11 @@ namespace CLGameplayTags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Flying);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Custom);
 
-	// Custom Movement Mode Tags
-	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Sprinting);
+	// Custom Movement Modes Tags
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_CustomMode_Sprinting);
 }
 
+// TODO: Remove in favor of tag setup like in LyraGame
 struct FCLGameplayTags
 {
 	static const FCLGameplayTags& Get() { return GameplayTags; }
@@ -38,10 +39,9 @@ struct FCLGameplayTags
 	FGameplayTag Attributes_General_MaxMana;
 	FGameplayTag Attributes_General_Stamina;
 	FGameplayTag Attributes_General_MaxStamina;
-
+	
 	// Locomotion States
 	FGameplayTag Locomotion_Rolling;
-	FGameplayTag Locomotion_Sprinting;
 
 	// Debuffs
 	FGameplayTag Debuff_Fatigue;

@@ -27,9 +27,9 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 
 	// In case Player Character is in strafing movement mode, sprinting and changes direction from forward direction then stop sprinting
 	if (PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing &&
-		MovementVector.Y < 0.5 && PossessedPlayerCharacter->IsSprinting())
+		MovementVector.Y < 0.5 && PossessedPlayerCharacter->IsCharacterSprinting())
 	{
-		PossessedPlayerCharacter->UnToggleSprint();
+		PossessedPlayerCharacter->UnToggleSprinting();
 	}
 	
 	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
@@ -60,13 +60,13 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 
 void ACLPlayerController::RequestToggleSprintAction()
 {
-	if (PossessedPlayerCharacter->IsSprinting())
+	if (PossessedPlayerCharacter->IsCharacterSprinting())
 	{
-		PossessedPlayerCharacter->UnToggleSprint();
+		PossessedPlayerCharacter->UnToggleSprinting();
 	}
-	else if (PossessedPlayerCharacter->CanSprint())
+	else if (PossessedPlayerCharacter->CanCharacterSprint())
 	{
-		PossessedPlayerCharacter->ToggleSprint();
+		PossessedPlayerCharacter->ToggleSprinting();
 	}
 }
 

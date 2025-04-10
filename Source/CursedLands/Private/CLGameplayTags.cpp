@@ -5,7 +5,7 @@
 
 #include "Engine/EngineTypes.h"
 #include "GameplayTagsManager.h"
-#include "Characters/CLCustomMovementMode.h"
+#include "Characters/CLCharacterMovementComponent.h"
 
 namespace CLGameplayTags
 {
@@ -18,7 +18,7 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Custom, "Movement.Mode.Custom", "This should be replaced with custom tags");
 
 	// Custom Movement Mode Tags
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Sprinting, "Movement.Mode.Sprinting", "Custom Character movement tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_CustomMode_Sprinting, "Movement.CustomMode.Sprinting", "Custom Character movement tag");
 
 	// Unreal Movement Modes
 	const TMap<uint8, FGameplayTag> MovementModeTagMap =
@@ -34,7 +34,7 @@ namespace CLGameplayTags
 	// Custom Movement Modes
 	const TMap<uint8, FGameplayTag> CustomMovementModeTagMap =
 	{
-		{ MOVE_Custom_Sprinting, Movement_Mode_Sprinting }
+		{ CMOVE_Sprinting, Movement_CustomMode_Sprinting },
 	};
 }
 
@@ -71,9 +71,6 @@ void FCLGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Locomotion_Rolling = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Locomotion.Rolling"),
 		FString("The tag owner is marked as in rolling locomotion state."));
-	GameplayTags.Locomotion_Sprinting = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Locomotion.Sprinting"),
-		FString("The tag owner is marked as in sprinting locomotion state."));
 
 	// Debuffs
 	// Debuff_Fatigue

@@ -8,12 +8,14 @@
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLManaAttributeSet.h"
 #include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
+#include "Characters/CLCharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -27,7 +29,6 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
 	GetCharacterMovement()->MinAnalogWalkSpeed = MinWalkSpeed;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -57,42 +58,45 @@ void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode In
 	}
 }
 
-bool ACLPlayerCharacter::CanSprint() const
+bool ACLPlayerCharacter::CanCharacterSprint() const
 {
 	if (!CanMove())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: Can't Move"));
+		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Move"));
 		return false;
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint"));
+	if (!GetCLCharacterMovement()->CanSprintInCurrentState())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Sprint in Current State"));
+		return false;
+	}
+
 	// Check that the player isn't fatigued
 	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: Has Fatigue Debuff"));
+		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Has Fatigue Debuff"));
 		return false;
 	}
 
 	// Check that there is stamina
 	if (GetStaminaAttributeSet()->GetStamina() <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanSprint: No Stamina"));
+		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: No Stamina"));
 		return false;
 	}
 	
 	return true;
 }
 
-void ACLPlayerCharacter::ToggleSprint()
+void ACLPlayerCharacter::ToggleSprinting()
 {
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	GetAbilitySystemComponent()->SetLooseGameplayTagCount(FCLGameplayTags::Get().Locomotion_Sprinting, 1);
+	CastChecked<UCLCharacterMovementComponent>(GetCharacterMovement())->StartSprinting();
 }
 
-void ACLPlayerCharacter::UnToggleSprint()
+void ACLPlayerCharacter::UnToggleSprinting()
 {
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting);
+	CastChecked<UCLCharacterMovementComponent>(GetCharacterMovement())->StopSprinting();
 }
 
 void ACLPlayerCharacter::ApplyFatigue()
@@ -104,9 +108,9 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 	
 	ApplyEffectToSelf(FatigueGameplayEffectClass, 1.f);
-	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
+	if (HasMatchingGameplayTag(CLGameplayTags::Movement_CustomMode_Sprinting))
 	{
-		UnToggleSprint();
+		UnToggleSprinting();
 	}
 }
 
@@ -153,7 +157,8 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 {
 	Super::Landed(Hit);
 
-	if (FallHeight >= FallHeightForMinFallDamage)
+	if (const float FallHeight = GetCLCharacterMovement()->GetFallHeight();
+		FallHeight >= FallHeightForMinFallDamage)
 	{
 		checkf(FallDamageGameplayEffectClass, TEXT("FallDamageGameplayEffectClass uninitialized in object: %s"), *GetFullName());
 		const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(FallHeight, FallHeightForMinFallDamage, FallHeightForMaxFallDamage);
@@ -178,12 +183,6 @@ void ACLPlayerCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, u
 {
 	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
 
-	// Previously weren't falling, and now we do, meaning we just started falling
-	if (PrevMovementMode != MOVE_Falling && GetCharacterMovement()->MovementMode == MOVE_Falling)
-	{
-		FallBeginZ = GetActorLocation().Z;
-	}
-
 	SetMovementModeTag(PrevMovementMode, PreviousCustomMode, false);
 	SetMovementModeTag(GetCharacterMovement()->MovementMode, GetCharacterMovement()->CustomMovementMode, true);
 }
@@ -192,19 +191,12 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	// We want to always evaluate FallHeight as we use it for multiple falling animations 
-	if (GetCharacterMovement()->IsFalling())
-	{
-		FallHeight = FallBeginZ - GetActorLocation().Z;
-	}
-	
-	// Check if character is sprinting
-	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FCLGameplayTags::Get().Locomotion_Sprinting))
+	if (IsCharacterSprinting())
 	{
 		// If current speed is lower than regular running speed minus some delta then turn of sprinting
-		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < RunSpeed - 0.1f)
+		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < GetCharacterMovement()->MaxWalkSpeed - 0.1f)
 		{
-			UnToggleSprint();
+			UnToggleSprinting();
 		}
 	}
 }
