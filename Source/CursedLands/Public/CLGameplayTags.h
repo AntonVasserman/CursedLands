@@ -8,7 +8,21 @@
 
 namespace CLGameplayTags
 {
-	// Movement Modes Tags
+	// Attributes
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes);
+
+	// General Attributes
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_General_Health);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_General_MaxHealth);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_General_Mana);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_General_MaxMana);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_General_Stamina);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_General_MaxStamina);
+	
+	// Debuffs
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Fatigue);
+	
+	// Unreal Movement Modes Tags
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> MovementModeTagMap;
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
 	
@@ -21,31 +35,7 @@ namespace CLGameplayTags
 
 	// Custom Movement Modes Tags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_CustomMode_Sprinting);
-}
-
-// TODO: Remove in favor of tag setup like in LyraGame
-struct FCLGameplayTags
-{
-	static const FCLGameplayTags& Get() { return GameplayTags; }
-	static void InitializeNativeGameplayTags();
-
-	// Attributes
-	FGameplayTag Attributes;
-
-	// General Attributes
-	FGameplayTag Attributes_General_Health;
-	FGameplayTag Attributes_General_MaxHealth;
-	FGameplayTag Attributes_General_Mana;
-	FGameplayTag Attributes_General_MaxMana;
-	FGameplayTag Attributes_General_Stamina;
-	FGameplayTag Attributes_General_MaxStamina;
 	
 	// Locomotion States
-	FGameplayTag Locomotion_Rolling;
-
-	// Debuffs
-	FGameplayTag Debuff_Fatigue;
-
-private:
-	static FCLGameplayTags GameplayTags; 
-};
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Rolling);
+}

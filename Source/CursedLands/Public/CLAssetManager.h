@@ -15,9 +15,7 @@ public:
 	static UCLAssetManager& Get();
 
 	//~ UAssetManager Begin
-
 protected:
 	virtual void StartInitialLoading() override;
-	
 	//~ UAssetManager End
 };

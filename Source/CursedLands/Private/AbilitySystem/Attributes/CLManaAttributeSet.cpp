@@ -10,8 +10,8 @@
 
 UCLManaAttributeSet::UCLManaAttributeSet()
 {
-	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_General_Mana, GetManaAttribute);
-	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_General_MaxMana, GetMaxManaAttribute);
+	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Mana, GetManaAttribute);
+	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxMana, GetMaxManaAttribute);
 }
 
 void UCLManaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

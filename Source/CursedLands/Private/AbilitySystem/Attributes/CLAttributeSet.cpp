@@ -13,7 +13,7 @@ UCLAttributeSet::UCLAttributeSet()
 FGameplayAttribute UCLAttributeSet::GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const
 {
 	// TODO (CL-58): Return back the usage of FindChecked once CLAttributeProgressBar is refactored
-	checkf(AttributeGameplayTag.MatchesTag(FCLGameplayTags::Get().Attributes), TEXT("Trying to get Attribute by Gameplay Tag with a non-attribute Gameplay Tag: %s"), *AttributeGameplayTag.ToString());
+	checkf(AttributeGameplayTag.MatchesTag(CLGameplayTags::Attributes), TEXT("Trying to get Attribute by Gameplay Tag with a non-attribute Gameplay Tag: %s"), *AttributeGameplayTag.ToString());
 	FGameplayAttribute (*const*X)() = TagToAttributeMapping.Find(AttributeGameplayTag);
 
 	return X != nullptr ? (*X)() : nullptr;

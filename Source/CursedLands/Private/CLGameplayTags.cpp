@@ -9,7 +9,21 @@
 
 namespace CLGameplayTags
 {
-	// Movement Mode Tags
+	// Attributes
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes, "Attributes", "Base parent for all Attribute Gameplay Tags");
+	
+	// General Attributes
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_Health, "Attributes.General.Health", "A resource used to indicate amount of damage a character can receive");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_MaxHealth, "Attributes.General.MaxHealth", "Maximum amount of Health obtainable");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_Mana, "Attributes.General.Mana", "A resource used to do actions such as cast spells and buffs");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_MaxMana, "Attributes.General.MaxMana", "Maximum amount of Mana obtainable");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_Stamina, "Attributes.General.Stamina", "A resource used to do actions such as sprint and attack");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_MaxStamina, "Attributes.General.MaxStamina", "Maximum amount of Stamina obtainable");
+
+	// Debuffs
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Fatigue, "Debuff.Fatigue", "Fatigue Debuff tag");
+	
+	// Unreal Movement Modes Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking, "Movement.Mode.Walking", "Default Character movement tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_NavWalking, "Movement.Mode.NavWalking", "Default Character movement tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Falling, "Movement.Mode.Falling", "Default Character movement tag");
@@ -17,7 +31,7 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Flying, "Movement.Mode.Flying", "Default Character movement tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Custom, "Movement.Mode.Custom", "This should be replaced with custom tags");
 
-	// Custom Movement Mode Tags
+	// Custom Movement Modes Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_CustomMode_Sprinting, "Movement.CustomMode.Sprinting", "Custom Character movement tag");
 
 	// Unreal Movement Modes
@@ -36,46 +50,7 @@ namespace CLGameplayTags
 	{
 		{ CMOVE_Sprinting, Movement_CustomMode_Sprinting },
 	};
-}
 
-FCLGameplayTags FCLGameplayTags::GameplayTags;
-
-void FCLGameplayTags::InitializeNativeGameplayTags()
-{
-	// Attributes
-	GameplayTags.Attributes = UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Attributes"),
-			FString("The base parent for all Attribute Gameplay Tags"));
-
-	// General Attributes
-	GameplayTags.Attributes_General_Health = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.General.Health"),
-		FString("A resource used to indicate amount of damage a character can receive"));
-	GameplayTags.Attributes_General_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.General.MaxHealth"),
-		FString("Maximum amount of Health obtainable"));
-	GameplayTags.Attributes_General_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Attributes.General.Mana"),
-			FString("A resource used to do actions such as cast spells and buffs"));
-	GameplayTags.Attributes_General_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.General.MaxMana"),
-		FString("Maximum amount of Mana obtainable"));
-	GameplayTags.Attributes_General_Stamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.General.Stamina"),
-		FString("A resource used to do actions such as sprint and attack"));
-	GameplayTags.Attributes_General_MaxStamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.General.MaxStamina"),
-		FString("Maximum amount of Stamina obtainable"));
-	
 	// Locomotion States
-	GameplayTags.Locomotion_Rolling = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Locomotion.Rolling"),
-		FString("The tag owner is marked as in rolling locomotion state."));
-
-	// Debuffs
-	// Debuff_Fatigue
-	GameplayTags.Debuff_Fatigue = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Debuff.Fatigue"),
-		FString("The tag owner is marked as fatigued."));
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Rolling, "Locomotion.Rolling", "Locomotion tag indicating rolling");
 }
-

@@ -8,8 +8,8 @@
 
 UCLHealthAttributeSet::UCLHealthAttributeSet()
 {
-	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_General_Health, GetHealthAttribute);
-	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_General_MaxHealth, GetMaxHealthAttribute);
+	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Health, GetHealthAttribute);
+	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxHealth, GetMaxHealthAttribute);
 }
 
 void UCLHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

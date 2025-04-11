@@ -8,8 +8,8 @@
 
 UCLStaminaAttributeSet::UCLStaminaAttributeSet()
 {
-	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_General_Stamina, GetStaminaAttribute);
-	TagToAttributeMapping.Add(FCLGameplayTags::Get().Attributes_General_MaxStamina, GetMaxStaminaAttribute);
+	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Stamina, GetStaminaAttribute);
+	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxStamina, GetMaxStaminaAttribute);
 }
 
 void UCLStaminaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

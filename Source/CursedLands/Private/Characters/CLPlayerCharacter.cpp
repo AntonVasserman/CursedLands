@@ -4,6 +4,7 @@
 #include "Characters/CLPlayerCharacter.h"
 
 #include "CLGameplayTags.h"
+#include "CLLogChannels.h"
 #include "GameplayEffect.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLManaAttributeSet.h"
@@ -62,27 +63,27 @@ bool ACLPlayerCharacter::CanCharacterSprint() const
 {
 	if (!CanMove())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Move"));
+		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Move"));
 		return false;
 	}
 	
 	if (!GetCLCharacterMovement()->CanSprintInCurrentState())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Sprint in Current State"));
+		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Sprint in Current State"));
 		return false;
 	}
 
 	// Check that the player isn't fatigued
-	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
+	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Has Fatigue Debuff"));
+		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Has Fatigue Debuff"));
 		return false;
 	}
 
 	// Check that there is stamina
 	if (GetStaminaAttributeSet()->GetStamina() <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: No Stamina"));
+		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: No Stamina"));
 		return false;
 	}
 	
@@ -101,8 +102,8 @@ void ACLPlayerCharacter::UnToggleSprinting()
 
 void ACLPlayerCharacter::ApplyFatigue()
 {
-	UE_LOG(LogTemp, Warning, TEXT("ACLPlayerCharacter::ApplyFatigue"));
-	if (HasMatchingGameplayTag(FCLGameplayTags::Get().Debuff_Fatigue))
+	UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::ApplyFatigue"));
+	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))
 	{
 		return;
 	}
@@ -119,7 +120,7 @@ void ACLPlayerCharacter::PlayFallToRollAnimMontage()
 	checkf(FallToRollAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToRollAnimMontage), *GetFullName());
 	if (GetAnimInstance()->Montage_Play(FallToRollAnimMontage) > 0.f)
 	{
-		GetAbilitySystemComponent()->SetLooseGameplayTagCount(FCLGameplayTags::Get().Locomotion_Rolling, 1);
+		GetAbilitySystemComponent()->SetLooseGameplayTagCount(CLGameplayTags::Locomotion_Rolling, 1);
 	}
 	GetAnimInstance()->Montage_SetEndDelegate(FallToRollAnimMontageEndedDelegate, FallToRollAnimMontage);
 }
@@ -149,7 +150,7 @@ void ACLPlayerCharacter::BeginPlay()
 	FallToRollAnimMontageEndedDelegate.BindLambda(
 		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
 		{
-			GetAbilitySystemComponent()->RemoveLooseGameplayTag(FCLGameplayTags::Get().Locomotion_Rolling);
+			GetAbilitySystemComponent()->RemoveLooseGameplayTag(CLGameplayTags::Locomotion_Rolling);
 		});
 }
 
