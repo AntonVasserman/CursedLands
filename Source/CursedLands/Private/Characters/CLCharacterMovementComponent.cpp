@@ -3,63 +3,71 @@
 
 #include "Characters/CLCharacterMovementComponent.h"
 
-void UCLCharacterMovementComponent::StartSprinting()
+#include "Characters/CLPlayerCharacter.h"
+
+bool UCLCharacterMovementComponent::IsSprinting() const
 {
-	if (!CanSprintInCurrentState())
-	{
-		return;
-	}
-	
-	bWantsToSprint = true;
+	check(PlayerCharacterOwner);
+	return PlayerCharacterOwner->bIsSprinting;
 }
 
-void UCLCharacterMovementComponent::StopSprinting()
+void UCLCharacterMovementComponent::Sprint()
 {
-	bWantsToSprint = false;
+	SetMovementWalkingMode(ECLMovementWalkingMode::Sprinting);
+	check(PlayerCharacterOwner);
+	PlayerCharacterOwner->bIsSprinting = true;
 }
 
-void UCLCharacterMovementComponent::PhysSprinting(float DeltaTime, int32 Iterations)
+void UCLCharacterMovementComponent::UnSprint()
 {
-	PhysWalking(DeltaTime, Iterations);
+	SetMovementWalkingMode(ECLMovementWalkingMode::TODO);
+	check(PlayerCharacterOwner);
+	PlayerCharacterOwner->bIsSprinting = false;
 }
 
 //~ UCharacterMovementComponent Begin
 
-bool UCLCharacterMovementComponent::CanAttemptJump() const
+float UCLCharacterMovementComponent::GetMaxWalkingSpeed() const
 {
-	return Super::CanAttemptJump() || IsSprinting();
+	if (IsCrouching()) { return MaxWalkSpeedCrouched; }
+	if (IsSprinting()) { return MaxWalkSpeedSprinting; }
+	return MaxWalkSpeed;
 }
 
-float UCLCharacterMovementComponent::GetMaxBrakingDeceleration() const
+float UCLCharacterMovementComponent::GetMaxCustomSpeed() const
 {
-	if (MovementMode != MOVE_Custom)
-	{
-		return Super::GetMaxBrakingDeceleration();
-	}
-	
 	switch (CustomMovementMode)
 	{
-	case CMOVE_Sprinting:
-		return BrakingDecelerationWalking;
-	default:
-		return 0.f;
+	// Placeholder for Max Speed of Custom Movement Modes
+	case CMOVE_None: checkNoEntry();
+	default: return MaxCustomMovementSpeed;
 	}
+}
+
+void UCLCharacterMovementComponent::SetMovementWalkingMode(const ECLMovementWalkingMode InMovementWalkingMode)
+{
+	const ECLMovementWalkingMode PrevMovementWalkingMode = MovementWalkingMode; 
+	MovementWalkingMode = InMovementWalkingMode;
+	OnMovementWalkingModeChanged.Broadcast(PrevMovementWalkingMode, MovementWalkingMode);
 }
 
 float UCLCharacterMovementComponent::GetMaxSpeed() const
 {
-	if (MovementMode != MOVE_Custom)
-	{
-		return Super::GetMaxSpeed();
-	}
-	
-	switch (CustomMovementMode)
-	{
-	case CMOVE_Sprinting:
-		return MaxSprintSpeed;
-	default:
-		return MaxCustomMovementSpeed;
-	}
+	if (MovementMode == MOVE_Walking) { return GetMaxWalkingSpeed(); }
+	if (MovementMode == MOVE_Custom) { return GetMaxCustomSpeed(); }
+	return Super::GetMaxSpeed();
+}
+
+void UCLCharacterMovementComponent::PostLoad()
+{
+	Super::PostLoad();
+	PlayerCharacterOwner = Cast<ACLPlayerCharacter>(GetCharacterOwner());
+}
+
+void UCLCharacterMovementComponent::SetUpdatedComponent(USceneComponent* NewUpdatedComponent)
+{
+	Super::SetUpdatedComponent(NewUpdatedComponent);
+	PlayerCharacterOwner = Cast<ACLPlayerCharacter>(GetCharacterOwner());
 }
 
 void UCLCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -77,44 +85,47 @@ void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float Del
 {
 	// The Super logic is relevant only for out of the box crouching
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
-	
-	const bool bIsSprinting { IsCustomMovementMode(CMOVE_Sprinting) };
-	
-	if (bWantsToSprint
-		&& !Velocity.IsNearlyZero()
-		&& IsMovingOnGround()
-		)
+
+	if (IsSprinting())
 	{
-		SetCustomMovementMode(CMOVE_Sprinting);
+		if (!bWantsToSprint)
+		{
+			UnSprint();
+		}
+		else if (!IsMovingOnGround() && CharacterMovementProps.bStopSprintingOnNotMovingOnGround)
+		{
+			bWantsToSprint = false;
+			PlayerCharacterOwner->bIsSprinting = false;
+		}
 	}
-
-	if (!bWantsToSprint && bIsSprinting)
+	else if (bWantsToSprint && CanSprintInCurrentState())
 	{
-		SetMovementMode(DefaultLandMovementMode);
-	}
-
-	FFindFloorResult FloorResult;
-	FindFloor(UpdatedComponent->GetComponentLocation(), FloorResult, false);
-
-	// If trying to sprint or already sprinting while falling, then set mode to falling and disable sprinting.
-	// This is important to cover both sudden falling (checking IsSprinting) and jumping (checking WantsToSprint).
-	if ((bWantsToSprint || bIsSprinting) && !FloorResult.bWalkableFloor)
-	{
-		SetMovementMode(MOVE_Falling);
-		bWantsToSprint = CharacterMovementProps.bReturnSprintingAfterFall;
+		Sprint();
 	}
 }
-
-// bool UCLCharacterMovementComponent::IsMovingOnGround() const
-// {
-// 	return Super::IsMovingOnGround() || IsSprinting();
-// }
 
 void UCLCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
 {
 	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
 
-	if (PreviousMovementMode != MOVE_Falling && MovementMode == MOVE_Falling)
+	if (MovementMode == MOVE_Walking)
+	{
+		if (IsSprinting())
+		{
+			SetMovementWalkingMode(ECLMovementWalkingMode::Sprinting);
+		}
+		else
+		{
+			SetMovementWalkingMode(ECLMovementWalkingMode::TODO);
+		}
+	}
+
+	if (MovementMode != MOVE_Walking)
+	{
+		SetMovementWalkingMode(ECLMovementWalkingMode::None);
+	}
+	
+	if (MovementMode == MOVE_Falling)
 	{
 		FallBeginZ = GetActorLocation().Z;
 	}
@@ -126,9 +137,7 @@ void UCLCharacterMovementComponent::PhysCustom(float DeltaTime, int32 Iterations
 	
 	switch (CustomMovementMode)
 	{
-	case CMOVE_Sprinting:
-		PhysSprinting(DeltaTime, Iterations);
-		break;
+	case CMOVE_None:
 	default:
 		checkNoEntry();
 		break;

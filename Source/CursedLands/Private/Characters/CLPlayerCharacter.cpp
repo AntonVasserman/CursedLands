@@ -16,7 +16,7 @@
 #include "Kismet/KismetMathLibrary.h"
 
 ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCLCharacterMovementComponent>(CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -31,6 +31,7 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = MinWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	
@@ -59,45 +60,38 @@ void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode In
 	}
 }
 
-bool ACLPlayerCharacter::CanCharacterSprint() const
+bool ACLPlayerCharacter::CanSprint() const
 {
-	if (!CanMove())
+	if (
+		!CanMove() || bIsSprinting || // Basic check
+		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
+		GetStaminaAttributeSet()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
+		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
+		)
 	{
-		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Move"));
-		return false;
-	}
-	
-	if (!GetCLCharacterMovement()->CanSprintInCurrentState())
-	{
-		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Can't Sprint in Current State"));
-		return false;
-	}
-
-	// Check that the player isn't fatigued
-	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))
-	{
-		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: Has Fatigue Debuff"));
-		return false;
-	}
-
-	// Check that there is stamina
-	if (GetStaminaAttributeSet()->GetStamina() <= 0)
-	{
-		UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::CanCharacterSprint: No Stamina"));
 		return false;
 	}
 	
 	return true;
 }
 
-void ACLPlayerCharacter::ToggleSprinting()
+void ACLPlayerCharacter::Sprint()
 {
-	CastChecked<UCLCharacterMovementComponent>(GetCharacterMovement())->StartSprinting();
+	if (CanSprint())
+	{
+		GetCLCharacterMovement()->bWantsToSprint = true;
+	}
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
+	else if (!GetCLCharacterMovement()->CanEverSprint())
+	{
+		UE_LOG(LogCL, Warning, TEXT("%s is trying to sprint, but sprinting is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
+	}
+#endif
 }
 
-void ACLPlayerCharacter::UnToggleSprinting()
+void ACLPlayerCharacter::UnSprint()
 {
-	CastChecked<UCLCharacterMovementComponent>(GetCharacterMovement())->StopSprinting();
+	GetCLCharacterMovement()->bWantsToSprint = false;
 }
 
 void ACLPlayerCharacter::ApplyFatigue()
@@ -109,9 +103,27 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 	
 	ApplyEffectToSelf(FatigueGameplayEffectClass, 1.f);
-	if (HasMatchingGameplayTag(CLGameplayTags::Movement_CustomMode_Sprinting))
+	if (bIsSprinting)
 	{
-		UnToggleSprinting();
+		UnSprint();
+	}
+}
+
+void ACLPlayerCharacter::OnMovementWalkingModeChanged(ECLMovementWalkingMode PreviousMovementWalkingMode, ECLMovementWalkingMode MovementWalkingMode)
+{
+	if (const FGameplayTag* PrevMovementWalkingModeTag = CLGameplayTags::MovementWalkingModeTagMap.Find(PreviousMovementWalkingMode);
+		PrevMovementWalkingModeTag && PrevMovementWalkingModeTag->IsValid())
+	{
+		GetAbilitySystemComponent()->SetLooseGameplayTagCount(*PrevMovementWalkingModeTag, 0);
+	}
+
+	if (MovementWalkingMode != ECLMovementWalkingMode::None)
+	{
+		if (const FGameplayTag* MovementWalkingModeTag = CLGameplayTags::MovementWalkingModeTagMap.Find(MovementWalkingMode);
+			MovementWalkingModeTag && MovementWalkingModeTag->IsValid())
+		{
+			GetAbilitySystemComponent()->SetLooseGameplayTagCount(*MovementWalkingModeTag, 1);	
+		}
 	}
 }
 
@@ -133,26 +145,6 @@ void ACLPlayerCharacter::PlayFallToDeathAnimMontage()
 }
 
 //~ ACLCharacter Begin
-
-void ACLPlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			if (Data.NewValue == 0)
-			{
-				ApplyFatigue();
-			}
-		});
-
-	FallToRollAnimMontageEndedDelegate.BindLambda(
-		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
-		{
-			GetAbilitySystemComponent()->RemoveLooseGameplayTag(CLGameplayTags::Locomotion_Rolling);
-		});
-}
 
 void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 {
@@ -180,24 +172,38 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 	}
 }
 
-void ACLPlayerCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
+void ACLPlayerCharacter::PostInitializeComponents()
 {
-	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
+	Super::PostInitializeComponents();
 
-	SetMovementModeTag(PrevMovementMode, PreviousCustomMode, false);
-	SetMovementModeTag(GetCharacterMovement()->MovementMode, GetCharacterMovement()->CustomMovementMode, true);
+	GetCLCharacterMovement()->OnMovementWalkingModeChanged.AddDynamic(this, &ACLPlayerCharacter::OnMovementWalkingModeChanged);
+	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			if (Data.NewValue == 0)
+			{
+				ApplyFatigue();
+			}
+		});
+	
+	FallToRollAnimMontageEndedDelegate.BindLambda(
+		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
+		{
+			GetAbilitySystemComponent()->RemoveLooseGameplayTag(CLGameplayTags::Locomotion_Rolling);
+		});
 }
 
 void ACLPlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (IsCharacterSprinting())
+	if (bIsSprinting)
 	{
 		// If current speed is lower than regular running speed minus some delta then turn of sprinting
 		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < GetCharacterMovement()->MaxWalkSpeed - 0.1f)
 		{
-			UnToggleSprinting();
+			UnSprint();
 		}
 	}
 }

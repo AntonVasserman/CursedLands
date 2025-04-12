@@ -8,11 +8,10 @@
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
-#include "Characters/CLCharacterMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ACLCharacter::ACLCharacter(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCLCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+	: Super(ObjectInitializer)
 {
 	AbilitySystem = CreateDefaultSubobject<UCLAbilitySystemComponent>("AbilitySystem");
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Full);
@@ -63,13 +62,13 @@ void ACLCharacter::InitializeDefaultPassiveEffects()
 	}
 }
 
-void ACLCharacter::SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMovementMode, bool bTagEnabled)
+void ACLCharacter::SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled)
 {
 	if (AbilitySystem)
 	{
-		const FGameplayTag* MovementModeTag = MovementMode == MOVE_Custom ?
-			CLGameplayTags::CustomMovementModeTagMap.Find(CustomMovementMode) :
-			CLGameplayTags::MovementModeTagMap.Find(MovementMode);
+		const FGameplayTag* MovementModeTag = InMovementMode == MOVE_Custom ?
+			CLGameplayTags::CustomMovementModeTagMap.Find(InCustomMovementMode) :
+			CLGameplayTags::MovementModeTagMap.Find(InMovementMode);
 
 		if (MovementModeTag && MovementModeTag->IsValid())
 		{
@@ -80,18 +79,17 @@ void ACLCharacter::SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMo
 
 //~ ACharacter Begin
 
-void ACLCharacter::BeginPlay()
+void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
 {
-	Super::BeginPlay();
+	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
+
+	SetMovementModeTag(PrevMovementMode, PreviousCustomMode, false);
 	
-	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			if (Data.NewValue == 0 && IsAlive())
-			{
-				Die();
-			}
-		});
+	// Don't add tags for Movement Modes that have Sub-Tags since the addition of those should be handled by the owning CMC
+	if (!CLGameplayTags::MovementModesUsingSubTags.Contains(GetCharacterMovement()->MovementMode))
+	{
+		SetMovementModeTag(GetCharacterMovement()->MovementMode, GetCharacterMovement()->CustomMovementMode, true);
+	}
 }
 
 void ACLCharacter::PossessedBy(AController* NewController)
@@ -108,6 +106,14 @@ void ACLCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	AbilitySystem->InitAbilityActorInfo(this, this);
+	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			if (Data.NewValue == 0 && IsAlive())
+			{
+				Die();
+			}
+		});
 }
 
 //~ ACharacter End

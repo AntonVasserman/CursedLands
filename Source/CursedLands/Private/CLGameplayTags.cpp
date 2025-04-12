@@ -4,7 +4,6 @@
 #include "CLGameplayTags.h"
 
 #include "Engine/EngineTypes.h"
-#include "GameplayTagsManager.h"
 #include "Characters/CLCharacterMovementComponent.h"
 
 namespace CLGameplayTags
@@ -31,10 +30,6 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Flying, "Movement.Mode.Flying", "Default Character movement tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Custom, "Movement.Mode.Custom", "This should be replaced with custom tags");
 
-	// Custom Movement Modes Tags
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_CustomMode_Sprinting, "Movement.CustomMode.Sprinting", "Custom Character movement tag");
-
-	// Unreal Movement Modes
 	const TMap<uint8, FGameplayTag> MovementModeTagMap =
 	{
 		{ MOVE_Walking, Movement_Mode_Walking },
@@ -44,11 +39,33 @@ namespace CLGameplayTags
 		{ MOVE_Flying, Movement_Mode_Flying },
 		{ MOVE_Custom, Movement_Mode_Custom }
 	};
+
+	// Movement Modes Sub-Tags
+	const TSet<uint8> MovementModesUsingSubTags =
+	{
+		MOVE_Walking
+	};
+
+	// Movement Walking-Mode Sub-Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_TODO, "Movement.Mode.Walking.TODO", "THIS IS A PLACE HOLDER, SHOULD BE REMOVED IN CL-9")
+	// TODO (CL-9): Implement walking states, Idle/Running...
+	// UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Idle, "Movement.Mode.Walking.Idle", "Default Character movement sub-tag")
+	// UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Running, "Movement.Mode.Walking.Running", "Default Character movement sub-tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Sprinting, "Movement.Mode.Walking.Sprinting", "Default Character movement sub-tag")
 	
-	// Custom Movement Modes
+	const TMap<ECLMovementWalkingMode, FGameplayTag> MovementWalkingModeTagMap =
+	{
+		{ ECLMovementWalkingMode::TODO, Movement_Mode_Walking_TODO },
+		// TODO (CL-9): Implement walking states, Idle/Running...
+		// { ECLMovementWalkingMode::Idle, Movement_Mode_Walking_Idle },
+		// { ECLMovementWalkingMode::Running, Movement_Mode_Walking_Running },
+		{ ECLMovementWalkingMode::Sprinting, Movement_Mode_Walking_Sprinting },
+	};;
+	
+	// Custom Movement Modes Tags
 	const TMap<uint8, FGameplayTag> CustomMovementModeTagMap =
 	{
-		{ CMOVE_Sprinting, Movement_CustomMode_Sprinting },
+		// Placeholder for Custom Movement Modes to Tags mapping
 	};
 
 	// Locomotion States

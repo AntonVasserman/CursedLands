@@ -18,7 +18,7 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter, public IAbilitySystemInt
 	GENERATED_BODY()
 
 public:
-	ACLCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ACLCharacter(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
@@ -45,7 +45,7 @@ protected:
 	UAnimInstance* GetAnimInstance();
 	void InitializeDefaultAttributes();
 	void InitializeDefaultPassiveEffects();
-	void SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMovementMode, bool bTagEnabled);
+	void SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled);
 
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")
@@ -58,12 +58,13 @@ private:
 	
 	//~ ACharacter Begin
 public:
-	virtual void BeginPlay() override;
+	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode = 0) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PostInitializeComponents() override;
 	//~ ACharacter End
 
 	//~ IAbilitySystemInterface Begin
+public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ IAbilitySystemInterface End
 	
