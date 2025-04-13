@@ -16,6 +16,9 @@ class UCLManaAttributeSet;
 class UCLStaminaAttributeSet;
 class UGameplayCameraComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToRoll);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToDeath);
+
 UCLASS()
 class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 {
@@ -23,6 +26,11 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 
 public:
 	ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+	UPROPERTY(BlueprintAssignable, Category = "Character Movement|Falling")
+	FOnFellToRoll OnFellToRoll;
+	UPROPERTY(BlueprintAssignable, Category = "Character Movement|Falling")
+	FOnFellToDeath OnFellToDeath;
 
 	// TODO (202504-2): Design a solution where this isn't public and isn't set by the CharacterMovementComponent directly...
 	// This can be achieved with two Events in the CLCMC, OnStartSprint and OnEdnSprint, or just when WalkingChanged.

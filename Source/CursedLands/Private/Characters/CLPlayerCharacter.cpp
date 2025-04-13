@@ -163,10 +163,12 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 		{
 			// We play the fall to roll animation even if falling results in death because the FallToRollAnimMontage is responsible for simulating
 			// physics upon death.
+			OnFellToRoll.Broadcast();
 			PlayFallToRollAnimMontage();
 		}
 		else
 		{
+			OnFellToDeath.Broadcast();
 			PlayFallToDeathAnimMontage();
 		}
 	}

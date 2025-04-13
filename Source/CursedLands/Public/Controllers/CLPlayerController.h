@@ -18,26 +18,32 @@ class CURSEDLANDS_API ACLPlayerController : public APlayerController
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleSprintAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> JumpAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> PauseMenuAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Menus", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UCLUserWidget> PauseMenuWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|ForceFeedback", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UForceFeedbackEffect> FallToRollForceFeedbackEffect;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|ForceFeedback", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UForceFeedbackEffect> FallToDeathForceFeedbackEffect;
 	
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
 	TObjectPtr<UCLUserWidget> PauseMenuWidget = nullptr;
@@ -52,6 +58,11 @@ private:
 	UFUNCTION(BlueprintCallable, Category = "Menus")
 	void TogglePauseMenu();
 
+	UFUNCTION(Category = "Character Movement|Falling")
+	void OnPossessedPlayerCharacterFellToRoll();
+	UFUNCTION(Category = "Character Movement|Falling")
+	void OnPossessedPlayerCharacterFellToDeath();
+	
 	//~ APlayerController Begin
 protected:
 	virtual void BeginPlay() override;

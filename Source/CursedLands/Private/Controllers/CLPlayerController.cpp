@@ -112,6 +112,18 @@ void ACLPlayerController::TogglePauseMenu()
 	}
 }
 
+void ACLPlayerController::OnPossessedPlayerCharacterFellToRoll()
+{
+	// No need to check the feedback here for nullptr, as it is allowed to be nullptr in ClientPlayForceFeedback.
+	ClientPlayForceFeedback(FallToRollForceFeedbackEffect);
+}
+
+void ACLPlayerController::OnPossessedPlayerCharacterFellToDeath()
+{
+	// No need to check the feedback here for nullptr, as it is allowed to be nullptr in ClientPlayForceFeedback.
+	ClientPlayForceFeedback(FallToDeathForceFeedbackEffect);
+}
+
 //~ APlayerController Begin
 
 void ACLPlayerController::BeginPlay()
@@ -132,6 +144,9 @@ void ACLPlayerController::OnPossess(APawn* PawnToPossess)
 
 	PossessedPlayerCharacter = CastChecked<ACLPlayerCharacter>(PawnToPossess);
 	PossessedPlayerCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
+	PossessedPlayerCharacter->OnFellToRoll.AddDynamic(this, &ACLPlayerController::OnPossessedPlayerCharacterFellToRoll);
+	PossessedPlayerCharacter->OnFellToDeath.AddDynamic(this, &ACLPlayerController::OnPossessedPlayerCharacterFellToDeath);
+	
 	ACLHUD* CLHUD = CastChecked<ACLHUD>(GetHUD());
 	CLHUD->InitOverlay();
 }
@@ -140,6 +155,8 @@ void ACLPlayerController::OnUnPossess()
 {
 	Super::OnUnPossess();
 
+	PossessedPlayerCharacter->OnFellToRoll.RemoveDynamic(this, &ACLPlayerController::OnPossessedPlayerCharacterFellToRoll);
+	PossessedPlayerCharacter->OnFellToDeath.RemoveDynamic(this, &ACLPlayerController::OnPossessedPlayerCharacterFellToDeath);
 	PossessedPlayerCharacter->GetGameplayCamera()->DeactivateCamera();
 	PossessedPlayerCharacter = nullptr;
 }
