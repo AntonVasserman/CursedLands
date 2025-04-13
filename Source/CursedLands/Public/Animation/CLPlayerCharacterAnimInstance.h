@@ -14,10 +14,7 @@ class CURSEDLANDS_API UCLPlayerCharacterAnimInstance : public UCLAnimInstance
 {
 	GENERATED_BODY()
 
-private:
-	UPROPERTY()
-	TObjectPtr<ACLPlayerCharacter> PlayerCharacter;
-
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	ECLPlayerCharacterMovementMode MovementMode;
 
@@ -29,6 +26,10 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data | Constants", Meta = (AllowPrivateAccess = "true"))
 	float FallHeightForMaxFallDamage;
+
+private:
+	UPROPERTY()
+	TObjectPtr<ACLPlayerCharacter> PlayerCharacter;
 	
 	//~ UCLAnimInstance Begin
 public:

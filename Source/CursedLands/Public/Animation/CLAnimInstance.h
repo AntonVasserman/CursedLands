@@ -13,14 +13,8 @@ UCLASS()
 class CURSEDLANDS_API UCLAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-	
-private:
-	UPROPERTY()
-	TObjectPtr<ACLCharacter> Character;
 
-	UPROPERTY()
-	TObjectPtr<UCharacterMovementComponent> MovementComponent;
-	
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity;
 
@@ -41,6 +35,13 @@ private:
 
 	UFUNCTION(BlueprintCallable, Category = "Character Physics")
 	void CharacterMeshSimulatePhysics() const;
+
+private:
+	UPROPERTY()
+	TObjectPtr<ACLCharacter> Character;
+
+	UPROPERTY()
+	TObjectPtr<UCharacterMovementComponent> MovementComponent;
 	
 	//~ UAnimInstance Begin
 public:
