@@ -84,12 +84,7 @@ void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 P
 	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
 
 	SetMovementModeTag(PrevMovementMode, PreviousCustomMode, false);
-	
-	// Don't add tags for Movement Modes that have Sub-Tags since the addition of those should be handled by the owning CMC
-	if (!CLGameplayTags::MovementModesUsingSubTags.Contains(GetCharacterMovement()->MovementMode))
-	{
-		SetMovementModeTag(GetCharacterMovement()->MovementMode, GetCharacterMovement()->CustomMovementMode, true);
-	}
+	SetMovementModeTag(GetCharacterMovement()->MovementMode, GetCharacterMovement()->CustomMovementMode, true);
 }
 
 void ACLCharacter::PossessedBy(AController* NewController)

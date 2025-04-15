@@ -3,13 +3,14 @@
 
 #include "Controllers/CLPlayerController.h"
 
+#include "CLGameplayTags.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Characters/CLPlayerCharacter.h"
-#include "UI/HUD/CLHUD.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/CLUserWidget.h"
+#include "UI/HUD/CLHUD.h"
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 {
@@ -26,8 +27,11 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	const FVector2D MovementVector = InValue.Get<FVector2D>();
 
 	// In case Player Character is in strafing movement mode, sprinting and changes direction from forward direction then stop sprinting
-	if (PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing &&
-		MovementVector.Y < 0.5 && PossessedPlayerCharacter->bIsSprinting)
+	if (
+		PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing &&
+		PossessedPlayerCharacter->bIsSprinting &&
+		PossessedPlayerCharacter->GetCardinalDirection() != ECLCardinalDirection::Forward
+		)
 	{
 		PossessedPlayerCharacter->UnSprint();
 	}

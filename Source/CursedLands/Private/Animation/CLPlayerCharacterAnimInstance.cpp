@@ -13,62 +13,11 @@ static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
 	TEXT("Shows the Debug information of the CLPlayerAnimInstance class"),
 	ECVF_Default);
 
-ECLCardinalDirection UCLPlayerCharacterAnimInstance::EvaluateCardinalDirection(const float InCardinalDirectionAngle, const float InBackwardMin, const float InBackwardMax,
-	const float InForwardMin, const float InForwardMax, const ECLCardinalDirection InCardinalDirection, const float InDeadzone)
-{
-	// Handling Deadzone first
-	bool bIsInDeadzone = false;
-	switch (InCardinalDirection)
-	{
-	case ECLCardinalDirection::Forward:
-		bIsInDeadzone = InCardinalDirectionAngle >= InForwardMin - InDeadzone && InCardinalDirectionAngle <= InForwardMax + InDeadzone; 
-		break;
-	case ECLCardinalDirection::Backward:
-		bIsInDeadzone = InCardinalDirectionAngle < InBackwardMin + InDeadzone || InCardinalDirectionAngle > InBackwardMax - InDeadzone; 
-		break;
-	case ECLCardinalDirection::Right:
-		bIsInDeadzone = InCardinalDirectionAngle > InForwardMax - InDeadzone && InCardinalDirectionAngle < InBackwardMax + InDeadzone;
-		break;
-	case ECLCardinalDirection::Left:
-		bIsInDeadzone = InCardinalDirectionAngle > InBackwardMin - InDeadzone && InCardinalDirectionAngle < InForwardMin + InDeadzone;
-		break;
-	default:
-		checkNoEntry();
-	}
-
-	if (bIsInDeadzone)
-	{
-		return InCardinalDirection;
-	}
-	
-	// Evaluate Direction outside of deadzone
-	if (InCardinalDirectionAngle >= InForwardMin && InCardinalDirectionAngle <= InForwardMax) // Forward Direction
-	{
-		return ECLCardinalDirection::Forward;
-	}
-	if (InCardinalDirectionAngle < InBackwardMin || InCardinalDirectionAngle > InBackwardMax) // Backward Direction
-	{
-		return ECLCardinalDirection::Backward;
-	}
-	if (InCardinalDirectionAngle > 0) // Right Direction
-	{
-		return ECLCardinalDirection::Right;
-	}
-	return ECLCardinalDirection::Left;
-}
-
 void UCLPlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharacter* InPlayerCharacter)
 {
-	// Evaluate CardinalDirectionAngle
-	const FRotator PlayerCharacterRotation = InPlayerCharacter->GetActorRotation();
-	const FVector PlayerCharacterVelocity2D = InPlayerCharacter->GetVelocity() * FVector(1, 1, 0);
-	CardinalDirectionAngle = UKismetAnimationLibrary::CalculateDirection(PlayerCharacterVelocity2D, PlayerCharacterRotation);
-
-	// Evaluate CardinalDirection
-	CardinalDirection = EvaluateCardinalDirection(CardinalDirectionAngle, -130.f, 130.f, -50.f, 50.f, CardinalDirection, 20.f);
-
-	// Evaluate Gait
-	Gait = MovementModeGaitMap.FindChecked(InPlayerCharacter->GetCLCharacterMovement()->GetMovementWalkingMode());
+	CardinalDirectionAngle = InPlayerCharacter->GetCardinalDirectionAngle();
+	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
+	Gait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
 }
 
 //~ UCLAnimInstance Begin

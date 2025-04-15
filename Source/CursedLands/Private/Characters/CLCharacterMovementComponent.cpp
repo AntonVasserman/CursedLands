@@ -14,14 +14,14 @@ bool UCLCharacterMovementComponent::IsSprinting() const
 
 void UCLCharacterMovementComponent::Sprint()
 {
-	SetMovementWalkingMode(ECLMovementWalkingMode::Sprinting);
+	SetGait(ECLGait::Sprinting);
 	check(PlayerCharacterOwner);
 	PlayerCharacterOwner->bIsSprinting = true;
 }
 
 void UCLCharacterMovementComponent::UnSprint()
 {
-	SetMovementWalkingMode(ECLMovementWalkingMode::Jogging);
+	SetGait(ECLGait::Jogging);
 	check(PlayerCharacterOwner);
 	PlayerCharacterOwner->bIsSprinting = false;
 }
@@ -45,11 +45,11 @@ float UCLCharacterMovementComponent::GetMaxCustomSpeed() const
 	}
 }
 
-void UCLCharacterMovementComponent::SetMovementWalkingMode(const ECLMovementWalkingMode InMovementWalkingMode)
+void UCLCharacterMovementComponent::SetGait(const ECLGait InGait)
 {
-	const ECLMovementWalkingMode PrevMovementWalkingMode = MovementWalkingMode; 
-	MovementWalkingMode = InMovementWalkingMode;
-	OnMovementWalkingModeChanged.Broadcast(PrevMovementWalkingMode, MovementWalkingMode);
+	const ECLGait PrevGait = Gait;
+	Gait = InGait;
+	OnGaitChanged.Broadcast(PrevGait, Gait);
 }
 
 float UCLCharacterMovementComponent::GetMaxSpeed() const
@@ -84,19 +84,19 @@ void UCLCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick Ti
 	const float CurrentGroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
 	if (CurrentGroundSpeed < MinAnalogWalkSpeed)
 	{
-		SetMovementWalkingMode(ECLMovementWalkingMode::Idle);
+		SetGait(ECLGait::Idle);
 	}
 	else if (CurrentGroundSpeed >= MinAnalogWalkSpeed && CurrentGroundSpeed < MaxWalkSpeed)
 	{
-		SetMovementWalkingMode(ECLMovementWalkingMode::Walking);
+		SetGait(ECLGait::Walking);
 	}
 	else if (CurrentGroundSpeed >= MaxWalkSpeed && CurrentGroundSpeed < MaxWalkSpeedSprinting)
 	{
-		SetMovementWalkingMode(ECLMovementWalkingMode::Jogging);
+		SetGait(ECLGait::Jogging);
 	}
 	else
 	{
-		SetMovementWalkingMode(ECLMovementWalkingMode::Sprinting);
+		SetGait(ECLGait::Sprinting);
 	}
 }
 
@@ -127,23 +127,6 @@ void UCLCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previous
 {
 	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
 
-	if (MovementMode == MOVE_Walking)
-	{
-		if (IsSprinting())
-		{
-			SetMovementWalkingMode(ECLMovementWalkingMode::Sprinting);
-		}
-		else
-		{
-			SetMovementWalkingMode(ECLMovementWalkingMode::Idle);
-		}
-	}
-
-	if (MovementMode != MOVE_Walking)
-	{
-		SetMovementWalkingMode(ECLMovementWalkingMode::None);
-	}
-	
 	if (MovementMode == MOVE_Falling)
 	{
 		FallBeginZ = GetActorLocation().Z;

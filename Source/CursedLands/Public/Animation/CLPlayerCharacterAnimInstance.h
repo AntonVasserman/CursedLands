@@ -4,30 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "CLAnimInstance.h"
-#include "Characters/CLCharacterMovementComponent.h"
 #include "CLPlayerCharacterAnimInstance.generated.h"
 
 class ACLPlayerCharacter;
+enum class ECLCardinalDirection : uint8;
+enum class ECLGait : uint8;
 enum class ECLMovementWalkingMode : uint8;
 enum class ECLPlayerCharacterMovementMode : uint8;
-
-UENUM(BlueprintType)
-enum class ECLCardinalDirection : uint8
-{
-	Forward		UMETA(DisplayName = "Forward"),
-	Backward	UMETA(DisplayName = "Backward"),
-	Right		UMETA(DisplayName = "Right"),
-	Left		UMETA(DisplayName = "Left"),
-};
-
-UENUM(BlueprintType)
-enum class ECLGait : uint8
-{
-	Idle		UMETA(DisplayName = "Idle"),
-	Walking		UMETA(DisplayName = "Walking"),
-	Jogging		UMETA(DisplayName = "Jogging"),
-	Sprinting	UMETA(DisplayName = "Sprinting"),
-};
 
 USTRUCT(BlueprintType)
 struct FCLCardinalDirectionAnimation
@@ -80,19 +63,9 @@ protected:
 	ECLGait Gait;
 
 private:
-	const TMap<ECLMovementWalkingMode, ECLGait> MovementModeGaitMap =
-	{
-		{ ECLMovementWalkingMode::Idle, ECLGait::Idle },
-		{ ECLMovementWalkingMode::Walking, ECLGait::Walking },
-		{ ECLMovementWalkingMode::Jogging, ECLGait::Jogging },
-		{ ECLMovementWalkingMode::Sprinting, ECLGait::Sprinting },
-	};
-
 	UPROPERTY()
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacter;
 
-	ECLCardinalDirection EvaluateCardinalDirection(const float InCardinalDirectionAngle, const float InBackwardMin, const float InBackwardMax,
-		const float InForwardMin, const float InForwardMax, ECLCardinalDirection InCardinalDirection, float InDeadzone);
 	void UpdateLocomotionData(const ACLPlayerCharacter* InPlayerCharacter);
 	
 	//~ UCLAnimInstance Begin

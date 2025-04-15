@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "CLCharacterMovementComponent.h"
-#include "CLGameplayTags.h"
 #include "CLPlayerCharacterCameraMode.h"
 #include "CLPlayerCharacterMovementMode.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
@@ -18,6 +17,15 @@ class UGameplayCameraComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToRoll);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToDeath);
+
+UENUM(BlueprintType)
+enum class ECLCardinalDirection : uint8
+{
+	Forward		UMETA(DisplayName = "Forward"),
+	Backward	UMETA(DisplayName = "Backward"),
+	Right		UMETA(DisplayName = "Right"),
+	Left		UMETA(DisplayName = "Left"),
+};
 
 UCLASS()
 class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
@@ -67,6 +75,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeightForMaxFallDamage() const { return FallHeightForMaxFallDamage; }
 
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	FORCEINLINE float GetCardinalDirectionAngle() const { return CardinalDirectionAngle; }
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	FORCEINLINE ECLCardinalDirection GetCardinalDirection() const { return CardinalDirection; }
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay Camera System", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
@@ -104,11 +117,28 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
 	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
+	float CardinalDirectionBackwardMin = -130.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
+	float CardinalDirectionBackwardMax = 130.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
+	float CardinalDirectionForwardMin = -50.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
+	float CardinalDirectionForwardMax = 50.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
+	float CardinalDirectionDeadzone = 20.f;
+
+	float CardinalDirectionAngle = 0.f;
+	ECLCardinalDirection CardinalDirection = ECLCardinalDirection::Forward;
+
 	void ApplyFatigue();
 	UFUNCTION()
-	void OnMovementWalkingModeChanged(ECLMovementWalkingMode PreviousMovementWalkingMode, ECLMovementWalkingMode MovementWalkingMode);
+	void OnGaitChanged(ECLGait PreviousGait, ECLGait Gait);
 	void PlayFallToRollAnimMontage();
 	void PlayFallToDeathAnimMontage();
+	void SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const;
+	void UpdateCardinalDirectionAngle();
+	void UpdateCardinalDirection();
 
 	//~ ACLCharacter Begin
 public:

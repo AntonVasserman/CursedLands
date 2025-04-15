@@ -16,16 +16,15 @@ enum ECLCustomMovementMode : uint8
 };
 
 UENUM(BlueprintType)
-enum class ECLMovementWalkingMode : uint8
+enum class ECLGait : uint8
 {
-	None		UMETA(DisplayName = "None"),
 	Idle		UMETA(DisplayName = "Idle"),
 	Walking		UMETA(DisplayName = "Walking"),
 	Jogging		UMETA(DisplayName = "Jogging"),
 	Sprinting	UMETA(DisplayName = "Sprinting"),
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMovementWalkingModeChanged, ECLMovementWalkingMode, PreviousMovementWalkingMode, ECLMovementWalkingMode, MovementWalkingMode);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGaitChanged, ECLGait, PreviousGait, ECLGait, Gait);
 
 USTRUCT(BlueprintType)
 struct FCLCharacterMovementProperties
@@ -52,14 +51,14 @@ class CURSEDLANDS_API UCLCharacterMovementComponent : public UCharacterMovementC
 public:
 	// TODO (202504-2): Design a solution where this isn't public
 	uint8 bWantsToSprint:1 { false };
-	FOnMovementWalkingModeChanged OnMovementWalkingModeChanged;
+	FOnGaitChanged OnGaitChanged;
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeight() const { return FallHeight; }
 	
 	FORCEINLINE bool CanEverSprint() const { return CharacterMovementProps.bCanEverSprint; }
 	FORCEINLINE bool CanSprintInCurrentState() const { return CanEverSprint() && !Velocity.IsNearlyZero() && IsMovingOnGround(); }
-	FORCEINLINE ECLMovementWalkingMode GetMovementWalkingMode() const { return MovementWalkingMode; }
+	FORCEINLINE ECLGait GetGait() const { return Gait; }
 	bool IsSprinting() const;
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void Sprint();
@@ -70,8 +69,8 @@ private:
 	UPROPERTY(Transient, DuplicateTransient)
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacterOwner;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement|Walking", Meta = (AllowPrivateAccess))
-	ECLMovementWalkingMode MovementWalkingMode = ECLMovementWalkingMode::Idle;
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion", Meta = (AllowPrivateAccess))
+	ECLGait Gait = ECLGait::Idle;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement", Meta = (DisplayName = "Properties"))
 	FCLCharacterMovementProperties CharacterMovementProps;
@@ -86,7 +85,7 @@ private:
 	float GetMaxCustomSpeed() const;
 	FORCEINLINE bool IsCustomMovementMode(const ECLCustomMovementMode InCustomMovementMode) const { return MovementMode == MOVE_Custom && CustomMovementMode == InCustomMovementMode; }
 	FORCEINLINE void SetCustomMovementMode(const ECLCustomMovementMode InNewCustomMovementMode) { SetMovementMode(MOVE_Custom, InNewCustomMovementMode); }
-	void SetMovementWalkingMode(const ECLMovementWalkingMode InMovementWalkingMode);
+	void SetGait(const ECLGait InGait);
 	
 	//~ UCharacterMovementComponent Begin
 public:

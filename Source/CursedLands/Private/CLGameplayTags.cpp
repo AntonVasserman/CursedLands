@@ -29,7 +29,6 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Swimming, "Movement.Mode.Swimming", "Default Character movement tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Flying, "Movement.Mode.Flying", "Default Character movement tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Custom, "Movement.Mode.Custom", "This should be replaced with custom tags");
-
 	const TMap<uint8, FGameplayTag> MovementModeTagMap =
 	{
 		{ MOVE_Walking, Movement_Mode_Walking },
@@ -40,32 +39,25 @@ namespace CLGameplayTags
 		{ MOVE_Custom, Movement_Mode_Custom }
 	};
 
-	// Movement Modes Sub-Tags
-	const TSet<uint8> MovementModesUsingSubTags =
-	{
-		MOVE_Walking
-	};
-
-	// Movement Walking-Mode Sub-Tags
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Idle, "Movement.Mode.Walking.Idle", "Default Character movement sub-tag")
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Walking, "Movement.Mode.Walking.Walking", "Default Character movement sub-tag")
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Jogging, "Movement.Mode.Walking.Jogging", "Default Character movement sub-tag")
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Sprinting, "Movement.Mode.Walking.Sprinting", "Default Character movement sub-tag")
-	
-	const TMap<ECLMovementWalkingMode, FGameplayTag> MovementWalkingModeTagMap =
-	{
-		{ ECLMovementWalkingMode::Idle, Movement_Mode_Walking_Idle },
-		{ ECLMovementWalkingMode::Walking, Movement_Mode_Walking_Walking },
-		{ ECLMovementWalkingMode::Jogging, Movement_Mode_Walking_Jogging },
-		{ ECLMovementWalkingMode::Sprinting, Movement_Mode_Walking_Sprinting },
-	};;
-	
 	// Custom Movement Modes Tags
 	const TMap<uint8, FGameplayTag> CustomMovementModeTagMap =
 	{
 		// Placeholder for Custom Movement Modes to Tags mapping
 	};
 
-	// Locomotion States
+	// Locomotion Gait Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Idle, "Locomotion.Gait.Idle", "Gait tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Walking, "Locomotion.Gait.Walking", "Gait tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Jogging, "Locomotion.Gait.Jogging", "Gait tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Sprinting, "Locomotion.Gait.Sprinting", "Gait tag")
+	const TMap<ECLGait, FGameplayTag> GaitTagMap =
+	{
+		{ ECLGait::Idle, Locomotion_Gait_Idle },
+		{ ECLGait::Walking, Locomotion_Gait_Walking },
+		{ ECLGait::Jogging, Locomotion_Gait_Jogging },
+		{ ECLGait::Sprinting, Locomotion_Gait_Sprinting }
+	};
+	
+	// Locomotion Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Rolling, "Locomotion.Rolling", "Locomotion tag indicating rolling");
 }

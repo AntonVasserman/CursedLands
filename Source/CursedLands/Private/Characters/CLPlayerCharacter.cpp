@@ -6,6 +6,7 @@
 #include "CLGameplayTags.h"
 #include "CLLogChannels.h"
 #include "GameplayEffect.h"
+#include "KismetAnimationLibrary.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLManaAttributeSet.h"
 #include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
@@ -108,22 +109,10 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 }
 
-void ACLPlayerCharacter::OnMovementWalkingModeChanged(ECLMovementWalkingMode PreviousMovementWalkingMode, ECLMovementWalkingMode MovementWalkingMode)
+void ACLPlayerCharacter::OnGaitChanged(ECLGait PreviousGait, ECLGait Gait)
 {
-	if (const FGameplayTag* PrevMovementWalkingModeTag = CLGameplayTags::MovementWalkingModeTagMap.Find(PreviousMovementWalkingMode);
-		PrevMovementWalkingModeTag && PrevMovementWalkingModeTag->IsValid())
-	{
-		GetAbilitySystemComponent()->SetLooseGameplayTagCount(*PrevMovementWalkingModeTag, 0);
-	}
-
-	if (MovementWalkingMode != ECLMovementWalkingMode::None)
-	{
-		if (const FGameplayTag* MovementWalkingModeTag = CLGameplayTags::MovementWalkingModeTagMap.Find(MovementWalkingMode);
-			MovementWalkingModeTag && MovementWalkingModeTag->IsValid())
-		{
-			GetAbilitySystemComponent()->SetLooseGameplayTagCount(*MovementWalkingModeTag, 1);	
-		}
-	}
+	SetGaitTag(PreviousGait, false);
+	SetGaitTag(Gait, true);
 }
 
 void ACLPlayerCharacter::PlayFallToRollAnimMontage()
@@ -141,6 +130,71 @@ void ACLPlayerCharacter::PlayFallToDeathAnimMontage()
 	checkf(FallToDeathAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToDeathAnimMontage), *GetFullName());
 	GetAnimInstance()->Montage_Play(FallToDeathAnimMontage);
 	GetAnimInstance()->Montage_JumpToSection(FallToDeathAnimMontage_SectionName_Impact, FallToDeathAnimMontage);
+}
+
+void ACLPlayerCharacter::SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const
+{
+	if (GetAbilitySystemComponent())
+	{
+		if (const FGameplayTag* GaitTag = CLGameplayTags::GaitTagMap.Find(InGait);
+			GaitTag && GaitTag->IsValid())
+		{
+			GetAbilitySystemComponent()->SetLooseGameplayTagCount(*GaitTag, bTagEnabled ? 1 : 0);
+		}
+	}
+}
+
+void ACLPlayerCharacter::UpdateCardinalDirectionAngle()
+{
+	const FRotator PlayerCharacterRotation = GetActorRotation();
+	const FVector PlayerCharacterVelocity2D = GetVelocity() * FVector(1, 1, 0);
+	CardinalDirectionAngle = UKismetAnimationLibrary::CalculateDirection(PlayerCharacterVelocity2D, PlayerCharacterRotation);
+}
+
+void ACLPlayerCharacter::UpdateCardinalDirection()
+{
+	// Handling Deadzone first
+	bool bIsInDeadzone = false;
+	switch (CardinalDirection)
+	{
+	case ECLCardinalDirection::Forward:
+		bIsInDeadzone = CardinalDirectionAngle >= CardinalDirectionForwardMin - CardinalDirectionDeadzone && CardinalDirectionAngle <= CardinalDirectionForwardMax + CardinalDirectionDeadzone; 
+		break;
+	case ECLCardinalDirection::Backward:
+		bIsInDeadzone = CardinalDirectionAngle < CardinalDirectionBackwardMin + CardinalDirectionDeadzone || CardinalDirectionAngle > CardinalDirectionBackwardMax - CardinalDirectionDeadzone; 
+		break;
+	case ECLCardinalDirection::Right:
+		bIsInDeadzone = CardinalDirectionAngle > CardinalDirectionForwardMax - CardinalDirectionDeadzone && CardinalDirectionAngle < CardinalDirectionBackwardMax + CardinalDirectionDeadzone;
+		break;
+	case ECLCardinalDirection::Left:
+		bIsInDeadzone = CardinalDirectionAngle > CardinalDirectionBackwardMin - CardinalDirectionDeadzone && CardinalDirectionAngle < CardinalDirectionForwardMin + CardinalDirectionDeadzone;
+		break;
+	default:
+		checkNoEntry();
+	}
+
+	if (bIsInDeadzone)
+	{
+		return;
+	}
+	
+	// Evaluate Direction outside of deadzone
+	if (CardinalDirectionAngle >= CardinalDirectionForwardMin && CardinalDirectionAngle <= CardinalDirectionForwardMax) // Forward Direction
+	{
+		CardinalDirection = ECLCardinalDirection::Forward;
+	}
+	else if (CardinalDirectionAngle < CardinalDirectionBackwardMin || CardinalDirectionAngle > CardinalDirectionBackwardMax) // Backward Direction
+	{
+		CardinalDirection = ECLCardinalDirection::Backward;
+	}
+	else if (CardinalDirectionAngle > 0) // Right Direction
+	{
+		CardinalDirection = ECLCardinalDirection::Right;
+	}
+	else
+	{
+		CardinalDirection = ECLCardinalDirection::Left;
+	}
 }
 
 //~ ACLCharacter Begin
@@ -177,7 +231,7 @@ void ACLPlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	GetCLCharacterMovement()->OnMovementWalkingModeChanged.AddDynamic(this, &ACLPlayerCharacter::OnMovementWalkingModeChanged);
+	GetCLCharacterMovement()->OnGaitChanged.AddDynamic(this, &ACLPlayerCharacter::OnGaitChanged);
 	
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
@@ -199,6 +253,9 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	UpdateCardinalDirectionAngle();
+	UpdateCardinalDirection();
+	
 	if (bIsSprinting)
 	{
 		// If current speed is lower than regular running speed minus some delta then turn of sprinting

@@ -6,7 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
 
-enum class ECLMovementWalkingMode : uint8;
+enum class ECLGait : uint8;
 
 namespace CLGameplayTags
 {
@@ -32,20 +32,16 @@ namespace CLGameplayTags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Swimming);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Flying);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Custom);
-	
-	// Movement Modes Sub-Tags
-	CURSEDLANDS_API	extern const TSet<uint8> MovementModesUsingSubTags;
-
-	// Movement Walking-Mode Sub-Tags
-	CURSEDLANDS_API extern const TMap<ECLMovementWalkingMode, FGameplayTag> MovementWalkingModeTagMap;
-	
-	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_TODO);
-	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Idle);
-	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Jogging);
-	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Sprinting);
 
 	// Custom Movement Modes Tags
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
+
+	// Locomotion Gait Tags
+	CURSEDLANDS_API extern const TMap<ECLGait, FGameplayTag> GaitTagMap;
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Idle);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Walking);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Jogging);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Sprinting);
 	
 	// Locomotion States
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Rolling);
