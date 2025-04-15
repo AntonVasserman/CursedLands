@@ -34,6 +34,7 @@ void UCLAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Velocity = MovementComponent->Velocity;
 		GroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
+		// TODO: We already calculate use using CardinalDirection, so is this really needed?
 		Direction = UKismetAnimationLibrary::CalculateDirection(Velocity, Character->GetActorRotation());
 		bShouldMove = GroundSpeed > 3.0f && MovementComponent->GetCurrentAcceleration() != FVector::ZeroVector;
 		bAlive = Character->IsAlive();

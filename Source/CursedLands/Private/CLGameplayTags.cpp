@@ -47,18 +47,16 @@ namespace CLGameplayTags
 	};
 
 	// Movement Walking-Mode Sub-Tags
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_TODO, "Movement.Mode.Walking.TODO", "THIS IS A PLACE HOLDER, SHOULD BE REMOVED IN CL-9")
-	// TODO (CL-9): Implement walking states, Idle/Running...
-	// UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Idle, "Movement.Mode.Walking.Idle", "Default Character movement sub-tag")
-	// UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Running, "Movement.Mode.Walking.Running", "Default Character movement sub-tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Idle, "Movement.Mode.Walking.Idle", "Default Character movement sub-tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Walking, "Movement.Mode.Walking.Walking", "Default Character movement sub-tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Jogging, "Movement.Mode.Walking.Jogging", "Default Character movement sub-tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Mode_Walking_Sprinting, "Movement.Mode.Walking.Sprinting", "Default Character movement sub-tag")
 	
 	const TMap<ECLMovementWalkingMode, FGameplayTag> MovementWalkingModeTagMap =
 	{
-		{ ECLMovementWalkingMode::TODO, Movement_Mode_Walking_TODO },
-		// TODO (CL-9): Implement walking states, Idle/Running...
-		// { ECLMovementWalkingMode::Idle, Movement_Mode_Walking_Idle },
-		// { ECLMovementWalkingMode::Running, Movement_Mode_Walking_Running },
+		{ ECLMovementWalkingMode::Idle, Movement_Mode_Walking_Idle },
+		{ ECLMovementWalkingMode::Walking, Movement_Mode_Walking_Walking },
+		{ ECLMovementWalkingMode::Jogging, Movement_Mode_Walking_Jogging },
 		{ ECLMovementWalkingMode::Sprinting, Movement_Mode_Walking_Sprinting },
 	};;
 	

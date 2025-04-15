@@ -40,9 +40,8 @@ namespace CLGameplayTags
 	CURSEDLANDS_API extern const TMap<ECLMovementWalkingMode, FGameplayTag> MovementWalkingModeTagMap;
 	
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_TODO);
-	// TODO (CL-9): Implement walking states, Idle/Running...
-	// CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Idle);
-	// CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Running);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Idle);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Jogging);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Walking_Sprinting);
 
 	// Custom Movement Modes Tags

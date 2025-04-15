@@ -19,10 +19,9 @@ UENUM(BlueprintType)
 enum class ECLMovementWalkingMode : uint8
 {
 	None		UMETA(DisplayName = "None"),
-	TODO		UMETA(DisplayName = "Place Holder for other modes that aren't sprinting, will be fixed in CL-9"),
-	// TODO (CL-9): Implement walking states, Idle/Running...
-	// Idle		UMETA(DisplayName = "Idle")
-	// Running	UMETA(DisplayName = "Running")
+	Idle		UMETA(DisplayName = "Idle"),
+	Walking		UMETA(DisplayName = "Walking"),
+	Jogging		UMETA(DisplayName = "Jogging"),
 	Sprinting	UMETA(DisplayName = "Sprinting"),
 };
 
@@ -60,6 +59,7 @@ public:
 	
 	FORCEINLINE bool CanEverSprint() const { return CharacterMovementProps.bCanEverSprint; }
 	FORCEINLINE bool CanSprintInCurrentState() const { return CanEverSprint() && !Velocity.IsNearlyZero() && IsMovingOnGround(); }
+	FORCEINLINE ECLMovementWalkingMode GetMovementWalkingMode() const { return MovementWalkingMode; }
 	bool IsSprinting() const;
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void Sprint();
@@ -71,7 +71,7 @@ private:
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacterOwner;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Character Movement|Walking", Meta = (AllowPrivateAccess))
-	ECLMovementWalkingMode MovementWalkingMode = ECLMovementWalkingMode::None;
+	ECLMovementWalkingMode MovementWalkingMode = ECLMovementWalkingMode::Idle;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement", Meta = (DisplayName = "Properties"))
 	FCLCharacterMovementProperties CharacterMovementProps;

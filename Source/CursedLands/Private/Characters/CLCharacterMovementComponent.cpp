@@ -4,6 +4,7 @@
 #include "Characters/CLCharacterMovementComponent.h"
 
 #include "Characters/CLPlayerCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 
 bool UCLCharacterMovementComponent::IsSprinting() const
 {
@@ -20,7 +21,7 @@ void UCLCharacterMovementComponent::Sprint()
 
 void UCLCharacterMovementComponent::UnSprint()
 {
-	SetMovementWalkingMode(ECLMovementWalkingMode::TODO);
+	SetMovementWalkingMode(ECLMovementWalkingMode::Jogging);
 	check(PlayerCharacterOwner);
 	PlayerCharacterOwner->bIsSprinting = false;
 }
@@ -79,6 +80,24 @@ void UCLCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick Ti
 	{
 		FallHeight = FallBeginZ - GetOwner()->GetActorLocation().Z;
 	}
+
+	const float CurrentGroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
+	if (CurrentGroundSpeed < MinAnalogWalkSpeed)
+	{
+		SetMovementWalkingMode(ECLMovementWalkingMode::Idle);
+	}
+	else if (CurrentGroundSpeed >= MinAnalogWalkSpeed && CurrentGroundSpeed < MaxWalkSpeed)
+	{
+		SetMovementWalkingMode(ECLMovementWalkingMode::Walking);
+	}
+	else if (CurrentGroundSpeed >= MaxWalkSpeed && CurrentGroundSpeed < MaxWalkSpeedSprinting)
+	{
+		SetMovementWalkingMode(ECLMovementWalkingMode::Jogging);
+	}
+	else
+	{
+		SetMovementWalkingMode(ECLMovementWalkingMode::Sprinting);
+	}
 }
 
 void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSeconds)
@@ -116,7 +135,7 @@ void UCLCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previous
 		}
 		else
 		{
-			SetMovementWalkingMode(ECLMovementWalkingMode::TODO);
+			SetMovementWalkingMode(ECLMovementWalkingMode::Idle);
 		}
 	}
 

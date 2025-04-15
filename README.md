@@ -6,7 +6,10 @@ This project takes inspiration from [_Evil Islands: Curse of the Lost Soul_]((ht
 This project's purpose is to serve as a portfolio piece, showcasing experience in the next areas and systems:
 * Gameplay Ability System
 * Gameplay Camera System
-* Advanced Locomotion System (TODO)
+* Advanced Locomotion System
+  * Animation Layers and Animation Layer Interfaces (for different equipped weapons)
+  * Animation Warping
+  * Motion Warping
 * State Trees for AI (TODO)
 * TODO...
 

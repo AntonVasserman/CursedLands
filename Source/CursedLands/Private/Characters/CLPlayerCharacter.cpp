@@ -96,7 +96,6 @@ void ACLPlayerCharacter::UnSprint()
 
 void ACLPlayerCharacter::ApplyFatigue()
 {
-	UE_LOG(LogCL, Warning, TEXT("ACLPlayerCharacter::ApplyFatigue"));
 	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))
 	{
 		return;
