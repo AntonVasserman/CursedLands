@@ -49,16 +49,14 @@ Stephen Ulibarri on Udemy and Courses:\
 
 ## Credits - Assets
 
-### Advanced Locomotion System
-#### Animations
-- ALS_N_Run_X (B/F/LB/LF/RB/RF)
-- ALS_N_Sprint_F
-- ALS_N_Walk_X (B/F/LB/LF/RB/RF)
-
 ### Game Animation Sample - Epic Games
 #### Audio
 - Foley_bs_1p_body_concrete_tumble_0X (1-9)
 - Foley_fs_1p_sneaker_concrete_land_XX (01-20)
+#### Animations
+- M_Neutral_Walk_Loop_X (B/F/LL/RR)
+- M_Neutral_Run_Loop_X (B/F/LL/RR)
+- M_Neutral_Sprint_Loop_F
 
 ### Mixamo
 #### Animations

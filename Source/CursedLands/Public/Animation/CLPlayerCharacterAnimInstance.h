@@ -35,6 +35,26 @@ struct FCLCardinalDirectionAnimation
 	}
 };
 
+USTRUCT(BlueprintType)
+struct FCLFallAnimation
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
+	TObjectPtr<UAnimSequenceBase> LightFallAnimSequence;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
+	TObjectPtr<UAnimSequenceBase> HeavyFallAnimSequence;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
+	TObjectPtr<UAnimSequenceBase> DeadlyFallAnimSequence;
+
+	FCLFallAnimation()
+		: LightFallAnimSequence(nullptr), HeavyFallAnimSequence(nullptr), DeadlyFallAnimSequence(nullptr)
+	{
+	}
+};
+
 UCLASS()
 class CURSEDLANDS_API UCLPlayerCharacterAnimInstance : public UCLAnimInstance
 {
