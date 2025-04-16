@@ -13,6 +13,18 @@ void UCLAnimInstance::CharacterMeshSimulatePhysics() const
 	Character->SimulatePhysics();
 }
 
+void UCLAnimInstance::UpdateVelocityData()
+{
+	Velocity = MovementComponent->Velocity;
+	Velocity2D = FVector(Velocity.X, Velocity.Y, 0.f);
+	Velocity2DSize = Velocity2D.Size();
+}
+
+void UCLAnimInstance::UpdateFallData()
+{
+	bFalling = MovementComponent->IsFalling();
+}
+
 //~ UAnimInstance Begin
 
 void UCLAnimInstance::NativeInitializeAnimation()
@@ -32,13 +44,9 @@ void UCLAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (Character)
 	{
-		Velocity = MovementComponent->Velocity;
-		GroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
-		// TODO: We already calculate use using CardinalDirection, so is this really needed?
-		Direction = UKismetAnimationLibrary::CalculateDirection(Velocity, Character->GetActorRotation());
-		bShouldMove = GroundSpeed > 3.0f && MovementComponent->GetCurrentAcceleration() != FVector::ZeroVector;
 		bAlive = Character->IsAlive();
-		bFalling = MovementComponent->IsFalling();
+		UpdateVelocityData();
+		UpdateFallData();
 	}
 }
 

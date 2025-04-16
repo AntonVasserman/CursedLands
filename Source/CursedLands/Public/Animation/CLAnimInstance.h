@@ -14,27 +14,30 @@ class CURSEDLANDS_API UCLAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	FVector Velocity;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	float GroundSpeed;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	float Direction;
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Movement")
+	FORCEINLINE UCharacterMovementComponent* GetCharacterMovementComponent() { return MovementComponent;}
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	bool bShouldMove;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
+protected:
+	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	bool bAlive = true;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
+	FVector Velocity;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
+	FVector Velocity2D;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
+	float Velocity2DSize;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bFalling = false;
 
 	UFUNCTION(BlueprintCallable, Category = "Character Physics")
 	void CharacterMeshSimulatePhysics() const;
+
+	virtual void UpdateFallData();
 
 private:
 	UPROPERTY()
@@ -42,6 +45,8 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
+
+	void UpdateVelocityData();
 	
 	//~ UAnimInstance Begin
 public:

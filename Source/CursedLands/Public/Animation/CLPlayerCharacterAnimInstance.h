@@ -13,7 +13,7 @@ enum class ECLMovementWalkingMode : uint8;
 enum class ECLPlayerCharacterMovementMode : uint8;
 
 USTRUCT(BlueprintType)
-struct FCLCardinalDirectionAnimation
+struct FCLDirectionalAnimation
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -29,7 +29,7 @@ struct FCLCardinalDirectionAnimation
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UAnimSequenceBase> LeftAnimSequence;
 
-	FCLCardinalDirectionAnimation()
+	FCLDirectionalAnimation()
 		: ForwardAnimSequence(nullptr), BackwardAnimSequence(nullptr), RightAnimSequence(nullptr), LeftAnimSequence(nullptr)
 	{
 	}
@@ -61,18 +61,22 @@ class CURSEDLANDS_API UCLPlayerCharacterAnimInstance : public UCLAnimInstance
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
-	ECLPlayerCharacterMovementMode MovementMode;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	float FallHeight = 0.f;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data | Constants", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Fall Data|Constants", Meta = (AllowPrivateAccess = "true"))
 	float FallHeightForMinFallDamage;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Essential Movement Data | Constants", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Fall Data|Constants", Meta = (AllowPrivateAccess = "true"))
 	float FallHeightForMaxFallDamage;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	FVector Acceleration;
+	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	FVector Acceleration2D;
+	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	bool bAccelerating;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	ECLPlayerCharacterMovementMode MovementMode;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionAngle;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
@@ -89,7 +93,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacter;
 	uint8 bFirstUpdate : 1 = true;
-	
+
+	virtual void UpdateFallData() override;
+	void UpdateAccelerationData(const ACLPlayerCharacter* InPlayerCharacter);
 	void UpdateLocomotionData(const ACLPlayerCharacter* InPlayerCharacter);
 
 	// Note that Rotation Data depends on the Locomotion data (on both Gait and Cardinal Direction) 
