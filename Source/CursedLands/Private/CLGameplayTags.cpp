@@ -46,13 +46,11 @@ namespace CLGameplayTags
 	};
 
 	// Locomotion Gait Tags
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Idle, "Locomotion.Gait.Idle", "Gait tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Walking, "Locomotion.Gait.Walking", "Gait tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Jogging, "Locomotion.Gait.Jogging", "Gait tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Sprinting, "Locomotion.Gait.Sprinting", "Gait tag")
 	const TMap<ECLGait, FGameplayTag> GaitTagMap =
 	{
-		{ ECLGait::Idle, Locomotion_Gait_Idle },
 		{ ECLGait::Walking, Locomotion_Gait_Walking },
 		{ ECLGait::Jogging, Locomotion_Gait_Jogging },
 		{ ECLGait::Sprinting, Locomotion_Gait_Sprinting }

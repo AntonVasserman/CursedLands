@@ -69,6 +69,12 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		GEngine->AddOnScreenDebugMessage(2, 0.0f, TextColor, FString::Printf(TEXT("Direction: %f"), Direction), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(1, 0.0f, TextColor, FString::Printf(TEXT("GroundSpeed: %f"), GroundSpeed), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(0, 0.0f, TextColor, FString::Printf(TEXT("Velocity: %s"), *Velocity.ToString()), false, TextScale);
+
+		// Draw Direction/Velocity
+		const FVector PlayerCharacterLocation = PlayerCharacter->GetActorLocation();
+		const FVector DirectionalArrowLineStart = FVector(PlayerCharacterLocation.X, PlayerCharacterLocation.Y, PlayerCharacterLocation.Z - 60.f);
+		const FVector DirectionalArrowLineEnd = DirectionalArrowLineStart + Velocity;
+		DrawDebugDirectionalArrow(GetWorld(), DirectionalArrowLineStart, DirectionalArrowLineEnd, 5.f, FColor::Red, false, -1, 0, 2.5f);
 	}
 }
 

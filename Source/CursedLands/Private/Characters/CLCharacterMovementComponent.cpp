@@ -6,6 +6,11 @@
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 
+FCLGaitSettings UCLCharacterMovementComponent::GetGaitSettings(const ECLGait InGait) const
+{
+	return GaitSettings.GetSettingsForGait(InGait);
+}
+
 bool UCLCharacterMovementComponent::IsSprinting() const
 {
 	check(PlayerCharacterOwner);
@@ -26,12 +31,9 @@ void UCLCharacterMovementComponent::UnSprint()
 	PlayerCharacterOwner->bIsSprinting = false;
 }
 
-//~ UCharacterMovementComponent Begin
-
 float UCLCharacterMovementComponent::GetMaxWalkingSpeed() const
 {
 	if (IsCrouching()) { return MaxWalkSpeedCrouched; }
-	if (IsSprinting()) { return MaxWalkSpeedSprinting; }
 	return MaxWalkSpeed;
 }
 
@@ -49,7 +51,27 @@ void UCLCharacterMovementComponent::SetGait(const ECLGait InGait)
 {
 	const ECLGait PrevGait = Gait;
 	Gait = InGait;
+
+	// Update CMC Settings
+	const FCLGaitSettings InGaitSettings = GaitSettings.GetSettingsForGait(Gait);
+	MaxWalkSpeed = InGaitSettings.MaxWalkingSpeed;
+	MaxAcceleration = InGaitSettings.MaxAcceleration;
+	BrakingDecelerationWalking = InGaitSettings.BrakingDeceleration;
+	BrakingFrictionFactor = InGaitSettings.BrakingFrictionFactor;
+	BrakingFriction = InGaitSettings.BrakingFriction;
+	bUseSeparateBrakingFriction = InGaitSettings.bUseSeparateBrakingFriction;
+	
 	OnGaitChanged.Broadcast(PrevGait, Gait);
+}
+
+//~ UCharacterMovementComponent Begin
+
+void UCLCharacterMovementComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// When game begin Set Gait to the default value, this will populate all the relevant fields and run any relevant callbacks
+	SetGait(Gait);
 }
 
 float UCLCharacterMovementComponent::GetMaxSpeed() const
@@ -80,24 +102,6 @@ void UCLCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick Ti
 	{
 		FallHeight = FallBeginZ - GetOwner()->GetActorLocation().Z;
 	}
-
-	const float CurrentGroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
-	if (CurrentGroundSpeed < MinAnalogWalkSpeed)
-	{
-		SetGait(ECLGait::Idle);
-	}
-	else if (CurrentGroundSpeed >= MinAnalogWalkSpeed && CurrentGroundSpeed < MaxWalkSpeed)
-	{
-		SetGait(ECLGait::Walking);
-	}
-	else if (CurrentGroundSpeed >= MaxWalkSpeed && CurrentGroundSpeed < MaxWalkSpeedSprinting)
-	{
-		SetGait(ECLGait::Jogging);
-	}
-	else
-	{
-		SetGait(ECLGait::Sprinting);
-	}
 }
 
 void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSeconds)
@@ -114,7 +118,7 @@ void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float Del
 		else if (!IsMovingOnGround() && CharacterMovementProps.bStopSprintingOnNotMovingOnGround)
 		{
 			bWantsToSprint = false;
-			PlayerCharacterOwner->bIsSprinting = false;
+			UnSprint();
 		}
 	}
 	else if (bWantsToSprint && CanSprintInCurrentState())

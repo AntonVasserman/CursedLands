@@ -38,7 +38,6 @@ namespace CLGameplayTags
 
 	// Locomotion Gait Tags
 	CURSEDLANDS_API extern const TMap<ECLGait, FGameplayTag> GaitTagMap;
-	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Idle);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Walking);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Jogging);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Sprinting);

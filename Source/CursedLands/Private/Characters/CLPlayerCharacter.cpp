@@ -32,10 +32,8 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = MinWalkSpeed;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
-	
+
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
 	GameplayCamera->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
@@ -259,7 +257,7 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 	if (bIsSprinting)
 	{
 		// If current speed is lower than regular running speed minus some delta then turn of sprinting
-		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < GetCharacterMovement()->MaxWalkSpeed - 0.1f)
+		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < GetCLCharacterMovement()->GetGaitSettings(ECLGait::Jogging).MaxWalkingSpeed - 0.1f)
 		{
 			UnSprint();
 		}

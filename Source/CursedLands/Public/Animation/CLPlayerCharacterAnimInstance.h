@@ -15,7 +15,7 @@ enum class ECLPlayerCharacterMovementMode : uint8;
 USTRUCT(BlueprintType)
 struct FCLCardinalDirectionAnimation
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UAnimSequenceBase> ForwardAnimSequence;
@@ -38,7 +38,7 @@ struct FCLCardinalDirectionAnimation
 USTRUCT(BlueprintType)
 struct FCLFallAnimation
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UAnimSequenceBase> LightFallAnimSequence;
