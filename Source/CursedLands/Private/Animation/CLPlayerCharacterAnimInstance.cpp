@@ -3,9 +3,8 @@
 
 #include "Animation/CLPlayerCharacterAnimInstance.h"
 
-#include "CLLogChannels.h"
-#include "KismetAnimationLibrary.h"
 #include "Characters/CLPlayerCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 
 static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
 	TEXT("CLShowDebug.PlayerCharacterAnimInstance"),
@@ -18,6 +17,48 @@ void UCLPlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharact
 	CardinalDirectionAngle = InPlayerCharacter->GetCardinalDirectionAngle();
 	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
 	Gait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
+}
+
+void UCLPlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter)
+{
+	// Evaluate new PlayerCharacterRotation
+	LastYawDelta = InPlayerCharacter->GetActorRotation().Yaw - PlayerCharacterRotation.Yaw;
+	PlayerCharacterRotation = InPlayerCharacter->GetActorRotation();
+	
+	// Evaluate LeanAngle
+	if (Gait == ECLGait::Walking)
+	{
+		LeanAngle = 0.f;
+	}
+	else
+	{
+		float NormalizedLeanAngle = UKismetMathLibrary::SafeDivide(LastYawDelta, DeltaSeconds);
+		NormalizedLeanAngle = NormalizedLeanAngle * 0.375f; // Multiply by a smaller value to clamp the lean angle
+		NormalizedLeanAngle = FMath::Clamp(NormalizedLeanAngle, -90.0f, 90.0f);
+		NormalizedLeanAngle = CardinalDirection != ECLCardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
+
+		switch (Gait)
+		{
+		case ECLGait::Jogging:
+			NormalizedLeanAngle *= 0.8; // For jogging cap at a bit of a lower value than maximum
+			break;
+		case ECLGait::Sprinting:
+			NormalizedLeanAngle *= 1.f; // Basically have no effect
+			break;
+		default:
+			checkNoEntry();
+			break;
+		}
+	
+		LeanAngle = CardinalDirection != ECLCardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
+	}
+
+	// Ignore evaluated values if this is the first tick.
+	if (bFirstUpdate)
+	{
+		LastYawDelta = 0.f;
+		LeanAngle = 0.f;
+	}
 }
 
 //~ UCLAnimInstance Begin
@@ -34,22 +75,20 @@ void UCLPlayerCharacterAnimInstance::NativeInitializeAnimation()
 	}
 }
 
-void UCLPlayerCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
-{
-	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
-}
-
 void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	if (PlayerCharacter)
+	if (!PlayerCharacter)
 	{
-		MovementMode = PlayerCharacter->GetMovementMode();
-		FallHeight = PlayerCharacter->GetCLCharacterMovement()->GetFallHeight();
-
-		UpdateLocomotionData(PlayerCharacter);
+		return;
 	}
+	
+	MovementMode = PlayerCharacter->GetMovementMode();
+	FallHeight = PlayerCharacter->GetCLCharacterMovement()->GetFallHeight();
+
+	UpdateLocomotionData(PlayerCharacter);
+	UpdateRotationData(DeltaSeconds, PlayerCharacter);
 
 	if (CVarShowDebugCLPlayerAnimInstance->GetBool() && GEngine)
 	{
@@ -57,6 +96,7 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		const FVector2D TextScale = FVector2D(1.5f, 1.5f);
 
 		// Putting them in reverse order since the first added is actually last on screen
+		GEngine->AddOnScreenDebugMessage(11, 0.0f, TextColor, FString::Printf(TEXT("LeanAngle: %f"), LeanAngle), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(10, 0.0f, TextColor, FString::Printf(TEXT("Gait: %s"), *StaticEnum<ECLGait>()->GetAuthoredNameStringByValue(static_cast<int64>(Gait))), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(9, 0.0f, TextColor, FString::Printf(TEXT("CardinalDirectionAngle: %f"), CardinalDirectionAngle), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(8, 0.0f, TextColor, FString::Printf(TEXT("CardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(CardinalDirection))), false, TextScale);
@@ -76,6 +116,8 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		const FVector DirectionalArrowLineEnd = DirectionalArrowLineStart + Velocity;
 		DrawDebugDirectionalArrow(GetWorld(), DirectionalArrowLineStart, DirectionalArrowLineEnd, 5.f, FColor::Red, false, -1, 0, 2.5f);
 	}
+
+	bFirstUpdate = false;
 }
 
 //~ UCLAnimInstance End

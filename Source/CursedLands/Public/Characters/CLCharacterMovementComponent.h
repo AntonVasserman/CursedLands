@@ -113,7 +113,7 @@ public:
 	void Sprint();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void UnSprint();
-	// TODO: Add functions for Walk and UnWalk...
+	// TODO (CL-59): Add functions for Walk and UnWalk...
 	
 private:
 	UPROPERTY(Transient, DuplicateTransient)
