@@ -80,10 +80,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionAngle;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	ECLCardinalDirection LastCardinalDirection;
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLCardinalDirection CardinalDirection;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	bool bGaitChanged;
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLGait Gait;
-	
+
 	UPROPERTY(BlueprintReadOnly, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	float LeanAngle;
 	FRotator PlayerCharacterRotation;
@@ -104,6 +108,6 @@ private:
 	//~ UCLAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	//~ UCLAnimInstance End
 };

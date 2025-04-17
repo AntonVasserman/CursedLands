@@ -31,8 +31,12 @@ void UCLPlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharact
 {
 	MovementMode = PlayerCharacter->GetMovementMode();
 	CardinalDirectionAngle = InPlayerCharacter->GetCardinalDirectionAngle();
+	LastCardinalDirection = CardinalDirection;
 	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
-	Gait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
+	const ECLGait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
+	bGaitChanged = Gait != NewGait;
+	Gait = NewGait;
+	
 }
 
 void UCLPlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter)
@@ -59,7 +63,7 @@ void UCLPlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds
 			NormalizedLeanAngle *= 0.8; // For jogging cap at a bit of a lower value than maximum
 			break;
 		case ECLGait::Sprinting:
-			NormalizedLeanAngle *= 1.f; // Basically have no effect
+			NormalizedLeanAngle *= 1.f; // No effect
 			break;
 		default:
 			checkNoEntry();
@@ -91,9 +95,9 @@ void UCLPlayerCharacterAnimInstance::NativeInitializeAnimation()
 	}
 }
 
-void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UCLPlayerCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 {
-	Super::NativeUpdateAnimation(DeltaSeconds);
+	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
 
 	if (!PlayerCharacter)
 	{
@@ -104,7 +108,7 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	UpdateLocomotionData(PlayerCharacter);
 	UpdateRotationData(DeltaSeconds, PlayerCharacter);
 
-	if (CVarShowDebugCLPlayerAnimInstance->GetBool() && GEngine)
+	if (!bFirstUpdate && CVarShowDebugCLPlayerAnimInstance->GetBool() && GEngine)
 	{
 		const FColor TextColor = FColor::Red;
 		const FVector2D TextScale = FVector2D(1.5f, 1.5f);
@@ -117,16 +121,17 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		GEngine->AddOnScreenDebugMessage(41, 0.0f, TextColor, FString::Printf(TEXT("CardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(CardinalDirection))), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(40, 0.0f, TextColor, FString::Printf(TEXT("MovementMode: %s"), *StaticEnum<ECLPlayerCharacterMovementMode>()->GetAuthoredNameStringByValue(static_cast<int64>(MovementMode))), false, TextScale);
 
-		GEngine->AddOnScreenDebugMessage(32, 0.0f, TextColor, FString::Printf(TEXT("Accelerating: %d"), bAccelerating), false, TextScale);
-		GEngine->AddOnScreenDebugMessage(31, 0.0f, TextColor, FString::Printf(TEXT("Acceleration2D: %s"), *Acceleration2D.ToString()), false, TextScale);
+		GEngine->AddOnScreenDebugMessage(31, 0.0f, TextColor, FString::Printf(TEXT("Accelerating: %d"), bAccelerating), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(30, 0.0f, TextColor, FString::Printf(TEXT("Acceleration: %s"), *Acceleration.ToString()), false, TextScale);
 		
 		GEngine->AddOnScreenDebugMessage(21, 0.0f, TextColor, FString::Printf(TEXT("FallHeight: %f"), FallHeight), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(20, 0.0f, TextColor, FString::Printf(TEXT("Falling: %d"), bFalling), false, TextScale);
 
-		GEngine->AddOnScreenDebugMessage(12, 0.0f, TextColor, FString::Printf(TEXT("Velocity2DSize: %f"), Velocity2DSize), false, TextScale);
-		GEngine->AddOnScreenDebugMessage(11, 0.0f, TextColor, FString::Printf(TEXT("Velocity2D: %s"), *Velocity2D.ToString()), false, TextScale);
+		GEngine->AddOnScreenDebugMessage(11, 0.0f, TextColor, FString::Printf(TEXT("Velocity2DSize: %f"), Velocity2DSize), false, TextScale);
 		GEngine->AddOnScreenDebugMessage(10, 0.0f, TextColor, FString::Printf(TEXT("Velocity: %s"), *Velocity.ToString()), false, TextScale);
+
+		GEngine->AddOnScreenDebugMessage(1, 0.0f, TextColor, FString::Printf(TEXT("CharacterLocationDeltaSizeXY: %f"), CharacterLocationDeltaSizeXY), false, TextScale);
+		GEngine->AddOnScreenDebugMessage(0, 0.0f, TextColor, FString::Printf(TEXT("CharacterLocation: %s"), *CharacterLocation.ToString()), false, TextScale);
 
 		// Draw Direction/Velocity
 		const FVector PlayerCharacterLocation = PlayerCharacter->GetActorLocation();
@@ -145,7 +150,7 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			PlayerCharacter->GetCharacterMovement()->BrakingDecelerationWalking);
 		DrawDebugSphere(GetWorld(), PlayerCharacter->GetActorLocation() + StopLocationPrediction, 10.f, 32, FColor::Green, false, -1, 0, 2.5f);
 	}
-
+	
 	bFirstUpdate = false;
 }
 

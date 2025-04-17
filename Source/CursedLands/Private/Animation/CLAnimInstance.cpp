@@ -13,6 +13,19 @@ void UCLAnimInstance::CharacterMeshSimulatePhysics() const
 	Character->SimulatePhysics();
 }
 
+void UCLAnimInstance::UpdateLocationData()
+{
+	LastCharacterLocation = CharacterLocation;
+	CharacterLocation = Character->GetActorLocation();
+	CharacterLocationDeltaSizeXY = UKismetMathLibrary::VSizeXY(CharacterLocation - LastCharacterLocation);
+
+	if (bFirstUpdate)
+	{
+		LastCharacterLocation = FVector::ZeroVector;
+		CharacterLocationDeltaSizeXY = 0.f;
+	}
+}
+
 void UCLAnimInstance::UpdateVelocityData()
 {
 	Velocity = MovementComponent->Velocity;
@@ -38,16 +51,19 @@ void UCLAnimInstance::NativeInitializeAnimation()
 	}
 }
 
-void UCLAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UCLAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 {
-	Super::NativeUpdateAnimation(DeltaSeconds);
+	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
 
 	if (Character)
 	{
 		bAlive = Character->IsAlive();
 		UpdateVelocityData();
 		UpdateFallData();
+		UpdateLocationData();
 	}
+
+	bFirstUpdate = false;
 }
 
 //~ UAnimInstance End

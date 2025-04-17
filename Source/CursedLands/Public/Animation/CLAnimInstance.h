@@ -21,6 +21,13 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	bool bAlive = true;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	FVector LastCharacterLocation;
+	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	FVector CharacterLocation;
+	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	float CharacterLocationDeltaSizeXY;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity;
@@ -36,22 +43,24 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Character Physics")
 	void CharacterMeshSimulatePhysics() const;
-
+	
 	virtual void UpdateFallData();
 
 private:
 	UPROPERTY()
 	TObjectPtr<ACLCharacter> Character;
+	uint8 bFirstUpdate : 1 = true;
 
 	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
 
+	void UpdateLocationData();
 	void UpdateVelocityData();
 	
 	//~ UAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	//~ UAnimInstance End
 	
 };
