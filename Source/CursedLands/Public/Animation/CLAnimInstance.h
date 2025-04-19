@@ -49,7 +49,7 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<ACLCharacter> Character;
-	uint8 bFirstUpdate : 1 = true;
+	uint8 bFirstThreadSafeUpdate : 1 = true;
 
 	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;

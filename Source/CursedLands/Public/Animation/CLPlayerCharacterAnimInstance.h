@@ -60,6 +60,10 @@ class CURSEDLANDS_API UCLPlayerCharacterAnimInstance : public UCLAnimInstance
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Helper Functions|Locomotion", Meta = (BlueprintThreadSafe))
+	bool IsMovingPerpendicularToPivot() const;
+	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	float FallHeight = 0.f;
@@ -74,6 +78,8 @@ protected:
 	FVector Acceleration2D;
 	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	bool bAccelerating;
+	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	float AccelerationAngle;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLPlayerCharacterMovementMode MovementMode;
@@ -88,6 +94,11 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLGait Gait;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion SM Data", Meta = (AllowPrivateAccess = "true"))
+	FVector PivotAcceleration2D;
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion SM Data", Meta = (AllowPrivateAccess = "true"))
+	ECLCardinalDirection PivotCardinalDirection;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	float LeanAngle;
 	FRotator PlayerCharacterRotation;
@@ -96,7 +107,7 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacter;
-	uint8 bFirstUpdate : 1 = true;
+	uint8 bFirstThreadSafeUpdate : 1 = true;
 
 	virtual void UpdateFallData() override;
 	void UpdateAccelerationData(const ACLPlayerCharacter* InPlayerCharacter);
@@ -109,5 +120,6 @@ private:
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	//~ UCLAnimInstance End
 };

@@ -19,7 +19,7 @@ void UCLAnimInstance::UpdateLocationData()
 	CharacterLocation = Character->GetActorLocation();
 	CharacterLocationDeltaSizeXY = UKismetMathLibrary::VSizeXY(CharacterLocation - LastCharacterLocation);
 
-	if (bFirstUpdate)
+	if (bFirstThreadSafeUpdate)
 	{
 		LastCharacterLocation = FVector::ZeroVector;
 		CharacterLocationDeltaSizeXY = 0.f;
@@ -63,7 +63,7 @@ void UCLAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 		UpdateLocationData();
 	}
 
-	bFirstUpdate = false;
+	bFirstThreadSafeUpdate = false;
 }
 
 //~ UAnimInstance End
