@@ -6,6 +6,7 @@
 #include "CLCharacterMovementComponent.h"
 #include "CLPlayerCharacterCameraMode.h"
 #include "CLPlayerCharacterMovementMode.h"
+#include "MotionWarpingComponent.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
 #include "CLPlayerCharacter.generated.h"
@@ -83,6 +84,9 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay Camera System", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Motion Warping", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMotionWarpingComponent> MotionWarping;
 
 	ECLPlayerCharacterCameraMode CameraMode = ECLPlayerCharacterCameraMode::Default;
 	ECLPlayerCharacterMovementMode MovementMode = ECLPlayerCharacterMovementMode::Default;

@@ -38,6 +38,10 @@
 		{
 			"Name": "AnimationLocomotionLibrary",
 			"Enabled": true
+		},
+		{
+			"Name": "AVUtilities",
+			"Enabled": true
 		}
 	]
 }

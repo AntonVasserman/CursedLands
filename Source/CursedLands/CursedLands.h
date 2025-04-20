@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-// TODO: Cut Sprint Start and Stop animations
-// TODO: Check that Start has Striding... (Check what Lyra did)
-// TODO: Cut Walk Stop animations
-// TODO: Use Sprint Lean Poses
+// TODO (CL-73): Cut Sprint Start and Stop animations
+// TODO (CL-74): Check that Start has Striding... (Check what Lyra did)
+// TODO (CL-75): Cut Walk Stop animations
+// TODO (CL-76): Use Sprint Lean Poses

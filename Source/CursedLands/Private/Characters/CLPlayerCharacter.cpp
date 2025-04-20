@@ -39,6 +39,8 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GameplayCamera->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 
+	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
+
 	ManaAttributeSet = CreateDefaultSubobject<UCLManaAttributeSet>("ManaAttributeSet");
 	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
 }
