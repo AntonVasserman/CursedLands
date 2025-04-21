@@ -64,7 +64,7 @@ void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode In
 bool ACLPlayerCharacter::CanSprint() const
 {
 	if (
-		!CanMove() || bIsSprinting || // Basic check
+		!CanMove() || IsSprinting() || // Basic check
 		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
 		GetStaminaAttributeSet()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
 		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
@@ -80,7 +80,7 @@ void ACLPlayerCharacter::Sprint()
 {
 	if (CanSprint())
 	{
-		GetCLCharacterMovement()->bWantsToSprint = true;
+		GetCLCharacterMovement()->RequestSprinting();
 	}
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	else if (!GetCLCharacterMovement()->CanEverSprint())
@@ -92,7 +92,7 @@ void ACLPlayerCharacter::Sprint()
 
 void ACLPlayerCharacter::UnSprint()
 {
-	GetCLCharacterMovement()->bWantsToSprint = false;
+	GetCLCharacterMovement()->RequestUnSprinting();
 }
 
 void ACLPlayerCharacter::ApplyFatigue()
@@ -103,7 +103,7 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 	
 	ApplyEffectToSelf(FatigueGameplayEffectClass, 1.f);
-	if (bIsSprinting)
+	if (IsSprinting())
 	{
 		UnSprint();
 	}
@@ -256,7 +256,7 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 	UpdateCardinalDirectionAngle();
 	UpdateCardinalDirection();
 	
-	if (bIsSprinting)
+	if (IsSprinting())
 	{
 		// If current speed is lower than regular running speed minus some delta then turn of sprinting
 		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < GetCLCharacterMovement()->GetGaitSettings(ECLGait::Jogging).MaxWalkingSpeed - 0.1f)

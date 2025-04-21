@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CLCharacterMovementComponent.h"
+#include "CLGameplayTags.h"
 #include "CLPlayerCharacterCameraMode.h"
 #include "CLPlayerCharacterMovementMode.h"
 #include "MotionWarpingComponent.h"
@@ -40,13 +41,6 @@ public:
 	FOnFellToRoll OnFellToRoll;
 	UPROPERTY(BlueprintAssignable, Category = "Character Movement|Falling")
 	FOnFellToDeath OnFellToDeath;
-
-	// TODO (202504-2): Design a solution where this isn't public and isn't set by the CharacterMovementComponent directly...
-	// This can be achieved with two Events in the CLCMC, OnStartSprint and OnEdnSprint, or just when WalkingChanged.
-	// We also can and should consider not having this bool, but just check the tag, since our character is integrated
-	// with Tags and should lean on them as the source of truth.
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement|Walking|Sprinting")
-	uint8 bIsSprinting:1 {false};
 	
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")
@@ -68,6 +62,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	bool CanSprint() const;
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
+	FORCEINLINE bool IsSprinting() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Gait_Sprinting); }
 	void Sprint();
 	void UnSprint();
 	
@@ -111,7 +107,7 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Walking", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FatigueGameplayEffectClass;
 

@@ -29,7 +29,7 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	// In case Player Character is in strafing movement mode, sprinting and changes direction from forward direction then stop sprinting
 	if (
 		PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing &&
-		PossessedPlayerCharacter->bIsSprinting &&
+		PossessedPlayerCharacter->IsSprinting() &&
 		PossessedPlayerCharacter->GetCardinalDirection() != ECLCardinalDirection::Forward
 		)
 	{
@@ -40,7 +40,7 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	PossessedPlayerCharacter->AddMovementInput(RightDirection, MovementVector.X);
 	
 	// On Strafing movement mode we need to adjust the Pawn rotation on movement.
-	// This is because we are using the Gameplay Camera instead of regular Camera
+	// This is because we are using the Gameplay Camera instead of a regular Camera
 	if (
 		PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing ||
 		PossessedPlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_Rolling)
@@ -66,7 +66,7 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 
 void ACLPlayerController::RequestToggleSprintAction()
 {
-	if (PossessedPlayerCharacter->bIsSprinting)
+	if (PossessedPlayerCharacter->IsSprinting())
 	{
 		PossessedPlayerCharacter->UnSprint();
 	}

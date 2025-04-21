@@ -14,21 +14,27 @@ FCLGaitSettings UCLCharacterMovementComponent::GetGaitSettings(const ECLGait InG
 bool UCLCharacterMovementComponent::IsSprinting() const
 {
 	check(PlayerCharacterOwner);
-	return PlayerCharacterOwner->bIsSprinting;
+	return Gait == ECLGait::Sprinting;
+}
+
+void UCLCharacterMovementComponent::RequestSprinting()
+{
+	bWantsToSprint = true;
+}
+
+void UCLCharacterMovementComponent::RequestUnSprinting()
+{
+	bWantsToSprint = false;
 }
 
 void UCLCharacterMovementComponent::Sprint()
 {
 	SetGait(ECLGait::Sprinting);
-	check(PlayerCharacterOwner);
-	PlayerCharacterOwner->bIsSprinting = true;
 }
 
 void UCLCharacterMovementComponent::UnSprint()
 {
 	SetGait(ECLGait::Jogging);
-	check(PlayerCharacterOwner);
-	PlayerCharacterOwner->bIsSprinting = false;
 }
 
 float UCLCharacterMovementComponent::GetMaxWalkingSpeed() const

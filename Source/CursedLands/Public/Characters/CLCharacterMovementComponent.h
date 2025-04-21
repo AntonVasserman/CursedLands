@@ -97,18 +97,21 @@ class CURSEDLANDS_API UCLCharacterMovementComponent : public UCharacterMovementC
 	GENERATED_BODY()
 	
 public:
-	// TODO (202504-2): Design a solution where this isn't public
-	uint8 bWantsToSprint:1 { false };
 	FOnGaitChanged OnGaitChanged;
+
+	FORCEINLINE ECLGait GetGait() const { return Gait; }
+	FCLGaitSettings GetGaitSettings(const ECLGait InGait) const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeight() const { return FallHeight; }
-	
+
 	FORCEINLINE bool CanEverSprint() const { return CharacterMovementProps.bCanEverSprint; }
 	FORCEINLINE bool CanSprintInCurrentState() const { return CanEverSprint() && !Velocity.IsNearlyZero() && IsMovingOnGround(); }
-	FORCEINLINE ECLGait GetGait() const { return Gait; }
-	FCLGaitSettings GetGaitSettings(const ECLGait InGait) const;
 	bool IsSprinting() const;
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
+	void RequestSprinting();
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
+	void RequestUnSprinting();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void Sprint();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
@@ -116,6 +119,8 @@ public:
 	// TODO (CL-59): Add functions for Walk and UnWalk...
 	
 private:
+	uint8 bWantsToSprint:1 { false };
+	
 	UPROPERTY(Transient, DuplicateTransient)
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacterOwner;
 	
