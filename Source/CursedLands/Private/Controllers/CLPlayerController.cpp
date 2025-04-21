@@ -41,6 +41,7 @@ void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 	
 	// On Strafing movement mode we need to adjust the Pawn rotation on movement.
 	// This is because we are using the Gameplay Camera instead of regular Camera
+	// TODO: Do this only when Character is in Walking state...
 	if (PossessedPlayerCharacter->GetMovementMode() == ECLPlayerCharacterMovementMode::Strafing ||
 		PossessedPlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_Rolling))
 	{
