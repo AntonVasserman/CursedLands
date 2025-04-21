@@ -141,35 +141,36 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		if (
 			!bFirstThreadSafeUpdate &&
 			CVarShowDebugCLPlayerAnimInstance->GetBool() &&
-			GEngine &&
-			GetWorld() &&
-			GetWorld()->IsPlayInEditor()
+			GetWorld() && GetWorld()->IsPlayInEditor() &&
+			GEngine
 			)
 		{
 			const FColor TextColor = FColor::Red;
 			const FVector2D TextScale = FVector2D(1.5f, 1.5f);
 
 			// Putting them in reverse order since the first added is actually last on screen
-			GEngine->AddOnScreenDebugMessage(54, 0.0f, TextColor, FString::Printf(TEXT("LeanAngle: %f"), LeanAngle), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(60, 0.0f, TextColor, FString::Printf(TEXT("Rotation Data::LeanAngle: %f"), LeanAngle), false, TextScale);
+
+			GEngine->AddOnScreenDebugMessage(51, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotCardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(50, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotAcceleration2D: %s"), *PivotAcceleration2D.ToString()), false, TextScale);
 			
-			GEngine->AddOnScreenDebugMessage(44, 0.0f, TextColor, FString::Printf(TEXT("Gait: %s"), *StaticEnum<ECLGait>()->GetAuthoredNameStringByValue(static_cast<int64>(Gait))), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(43, 0.0f, TextColor, FString::Printf(TEXT("CardinalDirectionAngle: %f"), CardinalDirectionAngle), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(42, 0.0f, TextColor, FString::Printf(TEXT("PivotCardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(41, 0.0f, TextColor, FString::Printf(TEXT("CardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(CardinalDirection))), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(40, 0.0f, TextColor, FString::Printf(TEXT("MovementMode: %s"), *StaticEnum<ECLPlayerCharacterMovementMode>()->GetAuthoredNameStringByValue(static_cast<int64>(MovementMode))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(43, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::Gait: %s"), *StaticEnum<ECLGait>()->GetAuthoredNameStringByValue(static_cast<int64>(Gait))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(42, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::CardinalDirectionAngle: %f"), CardinalDirectionAngle), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(41, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::CardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(CardinalDirection))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(40, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::MovementMode: %s"), *StaticEnum<ECLPlayerCharacterMovementMode>()->GetAuthoredNameStringByValue(static_cast<int64>(MovementMode))), false, TextScale);
 
-			GEngine->AddOnScreenDebugMessage(32, 0.0f, TextColor, FString::Printf(TEXT("AccelerationAngle: %f"), AccelerationAngle), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(31, 0.0f, TextColor, FString::Printf(TEXT("Accelerating: %d"), bAccelerating), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(30, 0.0f, TextColor, FString::Printf(TEXT("Acceleration: %s"), *Acceleration.ToString()), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(32, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::AccelerationAngle: %f"), AccelerationAngle), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(31, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::Accelerating: %d"), bAccelerating), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(30, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::Acceleration: %s"), *Acceleration.ToString()), false, TextScale);
 			
-			GEngine->AddOnScreenDebugMessage(21, 0.0f, TextColor, FString::Printf(TEXT("FallHeight: %f"), FallHeight), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(20, 0.0f, TextColor, FString::Printf(TEXT("Falling: %d"), bFalling), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(21, 0.0f, TextColor, FString::Printf(TEXT("Fall Data::FallHeight: %f"), FallHeight), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(20, 0.0f, TextColor, FString::Printf(TEXT("Fall Data::Falling: %d"), bFalling), false, TextScale);
 
-			GEngine->AddOnScreenDebugMessage(11, 0.0f, TextColor, FString::Printf(TEXT("Velocity2DSize: %f"), Velocity2DSize), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(10, 0.0f, TextColor, FString::Printf(TEXT("Velocity: %s"), *Velocity.ToString()), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(11, 0.0f, TextColor, FString::Printf(TEXT("Velocity Data::Velocity2DSize: %f"), Velocity2DSize), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(10, 0.0f, TextColor, FString::Printf(TEXT("Velocity Data::Velocity: %s"), *Velocity.ToString()), false, TextScale);
 
-			GEngine->AddOnScreenDebugMessage(1, 0.0f, TextColor, FString::Printf(TEXT("CharacterLocationDeltaSizeXY: %f"), CharacterLocationDeltaSizeXY), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(0, 0.0f, TextColor, FString::Printf(TEXT("CharacterLocation: %s"), *CharacterLocation.ToString()), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(1, 0.0f, TextColor, FString::Printf(TEXT("Location Data::CharacterLocationDeltaSizeXY: %f"), CharacterLocationDeltaSizeXY), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(0, 0.0f, TextColor, FString::Printf(TEXT("Location Data::CharacterLocation: %s"), *CharacterLocation.ToString()), false, TextScale);
 
 			// Draw Direction/Velocity Vector
 			const FVector DebugVectorStart = FVector(CharacterLocation.X, CharacterLocation.Y, CharacterLocation.Z - 60.f);
