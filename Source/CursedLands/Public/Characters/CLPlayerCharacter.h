@@ -13,6 +13,7 @@
 #include "CLPlayerCharacter.generated.h"
 
 enum class ECLPlayerCharacterCameraMode : uint8;
+class UCLCharacterTraversalComponent;
 class UCLManaAttributeSet;
 class UCLStaminaAttributeSet;
 class UGameplayCameraComponent;
@@ -83,6 +84,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Motion Warping", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMotionWarpingComponent> MotionWarping;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Traversal", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCLCharacterTraversalComponent> CharacterTraversal;
 
 	ECLPlayerCharacterCameraMode CameraMode = ECLPlayerCharacterCameraMode::Default;
 	ECLPlayerCharacterMovementMode MovementMode = ECLPlayerCharacterMovementMode::Default;

@@ -15,6 +15,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TraversalSystem/CLCharacterTraversalComponent.h"
 
 ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCLCharacterMovementComponent>(CharacterMovementComponentName))
@@ -40,6 +41,7 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
+	CharacterTraversal = CreateDefaultSubobject<UCLCharacterTraversalComponent>("CharacterTraversal");
 
 	ManaAttributeSet = CreateDefaultSubobject<UCLManaAttributeSet>("ManaAttributeSet");
 	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
