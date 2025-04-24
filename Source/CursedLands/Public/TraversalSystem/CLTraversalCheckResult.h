@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CLTraversableActor.h"
 #include "CLTraversalAction.h"
 #include "CLTraversalCheckResult.generated.h"
 
@@ -15,22 +16,10 @@ struct FCLTraversalCheckResult
 	ECLTraversalAction Action = ECLTraversalAction::None;
 
 	UPROPERTY(BlueprintReadOnly)
-	bool bHasFrontLedge = false;
+	FLedgeCheckResult FrontLedgeCheckResult;
 
 	UPROPERTY(BlueprintReadOnly)
-	FVector FrontLedgeLocation = FVector::ZeroVector;
-
-	UPROPERTY(BlueprintReadOnly)
-	FVector FrontLedgeNormal = FVector::ZeroVector;
-
-	UPROPERTY(BlueprintReadOnly)
-	bool bHasBackLedge = false;
-
-	UPROPERTY(BlueprintReadOnly)
-	FVector BackLedgeLocation = FVector::ZeroVector;
-
-	UPROPERTY(BlueprintReadOnly)
-	FVector BackLedgeNormal = FVector::ZeroVector;
+	FLedgeCheckResult BackLedgeCheckResult;
 
 	UPROPERTY(BlueprintReadOnly)
 	float BackLedgeHeight = 0.f;
@@ -40,6 +29,9 @@ struct FCLTraversalCheckResult
 
 	UPROPERTY(BlueprintReadOnly)
 	FVector BackFloorLocation = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadOnly)
+	float BackFloorHeight = 0.f;
 
 	UPROPERTY(BlueprintReadOnly)
 	float ObstacleHeight = 0.f;

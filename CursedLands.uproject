@@ -42,6 +42,10 @@
 		{
 			"Name": "AVUtilities",
 			"Enabled": true
+		},
+		{
+			"Name": "Chooser",
+			"Enabled": true
 		}
 	]
 }
