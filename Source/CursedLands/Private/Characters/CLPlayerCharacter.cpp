@@ -97,6 +97,19 @@ void ACLPlayerCharacter::UnSprint()
 	GetCLCharacterMovement()->RequestUnSprinting();
 }
 
+bool ACLPlayerCharacter::CanTraverse() const
+{
+	return CharacterTraversal->CanDoTraversalAction();
+}
+
+void ACLPlayerCharacter::Traverse()
+{
+	if (CharacterTraversal->CanDoTraversalAction())
+	{
+		CharacterTraversal->RequestTraversalAction();
+	}
+}
+
 void ACLPlayerCharacter::ApplyFatigue()
 {
 	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))

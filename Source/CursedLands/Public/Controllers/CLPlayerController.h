@@ -34,6 +34,9 @@ private:
 	TObjectPtr<UInputAction> JumpAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> TraverseAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> PauseMenuAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
@@ -53,6 +56,7 @@ private:
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleSprintAction();
 	void RequestJumpAction();
+	void RequestTraverseAction();
 	void RequestPauseMenuAction();
 
 	UFUNCTION(BlueprintCallable, Category = "Menus")

@@ -67,6 +67,9 @@ public:
 	FORCEINLINE bool IsSprinting() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Gait_Sprinting); }
 	void Sprint();
 	void UnSprint();
+	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
+	bool CanTraverse() const;
+	void Traverse();
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeightForMinFallDamage() const { return FallHeightForMinFallDamage; }

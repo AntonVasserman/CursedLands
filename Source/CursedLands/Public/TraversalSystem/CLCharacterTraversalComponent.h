@@ -69,23 +69,17 @@ class CURSEDLANDS_API UCLCharacterTraversalComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	UCLCharacterTraversalComponent();
-
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE bool CanDoTraversalAction() const { return !bDoingTraversalAction; }
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
-	bool TryTraversalAction();
+	void RequestTraversalAction();
 
-	// TODO: Move to private a the end of Cpp migration
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Character Traversal|TODO Temporary Private Logic")
-	FCLTraversalCheckInput CreateTraversalCheckInput() const;
-	UFUNCTION(BlueprintCallable, Category = "Character Traversal|TODO Temporary Private Logic")
-	bool TraceForTraversableObject(const FVector& ActorLocation, FHitResult& OutHit);
-	bool CapsuleTraceToCheckRoomOnLedge(const FVector& StartLocation, const float CapsuleRadius, const float CapsuleHalfHeight,
-		const FVector& LedgeLocation, const FVector& LedgeNormal, FVector& OutEndLocation, FHitResult& OutHit, const bool bDebug = false);
-	//
-	
 private:
+	const FName FrontLedgeWarpTargetName = TEXT("FrontLedge");
+	const FName BackLedgeWarpTargetName = TEXT("BackLedge");
+	const FName BackFloorWarpTargetName = TEXT("BackFloor");
+	const FName DistanceFromLedgeCurveName = TEXT("Distance_From_Ledge");
+	
 	bool bDoingTraversalAction = false;
 
 	UPROPERTY(Transient, DuplicateTransient)
@@ -96,6 +90,17 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Traversal System", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UChooserTable> TraversalAnimMontageChooserTable;
+
+	FCLTraversalCheckInput CreateTraversalCheckInput() const;
+	bool TraceForTraversableObject(const FVector& ActorLocation, FHitResult& OutHit, const bool bDebug);
+	bool CapsuleTraceToCheckRoomOnLedge(const FVector& StartLocation, const float CapsuleRadius, const float CapsuleHalfHeight,
+		const FVector& LedgeLocation, const FVector& LedgeNormal, FVector& OutEndLocation, FHitResult& OutHit, const bool bDebug = false);
+	bool ExecuteTraversalCheck(FCLTraversalCheckResult& OutTraversalCheckResult);
+	void UpdateTraversalAnimMontageWarpTargets(const FCLTraversalCheckResult& TraversalCheckResult);
+	void UpdateTraversalAnimMontageFrontLedgeWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
+	void UpdateTraversalAnimMontageBackLedgeWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
+	void UpdateTraversalAnimMontageBackFloorWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
+	void TraversalActionFinished(const ECLTraversalAction TraversalAction, UPrimitiveComponent* HitComponent);
 	
 	//~ UActorComponent Begin
 public:

@@ -7,9 +7,9 @@
 
 //~ UAnimNotifyState Begin
 
-void UCLAnimNotifyState_ForceBlendOut::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
+void UCLAnimNotifyState_ForceBlendOut::NotifyTick(USkeletalMeshComponent * MeshComp, UAnimSequenceBase * Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime);
+	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 
 	if (Cast<ACLCharacter>(MeshComp->GetOwner()) == nullptr)
 	{
@@ -17,7 +17,7 @@ void UCLAnimNotifyState_ForceBlendOut::NotifyTick(USkeletalMeshComponent* MeshCo
 	}
 
 	UAnimInstance* AnimInstance = MeshComp->GetAnimInstance();
-	UAnimMontage* AnimMontage = Cast<UAnimMontage>(Animation);
+	const UAnimMontage* AnimMontage = Cast<UAnimMontage>(Animation);
 
 	if (AnimMontage == nullptr)
 	{
