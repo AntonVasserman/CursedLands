@@ -6,11 +6,20 @@
 #include "CLAnimInstance.h"
 #include "CLPlayerCharacterAnimInstance.generated.h"
 
+struct FFloatSpringState;
 class ACLPlayerCharacter;
 enum class ECLCardinalDirection : uint8;
 enum class ECLGait : uint8;
 enum class ECLMovementWalkingMode : uint8;
 enum class ECLPlayerCharacterMovementMode : uint8;
+
+UENUM(BlueprintType)
+enum class ECLRootYawOffsetMode : uint8
+{
+	BlendOut	UMETA(DisplayName = "Blend Out"),
+	Hold		UMETA(DisplayName = "Hold"),
+	Accumulate	UMETA(DisplayName = "Accumulate"),
+};
 
 USTRUCT(BlueprintType)
 struct FCLDirectionalAnimation
@@ -86,6 +95,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionAngle;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	float CardinalDirectionAngleWithOffset;
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLCardinalDirection LastCardinalDirection;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLCardinalDirection CardinalDirection;
@@ -103,8 +114,18 @@ protected:
 	float LeanAngle;
 	FRotator PlayerCharacterRotation;
 	float LastYawDelta;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Root Yaw Offset Data", Meta = (AllowPrivateAccess = "true"))
+	float RootYawOffset;
+	UPROPERTY(BlueprintReadWrite, Category = "Root Yaw Offset SM Data", Meta = (AllowPrivateAccess = "true"))
+	ECLRootYawOffsetMode RootYawOffsetMode = ECLRootYawOffsetMode::BlendOut;
+	UPROPERTY(BlueprintReadWrite, Category = "Root Yaw Offset SM Data", Meta = (AllowPrivateAccess = "true"))
+	float TurnYawCurveValue;
 
 private:
+	const FName RootRotationYawCurveName = TEXT("root_rotation_Z");
+	const FName IsTurningCurveName = TEXT("IsTurning");
+	
 	UPROPERTY()
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacter;
 	uint8 bFirstThreadSafeUpdate : 1 = true;
@@ -112,6 +133,10 @@ private:
 	virtual void UpdateFallData() override;
 	void UpdateAccelerationData(const ACLPlayerCharacter* InPlayerCharacter);
 	void UpdateLocomotionData(const ACLPlayerCharacter* InPlayerCharacter);
+	void UpdateRootYawOffset(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter);
+	void SetRootYawOffset(const float InRootYawOffset);
+	UFUNCTION(BlueprintCallable, Category = "Root Yaw Offset", Meta = (AllowPrivateAccess = "true", BlueprintThreadSafe))
+	void ProcessTurnYawCurve();
 
 	// Note that Rotation Data depends on the Locomotion data (on both Gait and Cardinal Direction) 
 	void UpdateRotationData(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter);

@@ -51,12 +51,54 @@ void UCLPlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharact
 {
 	MovementMode = PlayerCharacter->GetMovementMode();
 	CardinalDirectionAngle = InPlayerCharacter->GetCardinalDirectionAngle();
+	CardinalDirectionAngleWithOffset = UKismetMathLibrary::NormalizeAxis(CardinalDirectionAngle - RootYawOffset); 
 	LastCardinalDirection = CardinalDirection;
 	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
 	const ECLGait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
 	bGaitChanged = Gait != NewGait;
 	Gait = NewGait;
 	
+}
+
+void UCLPlayerCharacterAnimInstance::UpdateRootYawOffset(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter)
+{
+	if (RootYawOffsetMode == ECLRootYawOffsetMode::Accumulate)
+	{
+		SetRootYawOffset(RootYawOffset - LastYawDelta);
+	}
+
+	if (RootYawOffsetMode == ECLRootYawOffsetMode::BlendOut)
+	{
+		const float NewRootYawOffset = FMath::FInterpTo(RootYawOffset, 0.f, DeltaSeconds, 10.f);
+		SetRootYawOffset(NewRootYawOffset);
+	}
+	
+	RootYawOffsetMode = ECLRootYawOffsetMode::BlendOut;
+}
+
+void UCLPlayerCharacterAnimInstance::SetRootYawOffset(const float InRootYawOffset)
+{
+	RootYawOffset = UKismetMathLibrary::NormalizeAxis(InRootYawOffset);
+}
+
+void UCLPlayerCharacterAnimInstance::ProcessTurnYawCurve()
+{
+	const float LastTurnYawCurveValue = TurnYawCurveValue;
+	const float IsTurningCurveValue = GetCurveValue(IsTurningCurveName);
+	if (UKismetMathLibrary::NearlyEqual_FloatFloat(IsTurningCurveValue, 0.f))
+	{
+		TurnYawCurveValue = 0.f;
+	}
+	else
+	{
+		const float RootRotationYawCurveValue = GetCurveValue(RootRotationYawCurveName);
+		TurnYawCurveValue = UKismetMathLibrary::SafeDivide(RootRotationYawCurveValue, IsTurningCurveValue);
+		UE_LOG(LogTemp, Warning, TEXT("RootRotationYawCurveValue: %f"), RootRotationYawCurveValue);
+		if (LastTurnYawCurveValue != 0.f)
+		{
+			SetRootYawOffset(RootYawOffset - (TurnYawCurveValue - LastTurnYawCurveValue));
+		}
+	}
 }
 
 void UCLPlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter)
@@ -127,6 +169,7 @@ void UCLPlayerCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float Delta
 	UpdateAccelerationData(PlayerCharacter);
 	UpdateLocomotionData(PlayerCharacter);
 	UpdateRotationData(DeltaSeconds, PlayerCharacter);
+	UpdateRootYawOffset(DeltaSeconds, PlayerCharacter);
 
 	bFirstThreadSafeUpdate = false;
 }
@@ -149,6 +192,9 @@ void UCLPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			const FVector2D TextScale = FVector2D(1.5f, 1.5f);
 
 			// Putting them in reverse order since the first added is actually last on screen
+			GEngine->AddOnScreenDebugMessage(71, 0.0f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffsetMode: %s"), *StaticEnum<ECLRootYawOffsetMode>()->GetAuthoredNameStringByValue(static_cast<int64>(RootYawOffsetMode))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(70, 0.f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffset: %f"), RootYawOffset), false, TextScale);
+			
 			GEngine->AddOnScreenDebugMessage(60, 0.0f, TextColor, FString::Printf(TEXT("Rotation Data::LeanAngle: %f"), LeanAngle), false, TextScale);
 
 			GEngine->AddOnScreenDebugMessage(51, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotCardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);

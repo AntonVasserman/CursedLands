@@ -70,7 +70,9 @@ class CURSEDLANDS_API UCLCharacterTraversalComponent : public UActorComponent
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
-	FORCEINLINE bool CanDoTraversalAction() const { return !bDoingTraversalAction; }
+	FORCEINLINE bool CanDoTraversalAction() const { return !IsDoingTraversalAction(); }
+	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
+	FORCEINLINE bool IsDoingTraversalAction() const { return bDoingTraversalAction; }
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	void RequestTraversalAction();
 
