@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1",
+	"FriendlyName": "AVLevelPrototyping",
+	"Description": "This is a Plugin for Level Prototyping",
+	"Category": "Other",
+	"CreatedBy": "Anton Vasserman",
+	"CreatedByURL": "https://github.com/AntonVasserman",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "5.5.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "AVLevelPrototyping",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
