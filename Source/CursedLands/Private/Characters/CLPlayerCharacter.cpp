@@ -318,8 +318,9 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 		
 		// If character was fully sprinting and current speed got near regular running speed, then disable sprinting.
 		if (
-			bFullySprinting &&
-			UKismetMathLibrary::NearlyEqual_FloatFloat(UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity), GetCLCharacterMovement()->GetGaitSettings(ECLGait::Jogging).MaxWalkingSpeed)
+			(bFullySprinting &&
+			UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) <= GetCLCharacterMovement()->GetGaitSettings(ECLGait::Jogging).MaxWalkingSpeed) ||
+			UKismetMathLibrary::NearlyEqual_FloatFloat(UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity), 0.f)
 			)
 		{
 			UnSprint();
