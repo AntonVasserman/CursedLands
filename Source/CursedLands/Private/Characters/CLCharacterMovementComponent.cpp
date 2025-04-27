@@ -11,6 +11,19 @@ FCLGaitSettings UCLCharacterMovementComponent::GetGaitSettings(const ECLGait InG
 	return GaitSettings.GetSettingsForGait(InGait);
 }
 
+void UCLCharacterMovementComponent::RequestWalking()
+{
+	if (CanWalkInCurrentState())
+	{
+		SetGait(ECLGait::Walking);
+	}
+}
+
+void UCLCharacterMovementComponent::RequestJogging()
+{
+	SetGait(ECLGait::Jogging);
+}
+
 bool UCLCharacterMovementComponent::IsSprinting() const
 {
 	check(PlayerCharacterOwner);

@@ -27,6 +27,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
+	// This action is used only for Keyboard. With a controller we don't toggle walking, it's blended together with jogging
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> ToggleWalkAction;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleSprintAction;
 
@@ -54,6 +58,7 @@ private:
 
 	void RequestMoveAction(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
+	void RequestToggleWalkAction();
 	void RequestToggleSprintAction();
 	void RequestJumpAction();
 	void RequestTraverseAction();

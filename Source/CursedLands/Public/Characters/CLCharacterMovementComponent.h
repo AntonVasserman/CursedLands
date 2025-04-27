@@ -18,8 +18,8 @@ enum ECLCustomMovementMode : uint8
 UENUM(BlueprintType)
 enum class ECLGait : uint8
 {
-	Walking		UMETA(DisplayName = "Walking"),
 	Jogging		UMETA(DisplayName = "Jogging"),
+	Walking		UMETA(DisplayName = "Walking"),
 	Sprinting	UMETA(DisplayName = "Sprinting"),
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGaitChanged, ECLGait, PreviousGait, ECLGait, Gait);
@@ -29,10 +29,13 @@ struct FCLCharacterMovementProperties
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking|Walk")
+	uint8 bCanEverWalk:1 = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking|Sprint")
 	uint8 bCanEverSprint:1 = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking|Sprint")
 	uint8 bStopSprintingOnNotMovingOnGround:1 = false;
 };
 
@@ -86,7 +89,7 @@ struct FCLGaitSettingsCollection
 			return Sprinting;
 		default:
 			checkNoEntry();
-			return Walking;
+			return Jogging;
 		}
 	}
 };
@@ -105,6 +108,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeight() const { return FallHeight; }
 
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	FORCEINLINE bool CanEverWalk() const { return CharacterMovementProps.bCanEverWalk; }
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	FORCEINLINE bool CanWalkInCurrentState() const { return CanEverWalk() && IsMovingOnGround(); }
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	void RequestWalking();
+	
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Jog")
+	void RequestJogging();
+	
 	FORCEINLINE bool CanEverSprint() const { return CharacterMovementProps.bCanEverSprint; }
 	FORCEINLINE bool CanSprintInCurrentState() const { return CanEverSprint() && !Velocity.IsNearlyZero() && IsMovingOnGround(); }
 	bool IsSprinting() const;
@@ -116,7 +129,6 @@ public:
 	void Sprint();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void UnSprint();
-	// TODO (CL-59): Add functions for Walk and UnWalk...
 	
 private:
 	uint8 bWantsToSprint:1 { false };

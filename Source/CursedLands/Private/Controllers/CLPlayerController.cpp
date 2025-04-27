@@ -64,6 +64,18 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 	AddPitchInput(LookAxisVector.Y);
 }
 
+void ACLPlayerController::RequestToggleWalkAction()
+{
+	if (PossessedPlayerCharacter->IsWalking())
+	{
+		PossessedPlayerCharacter->UnWalk();
+	}
+	else if (PossessedPlayerCharacter->CanWalk())
+	{
+		PossessedPlayerCharacter->Walk();
+	}
+}
+
 void ACLPlayerController::RequestToggleSprintAction()
 {
 	if (PossessedPlayerCharacter->IsSprinting())
@@ -185,6 +197,8 @@ void ACLPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestLookAction);
 	checkf(MoveAction, TEXT("MoveAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestMoveAction);
+	checkf(ToggleWalkAction, TEXT("ToggleWalkAction uninitialized in object: %s"), *GetFullName());
+	EnhancedInputComponent->BindAction(ToggleWalkAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestToggleWalkAction);
 	checkf(ToggleSprintAction, TEXT("ToggleSprintAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(ToggleSprintAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestToggleSprintAction);
 	checkf(JumpAction, TEXT("JumpAction uninitialized in object: %s"), *GetFullName())

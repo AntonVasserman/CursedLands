@@ -63,6 +63,38 @@ void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode In
 	}
 }
 
+bool ACLPlayerCharacter::CanWalk() const
+{
+	if (
+		!CanMove() || IsWalking() || // Basic check
+		!GetCLCharacterMovement()->CanWalkInCurrentState() // CMC check
+		)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void ACLPlayerCharacter::Walk()
+{
+	if (CanWalk())
+	{
+		GetCLCharacterMovement()->RequestWalking();
+	}
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
+	else if (!GetCLCharacterMovement()->CanEverWalk())
+	{
+		UE_LOG(LogCL, Warning, TEXT("%s is trying to walk, but walking is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
+	}
+#endif
+}
+
+void ACLPlayerCharacter::UnWalk()
+{
+	GetCLCharacterMovement()->RequestJogging();
+}
+
 bool ACLPlayerCharacter::CanSprint() const
 {
 	if (
@@ -128,6 +160,11 @@ void ACLPlayerCharacter::OnGaitChanged(ECLGait PreviousGait, ECLGait Gait)
 {
 	SetGaitTag(PreviousGait, false);
 	SetGaitTag(Gait, true);
+
+	if (PreviousGait == ECLGait::Sprinting && Gait != ECLGait::Sprinting)
+	{
+		bFullySprinting = false;
+	}
 }
 
 void ACLPlayerCharacter::PlayFallToRollAnimMontage()
@@ -273,8 +310,17 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 	
 	if (IsSprinting())
 	{
-		// If current speed is lower than regular running speed minus some delta then turn of sprinting
-		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) < GetCLCharacterMovement()->GetGaitSettings(ECLGait::Jogging).MaxWalkingSpeed - 0.1f)
+		// Check if character reached maximum sprinting speed
+		if (UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity) == GetCLCharacterMovement()->GetGaitSettings(ECLGait::Sprinting).MaxWalkingSpeed)
+		{
+			bFullySprinting = true;
+		}
+		
+		// If character was fully sprinting and current speed got near regular running speed, then disable sprinting.
+		if (
+			bFullySprinting &&
+			UKismetMathLibrary::NearlyEqual_FloatFloat(UKismetMathLibrary::VSizeXY(GetCharacterMovement()->Velocity), GetCLCharacterMovement()->GetGaitSettings(ECLGait::Jogging).MaxWalkingSpeed)
+			)
 		{
 			UnSprint();
 		}

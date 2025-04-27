@@ -60,12 +60,23 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement")
 	FORCEINLINE UCLCharacterMovementComponent* GetCLCharacterMovement() const { return CastChecked<UCLCharacterMovementComponent>(GetCharacterMovement()); }
+
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	bool CanWalk() const;
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	FORCEINLINE bool IsWalking() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Gait_Walking); }
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	void Walk();
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
+	void UnWalk();
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	bool CanSprint() const;
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	FORCEINLINE bool IsSprinting() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Gait_Sprinting); }
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void Sprint();
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void UnSprint();
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
@@ -140,6 +151,7 @@ private:
 
 	float CardinalDirectionAngle = 0.f;
 	ECLCardinalDirection CardinalDirection = ECLCardinalDirection::Forward;
+	bool bFullySprinting = false;
 
 	void ApplyFatigue();
 	UFUNCTION()
