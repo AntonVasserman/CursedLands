@@ -54,6 +54,7 @@ void UCLPlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharact
 	CardinalDirectionAngleWithOffset = UKismetMathLibrary::NormalizeAxis(CardinalDirectionAngle - RootYawOffset); 
 	LastCardinalDirection = CardinalDirection;
 	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
+	Stance = InPlayerCharacter->GetCLCharacterMovement()->GetStance();
 	const ECLGait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
 	bGaitChanged = Gait != NewGait;
 	Gait = NewGait;

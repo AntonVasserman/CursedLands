@@ -66,7 +66,7 @@ void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode In
 bool ACLPlayerCharacter::CanWalk() const
 {
 	if (
-		!CanMove() || IsWalking() || // Basic check
+		!CanMove() || !IsStanding() || IsWalking() || // Basic check
 		!GetCLCharacterMovement()->CanWalkInCurrentState() // CMC check
 		)
 	{
@@ -98,7 +98,7 @@ void ACLPlayerCharacter::UnWalk()
 bool ACLPlayerCharacter::CanSprint() const
 {
 	if (
-		!CanMove() || IsSprinting() || // Basic check
+		!CanMove() || !IsStanding() || IsSprinting() || // Basic check
 		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
 		GetStaminaAttributeSet()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
 		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
@@ -156,7 +156,13 @@ void ACLPlayerCharacter::ApplyFatigue()
 	}
 }
 
-void ACLPlayerCharacter::OnGaitChanged(ECLGait PreviousGait, ECLGait Gait)
+void ACLPlayerCharacter::OnStanceChanged(const ECLStance PreviousStance, const ECLStance Stance)
+{
+	SetStanceTag(PreviousStance, false);
+	SetStanceTag(Stance, true);
+}
+
+void ACLPlayerCharacter::OnGaitChanged(const ECLGait PreviousGait, const ECLGait Gait)
 {
 	SetGaitTag(PreviousGait, false);
 	SetGaitTag(Gait, true);
@@ -182,6 +188,18 @@ void ACLPlayerCharacter::PlayFallToDeathAnimMontage()
 	checkf(FallToDeathAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToDeathAnimMontage), *GetFullName());
 	GetAnimInstance()->Montage_Play(FallToDeathAnimMontage);
 	GetAnimInstance()->Montage_JumpToSection(FallToDeathAnimMontage_SectionName_Impact, FallToDeathAnimMontage);
+}
+
+void ACLPlayerCharacter::SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const
+{
+	if (GetAbilitySystemComponent())
+	{
+		if (const FGameplayTag* StanceTag = CLGameplayTags::StanceTagMap.Find(InStance);
+			StanceTag && StanceTag->IsValid())
+		{
+			GetAbilitySystemComponent()->SetLooseGameplayTagCount(*StanceTag, bTagEnabled ? 1 : 0);
+		}
+	}
 }
 
 void ACLPlayerCharacter::SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const
@@ -283,6 +301,7 @@ void ACLPlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	GetCLCharacterMovement()->OnStanceChanged.AddDynamic(this, &ACLPlayerCharacter::OnStanceChanged);
 	GetCLCharacterMovement()->OnGaitChanged.AddDynamic(this, &ACLPlayerCharacter::OnGaitChanged);
 	
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(

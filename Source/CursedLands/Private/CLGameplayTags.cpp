@@ -45,6 +45,15 @@ namespace CLGameplayTags
 		// Placeholder for Custom Movement Modes to Tags mapping
 	};
 
+	// Locomotion Stance Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Stance_Standing, "Locomotion.Stance.Standing", "Stance tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Stance_Crouching, "Locomotion.Stance.Crouching", "Stance tag")
+	const TMap<ECLStance, FGameplayTag> StanceTagMap =
+	{
+		{ ECLStance::Standing, Locomotion_Stance_Standing },
+		{ ECLStance::Crouching, Locomotion_Stance_Crouching }
+	};
+	
 	// Locomotion Gait Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Walking, "Locomotion.Gait.Walking", "Gait tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Jogging, "Locomotion.Gait.Jogging", "Gait tag")

@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
 
+enum class ECLStance : uint8;
 enum class ECLGait : uint8;
 
 namespace CLGameplayTags
@@ -36,6 +37,11 @@ namespace CLGameplayTags
 	// Custom Movement Modes Tags
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
 
+	// Locomotion Stance Tags
+	CURSEDLANDS_API extern const TMap<ECLStance, FGameplayTag> StanceTagMap;
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Stance_Standing);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Stance_Crouching);
+	
 	// Locomotion Gait Tags
 	CURSEDLANDS_API extern const TMap<ECLGait, FGameplayTag> GaitTagMap;
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Walking);

@@ -61,6 +61,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character Movement")
 	FORCEINLINE UCLCharacterMovementComponent* GetCLCharacterMovement() const { return CastChecked<UCLCharacterMovementComponent>(GetCharacterMovement()); }
 
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Stance|Stand")
+	FORCEINLINE bool IsStanding() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Stance_Standing); }
+	UFUNCTION(BlueprintCallable, Category = "Character Movement|Stance|Crouch")
+	FORCEINLINE bool IsCrouching() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Stance_Crouching); }
+	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
 	bool CanWalk() const;
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
@@ -69,7 +74,7 @@ public:
 	void Walk();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
 	void UnWalk();
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	bool CanSprint() const;
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
@@ -155,9 +160,12 @@ private:
 
 	void ApplyFatigue();
 	UFUNCTION()
+	void OnStanceChanged(ECLStance PreviousStance, ECLStance Stance);
+	UFUNCTION()
 	void OnGaitChanged(ECLGait PreviousGait, ECLGait Gait);
 	void PlayFallToRollAnimMontage();
 	void PlayFallToDeathAnimMontage();
+	void SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const;
 	void SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const;
 	void UpdateCardinalDirectionAngle();
 	void UpdateCardinalDirection();

@@ -35,6 +35,9 @@ private:
 	TObjectPtr<UInputAction> ToggleSprintAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> ToggleCrouchAction;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> JumpAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
@@ -60,6 +63,7 @@ private:
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleWalkAction();
 	void RequestToggleSprintAction();
+	void RequestToggleCrouchAction();
 	void RequestJumpAction();
 	void RequestTraverseAction();
 	void RequestPauseMenuAction();

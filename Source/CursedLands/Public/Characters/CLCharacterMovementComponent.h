@@ -16,10 +16,18 @@ enum ECLCustomMovementMode : uint8
 };
 
 UENUM(BlueprintType)
+enum class ECLStance : uint8
+{
+	Standing	UMETA(DisplayName = "Standing"),
+	Crouching	UMETA(DisplayName = "Crouching"),
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStanceChanged, ECLStance, PreviousStance, ECLStance, Stance);
+
+UENUM(BlueprintType)
 enum class ECLGait : uint8
 {
-	Jogging		UMETA(DisplayName = "Jogging"),
 	Walking		UMETA(DisplayName = "Walking"),
+	Jogging		UMETA(DisplayName = "Jogging"),
 	Sprinting	UMETA(DisplayName = "Sprinting"),
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGaitChanged, ECLGait, PreviousGait, ECLGait, Gait);
@@ -100,8 +108,10 @@ class CURSEDLANDS_API UCLCharacterMovementComponent : public UCharacterMovementC
 	GENERATED_BODY()
 	
 public:
+	FOnStanceChanged OnStanceChanged;
 	FOnGaitChanged OnGaitChanged;
 
+	FORCEINLINE ECLStance GetStance() const { return Stance; }
 	FORCEINLINE ECLGait GetGait() const { return Gait; }
 	FCLGaitSettings GetGaitSettings(const ECLGait InGait) const;
 	
@@ -120,7 +130,6 @@ public:
 	
 	FORCEINLINE bool CanEverSprint() const { return CharacterMovementProps.bCanEverSprint; }
 	FORCEINLINE bool CanSprintInCurrentState() const { return CanEverSprint() && !Velocity.IsNearlyZero() && IsMovingOnGround(); }
-	bool IsSprinting() const;
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void RequestSprinting();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
@@ -135,6 +144,9 @@ private:
 	
 	UPROPERTY(Transient, DuplicateTransient)
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacterOwner;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion", Meta = (AllowPrivateAccess))
+	ECLStance Stance = ECLStance::Standing;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion", Meta = (AllowPrivateAccess))
 	ECLGait Gait = ECLGait::Jogging;
@@ -152,11 +164,15 @@ private:
 	float GetMaxCustomSpeed() const;
 	FORCEINLINE bool IsCustomMovementMode(const ECLCustomMovementMode InCustomMovementMode) const { return MovementMode == MOVE_Custom && CustomMovementMode == InCustomMovementMode; }
 	FORCEINLINE void SetCustomMovementMode(const ECLCustomMovementMode InNewCustomMovementMode) { SetMovementMode(MOVE_Custom, InNewCustomMovementMode); }
+	void SetStance(const ECLStance InStance);
 	void SetGait(const ECLGait InGait);
 	
 	//~ UCharacterMovementComponent Begin
 public:
 	virtual void BeginPlay() override;
+	virtual bool IsCrouching() const override;
+	virtual void Crouch(bool bClientSimulation = false) override;
+	virtual void UnCrouch(bool bClientSimulation = false) override;
 	virtual float GetMaxSpeed() const override;
 	virtual void PostLoad() override;
 	virtual void SetUpdatedComponent(USceneComponent* NewUpdatedComponent) override;

@@ -6,6 +6,7 @@
 #include "CLAnimInstance.h"
 #include "CLPlayerCharacterAnimInstance.generated.h"
 
+enum class ECLStance : uint8;
 struct FFloatSpringState;
 class ACLPlayerCharacter;
 enum class ECLCardinalDirection : uint8;
@@ -100,6 +101,8 @@ protected:
 	ECLCardinalDirection LastCardinalDirection;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLCardinalDirection CardinalDirection;
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	ECLStance Stance;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bGaitChanged;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))

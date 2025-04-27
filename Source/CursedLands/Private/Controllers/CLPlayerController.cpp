@@ -66,6 +66,12 @@ void ACLPlayerController::RequestLookAction(const FInputActionValue& InValue)
 
 void ACLPlayerController::RequestToggleWalkAction()
 {
+	// In Crouching Stance the default is Walking, so we don't support toggling out of it
+	if (PossessedPlayerCharacter->IsCrouching())
+	{
+		return;
+	}
+	
 	if (PossessedPlayerCharacter->IsWalking())
 	{
 		PossessedPlayerCharacter->UnWalk();
@@ -85,6 +91,18 @@ void ACLPlayerController::RequestToggleSprintAction()
 	else if (PossessedPlayerCharacter->CanSprint())
 	{
 		PossessedPlayerCharacter->Sprint();
+	}
+}
+
+void ACLPlayerController::RequestToggleCrouchAction()
+{
+	if (PossessedPlayerCharacter->IsCrouching())
+	{
+		PossessedPlayerCharacter->UnCrouch();
+	}
+	else if (PossessedPlayerCharacter->CanCrouch())
+	{
+		PossessedPlayerCharacter->Crouch();
 	}
 }
 
@@ -197,6 +215,8 @@ void ACLPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestLookAction);
 	checkf(MoveAction, TEXT("MoveAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestMoveAction);
+	checkf(ToggleCrouchAction, TEXT("ToggleCrouchAction uninitialized in object: %s"), *GetFullName());
+	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestToggleCrouchAction);
 	checkf(ToggleWalkAction, TEXT("ToggleWalkAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(ToggleWalkAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestToggleWalkAction);
 	checkf(ToggleSprintAction, TEXT("ToggleSprintAction uninitialized in object: %s"), *GetFullName());

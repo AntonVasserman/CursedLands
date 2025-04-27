@@ -24,12 +24,6 @@ void UCLCharacterMovementComponent::RequestJogging()
 	SetGait(ECLGait::Jogging);
 }
 
-bool UCLCharacterMovementComponent::IsSprinting() const
-{
-	check(PlayerCharacterOwner);
-	return Gait == ECLGait::Sprinting;
-}
-
 void UCLCharacterMovementComponent::RequestSprinting()
 {
 	bWantsToSprint = true;
@@ -66,6 +60,14 @@ float UCLCharacterMovementComponent::GetMaxCustomSpeed() const
 	}
 }
 
+void UCLCharacterMovementComponent::SetStance(const ECLStance InStance)
+{
+	const ECLStance PrevStance = Stance;
+	Stance = InStance;
+
+	OnStanceChanged.Broadcast(PrevStance, Stance);
+}
+
 void UCLCharacterMovementComponent::SetGait(const ECLGait InGait)
 {
 	const ECLGait PrevGait = Gait;
@@ -73,7 +75,7 @@ void UCLCharacterMovementComponent::SetGait(const ECLGait InGait)
 
 	// Update CMC Settings
 	const FCLGaitSettings InGaitSettings = GaitSettings.GetSettingsForGait(Gait);
-	MaxWalkSpeed = InGaitSettings.MaxWalkingSpeed;
+	MaxWalkSpeed = MaxWalkSpeedCrouched = InGaitSettings.MaxWalkingSpeed;
 	MaxAcceleration = InGaitSettings.MaxAcceleration;
 	BrakingDecelerationWalking = InGaitSettings.BrakingDeceleration;
 	BrakingFrictionFactor = InGaitSettings.BrakingFrictionFactor;
@@ -89,8 +91,30 @@ void UCLCharacterMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetStance(Stance);
 	// When game begin Set Gait to the default value, this will populate all the relevant fields and run any relevant callbacks
 	SetGait(Gait);
+}
+
+bool UCLCharacterMovementComponent::IsCrouching() const
+{
+	return Super::IsCrouching() && Stance == ECLStance::Crouching;
+}
+
+void UCLCharacterMovementComponent::Crouch(bool bClientSimulation)
+{
+	Super::Crouch(bClientSimulation);
+
+	SetStance(ECLStance::Crouching);
+	SetGait(ECLGait::Walking); // Walking is the default Crouching Gait
+}
+
+void UCLCharacterMovementComponent::UnCrouch(bool bClientSimulation)
+{
+	Super::UnCrouch(bClientSimulation);
+
+	SetStance(ECLStance::Standing);
+	SetGait(ECLGait::Jogging); // Jogging is the default Standing Gait
 }
 
 float UCLCharacterMovementComponent::GetMaxSpeed() const
@@ -128,7 +152,7 @@ void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float Del
 	// The Super logic is relevant only for out of the box crouching
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
 
-	if (IsSprinting())
+	if (Gait == ECLGait::Sprinting)
 	{
 		if (!bWantsToSprint)
 		{
