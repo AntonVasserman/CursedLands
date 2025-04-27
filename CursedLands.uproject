@@ -46,6 +46,10 @@
 		{
 			"Name": "Chooser",
 			"Enabled": true
+		},
+		{
+			"Name": "AVLevelPrototyping",
+			"Enabled": true
 		}
 	]
 }
