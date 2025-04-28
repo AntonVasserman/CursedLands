@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+// TODO: Check if there is a better solution than ANS_Exit
 // TODO: Change Traverse Input after research
 // TODO: Traverse while sprinting should be automatic?
 // TODO (CL-73): Cut Sprint Start and Stop animations
