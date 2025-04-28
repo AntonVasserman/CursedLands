@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+// TODO: Add back footspeed curves and add them to the 'Foot Placement' node in AnimGraphBase
 // TODO: Check if there is a better solution than ANS_Exit
 // TODO: Change Traverse Input after research
 // TODO: Traverse while sprinting should be automatic?
