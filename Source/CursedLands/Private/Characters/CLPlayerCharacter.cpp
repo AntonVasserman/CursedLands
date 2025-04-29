@@ -68,6 +68,7 @@ bool ACLPlayerCharacter::CanWalk() const
 {
 	if (
 		!CanMove() || !IsStanding() || IsWalking() || // Basic check
+		GetCharacterTraversal()->IsDoingTraversalAction() || // If player is occupied (traversing) it can't walk
 		!GetCLCharacterMovement()->CanWalkInCurrentState() // CMC check
 		)
 	{
@@ -100,6 +101,7 @@ bool ACLPlayerCharacter::CanSprint() const
 {
 	if (
 		!CanMove() || !IsStanding() || IsSprinting() || // Basic check
+		GetCharacterTraversal()->IsDoingTraversalAction() || // If player is occupied (traversing) it can't sprint
 		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
 		GetStaminaAttributeSet()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
 		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
@@ -280,6 +282,27 @@ void ACLPlayerCharacter::UpdateCardinalDirection()
 	{
 		CardinalDirection = ECLCardinalDirection::Left;
 	}
+}
+
+void ACLPlayerCharacter::Crouch(bool bClientSimulation)
+{
+	if (!CanCrouch())
+	{
+		return;
+	}
+
+	if (IsSprinting())
+	{
+		UnSprint();
+	}
+	
+	Super::Crouch(bClientSimulation);
+}
+
+bool ACLPlayerCharacter::CanCrouch() const
+{
+	return Super::CanCrouch() &&
+		!GetCharacterTraversal()->IsDoingTraversalAction(); // Check the player isn't occupied (not traversing)
 }
 
 //~ ACLCharacter Begin

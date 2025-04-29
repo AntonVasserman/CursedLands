@@ -176,6 +176,8 @@ private:
 
 	//~ ACLCharacter Begin
 public:
+	virtual void Crouch(bool bClientSimulation = false) override;
+	virtual bool CanCrouch() const override;
 	virtual void Landed(const FHitResult& Hit) override;
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaSeconds) override;

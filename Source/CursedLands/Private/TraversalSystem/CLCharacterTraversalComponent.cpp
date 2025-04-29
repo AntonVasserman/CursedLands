@@ -77,8 +77,8 @@ void UCLCharacterTraversalComponent::RequestSlidingAction()
 	}
 
 	OwnerMotionWarpingComponent->AddOrUpdateWarpTargetFromLocation(SlideEndLocationWarpTargetName, SlidingCheckResult.SlideEndLocation);
+	checkf(SlidingAnimMontage, TEXT("SlidingAnimMontage uninitialized in object: %s"), *GetFullName());
 	CharacterOwner->GetMesh()->GetAnimInstance()->Montage_Play(SlidingAnimMontage, 1.f, EMontagePlayReturnType::Duration, 0.f);
-	float PreviousHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 
 	FOnMontageBlendingOutStarted SlidingMontageBlendingOutStartedDelegate;
 	SlidingMontageBlendingOutStartedDelegate.BindWeakLambda(this, [this, SlidingCheckResult](UAnimMontage* Montage, bool bInterrupted)
@@ -277,7 +277,8 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	
 	TraversalChooserContext.AddStructParam<FCLTraversalChooserInput>(TraversalChooserInput);
 	TraversalChooserContext.AddStructParam<FCLTraversalChooserOutput>(TraversalChooserOutput);
-	
+
+	checkf(TraversalAnimMontageChooserTable, TEXT("TraversalAnimMontageChooserTable uninitialized in object: %s"), *GetFullName());
 	UObject* ChooserResult = UChooserFunctionLibrary::EvaluateObjectChooserBase(TraversalChooserContext, UChooserFunctionLibrary::MakeEvaluateChooser(TraversalAnimMontageChooserTable.Get()), UAnimMontage::StaticClass());
 	UAnimMontage* TraversalAnimMontage = Cast<UAnimMontage>(ChooserResult);
 	checkf(TraversalAnimMontage, TEXT("%s failed to choose TraversalAnimMontage!"), *GetName());
@@ -449,8 +450,6 @@ bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& 
 
 void UCLCharacterTraversalComponent::SlidingActionFinished(const FCLSlidingCheckResult& SlidingCheckResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UCLCharacterTraversalComponent::SlidingActionFinished"));
-	
 	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(InitialCapsuleHalfHeight);
 	bDoingTraversalAction = false;
 	CurrentInProgressTraversalAction = ECLTraversalAction::None;
