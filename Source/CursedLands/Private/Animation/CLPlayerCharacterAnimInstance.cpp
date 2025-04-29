@@ -9,6 +9,7 @@
 #include "KismetAnimationLibrary.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TraversalSystem/CLCharacterTraversalComponent.h"
 
 static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
 	TEXT("CLShowDebug.PlayerCharacterAnimInstance"),
@@ -39,6 +40,12 @@ void UCLPlayerCharacterAnimInstance::UpdateFallData()
 	FallHeight = PlayerCharacter->GetCLCharacterMovement()->GetFallHeight();
 }
 
+void UCLPlayerCharacterAnimInstance::UpdateTraversalData()
+{
+	bFinishedTraversalAction = bDoingTraverseAction == true && PlayerCharacter->GetCharacterTraversal()->IsDoingTraversalAction() == false;
+	bDoingTraverseAction = PlayerCharacter->GetCharacterTraversal()->IsDoingTraversalAction();
+}
+
 void UCLPlayerCharacterAnimInstance::UpdateAccelerationData(const ACLPlayerCharacter* InPlayerCharacter)
 {
 	Acceleration = InPlayerCharacter->GetCharacterMovement()->GetCurrentAcceleration();
@@ -56,6 +63,8 @@ void UCLPlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharact
 	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
 	const ECLStance NewStance = InPlayerCharacter->GetCLCharacterMovement()->GetStance();
 	bStanceChanged = Stance != NewStance;
+	// Stance transition when it was changed but not as an effect of a Traversal action
+	bStanceTransition = bStanceChanged && !bFinishedTraversalAction;
 	Stance = NewStance;
 	const ECLGait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
 	bGaitChanged = Gait != NewGait;
@@ -168,7 +177,8 @@ void UCLPlayerCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float Delta
 	{
 		return;
 	}
-	
+
+	UpdateTraversalData();
 	UpdateAccelerationData(PlayerCharacter);
 	UpdateLocomotionData(PlayerCharacter);
 	UpdateRotationData(DeltaSeconds, PlayerCharacter);

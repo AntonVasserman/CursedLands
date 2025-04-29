@@ -106,6 +106,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bStanceChanged;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	bool bStanceTransition;
+	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECLGait Gait;
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bGaitChanged;
@@ -127,6 +129,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Root Yaw Offset SM Data", Meta = (AllowPrivateAccess = "true"))
 	float TurnYawCurveValue;
 
+	bool bDoingTraverseAction;
+	bool bFinishedTraversalAction;
+
 private:
 	const FName RootRotationYawCurveName = TEXT("root_rotation_Z");
 	const FName IsTurningCurveName = TEXT("IsTurning");
@@ -136,6 +141,7 @@ private:
 	uint8 bFirstThreadSafeUpdate : 1 = true;
 
 	virtual void UpdateFallData() override;
+	void UpdateTraversalData();
 	void UpdateAccelerationData(const ACLPlayerCharacter* InPlayerCharacter);
 	void UpdateLocomotionData(const ACLPlayerCharacter* InPlayerCharacter);
 	void UpdateRootYawOffset(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter);
