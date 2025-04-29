@@ -25,6 +25,11 @@ static TAutoConsoleVariable CVarShowDebugCLCharacterTraversal(
 	TEXT("Shows the Debug information of the CLCharacterTraversalComponent class"),
 	ECVF_Default);
 
+UCLCharacterTraversalComponent::UCLCharacterTraversalComponent()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
 void UCLCharacterTraversalComponent::RequestTraversalAction()
 {
 	FCLTraversalCheckResult TraversalCheckResult;
@@ -97,8 +102,6 @@ void UCLCharacterTraversalComponent::RequestSlidingAction()
 
 	bDoingTraversalAction = true;
 	CurrentInProgressTraversalAction = ECLTraversalAction::Slide;
-	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(SlidingHalfHeight);
-	CharacterOwner->GetCapsuleComponent()->AddLocalOffset(FVector(0.f, 0.f, SlidingHalfHeight - PreviousHalfHeight));
 }
 
 FCLTraversalCheckInput UCLCharacterTraversalComponent::CreateTraversalCheckInput() const
@@ -393,41 +396,51 @@ bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& 
 		CVarShowDebugCLCharacterTraversal->GetBool() &&
 		GetWorld() && GetWorld()->IsPlayInEditor();
 
-	// Get basic values for use throughout the function
-	const FVector ActorLocation = CharacterOwner->GetActorLocation();
-	const float CapsuleRadius = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
-	const float CapsuleHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	const float CrouchCapsuleHalfHeight = CharacterOwner->GetCharacterMovement()->GetCrouchedHalfHeight();
+	const FVector CharacterLocation = CharacterOwner->GetActorLocation();
+	const float CharacterRadius = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const float CharacterHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	const float CharacterCrouchCapsuleHalfHeight = CharacterOwner->GetCharacterMovement()->GetCrouchedHalfHeight();
 
-	const FVector TraceStart = ActorLocation - FVector(0.f, 0.f, CapsuleHalfHeight - SlidingHalfHeight);
+	const FVector TraceStart = CharacterLocation - FVector(0.f, 0.f, CharacterHalfHeight - SlidingHalfHeight);
 	const FVector SlidePathTraceEnd = TraceStart + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance;
 	const EDrawDebugTrace::Type DebugType = bDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
 
-	// First trace to see if we can Slide to Stand
+	// Check if we have enough room to Slide
 	FHitResult OutHit;
-	if (UKismetSystemLibrary::CapsuleTraceSingle(this, TraceStart, SlidePathTraceEnd, CapsuleRadius, SlidingHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	if (UKismetSystemLibrary::CapsuleTraceSingle(this, TraceStart, SlidePathTraceEnd, CharacterRadius, SlidingHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
 	{
 		return false;
 	}
-
-	const FVector StandTraceEnd = ActorLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance;
-	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, StandTraceEnd, StandTraceEnd, CapsuleRadius, CapsuleHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	
+	// Check if we can slide to Fall
+	const FVector FallTraceEnd = CharacterLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance - FVector(0.f, 0.f, 2.f * CharacterHalfHeight);
+	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, FallTraceEnd, FallTraceEnd, CharacterRadius, CharacterHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
 	{
 		OutSlidingCheckResult.SlideEndStance = ECLStance::Standing;
-		OutSlidingCheckResult.SlideEndLocation = StandTraceEnd - FVector(0.f, 0.f, CapsuleHalfHeight);
+		OutSlidingCheckResult.SlideEndLocation = CharacterLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance - FVector(0.f, 0.f, CharacterHalfHeight);
+		return true;
+	}
+	
+	// Check if we can slide to Stand
+	const FVector StandTraceEnd = CharacterLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance;
+	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, StandTraceEnd, StandTraceEnd, CharacterRadius, CharacterHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	{
+		OutSlidingCheckResult.SlideEndStance = ECLStance::Standing;
+		OutSlidingCheckResult.SlideEndLocation = StandTraceEnd - FVector(0.f, 0.f, CharacterHalfHeight);
 		return true;
 	}
 
+	// Check if we can slide to Crouch
 	if (!CharacterOwner->CanCrouch())
 	{
 		return false;
 	}
 	
-	const FVector CrouchTraceEnd = ActorLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance - FVector(0.f, 0.f, CapsuleHalfHeight - CrouchCapsuleHalfHeight);
-	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, CrouchTraceEnd, CrouchTraceEnd, CapsuleRadius, CrouchCapsuleHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	const FVector CrouchTraceEnd = CharacterLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance - FVector(0.f, 0.f, CharacterHalfHeight - CharacterCrouchCapsuleHalfHeight);
+	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, CrouchTraceEnd, CrouchTraceEnd, CharacterRadius, CharacterCrouchCapsuleHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
 	{
 		OutSlidingCheckResult.SlideEndStance = ECLStance::Crouching;
-		OutSlidingCheckResult.SlideEndLocation = CrouchTraceEnd - FVector(0.f, 0.f, CrouchCapsuleHalfHeight);
+		OutSlidingCheckResult.SlideEndLocation = CrouchTraceEnd - FVector(0.f, 0.f, CharacterCrouchCapsuleHalfHeight);
 		return true;
 	}
 	
@@ -438,10 +451,10 @@ void UCLCharacterTraversalComponent::SlidingActionFinished(const FCLSlidingCheck
 {
 	UE_LOG(LogTemp, Warning, TEXT("UCLCharacterTraversalComponent::SlidingActionFinished"));
 	
-	CharacterOwner->GetCapsuleComponent()->AddLocalOffset(FVector(0.f, 0.f, InitialCapsuleHalfHeight - SlidingHalfHeight));
 	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(InitialCapsuleHalfHeight);
 	bDoingTraversalAction = false;
 	CurrentInProgressTraversalAction = ECLTraversalAction::None;
+	CurrentInProgressTraversalActionDuration = 0;
 
 	switch (SlidingCheckResult.SlideEndStance)
 	{
@@ -470,6 +483,21 @@ void UCLCharacterTraversalComponent::BeginPlay()
 	// Check that the owner actor has the required dependency components
 	OwnerMotionWarpingComponent = CharacterOwner->FindComponentByClass<UMotionWarpingComponent>();
 	checkf(OwnerMotionWarpingComponent, TEXT("%s needs to have a MotionWarpingComponent for CharacterTraversalComponent function properly!"), *CharacterOwner->GetName());
+}
+
+void UCLCharacterTraversalComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (bDoingTraversalAction && CurrentInProgressTraversalAction == ECLTraversalAction::Slide)
+	{
+		CurrentInProgressTraversalActionDuration += DeltaTime;
+		
+		float StandToSlideAlpha;
+		UAnimationWarpingLibrary::GetCurveValueFromAnimation(SlidingAnimMontage, StandToSlideAlphaCurveName, CurrentInProgressTraversalActionDuration, StandToSlideAlpha);
+		const float NewHalfHeight = FMath::Lerp(InitialCapsuleHalfHeight, SlidingHalfHeight, 1.f - StandToSlideAlpha);
+		CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(NewHalfHeight);
+	}
 }
 
 //~ UActorComponent End

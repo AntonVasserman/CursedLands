@@ -70,6 +70,8 @@ class CURSEDLANDS_API UCLCharacterTraversalComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	UCLCharacterTraversalComponent();
+	
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE bool CanDoTraversalAction() const { return !IsDoingTraversalAction(); }
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
@@ -91,6 +93,7 @@ private:
 	
 	bool bDoingTraversalAction = false;
 	ECLTraversalAction CurrentInProgressTraversalAction = ECLTraversalAction::None;
+	float CurrentInProgressTraversalActionDuration = 0.f;
 	float InitialCapsuleHalfHeight = 0.f;
 
 	UPROPERTY(Transient, DuplicateTransient)
@@ -124,5 +127,6 @@ private:
 public:
 	UFUNCTION()
 	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//~ UActorComponent End
 };
