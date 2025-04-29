@@ -90,6 +90,7 @@ private:
 	const float SlidingTraceDistance = 500.f;
 	
 	bool bDoingTraversalAction = false;
+	ECLTraversalAction CurrentInProgressTraversalAction = ECLTraversalAction::None;
 	float InitialCapsuleHalfHeight = 0.f;
 
 	UPROPERTY(Transient, DuplicateTransient)
@@ -109,6 +110,8 @@ private:
 	bool CapsuleTraceToCheckRoomOnLedge(const FVector& StartLocation, const float CapsuleRadius, const float CapsuleHalfHeight,
 		const FVector& LedgeLocation, const FVector& LedgeNormal, FVector& OutEndLocation, FHitResult& OutHit, const bool bDebug = false);
 	bool ExecuteTraversalCheck(FCLTraversalCheckResult& OutTraversalCheckResult);
+	UFUNCTION()
+	void OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode);
 	void UpdateTraversalAnimMontageWarpTargets(const FCLTraversalCheckResult& TraversalCheckResult);
 	void UpdateTraversalAnimMontageFrontLedgeWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
 	void UpdateTraversalAnimMontageBackLedgeWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
@@ -119,6 +122,7 @@ private:
 	
 	//~ UActorComponent Begin
 public:
+	UFUNCTION()
 	virtual void BeginPlay() override;
 	//~ UActorComponent End
 };

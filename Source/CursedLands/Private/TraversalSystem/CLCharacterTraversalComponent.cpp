@@ -58,6 +58,7 @@ void UCLCharacterTraversalComponent::RequestTraversalAction()
 	CharacterOwner->GetMesh()->GetAnimInstance()->Montage_SetEndDelegate(TraversalMontageEndedDelegate, TraversalCheckResult.ChosenMontage);
 
 	bDoingTraversalAction = true;
+	CurrentInProgressTraversalAction = TraversalCheckResult.Action;
 	CharacterOwner->GetCapsuleComponent()->IgnoreComponentWhenMoving(TraversalCheckResult.HitComponent, true);
 	CharacterOwner->GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 }
@@ -95,6 +96,7 @@ void UCLCharacterTraversalComponent::RequestSlidingAction()
 	CharacterOwner->GetMesh()->GetAnimInstance()->Montage_SetEndDelegate(SlidingMontageEndedDelegate, SlidingAnimMontage);
 
 	bDoingTraversalAction = true;
+	CurrentInProgressTraversalAction = ECLTraversalAction::Slide;
 	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(SlidingHalfHeight);
 	CharacterOwner->GetCapsuleComponent()->AddLocalOffset(FVector(0.f, 0.f, SlidingHalfHeight - PreviousHalfHeight));
 }
@@ -295,6 +297,23 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	return true;
 }
 
+void UCLCharacterTraversalComponent::OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
+{
+	if (Character->GetCharacterMovement()->MovementMode == MOVE_Falling)
+	{
+		if (bDoingTraversalAction && CurrentInProgressTraversalAction == ECLTraversalAction::Slide)
+		{
+			FAlphaBlendArgs AlphaBlendOutArgs;
+			AlphaBlendOutArgs.BlendTime = 0.3;
+			AlphaBlendOutArgs.BlendOption = EAlphaBlendOption::HermiteCubic;
+			FMontageBlendSettings BlendOutSettings = FMontageBlendSettings(AlphaBlendOutArgs);
+			BlendOutSettings.BlendMode = EMontageBlendMode::Inertialization;
+			
+			CharacterOwner->GetMesh()->GetAnimInstance()->Montage_StopWithBlendSettings(BlendOutSettings, SlidingAnimMontage);
+		}
+	}
+}
+
 void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageWarpTargets(const FCLTraversalCheckResult& TraversalCheckResult)
 {
 	UpdateTraversalAnimMontageFrontLedgeWarpTarget(TraversalCheckResult);
@@ -361,6 +380,7 @@ void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageBackFloorWarpTarg
 void UCLCharacterTraversalComponent::TraversalActionFinished(const ECLTraversalAction TraversalAction, UPrimitiveComponent* HitComponent)
 {
 	bDoingTraversalAction = false;
+	CurrentInProgressTraversalAction = ECLTraversalAction::None;
 	CharacterOwner->GetCapsuleComponent()->IgnoreComponentWhenMoving(HitComponent, false);
 
 	const EMovementMode MovementMode = TraversalAction == ECLTraversalAction::Vault ? MOVE_Falling : MOVE_Walking;
@@ -416,9 +436,12 @@ bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& 
 
 void UCLCharacterTraversalComponent::SlidingActionFinished(const FCLSlidingCheckResult& SlidingCheckResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("UCLCharacterTraversalComponent::SlidingActionFinished"));
+	
 	CharacterOwner->GetCapsuleComponent()->AddLocalOffset(FVector(0.f, 0.f, InitialCapsuleHalfHeight - SlidingHalfHeight));
 	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(InitialCapsuleHalfHeight);
 	bDoingTraversalAction = false;
+	CurrentInProgressTraversalAction = ECLTraversalAction::None;
 
 	switch (SlidingCheckResult.SlideEndStance)
 	{
@@ -442,6 +465,7 @@ void UCLCharacterTraversalComponent::BeginPlay()
 	CharacterOwner = Cast<ACLPlayerCharacter>(GetOwner());
 	checkf(CharacterOwner, TEXT("%s failed to initialize the CharacterOwner!"), *GetName());
 	InitialCapsuleHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	CharacterOwner->MovementModeChangedDelegate.AddDynamic(this, &UCLCharacterTraversalComponent::OnMovementModeChanged);
 	
 	// Check that the owner actor has the required dependency components
 	OwnerMotionWarpingComponent = CharacterOwner->FindComponentByClass<UMotionWarpingComponent>();

@@ -6,6 +6,8 @@
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "CLAnimNotifyState_ForceBlendOut.generated.h"
 
+struct FMontageBlendSettings;
+
 UCLASS()
 class CURSEDLANDS_API UCLAnimNotifyState_ForceBlendOut : public UAnimNotifyState
 {
