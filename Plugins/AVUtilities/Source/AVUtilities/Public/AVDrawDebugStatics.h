@@ -13,11 +13,6 @@ class AVUTILITIES_API UAVDrawDebugStatics : public UBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "AVUtilities|DrawDebug")
-	static void DrawDebugNamedDirectionalArrow(
-		const UWorld* InWorld,
-		const FVector& LineStart,
-		const FVector& LineEnd,
-		const FString& Name,
-		const FColor& Color,
-		const float MaxLength = 250.f);
+	static void DrawDebugNamedDirectionalArrow(const UWorld* InWorld, const FVector& LineStart, const FVector& LineEnd, const FString& Name,
+		const FColor& Color, const float MaxLength = 250.f);
 };

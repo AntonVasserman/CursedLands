@@ -8,6 +8,7 @@
 #include "Components/ActorComponent.h"
 #include "CLCharacterTraversalComponent.generated.h"
 
+struct FCLSlidingCheckResult;
 class ACLCharacter;
 enum class ECLTraversalAction : uint8;
 enum class ECLGait : uint8;
@@ -75,14 +76,21 @@ public:
 	FORCEINLINE bool IsDoingTraversalAction() const { return bDoingTraversalAction; }
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	void RequestTraversalAction();
+	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
+	void RequestSlidingAction();
 
 private:
 	const FName FrontLedgeWarpTargetName = TEXT("FrontLedge");
 	const FName BackLedgeWarpTargetName = TEXT("BackLedge");
 	const FName BackFloorWarpTargetName = TEXT("BackFloor");
 	const FName DistanceFromLedgeCurveName = TEXT("Distance_From_Ledge");
+	const FName SlideEndLocationWarpTargetName = TEXT("SlideEndLocation");
+	const FName StandToSlideAlphaCurveName = TEXT("StandToSlideAlpha");
+	const float SlidingHalfHeight = 40.f;
+	const float SlidingTraceDistance = 500.f;
 	
 	bool bDoingTraversalAction = false;
+	float InitialCapsuleHalfHeight = 0.f;
 
 	UPROPERTY(Transient, DuplicateTransient)
 	TObjectPtr<ACLPlayerCharacter> CharacterOwner;
@@ -92,6 +100,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Traversal System", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UChooserTable> TraversalAnimMontageChooserTable;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Traversal System", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> SlidingAnimMontage;
 
 	FCLTraversalCheckInput CreateTraversalCheckInput() const;
 	bool TraceForTraversableObject(const FVector& ActorLocation, FHitResult& OutHit, const bool bDebug);
@@ -103,6 +114,8 @@ private:
 	void UpdateTraversalAnimMontageBackLedgeWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
 	void UpdateTraversalAnimMontageBackFloorWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult);
 	void TraversalActionFinished(const ECLTraversalAction TraversalAction, UPrimitiveComponent* HitComponent);
+	bool ExecuteSlidingCheck(FCLSlidingCheckResult& OutSlidingCheckResult);
+	void SlidingActionFinished(const FCLSlidingCheckResult& SlidingCheckResult);
 	
 	//~ UActorComponent Begin
 public:

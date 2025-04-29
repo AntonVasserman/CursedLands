@@ -14,6 +14,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Physics/CLCollisionChannels.h"
+#include "TraversalSystem/CLSlidingCheckResult.h"
 #include "TraversalSystem/CLTraversalCheckInput.h"
 #include "TraversalSystem/CLTraversalCheckResult.h"
 #include "TraversalSystem/CLTraversableActor.h"
@@ -59,6 +60,43 @@ void UCLCharacterTraversalComponent::RequestTraversalAction()
 	bDoingTraversalAction = true;
 	CharacterOwner->GetCapsuleComponent()->IgnoreComponentWhenMoving(TraversalCheckResult.HitComponent, true);
 	CharacterOwner->GetCharacterMovement()->SetMovementMode(MOVE_Flying);
+}
+
+void UCLCharacterTraversalComponent::RequestSlidingAction()
+{
+	FCLSlidingCheckResult SlidingCheckResult;
+	if (!ExecuteSlidingCheck(SlidingCheckResult))
+	{
+		return;
+	}
+
+	OwnerMotionWarpingComponent->AddOrUpdateWarpTargetFromLocation(SlideEndLocationWarpTargetName, SlidingCheckResult.SlideEndLocation);
+	CharacterOwner->GetMesh()->GetAnimInstance()->Montage_Play(SlidingAnimMontage, 1.f, EMontagePlayReturnType::Duration, 0.f);
+	float PreviousHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+	FOnMontageBlendingOutStarted SlidingMontageBlendingOutStartedDelegate;
+	SlidingMontageBlendingOutStartedDelegate.BindWeakLambda(this, [this, SlidingCheckResult](UAnimMontage* Montage, bool bInterrupted)
+	{
+		if (bInterrupted)
+		{
+			SlidingActionFinished(SlidingCheckResult);
+		}
+	});
+	CharacterOwner->GetMesh()->GetAnimInstance()->Montage_SetBlendingOutDelegate(SlidingMontageBlendingOutStartedDelegate, SlidingAnimMontage);
+	
+	FOnMontageEnded SlidingMontageEndedDelegate;
+	SlidingMontageEndedDelegate.BindWeakLambda(this, [this, SlidingCheckResult](UAnimMontage* Montage, bool bInterrupted)
+	{
+		if (!bInterrupted)
+		{
+			SlidingActionFinished(SlidingCheckResult);
+		}
+	});
+	CharacterOwner->GetMesh()->GetAnimInstance()->Montage_SetEndDelegate(SlidingMontageEndedDelegate, SlidingAnimMontage);
+
+	bDoingTraversalAction = true;
+	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(SlidingHalfHeight);
+	CharacterOwner->GetCapsuleComponent()->AddLocalOffset(FVector(0.f, 0.f, SlidingHalfHeight - PreviousHalfHeight));
 }
 
 FCLTraversalCheckInput UCLCharacterTraversalComponent::CreateTraversalCheckInput() const
@@ -118,6 +156,7 @@ bool UCLCharacterTraversalComponent::CapsuleTraceToCheckRoomOnLedge(const FVecto
 
 bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResult& OutTraversalCheckResult)
 {
+	// TODO: Refactor this into smaller functions
 	bool bDebug = 
 		CVarShowDebugCLCharacterTraversal->GetBool() &&
 		GetWorld() && GetWorld()->IsPlayInEditor();
@@ -236,6 +275,7 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	
 	UObject* ChooserResult = UChooserFunctionLibrary::EvaluateObjectChooserBase(TraversalChooserContext, UChooserFunctionLibrary::MakeEvaluateChooser(TraversalAnimMontageChooserTable.Get()), UAnimMontage::StaticClass());
 	UAnimMontage* TraversalAnimMontage = Cast<UAnimMontage>(ChooserResult);
+	checkf(TraversalAnimMontage, TEXT("%s failed to choose TraversalAnimMontage!"), *GetName());
 	OutTraversalCheckResult.ChosenMontage = TraversalAnimMontage;
 	OutTraversalCheckResult.Action = TraversalChooserOutput.ActionType;
 	OutTraversalCheckResult.PlayRate = TraversalChooserOutput.AnimMontagePlayRate;
@@ -327,6 +367,71 @@ void UCLCharacterTraversalComponent::TraversalActionFinished(const ECLTraversalA
 	CharacterOwner->GetCharacterMovement()->SetMovementMode(MovementMode);
 }
 
+bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& OutSlidingCheckResult)
+{
+	bool bDebug = 
+		CVarShowDebugCLCharacterTraversal->GetBool() &&
+		GetWorld() && GetWorld()->IsPlayInEditor();
+
+	// Get basic values for use throughout the function
+	const FVector ActorLocation = CharacterOwner->GetActorLocation();
+	const float CapsuleRadius = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const float CapsuleHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	const float CrouchCapsuleHalfHeight = CharacterOwner->GetCharacterMovement()->GetCrouchedHalfHeight();
+
+	const FVector TraceStart = ActorLocation - FVector(0.f, 0.f, CapsuleHalfHeight - SlidingHalfHeight);
+	const FVector SlidePathTraceEnd = TraceStart + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance;
+	const EDrawDebugTrace::Type DebugType = bDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
+
+	// First trace to see if we can Slide to Stand
+	FHitResult OutHit;
+	if (UKismetSystemLibrary::CapsuleTraceSingle(this, TraceStart, SlidePathTraceEnd, CapsuleRadius, SlidingHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	{
+		return false;
+	}
+
+	const FVector StandTraceEnd = ActorLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance;
+	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, StandTraceEnd, StandTraceEnd, CapsuleRadius, CapsuleHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	{
+		OutSlidingCheckResult.SlideEndStance = ECLStance::Standing;
+		OutSlidingCheckResult.SlideEndLocation = StandTraceEnd - FVector(0.f, 0.f, CapsuleHalfHeight);
+		return true;
+	}
+
+	if (!CharacterOwner->CanCrouch())
+	{
+		return false;
+	}
+	
+	const FVector CrouchTraceEnd = ActorLocation + CharacterOwner->GetActorForwardVector() * SlidingTraceDistance - FVector(0.f, 0.f, CapsuleHalfHeight - CrouchCapsuleHalfHeight);
+	if (!UKismetSystemLibrary::CapsuleTraceSingle(this, CrouchTraceEnd, CrouchTraceEnd, CapsuleRadius, CrouchCapsuleHalfHeight, UEngineTypes::ConvertToTraceType(ECC_Visibility), false, TArray<AActor*>(), DebugType, OutHit, true))
+	{
+		OutSlidingCheckResult.SlideEndStance = ECLStance::Crouching;
+		OutSlidingCheckResult.SlideEndLocation = CrouchTraceEnd - FVector(0.f, 0.f, CrouchCapsuleHalfHeight);
+		return true;
+	}
+	
+	return false;
+}
+
+void UCLCharacterTraversalComponent::SlidingActionFinished(const FCLSlidingCheckResult& SlidingCheckResult)
+{
+	CharacterOwner->GetCapsuleComponent()->AddLocalOffset(FVector(0.f, 0.f, InitialCapsuleHalfHeight - SlidingHalfHeight));
+	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(InitialCapsuleHalfHeight);
+	bDoingTraversalAction = false;
+
+	switch (SlidingCheckResult.SlideEndStance)
+	{
+	case ECLStance::Standing:
+		break;
+	case ECLStance::Crouching:
+		CharacterOwner->Crouch();
+		break;
+	default:
+		checkNoEntry();
+	}
+}
+
 //~ UActorComponent Begin
 
 void UCLCharacterTraversalComponent::BeginPlay()
@@ -336,6 +441,7 @@ void UCLCharacterTraversalComponent::BeginPlay()
 	// Cache the OwnerActor, the owner of this component shouldn't be a subject of change
 	CharacterOwner = Cast<ACLPlayerCharacter>(GetOwner());
 	checkf(CharacterOwner, TEXT("%s failed to initialize the CharacterOwner!"), *GetName());
+	InitialCapsuleHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	
 	// Check that the owner actor has the required dependency components
 	OwnerMotionWarpingComponent = CharacterOwner->FindComponentByClass<UMotionWarpingComponent>();

@@ -1,8 +1,8 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.1",
-	"FriendlyName": "AV Utilities Library",
+	"VersionName": "0.1",
+	"FriendlyName": "AVUtilitiesLibrary",
 	"Description": "This is my personal utilities Library Plugin",
 	"Category": "Other",
 	"CreatedBy": "Anton Vasserman",

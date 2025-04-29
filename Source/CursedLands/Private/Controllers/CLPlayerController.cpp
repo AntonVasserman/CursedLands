@@ -122,6 +122,14 @@ void ACLPlayerController::RequestTraverseAction()
 	}
 }
 
+void ACLPlayerController::RequestSlideAction()
+{
+	if (PossessedPlayerCharacter->CanSlide())
+	{
+		PossessedPlayerCharacter->Slide();
+	}
+}
+
 void ACLPlayerController::RequestPauseMenuAction()
 {
 	if (PauseMenuWidget == nullptr)
@@ -225,6 +233,8 @@ void ACLPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestJumpAction);
 	checkf(TraverseAction, TEXT("TraverseAction uninitialized in object: %s"), *GetFullName())
 	EnhancedInputComponent->BindAction(TraverseAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestTraverseAction);
+	checkf(SlideAction, TEXT("SlideAction uninitialized in object: %s"), *GetFullName())
+	EnhancedInputComponent->BindAction(SlideAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestSlideAction);
 	checkf(PauseMenuAction, TEXT("PauseMenuAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(PauseMenuAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestPauseMenuAction);
 }

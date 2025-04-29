@@ -143,6 +143,20 @@ void ACLPlayerCharacter::Traverse()
 	}
 }
 
+bool ACLPlayerCharacter::CanSlide() const
+{
+	// We allow Sliding only when sprinting
+	return CharacterTraversal->CanDoTraversalAction() && IsSprinting();
+}
+
+void ACLPlayerCharacter::Slide()
+{
+	if (CanSlide())
+	{
+		CharacterTraversal->RequestSlidingAction();
+	}
+}
+
 void ACLPlayerCharacter::ApplyFatigue()
 {
 	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))

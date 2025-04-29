@@ -3,7 +3,8 @@
 #include "AVDrawDebugStatics.h"
 #include "DrawDebugHelpers.h"
 
-void UAVDrawDebugStatics::DrawDebugNamedDirectionalArrow(const UWorld* InWorld, const FVector& LineStart, const FVector& LineEnd, const FString& Name, const FColor& Color, const float MaxLength)
+void UAVDrawDebugStatics::DrawDebugNamedDirectionalArrow(const UWorld* InWorld, const FVector& LineStart, const FVector& LineEnd, const FString& Name,
+	const FColor& Color, const float MaxLength)
 {
 	FVector Direction = LineEnd - LineStart;
 	const float CurrentLength = Direction.Size();

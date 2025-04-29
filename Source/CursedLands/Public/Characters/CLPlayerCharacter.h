@@ -94,6 +94,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	bool CanTraverse() const;
 	void Traverse();
+
+	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
+	bool CanSlide() const;
+	void Slide();
 	
 	UFUNCTION(BlueprintCallable, Category = "Locomotion")
 	FORCEINLINE float GetCardinalDirectionAngle() const { return CardinalDirectionAngle; }
