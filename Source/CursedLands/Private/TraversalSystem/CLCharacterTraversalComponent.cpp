@@ -19,6 +19,8 @@
 #include "TraversalSystem/CLTraversalCheckResult.h"
 #include "TraversalSystem/CLTraversableActor.h"
 
+DEFINE_LOG_CATEGORY(LogCharacterTraversal);
+
 static TAutoConsoleVariable CVarShowDebugCLCharacterTraversal(
 	TEXT("CLShowDebug.CharacterTraversal"),
 	false,
@@ -295,8 +297,11 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	UMotionWarpingUtilities::GetMotionWarpingWindowsForWarpTargetFromAnimation(OutTraversalCheckResult.ChosenMontage, FrontLedgeWarpTargetName, OutWindows);
 
 	float DistanceFromFrontLedge = UKismetMathLibrary::Vector_Distance(OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation, ActorLocation);
+	UE_LOG(LogCharacterTraversal, Display, TEXT("DistanceFromFrontLedge: %f"), DistanceFromFrontLedge);
 	float AnimMontageFrontLedgeMotionWarpStartTime = OutWindows[0].StartTime;
+	UE_LOG(LogCharacterTraversal, Display, TEXT("AnimMontageFrontLedgeMotionWarpStartTime: %f"), AnimMontageFrontLedgeMotionWarpStartTime);
 	OutTraversalCheckResult.StartTime = UKismetMathLibrary::MapRangeClamped(DistanceFromFrontLedge, 450.f, 0.f, 0.f, AnimMontageFrontLedgeMotionWarpStartTime);
+	UE_LOG(LogCharacterTraversal, Display, TEXT("OutTraversalCheckResult.StartTime: %f"), OutTraversalCheckResult.StartTime);
 	
 	return true;
 }

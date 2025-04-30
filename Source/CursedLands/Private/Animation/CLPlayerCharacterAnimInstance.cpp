@@ -6,6 +6,7 @@
 #include "AnimCharacterMovementLibrary.h"
 #include "AVCollisionProfileStatics.h"
 #include "AVDrawDebugStatics.h"
+#include "CLLogChannels.h"
 #include "KismetAnimationLibrary.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -105,7 +106,6 @@ void UCLPlayerCharacterAnimInstance::ProcessTurnYawCurve()
 	{
 		const float RootRotationYawCurveValue = GetCurveValue(RootRotationYawCurveName);
 		TurnYawCurveValue = UKismetMathLibrary::SafeDivide(RootRotationYawCurveValue, IsTurningCurveValue);
-		UE_LOG(LogTemp, Warning, TEXT("RootRotationYawCurveValue: %f"), RootRotationYawCurveValue);
 		if (LastTurnYawCurveValue != 0.f)
 		{
 			SetRootYawOffset(RootYawOffset - (TurnYawCurveValue - LastTurnYawCurveValue));

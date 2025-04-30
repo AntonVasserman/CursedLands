@@ -19,6 +19,8 @@ struct FCLTraversalCheckInput;
 class UCharacterMovementComponent;
 class UMotionWarpingComponent;
 
+CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterTraversal, Log, All); 
+
 USTRUCT(BlueprintType)
 struct CURSEDLANDS_API FCLTraversalChooserInput
 {
