@@ -378,8 +378,11 @@ void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageBackFloorWarpTarg
 
 	TArray<FMotionWarpingWindowData> BackLedgeMotionWarpingWindows;
 	UMotionWarpingUtilities::GetMotionWarpingWindowsForWarpTargetFromAnimation(TraversalCheckResult.ChosenMontage, BackLedgeWarpTargetName, BackLedgeMotionWarpingWindows);
-	float DistanceFromFrontLedgeToBackLedge;
-	UAnimationWarpingLibrary::GetCurveValueFromAnimation(TraversalCheckResult.ChosenMontage, DistanceFromLedgeCurveName, BackLedgeMotionWarpingWindows[0].EndTime, DistanceFromFrontLedgeToBackLedge);
+	float DistanceFromFrontLedgeToBackLedge = 0.f;
+	if (!BackLedgeMotionWarpingWindows.IsEmpty())
+	{
+		UAnimationWarpingLibrary::GetCurveValueFromAnimation(TraversalCheckResult.ChosenMontage, DistanceFromLedgeCurveName, BackLedgeMotionWarpingWindows[0].EndTime, DistanceFromFrontLedgeToBackLedge);
+	}
 
 	const FVector AdjustedBackLedgeLocation = TraversalCheckResult.BackLedgeCheckResult.LedgeLocation + TraversalCheckResult.BackLedgeCheckResult.LedgeNormal * FMath::Abs(DistanceFromFrontLedgeToBackLedge - DistanceFromFrontLedgeToBackFloor);
 	const FVector TargetLocation = FVector(AdjustedBackLedgeLocation.X, AdjustedBackLedgeLocation.Y, TraversalCheckResult.BackFloorLocation.Z);
