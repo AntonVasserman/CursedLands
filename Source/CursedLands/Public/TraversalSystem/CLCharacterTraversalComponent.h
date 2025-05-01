@@ -111,7 +111,7 @@ private:
 	TObjectPtr<UAnimMontage> SlidingAnimMontage;
 
 	FCLTraversalCheckInput CreateTraversalCheckInput() const;
-	bool TraceForTraversableObject(const FVector& ActorLocation, FHitResult& OutHit, const bool bDebug);
+	ACLTraversableActor* TraceForTraversableActor(FHitResult& OutHit, const bool bDebug);
 	bool CapsuleTraceToCheckRoomOnLedge(const FVector& StartLocation, const float CapsuleRadius, const float CapsuleHalfHeight,
 		const FVector& LedgeLocation, const FVector& LedgeNormal, FVector& OutEndLocation, FHitResult& OutHit, const bool bDebug = false);
 	bool ExecuteTraversalCheck(FCLTraversalCheckResult& OutTraversalCheckResult);

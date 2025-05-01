@@ -136,17 +136,32 @@ FCLTraversalCheckInput UCLCharacterTraversalComponent::CreateTraversalCheckInput
 	return ReturnValue;
 }
 
-bool UCLCharacterTraversalComponent::TraceForTraversableObject(const FVector& ActorLocation, FHitResult& OutHit, const bool bDebug)
+ACLTraversableActor* UCLCharacterTraversalComponent::TraceForTraversableActor(FHitResult& OutHit, const bool bDebug)
 {
 	const FCLTraversalCheckInput TraversalCheckInput = CreateTraversalCheckInput();
-	const FVector TraceStart = ActorLocation + TraversalCheckInput.TraceStartOffset;
+	const FVector TraceStart = CharacterOwner->GetActorLocation() + TraversalCheckInput.TraceStartOffset;
 	const FVector TraceEnd = TraceStart + TraversalCheckInput.TraceForwardDirection * TraversalCheckInput.TraceForwardDistance + TraversalCheckInput.TraceEndOffset;
 	const EDrawDebugTrace::Type DebugType = bDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
-	return UKismetSystemLibrary::CapsuleTraceSingle(this, TraceStart, TraceEnd, TraversalCheckInput.TraceRadius, TraversalCheckInput.TraceHalfHeight, CL_TraceTypeQuery_Traversability, false, TArray<AActor*>(), DebugType, OutHit, true);
+	UKismetSystemLibrary::CapsuleTraceSingle(this, TraceStart, TraceEnd, TraversalCheckInput.TraceRadius, TraversalCheckInput.TraceHalfHeight, UEngineTypes::ConvertToTraceType(CL_TraceChannel_Traversability), false, TArray<AActor*>(), DebugType, OutHit, true);
+
+	if (OutHit.bBlockingHit == false)
+	{
+		UE_LOG(LogCharacterTraversal, Display, TEXT("TraceForTraversableActor: Traversal Object wasn't found"));
+		return nullptr;
+	}
+
+	ACLTraversableActor* TraversableActor = CastChecked<ACLTraversableActor>(OutHit.GetActor());
+	if (TraversableActor == nullptr)
+	{
+		UE_LOG(LogCharacterTraversal, Warning, TEXT("TraceForTraversableActor: Failed to Cast Traversal Object into a TraversableActor"));
+		return nullptr;
+	}
+
+	return TraversableActor;
 }
 
 bool UCLCharacterTraversalComponent::CapsuleTraceToCheckRoomOnLedge(const FVector& StartLocation, const float CapsuleRadius, const float CapsuleHalfHeight,
-	const FVector& LedgeLocation, const FVector& LedgeNormal, FVector& OutEndLocation, FHitResult& OutHit, const bool bDebug)
+                                                                    const FVector& LedgeLocation, const FVector& LedgeNormal, FVector& OutEndLocation, FHitResult& OutHit, const bool bDebug)
 {
 	OutEndLocation = LedgeLocation + LedgeNormal * (CapsuleRadius + 2.f) + FVector(0.f, 0.f, CapsuleHalfHeight + 2.f);
 
@@ -172,23 +187,18 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	const FVector ActorLocation = CharacterOwner->GetActorLocation();
 	const float CapsuleRadius = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
 	const float CapsuleHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-
-	// Evaluate the Front and Back Ledges
+	
 	FHitResult HitResult;
-	TraceForTraversableObject(ActorLocation, HitResult, bDebug);
-	if (HitResult.bBlockingHit == false)
-	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: Traversal Object wasn't found"));
-		return false;
-	}
-
-	ACLTraversableActor* TraversableActor = Cast<ACLTraversableActor>(HitResult.GetActor());
+	ACLTraversableActor* TraversableActor = TraceForTraversableActor(HitResult, bDebug);
 	if (TraversableActor == nullptr)
 	{
+		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor wasn't found"));
 		return false;
 	}
-	
+
 	OutTraversalCheckResult.HitComponent = HitResult.GetComponent();
+	
+	// Evaluate the Front and Back Ledges
 	FLedgeCheckResult FrontLedgeCheckResult;
 	FLedgeCheckResult BackLedgeCheckResult;
 	TraversableActor->CheckLedges(ActorLocation, HitResult.ImpactPoint, FrontLedgeCheckResult, BackLedgeCheckResult);
@@ -198,10 +208,10 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 		DrawDebugSphere(GetWorld(), FrontLedgeCheckResult.LedgeLocation, 10.f, 12, FColor::Green, false, 5.f, 0.f, 1.f);
 		DrawDebugSphere(GetWorld(), BackLedgeCheckResult.LedgeLocation, 10.f, 12, FColor::Blue, false, 5.f, 0.f, 1.f);
 	}
-
-	// Check that the Traversable Object has a valid front ledge
+	
 	if (!FrontLedgeCheckResult.bHasLedge)
 	{
+		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor doesn't have a valid Front Ledge"));
 		return false;
 	}
 
@@ -211,11 +221,11 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	// Check that there is room for the Character to move up to the front ledge
 	FVector FrontLedgeRoomCheckLocation;
 	FHitResult FrontLedgeRoomCheckHitResult;
-	bool bFrontLedgeRoomCheckHit = CapsuleTraceToCheckRoomOnLedge(ActorLocation, CapsuleRadius, CapsuleHalfHeight, OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation, OutTraversalCheckResult.FrontLedgeCheckResult.LedgeNormal, FrontLedgeRoomCheckLocation, FrontLedgeRoomCheckHitResult, bDebug);
+	CapsuleTraceToCheckRoomOnLedge(ActorLocation, CapsuleRadius, CapsuleHalfHeight, OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation, OutTraversalCheckResult.FrontLedgeCheckResult.LedgeNormal, FrontLedgeRoomCheckLocation, FrontLedgeRoomCheckHitResult, bDebug);
 	if (FrontLedgeRoomCheckHitResult.bBlockingHit || FrontLedgeRoomCheckHitResult.bStartPenetrating)
 	{
-		// Clear the front ledge, as it is blocked
-		OutTraversalCheckResult.FrontLedgeCheckResult = FLedgeCheckResult();
+		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor has no room on the Front ledge"));
+		OutTraversalCheckResult.FrontLedgeCheckResult = FLedgeCheckResult(); // Clear the front ledge, as it is blocked
 		return false;
 	}
 
@@ -224,19 +234,18 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	FVector ActorObstacleDelta = ActorFootLocation - OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation;
 	OutTraversalCheckResult.ObstacleHeight = FMath::Abs(ActorObstacleDelta.Z);
 
-	UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: Obstacle height: %f"), OutTraversalCheckResult.ObstacleHeight);
-	if (OutTraversalCheckResult.ObstacleHeight > 125.f)
-	// if (OutTraversalCheckResult.ObstacleHeight > CapsuleHalfHeight * 1.5f)
+	// We traverse only over obstacles that are 0.75 the Characters Height
+	if (OutTraversalCheckResult.ObstacleHeight > CapsuleHalfHeight * 1.5f)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: Obstacle height is too high"));
+		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor's Obstacle height: %f, is too high"), OutTraversalCheckResult.ObstacleHeight);
 		return false;
 	}
 	
 	// Check that there is room for the Character from Front ledge to Back ledge
 	FVector BackLedgeRoomCheckLocation;
 	FHitResult BackLedgeRoomCheckHitResult;
-	bool bBackLedgeRoomCheckHit = CapsuleTraceToCheckRoomOnLedge(FrontLedgeRoomCheckLocation, CapsuleRadius, CapsuleHalfHeight, OutTraversalCheckResult.BackLedgeCheckResult.LedgeLocation, OutTraversalCheckResult.BackLedgeCheckResult.LedgeNormal, BackLedgeRoomCheckLocation, BackLedgeRoomCheckHitResult, bDebug);
-	if (!bBackLedgeRoomCheckHit) // There is room, since there was no hit
+	
+	if (!CapsuleTraceToCheckRoomOnLedge(FrontLedgeRoomCheckLocation, CapsuleRadius, CapsuleHalfHeight, OutTraversalCheckResult.BackLedgeCheckResult.LedgeLocation, OutTraversalCheckResult.BackLedgeCheckResult.LedgeNormal, BackLedgeRoomCheckLocation, BackLedgeRoomCheckHitResult, bDebug)) // There is room, since there was no hit
 	{
 		// Obstacle depth is the difference between the front and back ledge locations
 		FVector LedgesDelta = OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation - OutTraversalCheckResult.BackLedgeCheckResult.LedgeLocation;
