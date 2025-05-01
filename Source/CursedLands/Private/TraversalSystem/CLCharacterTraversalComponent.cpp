@@ -178,6 +178,7 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	TraceForTraversableObject(ActorLocation, HitResult, bDebug);
 	if (HitResult.bBlockingHit == false)
 	{
+		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: Traversal Object wasn't found"));
 		return false;
 	}
 
@@ -223,6 +224,14 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 	FVector ActorObstacleDelta = ActorFootLocation - OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation;
 	OutTraversalCheckResult.ObstacleHeight = FMath::Abs(ActorObstacleDelta.Z);
 
+	UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: Obstacle height: %f"), OutTraversalCheckResult.ObstacleHeight);
+	if (OutTraversalCheckResult.ObstacleHeight > 125.f)
+	// if (OutTraversalCheckResult.ObstacleHeight > CapsuleHalfHeight * 1.5f)
+	{
+		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: Obstacle height is too high"));
+		return false;
+	}
+	
 	// Check that there is room for the Character from Front ledge to Back ledge
 	FVector BackLedgeRoomCheckLocation;
 	FHitResult BackLedgeRoomCheckHitResult;
@@ -282,8 +291,13 @@ bool UCLCharacterTraversalComponent::ExecuteTraversalCheck(FCLTraversalCheckResu
 
 	checkf(TraversalAnimMontageChooserTable, TEXT("TraversalAnimMontageChooserTable uninitialized in object: %s"), *GetFullName());
 	UObject* ChooserResult = UChooserFunctionLibrary::EvaluateObjectChooserBase(TraversalChooserContext, UChooserFunctionLibrary::MakeEvaluateChooser(TraversalAnimMontageChooserTable.Get()), UAnimMontage::StaticClass());
-	UAnimMontage* TraversalAnimMontage = Cast<UAnimMontage>(ChooserResult);
-	checkf(TraversalAnimMontage, TEXT("%s failed to choose TraversalAnimMontage!"), *GetName());
+	if (ChooserResult == nullptr)
+	{
+		UE_LOG(LogCharacterTraversal, Display, TEXT("%s failed to choose TraversalAnimMontage!"), *GetName());
+		return false;
+	}
+	
+	UAnimMontage* TraversalAnimMontage = CastChecked<UAnimMontage>(ChooserResult);
 	OutTraversalCheckResult.ChosenMontage = TraversalAnimMontage;
 	OutTraversalCheckResult.Action = TraversalChooserOutput.ActionType;
 	OutTraversalCheckResult.PlayRate = TraversalChooserOutput.AnimMontagePlayRate;
@@ -401,7 +415,7 @@ void UCLCharacterTraversalComponent::TraversalActionFinished(const ECLTraversalA
 
 bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& OutSlidingCheckResult)
 {
-	bool bDebug = 
+	const bool bDebug = 
 		CVarShowDebugCLCharacterTraversal->GetBool() &&
 		GetWorld() && GetWorld()->IsPlayInEditor();
 

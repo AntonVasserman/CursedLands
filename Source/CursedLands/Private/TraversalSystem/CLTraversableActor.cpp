@@ -5,11 +5,14 @@
 
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Physics/CLCollisionChannels.h"
 
 
 ACLTraversableActor::ACLTraversableActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	GetStaticMeshComponent()->SetCollisionResponseToChannel(CL_TraceChannel_Traversability, ECR_Block);
 }
 
 USplineComponent* ACLTraversableActor::FindLedgeClosestToLocation(const FVector& Location) const

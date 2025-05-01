@@ -364,6 +364,16 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 
 	UpdateCardinalDirectionAngle();
 	UpdateCardinalDirection();
+
+	constexpr float InAirVelocityForCatchMin = -1000.f;
+	constexpr float InAirVelocityForCatchMax = 750.f; // The max is much higher to catch jumping cases and not only falling cases
+	if (
+		GetCharacterMovement()->IsFalling() &&
+		UKismetMathLibrary::InRange_FloatFloat(GetCharacterMovement()->Velocity.Z, InAirVelocityForCatchMin, InAirVelocityForCatchMax)
+		)
+	{
+		CharacterTraversal->RequestTraversalAction();
+	}
 	
 	if (IsSprinting())
 	{
