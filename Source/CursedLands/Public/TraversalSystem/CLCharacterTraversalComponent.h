@@ -66,6 +66,9 @@ struct CURSEDLANDS_API FCLTraversalChooserOutput
 	float AnimMontagePlayRate = 1.f;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCLTraversalActionStartedDelegate, const ECLTraversalAction, TraversalAction);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCLTraversalActionFinishedDelegate, const ECLTraversalAction, TraversalAction);
+
 UCLASS()
 class CURSEDLANDS_API UCLCharacterTraversalComponent : public UActorComponent
 {
@@ -73,6 +76,11 @@ class CURSEDLANDS_API UCLCharacterTraversalComponent : public UActorComponent
 
 public:
 	UCLCharacterTraversalComponent();
+
+	UPROPERTY(BlueprintAssignable, Category = "Character Traversal")
+	FCLTraversalActionStartedDelegate OnTraversalActionStarted;
+	UPROPERTY(BlueprintAssignable, Category = "Character Traversal")
+	FCLTraversalActionFinishedDelegate OnTraversalActionFinished;
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE bool CanDoTraversalAction() const { return !IsDoingTraversalAction(); }

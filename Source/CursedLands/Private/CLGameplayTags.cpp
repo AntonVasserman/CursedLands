@@ -5,6 +5,7 @@
 
 #include "Engine/EngineTypes.h"
 #include "Characters/CLCharacterMovementComponent.h"
+#include "TraversalSystem/CLTraversalAction.h"
 
 namespace CLGameplayTags
 {
@@ -67,4 +68,17 @@ namespace CLGameplayTags
 	
 	// Locomotion Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Rolling, "Locomotion.Rolling", "Locomotion tag indicating rolling");
+
+	// Traversal Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Hurdle, "Traversal.Action.Hurdle", "Traversal action tag indicating a hurdle");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Mantle, "Traversal.Action.Mantle", "Traversal action tag indicating a mantle");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Vault, "Traversal.Action.Vault", "Traversal action tag indicating a vault");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Slide, "Traversal.Action.Slide", "Traversal action tag indicating a slide");
+	const TMap<ECLTraversalAction, FGameplayTag> TraversalActionTagMap =
+	{
+		{ ECLTraversalAction::Hurdle, Traversal_Action_Hurdle },
+		{ ECLTraversalAction::Mantle, Traversal_Action_Mantle },
+		{ ECLTraversalAction::Vault, Traversal_Action_Vault },
+		{ ECLTraversalAction::Slide, Traversal_Action_Slide }
+	};
 }

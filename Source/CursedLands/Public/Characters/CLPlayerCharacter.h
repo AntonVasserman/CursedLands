@@ -18,6 +18,8 @@ class UCLManaAttributeSet;
 class UCLStaminaAttributeSet;
 class UGameplayCameraComponent;
 
+CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCLPlayerCharacter, Log, All);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToRoll);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToDeath);
 
@@ -171,8 +173,15 @@ private:
 	void PlayFallToDeathAnimMontage();
 	void SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const;
 	void SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const;
+	void SetTraversalActionTag(const ECLTraversalAction InTraversalAction, const bool bTagEnabled) const;
 	void UpdateCardinalDirectionAngle();
 	void UpdateCardinalDirection();
+
+	// CharacterTraversalComponent Bindings
+	UFUNCTION()
+	void OnCharacterTraversalActionStarted(const ECLTraversalAction TraversalAction);
+	UFUNCTION()
+	void OnCharacterTraversalActionFinished(const ECLTraversalAction TraversalAction);
 
 	//~ ACLCharacter Begin
 public:

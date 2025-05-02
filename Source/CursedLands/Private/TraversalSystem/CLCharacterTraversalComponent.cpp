@@ -68,6 +68,7 @@ void UCLCharacterTraversalComponent::RequestTraversalAction()
 	CurrentInProgressTraversalAction = TraversalCheckResult.Action;
 	CharacterOwner->GetCapsuleComponent()->IgnoreComponentWhenMoving(TraversalCheckResult.HitComponent, true);
 	CharacterOwner->GetCharacterMovement()->SetMovementMode(MOVE_Flying);
+	OnTraversalActionStarted.Broadcast(TraversalCheckResult.Action);
 }
 
 void UCLCharacterTraversalComponent::RequestSlidingAction()
@@ -104,6 +105,7 @@ void UCLCharacterTraversalComponent::RequestSlidingAction()
 
 	bDoingTraversalAction = true;
 	CurrentInProgressTraversalAction = ECLTraversalAction::Slide;
+	OnTraversalActionStarted.Broadcast(ECLTraversalAction::Slide);
 }
 
 FCLTraversalCheckInput UCLCharacterTraversalComponent::CreateTraversalCheckInput() const
@@ -363,12 +365,6 @@ void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageFrontLedgeWarpTar
 
 void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageBackLedgeWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult)
 {
-	if (TraversalCheckResult.Action != ECLTraversalAction::Hurdle && TraversalCheckResult.Action != ECLTraversalAction::Vault)
-	{
-		OwnerMotionWarpingComponent->RemoveWarpTarget(BackLedgeWarpTargetName);
-		return;
-	}
-
 	TArray<FMotionWarpingWindowData> MotionWarpingWindows;
 	UMotionWarpingUtilities::GetMotionWarpingWindowsForWarpTargetFromAnimation(TraversalCheckResult.ChosenMontage, BackLedgeWarpTargetName, MotionWarpingWindows);
 	if (MotionWarpingWindows.IsEmpty())
@@ -382,12 +378,6 @@ void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageBackLedgeWarpTarg
 
 void UCLCharacterTraversalComponent::UpdateTraversalAnimMontageBackFloorWarpTarget(const FCLTraversalCheckResult& TraversalCheckResult)
 {
-	if (TraversalCheckResult.Action != ECLTraversalAction::Hurdle)
-	{
-		OwnerMotionWarpingComponent->RemoveWarpTarget(BackFloorWarpTargetName);
-		return;
-	}
-	
 	TArray<FMotionWarpingWindowData> BackFloorMotionWarpingWindows;
 	UMotionWarpingUtilities::GetMotionWarpingWindowsForWarpTargetFromAnimation(TraversalCheckResult.ChosenMontage, BackFloorWarpTargetName, BackFloorMotionWarpingWindows);
 	if (BackFloorMotionWarpingWindows.IsEmpty())
@@ -420,6 +410,7 @@ void UCLCharacterTraversalComponent::TraversalActionFinished(const ECLTraversalA
 
 	const EMovementMode MovementMode = TraversalAction == ECLTraversalAction::Vault ? MOVE_Falling : MOVE_Walking;
 	CharacterOwner->GetCharacterMovement()->SetMovementMode(MovementMode);
+	OnTraversalActionFinished.Broadcast(TraversalAction);
 }
 
 bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& OutSlidingCheckResult)
@@ -496,6 +487,8 @@ void UCLCharacterTraversalComponent::SlidingActionFinished(const FCLSlidingCheck
 	default:
 		checkNoEntry();
 	}
+	
+	OnTraversalActionFinished.Broadcast(ECLTraversalAction::Slide);
 }
 
 //~ UActorComponent Begin

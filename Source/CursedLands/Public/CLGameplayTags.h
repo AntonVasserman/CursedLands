@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
 
+enum class ECLTraversalAction : uint8;
 enum class ECLStance : uint8;
 enum class ECLGait : uint8;
 
@@ -48,6 +49,13 @@ namespace CLGameplayTags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Jogging);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Sprinting);
 	
-	// Locomotion States
+	// Locomotion Tags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Rolling);
+
+	// Traversal Tags
+	CURSEDLANDS_API extern const TMap<ECLTraversalAction, FGameplayTag> TraversalActionTagMap;
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Hurdle);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Mantle);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Vault);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Slide);
 }

@@ -17,6 +17,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 
+DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
+
 ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCLCharacterMovementComponent>(CharacterMovementComponentName))
 {
@@ -87,7 +89,7 @@ void ACLPlayerCharacter::Walk()
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	else if (!GetCLCharacterMovement()->CanEverWalk())
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s is trying to walk, but walking is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
+		UE_LOG(LogCLPlayerCharacter, Warning, TEXT("%s is trying to walk, but walking is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
 	}
 #endif
 }
@@ -122,7 +124,7 @@ void ACLPlayerCharacter::Sprint()
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	else if (!GetCLCharacterMovement()->CanEverSprint())
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s is trying to sprint, but sprinting is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
+		UE_LOG(LogCLPlayerCharacter, Warning, TEXT("%s is trying to sprint, but sprinting is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
 	}
 #endif
 }
@@ -231,6 +233,18 @@ void ACLPlayerCharacter::SetGaitTag(const ECLGait InGait, const bool bTagEnabled
 	}
 }
 
+void ACLPlayerCharacter::SetTraversalActionTag(const ECLTraversalAction InTraversalAction, const bool bTagEnabled) const
+{
+	if (GetAbilitySystemComponent())
+	{
+		if (const FGameplayTag* TraversalActionTag = CLGameplayTags::TraversalActionTagMap.Find(InTraversalAction);
+			TraversalActionTag && TraversalActionTag->IsValid())
+		{
+			GetAbilitySystemComponent()->SetLooseGameplayTagCount(*TraversalActionTag, bTagEnabled ? 1 : 0);
+		}
+	}
+}
+
 void ACLPlayerCharacter::UpdateCardinalDirectionAngle()
 {
 	const FRotator PlayerCharacterRotation = GetActorRotation();
@@ -284,6 +298,20 @@ void ACLPlayerCharacter::UpdateCardinalDirection()
 	}
 }
 
+void ACLPlayerCharacter::OnCharacterTraversalActionStarted(const ECLTraversalAction TraversalAction)
+{
+	UE_LOG(LogCLPlayerCharacter, Display, TEXT("%hs: Started Traversal Action '%s'"), __FUNCTION__, *StaticEnum<ECLTraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
+	SetTraversalActionTag(TraversalAction, true);
+}
+
+void ACLPlayerCharacter::OnCharacterTraversalActionFinished(const ECLTraversalAction TraversalAction)
+{
+	UE_LOG(LogCLPlayerCharacter, Display, TEXT("%hs: Finished Traversal Action '%s'"), __FUNCTION__, *StaticEnum<ECLTraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
+	SetTraversalActionTag(TraversalAction, false);
+}
+
+//~ ACLCharacter Begin
+
 void ACLPlayerCharacter::Crouch(bool bClientSimulation)
 {
 	if (!CanCrouch())
@@ -304,8 +332,6 @@ bool ACLPlayerCharacter::CanCrouch() const
 	return Super::CanCrouch() &&
 		!GetCharacterTraversal()->IsDoingTraversalAction(); // Check the player isn't occupied (not traversing)
 }
-
-//~ ACLCharacter Begin
 
 void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 {
@@ -356,6 +382,9 @@ void ACLPlayerCharacter::PostInitializeComponents()
 		{
 			GetAbilitySystemComponent()->RemoveLooseGameplayTag(CLGameplayTags::Locomotion_Rolling);
 		});
+
+	CharacterTraversal->OnTraversalActionStarted.AddDynamic(this, &ACLPlayerCharacter::OnCharacterTraversalActionStarted);
+	CharacterTraversal->OnTraversalActionFinished.AddDynamic(this, &ACLPlayerCharacter::OnCharacterTraversalActionFinished);
 }
 
 void ACLPlayerCharacter::Tick(float DeltaSeconds)
