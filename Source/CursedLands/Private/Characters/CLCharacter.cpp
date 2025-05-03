@@ -86,10 +86,6 @@ void ACLCharacter::PossessedBy(AController* NewController)
 		check(AbilitySet);
 		AbilitySet->GiveToAbilitySystem(AbilitySystem, nullptr);
 	}
-	
-	// TODO (CL-77): Transition attribute initialization similar to how it's done in LyraGame
-	// InitializeDefaultAttributes();
-	// InitializeDefaultPassiveEffects();
 }
 
 void ACLCharacter::PostInitializeComponents()

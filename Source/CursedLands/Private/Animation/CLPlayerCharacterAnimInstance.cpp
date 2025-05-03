@@ -8,6 +8,7 @@
 #include "AVDrawDebugStatics.h"
 #include "CLLogChannels.h"
 #include "KismetAnimationLibrary.h"
+#include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
@@ -39,6 +40,7 @@ void UCLPlayerCharacterAnimInstance::UpdateFallData()
 	Super::UpdateFallData();
 
 	FallHeight = PlayerCharacter->GetCLCharacterMovement()->GetFallHeight();
+	bRolling = PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_Rolling);
 }
 
 void UCLPlayerCharacterAnimInstance::UpdateTraversalData()
