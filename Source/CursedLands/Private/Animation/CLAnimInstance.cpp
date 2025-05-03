@@ -4,6 +4,7 @@
 #include "Animation/CLAnimInstance.h"
 
 #include "KismetAnimationLibrary.h"
+#include "MaterialHLSLTree.h"
 #include "Characters/CLCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -13,16 +14,18 @@ void UCLAnimInstance::CharacterMeshSimulatePhysics() const
 	Character->SimulatePhysics();
 }
 
-void UCLAnimInstance::UpdateLocationData()
+void UCLAnimInstance::UpdateLocationData(const float DeltaTime)
 {
 	LastCharacterLocation = CharacterLocation;
 	CharacterLocation = Character->GetActorLocation();
 	CharacterLocationDeltaSizeXY = UKismetMathLibrary::VSizeXY(CharacterLocation - LastCharacterLocation);
-
+	CharacterLocationDeltaSizeXYSpeed = CharacterLocationDeltaSizeXY / DeltaTime;
+	
 	if (bFirstThreadSafeUpdate)
 	{
 		LastCharacterLocation = FVector::ZeroVector;
 		CharacterLocationDeltaSizeXY = 0.f;
+		CharacterLocationDeltaSizeXYSpeed = 0.f;
 	}
 }
 
@@ -60,7 +63,7 @@ void UCLAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 		bAlive = Character->IsAlive();
 		UpdateVelocityData();
 		UpdateFallData();
-		UpdateLocationData();
+		UpdateLocationData(DeltaSeconds);
 	}
 
 	bFirstThreadSafeUpdate = false;

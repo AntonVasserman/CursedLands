@@ -28,7 +28,9 @@ protected:
 	FVector CharacterLocation;
 	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
 	float CharacterLocationDeltaSizeXY;
-	
+	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	float CharacterLocationDeltaSizeXYSpeed;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity;
 
@@ -54,7 +56,7 @@ private:
 	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> MovementComponent;
 
-	void UpdateLocationData();
+	void UpdateLocationData(const float DeltaTime);
 	void UpdateVelocityData();
 	
 	//~ UAnimInstance Begin
