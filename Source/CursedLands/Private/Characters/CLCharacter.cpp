@@ -8,6 +8,8 @@
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
+#include "AbilitySystem/Data/CLAbilitySet.h"
+#include "Characters/Data/CLPawnData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ACLCharacter::ACLCharacter(const FObjectInitializer& ObjectInitializer)
@@ -48,20 +50,6 @@ UAnimInstance* ACLCharacter::GetAnimInstance()
 	return GetMesh()->GetAnimInstance();
 }
 
-void ACLCharacter::InitializeDefaultAttributes()
-{
-	ApplyEffectToSelf(DefaultGeneralAttributesMaxValueEffectClass, 1.0);
-	ApplyEffectToSelf(DefaultGeneralAttributesValueEffectClass, 1.0);
-}
-
-void ACLCharacter::InitializeDefaultPassiveEffects()
-{
-	for (TSubclassOf<UGameplayEffect> PassiveEffectClass : DefaultPassiveEffectClasses)
-	{
-		ApplyEffectToSelf(PassiveEffectClass, 1.0);
-	}
-}
-
 void ACLCharacter::SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled)
 {
 	if (AbilitySystem)
@@ -90,10 +78,18 @@ void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 P
 void ACLCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
+	check(PawnData);
+
+	for (const UCLAbilitySet* AbilitySet : PawnData->AbilitySets)
+	{
+		check(AbilitySet);
+		AbilitySet->GiveToAbilitySystem(AbilitySystem, nullptr);
+	}
 	
 	// TODO (CL-77): Transition attribute initialization similar to how it's done in LyraGame
-	InitializeDefaultAttributes();
-	InitializeDefaultPassiveEffects();
+	// InitializeDefaultAttributes();
+	// InitializeDefaultPassiveEffects();
 }
 
 void ACLCharacter::PostInitializeComponents()

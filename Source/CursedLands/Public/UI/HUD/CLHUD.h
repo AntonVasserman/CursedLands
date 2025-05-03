@@ -19,7 +19,7 @@ public:
 	void InitOverlay();
 	
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Overlay")
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Overlay")
 	TSubclassOf<UCLUserWidget> OverlayWidgetClass;
 
 	UPROPERTY()

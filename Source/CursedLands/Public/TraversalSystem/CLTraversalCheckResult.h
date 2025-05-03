@@ -10,7 +10,7 @@
 USTRUCT(BlueprintType)
 struct FCLTraversalCheckResult
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly)
 	ECLTraversalAction Action = ECLTraversalAction::None;

@@ -9,7 +9,7 @@
 USTRUCT(BlueprintType)
 struct FCLSlidingCheckResult
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly)
 	ECLStance SlideEndStance = ECLStance::Standing;

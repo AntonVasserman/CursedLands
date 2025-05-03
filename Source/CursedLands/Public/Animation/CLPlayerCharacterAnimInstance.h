@@ -25,7 +25,7 @@ enum class ECLRootYawOffsetMode : uint8
 USTRUCT(BlueprintType)
 struct FCLDirectionalAnimation
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UAnimSequenceBase> ForwardAnimSequence;
@@ -48,7 +48,7 @@ struct FCLDirectionalAnimation
 USTRUCT(BlueprintType)
 struct FCLFallAnimation
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UAnimSequenceBase> LightFallAnimSequence;

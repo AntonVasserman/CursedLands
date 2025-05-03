@@ -18,9 +18,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UCLStaminaAttributeSet, MaxStamina);
 
 private:
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Attributes", Meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData Stamina;
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Attributes", Meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxStamina;
 	
 	//~ UCLAttributeSet Begin

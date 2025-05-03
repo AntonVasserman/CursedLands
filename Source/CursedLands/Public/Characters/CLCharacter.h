@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "CLCharacter.generated.h"
 
+class UCLPawnData;
 class UCLAbilitySystemComponent;
 class UCLHealthAttributeSet;
 class UGameplayEffect;
@@ -22,36 +23,29 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
-	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System | Attributes")
+	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Attributes")
 	FORCEINLINE UCLHealthAttributeSet* GetHealthAttributeSet() const { return HealthAttributeSet; }
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
 	FORCEINLINE bool IsAlive() const { return bIsAlive; }
 	void SimulatePhysics() const;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
-	TSubclassOf<UGameplayEffect> DefaultGeneralAttributesValueEffectClass;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
-	TSubclassOf<UGameplayEffect> DefaultGeneralAttributesMaxValueEffectClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Config | Gameplay Ability System | Attributes | Effects")
-	TArray<TSubclassOf<UGameplayEffect>> DefaultPassiveEffectClasses;
+	// TODO: Should this be EditInstanceOnly? LyraGame uses EditInstanceOnly and set this either in a world object or using a Spawn function.
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Pawn")
+	TObjectPtr<const UCLPawnData> PawnData;
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level);
 	virtual void Die();
 	UFUNCTION(BlueprintImplementableEvent, DisplayName = "Die")
 	void Die_BP();
 	UAnimInstance* GetAnimInstance();
-	void InitializeDefaultAttributes();
-	void InitializeDefaultPassiveEffects();
 	void SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled);
 
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")
 	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System | Attributes")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
 	TObjectPtr<UCLHealthAttributeSet> HealthAttributeSet;
 
 	bool bIsAlive = true;

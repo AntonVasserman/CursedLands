@@ -18,9 +18,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UCLManaAttributeSet, MaxMana);
 	
 private:
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Attributes", Meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData Mana;
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Attributes", Meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxMana;
 
 	//~ UCLAttributeSet Begin

@@ -23,7 +23,7 @@ public:
 	
 	TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr> TagToAttributeMapping;
 	
-	UFUNCTION(BlueprintPure, Category = "Gameplay Ability System | Attributes")
+	UFUNCTION(BlueprintPure, Category = "Gameplay Ability System|Attributes")
 	FGameplayAttribute GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const;
 
 	//~ UAttributeSet Begin

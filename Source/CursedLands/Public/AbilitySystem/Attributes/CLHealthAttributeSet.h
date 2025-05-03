@@ -18,9 +18,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UCLHealthAttributeSet, MaxHealth);
 	
 private:
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Attributes", Meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData Health;
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System | Attributes", Meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxHealth;
 
 	//~ UCLAttributeSet Begin

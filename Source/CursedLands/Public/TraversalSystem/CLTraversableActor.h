@@ -11,7 +11,7 @@ class USplineComponent;
 USTRUCT(BlueprintType)
 struct FLedgeCheckResult
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	bool bHasLedge = false;
 	FVector LedgeLocation = FVector::ZeroVector;

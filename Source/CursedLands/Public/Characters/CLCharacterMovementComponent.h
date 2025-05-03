@@ -35,7 +35,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGaitChanged, ECLGait, PreviousGa
 USTRUCT(BlueprintType)
 struct FCLCharacterMovementProperties
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking|Walk")
 	uint8 bCanEverWalk:1 = false;
@@ -50,7 +50,7 @@ struct FCLCharacterMovementProperties
 USTRUCT()
 struct FCLGaitSettings
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
 	float MaxWalkingSpeed = 0.f;
@@ -74,7 +74,7 @@ struct FCLGaitSettings
 USTRUCT(BlueprintType)
 struct FCLGaitSettingsCollection
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
 	FCLGaitSettings Walking;

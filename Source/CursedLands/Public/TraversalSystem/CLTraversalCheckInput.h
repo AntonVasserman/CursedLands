@@ -8,7 +8,7 @@
 USTRUCT(BlueprintType)
 struct FCLTraversalCheckInput
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly)
 	FVector TraceForwardDirection = FVector::ZeroVector;
