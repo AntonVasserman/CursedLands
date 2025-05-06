@@ -4,5 +4,5 @@
 
 #include "CoreMinimal.h"
 
-// TODO: Change Traverse Input after research
-// TODO: Traverse while sprinting should be automatic?
+// TODO (CL-129): Change Traverse Input after research
+// TODO (CL-128): Traverse while sprinting should be automatic?

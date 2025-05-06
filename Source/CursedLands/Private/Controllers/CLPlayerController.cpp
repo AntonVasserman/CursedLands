@@ -4,6 +4,7 @@
 #include "Controllers/CLPlayerController.h"
 
 #include "CLGameplayTags.h"
+#include "CLLogChannels.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Characters/CLPlayerCharacter.h"
@@ -11,6 +12,35 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/CLUserWidget.h"
 #include "UI/HUD/CLHUD.h"
+
+#if WITH_EDITOR
+void ACLPlayerController::RequestSlomoStarted()
+{
+	bSlomoRequested = true;
+	UE_LOG(LogCL, Display, TEXT("Slomo Update Requested"));
+	// TODO: Generate a proper key for the DebugMessage or remove the DebugMessage entirely???
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Slomo Update Requested")));
+}
+
+void ACLPlayerController::RequestSlomoTriggered(const FInputActionValue& InValue)
+{
+	if (!bSlomoRequested)
+	{
+		return;
+	}
+	
+	const float SlomoInput = InValue.Get<float>() > 0 ? 0.25f : -0.25f;
+	const float CurrentSlomoValue = GetWorld()->GetWorldSettings()->GetEffectiveTimeDilation();
+	const float NewSlomoValue = FMath::Clamp(CurrentSlomoValue + SlomoInput, 0.25f, 1.0f);
+	
+	GetWorld()->GetWorldSettings()->SetTimeDilation(NewSlomoValue);
+	UE_LOG(LogCL, Display, TEXT("Slomo Updated from: '%f', to: '%f'"), CurrentSlomoValue, NewSlomoValue);
+	// TODO: Generate a proper key for the DebugMessage or remove the DebugMessage entirely???
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Slomo Updated from: '%f', to: '%f'"), CurrentSlomoValue, NewSlomoValue));
+	
+	bSlomoRequested = false;
+}
+#endif
 
 void ACLPlayerController::RequestMoveAction(const FInputActionValue& InValue)
 {
@@ -219,6 +249,11 @@ void ACLPlayerController::SetupInputComponent()
 	
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
+#if WITH_EDITOR
+	EnhancedInputComponent->BindAction(SlomoAction, ETriggerEvent::Started, this, &ACLPlayerController::RequestSlomoStarted);
+	EnhancedInputComponent->BindAction(SlomoAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestSlomoTriggered);
+#endif
+	
 	checkf(LookAction, TEXT("LookAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACLPlayerController::RequestLookAction);
 	checkf(MoveAction, TEXT("MoveAction uninitialized in object: %s"), *GetFullName());

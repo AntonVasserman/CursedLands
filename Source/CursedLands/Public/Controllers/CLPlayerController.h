@@ -21,6 +21,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> SlomoAction;
+#endif
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction;
 
@@ -58,10 +63,19 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|ForceFeedback", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UForceFeedbackEffect> FallToDeathForceFeedbackEffect;
 	
+#if WITH_EDITOR
+	bool bSlomoRequested = false;
+#endif
+	
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
 	TObjectPtr<UCLUserWidget> PauseMenuWidget = nullptr;
 	bool bInPausedMenu = false;
 
+#if WITH_EDITOR
+	void RequestSlomoStarted();
+	void RequestSlomoTriggered(const FInputActionValue& InValue);
+#endif
+	
 	void RequestMoveAction(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleWalkAction();
