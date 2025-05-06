@@ -10,6 +10,7 @@
 #include "MotionWarpingComponent.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
+#include "TraversalSystem/CLCharacterTraversalComponent.h"
 #include "CLPlayerCharacter.generated.h"
 
 enum class ECLPlayerCharacterCameraMode : uint8;
@@ -93,6 +94,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE UCLCharacterTraversalComponent* GetCharacterTraversal() const { return CharacterTraversal; }
+	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
+	FORCEINLINE bool IsTraversing() const { return CharacterTraversal->IsDoingTraversalAction(); }
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	bool CanTraverse() const;
 	void Traverse();

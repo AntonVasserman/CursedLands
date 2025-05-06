@@ -301,13 +301,19 @@ void ACLPlayerCharacter::UpdateCardinalDirection()
 void ACLPlayerCharacter::OnCharacterTraversalActionStarted(const ECLTraversalAction TraversalAction)
 {
 	UE_LOG(LogCLPlayerCharacter, Display, TEXT("%hs: Started Traversal Action '%s'"), __FUNCTION__, *StaticEnum<ECLTraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
+
 	SetTraversalActionTag(TraversalAction, true);
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 void ACLPlayerCharacter::OnCharacterTraversalActionFinished(const ECLTraversalAction TraversalAction)
 {
 	UE_LOG(LogCLPlayerCharacter, Display, TEXT("%hs: Finished Traversal Action '%s'"), __FUNCTION__, *StaticEnum<ECLTraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
+
 	SetTraversalActionTag(TraversalAction, false);
+	bUseControllerRotationYaw = true;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 //~ ACLCharacter Begin
