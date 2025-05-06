@@ -166,6 +166,7 @@ private:
 	float CardinalDirectionAngle = 0.f;
 	ECLCardinalDirection CardinalDirection = ECLCardinalDirection::Forward;
 	bool bFullySprinting = false;
+	bool bSprintAfterTraversal = false;
 
 	void ApplyFatigue();
 	UFUNCTION()

@@ -305,6 +305,9 @@ void ACLPlayerCharacter::OnCharacterTraversalActionStarted(const ECLTraversalAct
 	SetTraversalActionTag(TraversalAction, true);
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	// Since CharacterMovementComponent might reset sprinting when we are "Flying" we need to be able to request sprinting once traversal is over
+	bSprintAfterTraversal = IsSprinting();
 }
 
 void ACLPlayerCharacter::OnCharacterTraversalActionFinished(const ECLTraversalAction TraversalAction)
@@ -314,6 +317,13 @@ void ACLPlayerCharacter::OnCharacterTraversalActionFinished(const ECLTraversalAc
 	SetTraversalActionTag(TraversalAction, false);
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// In case we were sprinting before traversal, return sprinting
+	if (bSprintAfterTraversal)
+	{
+		Sprint();
+		bSprintAfterTraversal = false;
+	}
 }
 
 //~ ACLCharacter Begin
