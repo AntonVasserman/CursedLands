@@ -404,7 +404,8 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 	constexpr float InAirVelocityForCatchMax = 750.f; // The max is much higher to catch jumping cases and not only falling cases
 	if (
 		GetCharacterMovement()->IsFalling() &&
-		UKismetMathLibrary::InRange_FloatFloat(GetCharacterMovement()->Velocity.Z, InAirVelocityForCatchMin, InAirVelocityForCatchMax)
+		UKismetMathLibrary::InRange_FloatFloat(GetCharacterMovement()->Velocity.Z, InAirVelocityForCatchMin, InAirVelocityForCatchMax) &&
+		!UKismetMathLibrary::Vector_IsNearlyZero(GetCharacterMovement()->GetCurrentAcceleration(), 0.1) // Don't traverse unless character is moving
 		)
 	{
 		CharacterTraversal->RequestTraversalAction();
