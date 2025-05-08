@@ -41,7 +41,9 @@ void ACLCharacter::Die()
 {
 	GetCharacterMovement()->DisableMovement();
 	AbilitySystem->RemoveActiveEffects(FGameplayEffectQuery()); // Empty Query to affect all Active Effects
-	bIsAlive = false;
+	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 0);
+	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Dead, 1);
+	
 	Die_BP();
 }
 
@@ -66,6 +68,14 @@ void ACLCharacter::SetMovementModeTag(const EMovementMode InMovementMode, const 
 }
 
 //~ ACharacter Begin
+
+void ACLCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	check(AbilitySystem);
+	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 1);
+}
 
 void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
 {

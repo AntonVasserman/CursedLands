@@ -3,17 +3,23 @@
 
 #include "Controllers/CLPlayerController.h"
 
-#include "CLGameplayTags.h"
 #include "CLLogChannels.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Characters/CLPlayerCharacter.h"
+#include "Components/StateTreeComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/CLUserWidget.h"
 #include "UI/HUD/CLHUD.h"
 
 #if WITH_EDITOR
+ACLPlayerController::ACLPlayerController()
+{
+	// TODO (CL-130): Create a StateTree Schema for CLPlayerController and CLPlayerCharacter
+	PlayerStateTreeComponent = CreateDefaultSubobject<UStateTreeComponent>(TEXT("PlayerStateTree"));
+}
+
 void ACLPlayerController::RequestSlomoStarted()
 {
 	bSlomoRequested = true;

@@ -43,9 +43,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bFalling = false;
 
-	UFUNCTION(BlueprintCallable, Category = "Character Physics")
-	void CharacterMeshSimulatePhysics() const;
-	
 	virtual void UpdateFallData();
 
 private:

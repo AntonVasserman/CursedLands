@@ -10,6 +10,7 @@ class ACLPlayerCharacter;
 class UCLUserWidget;
 class UInputAction;
 class UInputMappingContext;
+class UStateTreeComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -17,6 +18,12 @@ class CURSEDLANDS_API ACLPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "StateTree", Meta = (AllowPrivateAccess = "true"))
+	UStateTreeComponent* PlayerStateTreeComponent;
+
+public:
+	ACLPlayerController();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;

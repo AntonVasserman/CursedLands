@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "CLGameplayTags.h"
 #include "GameplayTagAssetInterface.h"
 #include "GameFramework/Character.h"
 #include "CLCharacter.generated.h"
@@ -25,8 +26,9 @@ public:
 	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Attributes")
 	FORCEINLINE UCLHealthAttributeSet* GetHealthAttributeSet() const { return HealthAttributeSet; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool IsAlive() const { return HasMatchingGameplayTag(CLGameplayTags::Status_Alive); }
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
-	FORCEINLINE bool IsAlive() const { return bIsAlive; }
 	void SimulatePhysics() const;
 
 protected:
@@ -48,10 +50,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
 	TObjectPtr<UCLHealthAttributeSet> HealthAttributeSet;
 
-	bool bIsAlive = true;
-	
 	//~ ACharacter Begin
 public:
+	virtual void BeginPlay() override;
 	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode = 0) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PostInitializeComponents() override;

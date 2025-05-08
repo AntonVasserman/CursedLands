@@ -12,6 +12,11 @@ enum class ECLGait : uint8;
 
 namespace CLGameplayTags
 {
+	// Statuses
+
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Alive);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Dead);
+	
 	// Attributes
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes);
 

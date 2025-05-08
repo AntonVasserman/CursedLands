@@ -3,16 +3,9 @@
 
 #include "Animation/CLAnimInstance.h"
 
-#include "KismetAnimationLibrary.h"
-#include "MaterialHLSLTree.h"
 #include "Characters/CLCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-
-void UCLAnimInstance::CharacterMeshSimulatePhysics() const
-{
-	Character->SimulatePhysics();
-}
 
 void UCLAnimInstance::UpdateLocationData(const float DeltaTime)
 {

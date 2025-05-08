@@ -17,7 +17,9 @@ public class CursedLands : ModuleRules
 				"InputCore",
 				"EnhancedInput",
 				"GameplayCameras",
-				"GameplayAbilities"
+				"GameplayAbilities",
+				"GameplayStateTreeModule",
+				"StateTreeModule"
 			});
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
