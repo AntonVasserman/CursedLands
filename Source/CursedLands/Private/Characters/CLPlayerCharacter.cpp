@@ -447,7 +447,8 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 	}
 
 	// Update Camera
-	if (GetGameplayCamera()->GetRelativeLocation() != InitialGameplayCameraRelativeLocation)
+	// TODO (CL-132): Should move this logic into a dedicated custom CL_GameplayCameraComponent 
+	if (GetGameplayCamera()->GetAttachParent() != nullptr && GetGameplayCamera()->GetRelativeLocation() != InitialGameplayCameraRelativeLocation)
 	{
 		constexpr float InterpolationSpeed = 10.f;
 		GetGameplayCamera()->SetRelativeLocation(FMath::VInterpTo(GetGameplayCamera()->GetRelativeLocation(), InitialGameplayCameraRelativeLocation, DeltaSeconds, InterpolationSpeed));
