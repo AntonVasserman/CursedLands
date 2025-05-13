@@ -112,6 +112,7 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay Camera System", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGameplayCameraComponent> GameplayCamera;
+	FVector InitialGameplayCameraRelativeLocation = FVector(0.f, 0.f, 100.f);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Motion Warping", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMotionWarpingComponent> MotionWarping;
@@ -189,6 +190,7 @@ private:
 
 	//~ ACLCharacter Begin
 public:
+	virtual void BeginPlay() override;
 	virtual void Crouch(bool bClientSimulation = false) override;
 	virtual bool CanCrouch() const override;
 	virtual void Landed(const FHitResult& Hit) override;

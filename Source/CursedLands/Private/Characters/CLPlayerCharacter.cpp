@@ -4,7 +4,6 @@
 #include "Characters/CLPlayerCharacter.h"
 
 #include "CLGameplayTags.h"
-#include "CLLogChannels.h"
 #include "GameplayEffect.h"
 #include "KismetAnimationLibrary.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
@@ -40,7 +39,7 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
-	GameplayCamera->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+	GameplayCamera->SetRelativeLocation(InitialGameplayCameraRelativeLocation);
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
@@ -326,6 +325,13 @@ void ACLPlayerCharacter::OnCharacterTraversalActionFinished(const ECLTraversalAc
 	}
 }
 
+void ACLPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InitialGameplayCameraRelativeLocation = GameplayCamera->GetRelativeLocation();
+}
+
 //~ ACLCharacter Begin
 
 void ACLPlayerCharacter::Crouch(bool bClientSimulation)
@@ -438,6 +444,13 @@ void ACLPlayerCharacter::Tick(float DeltaSeconds)
 		{
 			UnSprint();
 		}
+	}
+
+	// Update Camera
+	if (GetGameplayCamera()->GetRelativeLocation() != InitialGameplayCameraRelativeLocation)
+	{
+		constexpr float InterpolationSpeed = 10.f;
+		GetGameplayCamera()->SetRelativeLocation(FMath::VInterpTo(GetGameplayCamera()->GetRelativeLocation(), InitialGameplayCameraRelativeLocation, DeltaSeconds, InterpolationSpeed));
 	}
 }
 

@@ -11,6 +11,7 @@
 #include "Characters/CLPlayerCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Physics/CLCollisionChannels.h"
@@ -472,6 +473,8 @@ bool UCLCharacterTraversalComponent::ExecuteSlidingCheck(FCLSlidingCheckResult& 
 
 void UCLCharacterTraversalComponent::SlidingActionFinished(const FCLSlidingCheckResult& SlidingCheckResult)
 {
+	const float HeightDeltaFromLastFrame = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - InitialCapsuleHalfHeight; 
+	CharacterOwner->GetGameplayCamera()->AddLocalOffset(FVector(0.f, 0.f, HeightDeltaFromLastFrame));
 	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(InitialCapsuleHalfHeight);
 	bDoingTraversalAction = false;
 	CurrentInProgressTraversalAction = ECLTraversalAction::None;
@@ -519,6 +522,8 @@ void UCLCharacterTraversalComponent::TickComponent(float DeltaTime, ELevelTick T
 		float StandToSlideAlpha;
 		UAnimationWarpingLibrary::GetCurveValueFromAnimation(SlidingAnimMontage, StandToSlideAlphaCurveName, CurrentInProgressTraversalActionDuration, StandToSlideAlpha);
 		const float NewHalfHeight = FMath::Lerp(InitialCapsuleHalfHeight, SlidingHalfHeight, 1.f - StandToSlideAlpha);
+		const float HeightDeltaFromLastFrame = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - NewHalfHeight; 
+		CharacterOwner->GetGameplayCamera()->AddLocalOffset(FVector(0.f, 0.f, HeightDeltaFromLastFrame));
 		CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(NewHalfHeight);
 	}
 }
