@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CL_BlendOutCondition.h"
+#include "CLBlendOutCondition.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "Characters/CLCharacter.h"
-#include "CL_AnimNotifyState_BlendOut.generated.h"
+#include "CLAnimNotifyState_BlendOut.generated.h"
 
 UCLASS()
 class CURSEDLANDS_API UCL_AnimNotifyState_BlendOut : public UAnimNotifyState

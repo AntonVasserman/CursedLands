@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Animation/AnimNotifies/CL_AnimNotifyState_BlendOut.h"
+#include "Animation/AnimNotifies/CLAnimNotifyState_BlendOut.h"
 
 #include "Characters/CLCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
