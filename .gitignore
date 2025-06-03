@@ -3,6 +3,7 @@
 
 # Rider IDE user specific files
 .idea/
+CursedLands.sln.DotSettings.user
 
 # Compiled Object files
 *.slo
@@ -86,4 +87,7 @@ Content/KiteDemo/*
 Content/Mixamo/*
 Content/MSPresets/*
 Content/Reel/*
+Content/StylizedProvencal/*
+/SylizedProvencal.png
 Content/Wall_Bundle/*
+
