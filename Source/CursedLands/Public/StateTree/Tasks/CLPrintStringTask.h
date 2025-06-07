@@ -3,10 +3,10 @@
 #pragma once
 
 #include "StateTreeTaskBase.h"
-#include "CLStateTreePrintStringTask.generated.h"
+#include "CLPrintStringTask.generated.h"
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_StateTreePrintStringTaskInstanceData
+struct CURSEDLANDS_API FCL_PrintStringTaskInstanceData
 {
 	GENERATED_BODY()
 
@@ -21,13 +21,13 @@ struct CURSEDLANDS_API FCL_StateTreePrintStringTaskInstanceData
 // This is a temporary debug task used to output string so I can test StateTree behavior.
 // NOTE: I'm hashing the provided string to generate a key, meaning that two equivalent strings will result in message overriding.
 USTRUCT(Meta = (DisplayName = "Print String Task"))
-struct CURSEDLANDS_API FCL_StateTreePrintStringTask : public FStateTreeTaskCommonBase
+struct CURSEDLANDS_API FCL_PrintStringTask : public FStateTreeTaskCommonBase
 {
 	GENERATED_BODY()
 
-	using FInstanceDataType = FCL_StateTreePrintStringTaskInstanceData;
+	using FInstanceDataType = FCL_PrintStringTaskInstanceData;
 
-	FCL_StateTreePrintStringTask() = default;
+	FCL_PrintStringTask() = default;
 
 	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;

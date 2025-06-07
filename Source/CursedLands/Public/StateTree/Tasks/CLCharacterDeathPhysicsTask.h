@@ -3,12 +3,12 @@
 #pragma once
 
 #include "StateTreeTaskBase.h"
-#include "CLStateTreeCharacterDeathPhysicsTask.generated.h"
+#include "CLCharacterDeathPhysicsTask.generated.h"
 
 class ACLPlayerController;
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_StateTreeCharacterDeathPhysicsTaskInstanceData
+struct CURSEDLANDS_API FCL_CharacterDeathPhysicsTaskInstanceData
 {
 	GENERATED_BODY()
 
@@ -20,12 +20,12 @@ struct CURSEDLANDS_API FCL_StateTreeCharacterDeathPhysicsTaskInstanceData
 	bool bRunForever = false;
 };
 
-USTRUCT(Meta = (DisplayName = "Character Death Physics Task"))
-struct FCL_StateTreeCharacterDeathPhysicsTask : public FStateTreeTaskCommonBase
+USTRUCT(Meta = (DisplayName = "Character Death Physics"))
+struct CURSEDLANDS_API FCL_CharacterDeathPhysicsTask : public FStateTreeTaskCommonBase
 {
 	GENERATED_BODY()
 
-	using FInstanceDataType = FCL_StateTreeCharacterDeathPhysicsTaskInstanceData;
+	using FInstanceDataType = FCL_CharacterDeathPhysicsTaskInstanceData;
 	
 	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;

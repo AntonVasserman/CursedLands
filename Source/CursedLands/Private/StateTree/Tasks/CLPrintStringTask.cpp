@@ -1,6 +1,6 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
-#include "StateTree/Tasks/CLStateTreePrintStringTask.h"
+#include "StateTree/Tasks/CLPrintStringTask.h"
 #include "StateTreeExecutionContext.h"
 
 static TAutoConsoleVariable CVarShowDebugCLStateTreePrintStringTask(
@@ -9,7 +9,7 @@ static TAutoConsoleVariable CVarShowDebugCLStateTreePrintStringTask(
 	TEXT("Shows the strings printed by the StateTreePrintStringTask class"),
 	ECVF_Default);
 
-EStateTreeRunStatus FCL_StateTreePrintStringTask::EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
+EStateTreeRunStatus FCL_PrintStringTask::EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
 {
 	const FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
 	
