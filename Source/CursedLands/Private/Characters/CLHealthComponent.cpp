@@ -2,7 +2,6 @@
 
 #include "Characters/CLHealthComponent.h"
 
-#include "CLLogChannels.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
 

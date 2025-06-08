@@ -83,7 +83,8 @@ void ACLCharacter::BeginPlay()
 
 	check(AbilitySystem);
 	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 1);
-	
+
+	// Setup Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
 	HealthComponent->OnHealthChanged.AddDynamic(this, &ACLCharacter::OnHealthChanged);
 }

@@ -10,6 +10,7 @@
 #include "AbilitySystem/Attributes/CLManaAttributeSet.h"
 #include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Characters/CLCharacterMovementComponent.h"
+#include "Characters/CLStaminaComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
@@ -46,7 +47,7 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	CharacterTraversal = CreateDefaultSubobject<UCLCharacterTraversalComponent>("CharacterTraversal");
 
 	ManaAttributeSet = CreateDefaultSubobject<UCLManaAttributeSet>("ManaAttributeSet");
-	StaminaAttributeSet = CreateDefaultSubobject<UCLStaminaAttributeSet>("StaminaAttributeSet");
+	StaminaComponent = CreateDefaultSubobject<UCLStaminaComponent>("StaminaComponent");
 }
 
 void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode InMovementMode)
@@ -104,7 +105,7 @@ bool ACLPlayerCharacter::CanSprint() const
 		!CanMove() || !IsStanding() || IsSprinting() || // Basic check
 		GetCharacterTraversal()->IsDoingTraversalAction() || // If player is occupied (traversing) it can't sprint
 		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
-		GetStaminaAttributeSet()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
+		GetStaminaComponent()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
 		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
 		)
 	{
@@ -188,6 +189,14 @@ void ACLPlayerCharacter::OnGaitChanged(const ECLGait PreviousGait, const ECLGait
 	if (PreviousGait == ECLGait::Sprinting && Gait != ECLGait::Sprinting)
 	{
 		bFullySprinting = false;
+	}
+}
+
+void ACLPlayerCharacter::OnStaminaChanged(float OldValue, float NewValue)
+{
+	if (NewValue == 0)
+	{
+		ApplyFatigue();
 	}
 }
 
@@ -330,6 +339,10 @@ void ACLPlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	InitialGameplayCameraRelativeLocation = GameplayCamera->GetRelativeLocation();
+
+	// Setup Stamina Component Initialization
+	GetStaminaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
+	GetStaminaComponent()->OnStaminaChanged.AddDynamic(this, &ACLPlayerCharacter::OnStaminaChanged);
 }
 
 //~ ACLCharacter Begin
@@ -389,16 +402,7 @@ void ACLPlayerCharacter::PostInitializeComponents()
 
 	GetCLCharacterMovement()->OnStanceChanged.AddDynamic(this, &ACLPlayerCharacter::OnStanceChanged);
 	GetCLCharacterMovement()->OnGaitChanged.AddDynamic(this, &ACLPlayerCharacter::OnGaitChanged);
-	
-	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GetStaminaAttributeSet()->GetStaminaAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			if (Data.NewValue == 0)
-			{
-				ApplyFatigue();
-			}
-		});
-	
+
 	FallToRollAnimMontageEndedDelegate.BindLambda(
 		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
 		{

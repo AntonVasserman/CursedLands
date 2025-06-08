@@ -13,6 +13,7 @@
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 #include "CLPlayerCharacter.generated.h"
 
+class UCLStaminaComponent;
 enum class ECLPlayerCharacterCameraMode : uint8;
 class UCLCharacterTraversalComponent;
 class UCLManaAttributeSet;
@@ -38,6 +39,9 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Stamina")
+	TObjectPtr<UCLStaminaComponent> StaminaComponent;
+
 public:
 	ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
@@ -57,8 +61,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Locomotion")
 	void SetMovementMode(const ECLPlayerCharacterMovementMode InMovementMode);
 	
-	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Attributes")
-	FORCEINLINE UCLStaminaAttributeSet* GetStaminaAttributeSet() const { return StaminaAttributeSet; }
+	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Stamina")
+	FORCEINLINE UCLStaminaComponent* GetStaminaComponent() const { return StaminaComponent; }
 	FORCEINLINE bool CanLook() const { return IsAlive(); }
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement")
@@ -150,9 +154,6 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
 	TObjectPtr<UCLManaAttributeSet> ManaAttributeSet;
 	
-	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
-	TObjectPtr<UCLStaminaAttributeSet> StaminaAttributeSet;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionBackwardMin = -130.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
@@ -174,6 +175,8 @@ private:
 	void OnStanceChanged(ECLStance PreviousStance, ECLStance Stance);
 	UFUNCTION()
 	void OnGaitChanged(ECLGait PreviousGait, ECLGait Gait);
+	UFUNCTION()
+	void OnStaminaChanged(float OldValue, float NewValue);
 	void PlayFallToRollAnimMontage();
 	void PlayFallToDeathAnimMontage();
 	void SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const;
