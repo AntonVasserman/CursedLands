@@ -9,9 +9,9 @@
 #include "GameFramework/Character.h"
 #include "CLCharacter.generated.h"
 
-class UCLPawnData;
 class UCLAbilitySystemComponent;
-class UCLHealthAttributeSet;
+class UCLHealthComponent;
+class UCLPawnData;
 class UGameplayEffect;
 
 UCLASS()
@@ -19,13 +19,19 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter, public IAbilitySystemInt
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")
+	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Health")
+	TObjectPtr<UCLHealthComponent> HealthComponent;
+
 public:
 	ACLCharacter(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
-	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Attributes")
-	FORCEINLINE UCLHealthAttributeSet* GetHealthAttributeSet() const { return HealthAttributeSet; }
+	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Health")
+	FORCEINLINE UCLHealthComponent* GetHealthComponent() const { return HealthComponent; }
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool IsAlive() const { return HasMatchingGameplayTag(CLGameplayTags::Status_Alive); }
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
@@ -44,12 +50,9 @@ protected:
 	void SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled);
 
 private:
-	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")
-	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
-
-	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
-	TObjectPtr<UCLHealthAttributeSet> HealthAttributeSet;
-
+	UFUNCTION()
+	void OnHealthChanged(float OldValue, float NewValue);
+	
 	//~ ACharacter Begin
 public:
 	virtual void BeginPlay() override;

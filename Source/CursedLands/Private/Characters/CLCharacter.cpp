@@ -7,8 +7,8 @@
 #include "CLGameplayTags.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
-#include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
 #include "AbilitySystem/Data/CLAbilitySet.h"
+#include "Characters/CLHealthComponent.h"
 #include "Characters/Data/CLPawnData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -18,7 +18,7 @@ ACLCharacter::ACLCharacter(const FObjectInitializer& ObjectInitializer)
 	AbilitySystem = CreateDefaultSubobject<UCLAbilitySystemComponent>("AbilitySystem");
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
-	HealthAttributeSet = CreateDefaultSubobject<UCLHealthAttributeSet>("HealthAttributeSet");
+	HealthComponent = CreateDefaultSubobject<UCLHealthComponent>("HealthComponent");
 }
 
 void ACLCharacter::SimulatePhysics() const
@@ -67,6 +67,14 @@ void ACLCharacter::SetMovementModeTag(const EMovementMode InMovementMode, const 
 	}
 }
 
+void ACLCharacter::OnHealthChanged(float OldValue, float NewValue)
+{
+	if (NewValue == 0 && IsAlive())
+	{
+		Die();
+	}
+}
+
 //~ ACharacter Begin
 
 void ACLCharacter::BeginPlay()
@@ -75,6 +83,9 @@ void ACLCharacter::BeginPlay()
 
 	check(AbilitySystem);
 	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 1);
+	
+	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
+	HealthComponent->OnHealthChanged.AddDynamic(this, &ACLCharacter::OnHealthChanged);
 }
 
 void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
@@ -103,14 +114,6 @@ void ACLCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	AbilitySystem->InitAbilityActorInfo(this, this);
-	AbilitySystem->GetGameplayAttributeValueChangeDelegate(GetHealthAttributeSet()->GetHealthAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			if (Data.NewValue == 0 && IsAlive())
-			{
-				Die();
-			}
-		});
 }
 
 //~ ACharacter End
