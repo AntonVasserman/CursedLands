@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLAttributeSet.h"
+#include "CLResourceAttributeSet.h"
 #include "CLStaminaAttributeSet.generated.h"
 
 UCLASS()
-class CURSEDLANDS_API UCLStaminaAttributeSet : public UCLAttributeSet
+class CURSEDLANDS_API UCLStaminaAttributeSet : public UCLResourceAttributeSet
 {
 	GENERATED_BODY()
 
@@ -23,9 +23,13 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxStamina;
 	
-	//~ UCLAttributeSet Begin
-protected:
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	//~ UCLAttributeSet End
+	//~ UCLResourceAttributeSet Begin
+public:
+	virtual float GetValue() const override { return GetStamina(); }
+	virtual void SetValue(float NewValue) override { SetStamina(NewValue); }
+	virtual FGameplayAttribute GetValueAttribute() const override { return GetStaminaAttribute(); }
+	virtual float GetMaxValue() const override { return GetMaxStamina(); }
+	virtual void SetMaxValue(float NewValue) override { SetMaxStamina(NewValue); }
+	virtual FGameplayAttribute GetMaxValueAttribute() const override { return GetMaxStaminaAttribute(); }
+	//~ UCLResourceAttributeSet End
 };

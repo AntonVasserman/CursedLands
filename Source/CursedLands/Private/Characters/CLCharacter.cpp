@@ -86,7 +86,7 @@ void ACLCharacter::BeginPlay()
 
 	// Setup Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
-	HealthComponent->OnHealthChanged.AddDynamic(this, &ACLCharacter::OnHealthChanged);
+	HealthComponent->OnValueChanged.AddDynamic(this, &ACLCharacter::OnHealthChanged);
 }
 
 void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)

@@ -7,10 +7,9 @@
 #include "GameplayEffect.h"
 #include "KismetAnimationLibrary.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
-#include "AbilitySystem/Attributes/CLManaAttributeSet.h"
-#include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Characters/CLCharacterMovementComponent.h"
 #include "Characters/CLStaminaComponent.h"
+#include "Characters/Components/CLManaComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
@@ -46,7 +45,7 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 	CharacterTraversal = CreateDefaultSubobject<UCLCharacterTraversalComponent>("CharacterTraversal");
 
-	ManaAttributeSet = CreateDefaultSubobject<UCLManaAttributeSet>("ManaAttributeSet");
+	ManaComponent = CreateDefaultSubobject<UCLManaComponent>("ManaComponent");
 	StaminaComponent = CreateDefaultSubobject<UCLStaminaComponent>("StaminaComponent");
 }
 
@@ -105,7 +104,7 @@ bool ACLPlayerCharacter::CanSprint() const
 		!CanMove() || !IsStanding() || IsSprinting() || // Basic check
 		GetCharacterTraversal()->IsDoingTraversalAction() || // If player is occupied (traversing) it can't sprint
 		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
-		GetStaminaComponent()->GetStamina() <= 0 || // Check that the PlayerCharacter has Stamina
+		GetStaminaComponent()->GetValue() <= 0 || // Check that the PlayerCharacter has Stamina
 		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
 		)
 	{
@@ -342,7 +341,7 @@ void ACLPlayerCharacter::BeginPlay()
 
 	// Setup Stamina Component Initialization
 	GetStaminaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
-	GetStaminaComponent()->OnStaminaChanged.AddDynamic(this, &ACLPlayerCharacter::OnStaminaChanged);
+	GetStaminaComponent()->OnValueChanged.AddDynamic(this, &ACLPlayerCharacter::OnStaminaChanged);
 }
 
 //~ ACLCharacter Begin

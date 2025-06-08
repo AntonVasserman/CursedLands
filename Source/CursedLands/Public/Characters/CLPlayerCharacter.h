@@ -13,11 +13,10 @@
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 #include "CLPlayerCharacter.generated.h"
 
-class UCLStaminaComponent;
 enum class ECLPlayerCharacterCameraMode : uint8;
 class UCLCharacterTraversalComponent;
-class UCLManaAttributeSet;
-class UCLStaminaAttributeSet;
+class UCLManaComponent;
+class UCLStaminaComponent;
 class UGameplayCameraComponent;
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCLPlayerCharacter, Log, All);
@@ -39,6 +38,9 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Mana")
+	TObjectPtr<UCLManaComponent> ManaComponent;
+	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Stamina")
 	TObjectPtr<UCLStaminaComponent> StaminaComponent;
 
@@ -151,9 +153,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> FatigueGameplayEffectClass;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Attributes")
-	TObjectPtr<UCLManaAttributeSet> ManaAttributeSet;
-	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionBackwardMin = -130.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))

@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLAttributeSet.h"
+#include "CLResourceAttributeSet.h"
 #include "CLManaAttributeSet.generated.h"
 
 UCLASS()
-class CURSEDLANDS_API UCLManaAttributeSet : public UCLAttributeSet
+class CURSEDLANDS_API UCLManaAttributeSet : public UCLResourceAttributeSet
 {
 	GENERATED_BODY()
 
@@ -23,9 +23,13 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxMana;
 
-	//~ UCLAttributeSet Begin
+	//~ UCLResourceAttributeSet Begin
 public:
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	//~ UCLAttributeSet End
+	virtual float GetValue() const override { return GetMana(); }
+	virtual void SetValue(float NewValue) override { SetMana(NewValue); }
+	virtual FGameplayAttribute GetValueAttribute() const override { return GetManaAttribute(); }
+	virtual float GetMaxValue() const override { return GetMaxMana(); }
+	virtual void SetMaxValue(float NewValue) override { SetMaxMana(NewValue); }
+	virtual FGameplayAttribute GetMaxValueAttribute() const override { return GetMaxManaAttribute(); }
+	//~ UCLResourceAttributeSet End
 };
