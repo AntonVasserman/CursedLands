@@ -7,8 +7,8 @@
 #include "CLGameplayTags.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Components/CLHealthComponent.h"
 #include "AbilitySystem/Data/CLAbilitySet.h"
-#include "Characters/CLHealthComponent.h"
 #include "Characters/Data/CLPawnData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 

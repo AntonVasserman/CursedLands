@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/CLResourceComponent.h"
-#include "CLHealthComponent.generated.h"
+#include "CLResourceComponent.h"
+#include "CLStaminaComponent.generated.h"
 
 UCLASS()
-class CURSEDLANDS_API UCLHealthComponent : public UCLResourceComponent
+class CURSEDLANDS_API UCLStaminaComponent : public UCLResourceComponent
 {
 	GENERATED_BODY()
 
 public:
-	UCLHealthComponent();
+	UCLStaminaComponent();
 
 	//~ UCLResourceComponent Begin
 	//~ UCLResourceComponent End

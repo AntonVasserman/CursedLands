@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Characters/Components/CLManaComponent.h"
+#include "AbilitySystem/Components/CLManaComponent.h"
 
 #include "AbilitySystem/Attributes/CLManaAttributeSet.h"
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/CLCharacterMovementComponent.h"
+#include "Characters/Components/CLCharacterMovementComponent.h"
 #include "CLSlidingCheckResult.generated.h"
 
 USTRUCT(BlueprintType)

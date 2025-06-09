@@ -4,7 +4,7 @@
 #include "CLGameplayTags.h"
 
 #include "Engine/EngineTypes.h"
-#include "Characters/CLCharacterMovementComponent.h"
+#include "Characters/Components/CLCharacterMovementComponent.h"
 #include "TraversalSystem/CLTraversalAction.h"
 
 namespace CLGameplayTags

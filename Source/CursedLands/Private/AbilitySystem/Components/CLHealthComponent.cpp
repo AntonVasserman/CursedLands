@@ -1,6 +1,6 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
-#include "Characters/CLHealthComponent.h"
+#include "AbilitySystem/Components/CLHealthComponent.h"
 
 #include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
 

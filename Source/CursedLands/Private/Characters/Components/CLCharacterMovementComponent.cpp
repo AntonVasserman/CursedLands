@@ -1,10 +1,9 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Characters/CLCharacterMovementComponent.h"
+#include "Characters/Components/CLCharacterMovementComponent.h"
 
 #include "Characters/CLPlayerCharacter.h"
-#include "Kismet/KismetMathLibrary.h"
 
 FCLGaitSettings UCLCharacterMovementComponent::GetGaitSettings(const ECLGait InGait) const
 {

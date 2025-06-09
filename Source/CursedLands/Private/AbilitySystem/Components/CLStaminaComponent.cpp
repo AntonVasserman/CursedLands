@@ -1,6 +1,6 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
-#include "Characters/CLStaminaComponent.h"
+#include "AbilitySystem/Components/CLStaminaComponent.h"
 
 #include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 

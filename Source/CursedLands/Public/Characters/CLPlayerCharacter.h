@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLCharacterMovementComponent.h"
 #include "CLGameplayTags.h"
 #include "CLPlayerCharacterCameraMode.h"
 #include "CLPlayerCharacterMovementMode.h"
 #include "MotionWarpingComponent.h"
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
+#include "Components/CLCharacterMovementComponent.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 #include "CLPlayerCharacter.generated.h"
 

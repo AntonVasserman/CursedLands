@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Characters/Components/CLResourceComponent.h"
+#include "AbilitySystem/Components/CLResourceComponent.h"
 
 #include "AbilitySystem/CLAbilitySystemComponent.h"
 

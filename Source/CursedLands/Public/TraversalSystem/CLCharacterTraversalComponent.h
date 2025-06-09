@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CLTraversalAction.h"
-#include "Characters/CLCharacterMovementComponent.h"
+#include "Characters/Components/CLCharacterMovementComponent.h"
 #include "Components/ActorComponent.h"
 #include "CLCharacterTraversalComponent.generated.h"
 
