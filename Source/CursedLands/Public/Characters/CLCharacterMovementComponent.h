@@ -44,7 +44,7 @@ struct FCLCharacterMovementProperties
 	uint8 bCanEverSprint:1 = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement Properties|Walking|Sprint")
-	uint8 bStopSprintingOnNotMovingOnGround:1 = false;
+	uint8 bStopSprintingOnLanding:1 = false;
 };
 
 USTRUCT()
@@ -181,5 +181,6 @@ public:
 protected:
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	virtual void PhysCustom(float DeltaTime, int32 Iterations) override;
+	virtual void ProcessLanded(const FHitResult& Hit, float remainingTime, int32 Iterations) override;
 	//~ UCharacterMovementComponent End
 };

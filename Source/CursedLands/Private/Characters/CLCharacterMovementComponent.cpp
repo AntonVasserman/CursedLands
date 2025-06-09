@@ -158,11 +158,6 @@ void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float Del
 		{
 			UnSprint();
 		}
-		else if (!IsMovingOnGround() && CharacterMovementProps.bStopSprintingOnNotMovingOnGround)
-		{
-			bWantsToSprint = false;
-			UnSprint();
-		}
 	}
 	else if (bWantsToSprint && CanSprintInCurrentState())
 	{
@@ -190,6 +185,17 @@ void UCLCharacterMovementComponent::PhysCustom(float DeltaTime, int32 Iterations
 	default:
 		checkNoEntry();
 		break;
+	}
+}
+
+void UCLCharacterMovementComponent::ProcessLanded(const FHitResult& Hit, float remainingTime, int32 Iterations)
+{
+	Super::ProcessLanded(Hit, remainingTime, Iterations);
+
+	if (Gait == ECLGait::Sprinting && CharacterMovementProps.bStopSprintingOnLanding)
+	{
+		bWantsToSprint = false;
+		UnSprint();
 	}
 }
 
