@@ -14,6 +14,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Systems/SoftLanding/CLSoftLandingInterface.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
@@ -371,8 +372,10 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 {
 	Super::Landed(Hit);
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Landed: %s"), *Hit.GetActor()->GetName()));
+
 	if (const float FallHeight = GetCLCharacterMovement()->GetFallHeight();
-		FallHeight >= FallHeightForMinFallDamage)
+		FallHeight >= FallHeightForMinFallDamage && !Hit.GetActor()->Implements<UCLSoftLandingInterface>())
 	{
 		checkf(FallDamageGameplayEffectClass, TEXT("FallDamageGameplayEffectClass uninitialized in object: %s"), *GetFullName());
 		const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(FallHeight, FallHeightForMinFallDamage, FallHeightForMaxFallDamage);

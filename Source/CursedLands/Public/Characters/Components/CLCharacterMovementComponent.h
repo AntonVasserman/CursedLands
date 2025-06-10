@@ -71,6 +71,7 @@ struct FCLGaitSettings
 	uint8 bUseSeparateBrakingFriction:1 = false;
 };
 
+// TODO: Consider refactoring this to include a map, a map will be extensible for future gaits added.
 USTRUCT(BlueprintType)
 struct FCLGaitSettingsCollection
 {
