@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Compute/AgentMessage.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CLCharacterMovementComponent.generated.h"
 
@@ -47,7 +48,7 @@ struct FCLCharacterMovementProperties
 	uint8 bStopSprintingOnLanding:1 = false;
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCLGaitSettings
 {
 	GENERATED_BODY()
@@ -71,35 +72,56 @@ struct FCLGaitSettings
 	uint8 bUseSeparateBrakingFriction:1 = false;
 };
 
-// TODO: Consider refactoring this to include a map, a map will be extensible for future gaits added.
+UCLASS(BlueprintType, Const)
+class CURSEDLANDS_API UCLGaitSettingsData : public UPrimaryDataAsset
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
+	FCLGaitSettings GaitSettings;
+};
+
+UENUM(BlueprintType)
+enum class ECLGaitSettingsNotFoundHandlingOption : uint8
+{
+	UseDefault	UMETA(DisplayName = "Use Default", Description = "In case Gait Settings not found fallback to Default Gait Settings. Make sure Default Gait Settings are set."),
+	Halt		UMETA(DisplayName = "Halt", Description = "In case Gait Settings not found execute check assertion to halt the engine."),
+};
+
 USTRUCT(BlueprintType)
 struct FCLGaitSettingsCollection
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
-	FCLGaitSettings Walking;
+	UPROPERTY(EditDefaultsOnly, DisplayName = "Settings Mapping")
+	TMap<ECLGait, TObjectPtr<const UCLGaitSettingsData>> SettingsMap;
 
-	UPROPERTY(EditDefaultsOnly)
-	FCLGaitSettings Jogging;
+	UPROPERTY(EditDefaultsOnly, DisplayName = "Settings Not Found Handling Option")
+	ECLGaitSettingsNotFoundHandlingOption SettingsNotFoundHandlingOption = ECLGaitSettingsNotFoundHandlingOption::UseDefault;
 
-	UPROPERTY(EditDefaultsOnly)
-	FCLGaitSettings Sprinting;
+	UPROPERTY(EditDefaultsOnly, DisplayName = "Default Settings in case of Not Found", meta = (EditCondition = "SettingsNotFoundHandlingOption == ECLGaitSettingsNotFoundHandlingOption::UseDefault", EditConditionHides))
+	TObjectPtr<const UCLGaitSettingsData> DefaultSettings;
 	
 	const FCLGaitSettings& GetSettingsForGait(const ECLGait InGait) const
 	{
-		switch (InGait)
+		if (SettingsMap.Contains(InGait))
 		{
-		case ECLGait::Walking:
-			return Walking;
-		case ECLGait::Jogging:
-			return Jogging;
-		case ECLGait::Sprinting:
-			return Sprinting;
+			return SettingsMap[InGait]->GaitSettings;
+		}
+
+		switch (SettingsNotFoundHandlingOption)
+		{
+		case ECLGaitSettingsNotFoundHandlingOption::UseDefault:
+			return DefaultSettings->GaitSettings;
+		case ECLGaitSettingsNotFoundHandlingOption::Halt:
 		default:
 			checkNoEntry();
-			return Jogging;
+			break;
 		}
+
+		// We should never reach this point.
+		return DefaultSettings->GaitSettings;
 	}
 };
 
