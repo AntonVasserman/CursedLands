@@ -9,6 +9,7 @@
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Components/CLManaComponent.h"
 #include "AbilitySystem/Components/CLStaminaComponent.h"
+#include "Characters/Components/CLCharacterFallingComponent.h"
 #include "Characters/Components/CLCharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -43,6 +44,8 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	GameplayCamera->SetRelativeLocation(InitialGameplayCameraRelativeLocation);
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 
+	FallingComponent = CreateDefaultSubobject<UCLCharacterFallingComponent>("CharacterFalling");
+	
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 	CharacterTraversal = CreateDefaultSubobject<UCLCharacterTraversalComponent>("CharacterTraversal");
 

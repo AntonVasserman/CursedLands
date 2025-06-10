@@ -1,0 +1,50 @@
+// Copyright Anton Vasserman, All Rights Reserved.
+
+
+#include "Characters/Components/CLCharacterFallingComponent.h"
+
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
+
+UCLCharacterFallingComponent::UCLCharacterFallingComponent()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UCLCharacterFallingComponent::OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
+{
+	if (const EMovementMode CurrentMovementMode = Character->GetCharacterMovement()->MovementMode;
+		CurrentMovementMode == MOVE_Falling)
+	{
+		FallBeginZ = Character->GetActorLocation().Z;
+	}
+
+	if (PrevMovementMode == MOVE_Falling)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
+	}
+}
+
+//~ Begin UActorComponent
+
+void UCLCharacterFallingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// We want to always evaluate FallHeight as we allow using it for multiple functionalities 
+	if (OwnerCharacter->GetCharacterMovement()->MovementMode == MOVE_Falling)
+	{
+		FallHeight = FallBeginZ - GetOwner()->GetActorLocation().Z;
+	}
+}
+
+void UCLCharacterFallingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OwnerCharacter = CastChecked<ACharacter>(GetOwner());
+	OwnerCharacter->MovementModeChangedDelegate.AddDynamic(this, &UCLCharacterFallingComponent::OnMovementModeChanged);
+}
+
+//~ End UActorComponent

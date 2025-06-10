@@ -14,6 +14,7 @@
 #include "CLPlayerCharacter.generated.h"
 
 enum class ECLPlayerCharacterCameraMode : uint8;
+class UCLCharacterFallingComponent;
 class UCLCharacterTraversalComponent;
 class UCLManaComponent;
 class UCLStaminaComponent;
@@ -38,6 +39,9 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Locomotion|Falling")
+	TObjectPtr<UCLCharacterFallingComponent> FallingComponent;
+	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Mana")
 	TObjectPtr<UCLManaComponent> ManaComponent;
 	
