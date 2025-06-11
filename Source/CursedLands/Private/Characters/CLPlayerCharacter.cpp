@@ -377,7 +377,7 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Landed: %s"), *Hit.GetActor()->GetName()));
 
-	if (const float FallHeight = GetCLCharacterMovement()->GetFallHeight();
+	if (const float FallHeight = FallingComponent->GetFallHeight();
 		FallHeight >= FallHeightForMinFallDamage && !Hit.GetActor()->Implements<UCLSoftLandingInterface>())
 	{
 		checkf(FallDamageGameplayEffectClass, TEXT("FallDamageGameplayEffectClass uninitialized in object: %s"), *GetFullName());

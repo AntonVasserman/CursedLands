@@ -6,6 +6,13 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+DEFINE_LOG_CATEGORY(LogCharacterFalling);
+
+static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
+	TEXT("CLShowDebug.CharacterFallingComponent"),
+	false,
+	TEXT("Shows the Debug information of the CLCharacterFallingComponent class"),
+	ECVF_Default);
 
 UCLCharacterFallingComponent::UCLCharacterFallingComponent()
 {
@@ -22,7 +29,11 @@ void UCLCharacterFallingComponent::OnMovementModeChanged(ACharacter* Character, 
 
 	if (PrevMovementMode == MOVE_Falling)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
+		if (CVarShowDebugCLPlayerAnimInstance->GetBool())
+		{
+			UE_LOG(LogCharacterFalling, Display, TEXT("Falling: %f"), FallHeight);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
+		}
 	}
 }
 

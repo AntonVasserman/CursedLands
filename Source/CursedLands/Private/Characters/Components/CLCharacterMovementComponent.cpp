@@ -135,17 +135,6 @@ void UCLCharacterMovementComponent::SetUpdatedComponent(USceneComponent* NewUpda
 	PlayerCharacterOwner = Cast<ACLPlayerCharacter>(GetCharacterOwner());
 }
 
-void UCLCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// We want to always evaluate FallHeight as we use it for multiple falling animations 
-	if (IsFalling())
-	{
-		FallHeight = FallBeginZ - GetOwner()->GetActorLocation().Z;
-	}
-}
-
 void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSeconds)
 {
 	// The Super logic is relevant only for out of the box crouching
@@ -161,16 +150,6 @@ void UCLCharacterMovementComponent::UpdateCharacterStateBeforeMovement(float Del
 	else if (bWantsToSprint && CanSprintInCurrentState())
 	{
 		Sprint();
-	}
-}
-
-void UCLCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
-{
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
-
-	if (MovementMode == MOVE_Falling)
-	{
-		FallBeginZ = GetActorLocation().Z;
 	}
 }
 

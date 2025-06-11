@@ -137,9 +137,6 @@ public:
 	FORCEINLINE ECLStance GetStance() const { return Stance; }
 	FORCEINLINE ECLGait GetGait() const { return Gait; }
 	FCLGaitSettings GetGaitSettings(const ECLGait InGait) const;
-	
-	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
-	FORCEINLINE float GetFallHeight() const { return FallHeight; }
 
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Walk")
 	FORCEINLINE bool CanEverWalk() const { return CharacterMovementProps.bCanEverWalk; }
@@ -180,9 +177,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement", Meta = (DisplayName = "Gait Settings"))
 	FCLGaitSettingsCollection GaitSettings;
 
-	float FallHeight = 0.f;
-	float FallBeginZ = 0.f;
-
 	float GetMaxWalkingSpeed() const;
 	float GetMaxCustomSpeed() const;
 	FORCEINLINE bool IsCustomMovementMode(const ECLCustomMovementMode InCustomMovementMode) const { return MovementMode == MOVE_Custom && CustomMovementMode == InCustomMovementMode; }
@@ -199,10 +193,8 @@ public:
 	virtual float GetMaxSpeed() const override;
 	virtual void PostLoad() override;
 	virtual void SetUpdatedComponent(USceneComponent* NewUpdatedComponent) override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 protected:
-	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	virtual void PhysCustom(float DeltaTime, int32 Iterations) override;
 	virtual void ProcessLanded(const FHitResult& Hit, float remainingTime, int32 Iterations) override;
 	//~ UCharacterMovementComponent End

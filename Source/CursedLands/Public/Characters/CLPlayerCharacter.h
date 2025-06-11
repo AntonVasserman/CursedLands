@@ -96,7 +96,9 @@ public:
 	void Sprint();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void UnSprint();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Locomotion|Falling")
+	FORCEINLINE UCLCharacterFallingComponent* GetFallingComponent() const { return FallingComponent; }
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeightForMinFallDamage() const { return FallHeightForMinFallDamage; }
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")

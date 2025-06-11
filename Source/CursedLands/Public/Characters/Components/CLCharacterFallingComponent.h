@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "CLCharacterFallingComponent.generated.h"
 
+CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterFalling, Log, All);
+
 UCLASS()
 class CURSEDLANDS_API UCLCharacterFallingComponent : public UActorComponent
 {
