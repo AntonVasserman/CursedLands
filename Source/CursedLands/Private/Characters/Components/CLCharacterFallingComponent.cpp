@@ -5,6 +5,8 @@
 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Systems/Falling/Conditions/CLCheckFallHeightLandedCondition.h"
+#include "Systems/Falling/Tasks/CLPrintStringLandedTask.h"
 
 DEFINE_LOG_CATEGORY(LogCharacterFalling);
 
@@ -29,10 +31,26 @@ void UCLCharacterFallingComponent::OnMovementModeChanged(ACharacter* Character, 
 
 	if (PrevMovementMode == MOVE_Falling)
 	{
-		if (CVarShowDebugCLPlayerAnimInstance->GetBool())
+		Landed(Character);
+	}
+}
+
+void UCLCharacterFallingComponent::Landed(ACharacter* Character)
+{
+	if (CVarShowDebugCLPlayerAnimInstance->GetBool())
+	{
+		UE_LOG(LogCharacterFalling, Display, TEXT("Falling: %f"), FallHeight);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
+	}
+
+	for (UCLBlabla* Pair : LandedTasks)
+	{
+		if (Pair->Condition->TestCondition(FallHeight))
 		{
-			UE_LOG(LogCharacterFalling, Display, TEXT("Falling: %f"), FallHeight);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
+			for (const UCLPrintStringLandedTask* Task : Pair->Tasks)
+			{
+				Task->ExecuteTask();
+			}
 		}
 	}
 }
