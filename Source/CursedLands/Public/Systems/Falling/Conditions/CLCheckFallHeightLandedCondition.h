@@ -19,16 +19,16 @@ struct CURSEDLANDS_API FCLCheckFallHeightLandedCondition
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (AllowPrivateAccess = "true"))
 	ECLFallHeightLandedCondition Condition = ECLFallHeightLandedCondition::LessThan;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition != ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "Condition != ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThreshold;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThresholdMin;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThresholdMax;
 	
 public:

@@ -5,6 +5,8 @@
 #include "Characters/Components/CLCharacterFallingComponent.h"
 #include "GameFramework/Character.h"
 
+//~ UCLLandedTaskBase Begin
+
 void UCLPlayForceFeedbackLandedTask::ExecuteTask(const FCLLandedTaskContext& TaskContext) const
 {
 	UCLLandedTaskBase::ExecuteTask(TaskContext);
@@ -27,3 +29,5 @@ void UCLPlayForceFeedbackLandedTask::ExecuteTask(const FCLLandedTaskContext& Tas
 	// No need to check the feedback here for nullptr, as it is allowed to be nullptr in ClientPlayForceFeedback.
 	PlayerController->ClientPlayForceFeedback(ForceFeedbackEffect);
 }
+
+//~ UCLLandedTaskBase End

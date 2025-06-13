@@ -50,7 +50,10 @@ void UCLCharacterFallingComponent::Landed(ACharacter* Character)
 			for (const UCLLandedTaskBase* Task : Pair.Tasks)
 			{
 				FCLLandedTaskContext TaskContext;
+				TaskContext.Condition = Pair.Condition;
+				TaskContext.FallHeight = FallHeight;
 				TaskContext.Character = Character;
+				TaskContext.FallingComponent = this;
 				
 				Task->ExecuteTask(TaskContext);
 			}

@@ -380,22 +380,14 @@ void ACLPlayerCharacter::Landed(const FHitResult& Hit)
 	if (const float FallHeight = FallingComponent->GetFallHeight();
 		FallHeight >= FallHeightForMinFallDamage && !Hit.GetActor()->Implements<UCLSoftLandingInterface>())
 	{
-		checkf(FallDamageGameplayEffectClass, TEXT("FallDamageGameplayEffectClass uninitialized in object: %s"), *GetFullName());
-		const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(FallHeight, FallHeightForMinFallDamage, FallHeightForMaxFallDamage);
-		const float FallDamageLevel = FMath::Clamp(NormalizedFallHeight, 0.f, 1.f);
-
-		ApplyEffectToSelf(FallDamageGameplayEffectClass, FallDamageLevel);
-
 		if (FallHeight < FallHeightForMaxFallDamage)
 		{
 			// We play the fall to roll animation even if falling results in death because the FallToRollAnimMontage is responsible for simulating
 			// physics upon death.
-			OnFellToRoll.Broadcast();
 			PlayFallToRollAnimMontage();
 		}
 		else
 		{
-			OnFellToDeath.Broadcast();
 			PlayFallToDeathAnimMontage();
 		}
 	}

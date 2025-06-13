@@ -13,7 +13,9 @@ class CURSEDLANDS_API UCLPlayForceFeedbackLandedTask : public UCLLandedTaskBase
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UForceFeedbackEffect> ForceFeedbackEffect;
-	
+
+	//~ UCLLandedTaskBase Begin
 public:
 	virtual void ExecuteTask(const FCLLandedTaskContext& TaskContext) const override;
+	//~ UCLLandedTaskBase End
 };

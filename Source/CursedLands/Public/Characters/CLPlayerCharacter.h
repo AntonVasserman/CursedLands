@@ -51,11 +51,6 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 public:
 	ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	UPROPERTY(BlueprintAssignable, Category = "Character Movement|Falling")
-	FOnFellToRoll OnFellToRoll;
-	UPROPERTY(BlueprintAssignable, Category = "Character Movement|Falling")
-	FOnFellToDeath OnFellToDeath;
-	
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")
 	FORCEINLINE ECLPlayerCharacterCameraMode GetCameraMode() const { return CameraMode; }
@@ -149,9 +144,6 @@ private:
 	TObjectPtr<UAnimMontage> FallToDeathAnimMontage;
 	const FName FallToDeathAnimMontage_SectionName_Impact = FName("Impact");
 	const FName FallToDeathAnimMontage_SectionName_DeathLoop = FName("DeathLoop");
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayEffect> FallDamageGameplayEffectClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Walking", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
