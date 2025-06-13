@@ -9,9 +9,9 @@ USTRUCT()
 struct CURSEDLANDS_API FCLLandedTaskContext
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY()
-	TObjectPtr<APlayerController> PlayerController;
+	TObjectPtr<ACharacter> Character;
 };
 
 UCLASS(Blueprintable, EditInlineNew)

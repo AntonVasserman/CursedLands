@@ -50,7 +50,7 @@ void UCLCharacterFallingComponent::Landed(ACharacter* Character)
 			for (const UCLLandedTaskBase* Task : Pair.Tasks)
 			{
 				FCLLandedTaskContext TaskContext;
-				TaskContext.PlayerController = Cast<APlayerController>(Character->GetController());
+				TaskContext.Character = Character;
 				
 				Task->ExecuteTask(TaskContext);
 			}
