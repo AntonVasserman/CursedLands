@@ -4,25 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Systems/Falling/Conditions/CLCheckFallHeightLandedCondition.h"
 #include "CLCharacterFallingComponent.generated.h"
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterFalling, Log, All)
 
-class UCLPrintStringLandedTask;
-class UCLCheckFallHeightLandedCondition;;
+class UCLLandedTaskBase;;
 
-// TODO: We need something other than UPrimaryDataAsset here...
-UCLASS()
-class CURSEDLANDS_API UCLBlabla : public UPrimaryDataAsset
+USTRUCT()
+struct CURSEDLANDS_API FCLLandedConditionTasksPair
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
-	TObjectPtr<UCLCheckFallHeightLandedCondition> Condition;
+	UPROPERTY(EditDefaultsOnly, Category = "Config")
+	FCLCheckFallHeightLandedCondition Condition;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
-	TArray<TObjectPtr<UCLPrintStringLandedTask>> Tasks;
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCLLandedTaskBase), Instanced)
+	TArray<TObjectPtr<UCLLandedTaskBase>> Tasks;
 };
 
 UCLASS()
@@ -41,7 +39,7 @@ private:
 	TObjectPtr<ACharacter> OwnerCharacter {nullptr};
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
-	TArray<TObjectPtr<UCLBlabla>> LandedTasks;
+	TArray<FCLLandedConditionTasksPair> LandedTasks;
 	
 	float FallHeight { 0.f };
 	float FallBeginZ { 0.f };

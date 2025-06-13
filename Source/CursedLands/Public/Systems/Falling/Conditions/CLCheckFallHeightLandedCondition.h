@@ -14,21 +14,21 @@ enum class ECLFallHeightLandedCondition : uint8
 	GreaterThan			UMETA(DisplayName = "Greater Than", Description = "Fall Height must be greater than the specified value"),
 };
 
-UCLASS()
-class CURSEDLANDS_API UCLCheckFallHeightLandedCondition : public UPrimaryDataAsset
+USTRUCT()
+struct CURSEDLANDS_API FCLCheckFallHeightLandedCondition
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true"))
 	ECLFallHeightLandedCondition Condition = ECLFallHeightLandedCondition::LessThan;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition != ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition != ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThreshold;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThresholdMin;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThresholdMax;
 	
 public:

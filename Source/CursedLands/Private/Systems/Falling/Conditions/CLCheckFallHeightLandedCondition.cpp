@@ -3,7 +3,7 @@
 
 #include "Systems/Falling/Conditions/CLCheckFallHeightLandedCondition.h"
 
-bool UCLCheckFallHeightLandedCondition::TestCondition(float FallHeight) const
+bool FCLCheckFallHeightLandedCondition::TestCondition(float FallHeight) const
 {
 	switch (Condition)
 	{

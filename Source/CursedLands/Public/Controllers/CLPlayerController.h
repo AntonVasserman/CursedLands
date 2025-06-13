@@ -63,12 +63,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UCLUserWidget> PauseMenuWidgetClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|ForceFeedback", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UForceFeedbackEffect> FallToRollForceFeedbackEffect;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|ForceFeedback", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UForceFeedbackEffect> FallToDeathForceFeedbackEffect;
 	
 #if WITH_EDITOR
 	bool bSlomoRequested = false;
@@ -96,11 +90,6 @@ private:
 	UFUNCTION(BlueprintCallable, Category = "Menus")
 	void TogglePauseMenu();
 
-	UFUNCTION(Category = "Character Movement|Falling")
-	void OnPossessedPlayerCharacterFellToRoll();
-	UFUNCTION(Category = "Character Movement|Falling")
-	void OnPossessedPlayerCharacterFellToDeath();
-	
 	//~ APlayerController Begin
 protected:
 	virtual void BeginPlay() override;

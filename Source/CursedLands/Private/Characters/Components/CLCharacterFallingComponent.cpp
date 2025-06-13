@@ -10,7 +10,7 @@
 
 DEFINE_LOG_CATEGORY(LogCharacterFalling);
 
-static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
+static TAutoConsoleVariable CVarShowDebugUCLCharacterFallingComponent(
 	TEXT("CLShowDebug.CharacterFallingComponent"),
 	false,
 	TEXT("Shows the Debug information of the CLCharacterFallingComponent class"),
@@ -37,19 +37,22 @@ void UCLCharacterFallingComponent::OnMovementModeChanged(ACharacter* Character, 
 
 void UCLCharacterFallingComponent::Landed(ACharacter* Character)
 {
-	if (CVarShowDebugCLPlayerAnimInstance->GetBool())
+	if (CVarShowDebugUCLCharacterFallingComponent->GetBool())
 	{
 		UE_LOG(LogCharacterFalling, Display, TEXT("Falling: %f"), FallHeight);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
 	}
 
-	for (UCLBlabla* Pair : LandedTasks)
+	for (FCLLandedConditionTasksPair Pair : LandedTasks)
 	{
-		if (Pair->Condition->TestCondition(FallHeight))
+		if (Pair.Condition.TestCondition(FallHeight))
 		{
-			for (const UCLPrintStringLandedTask* Task : Pair->Tasks)
+			for (const UCLLandedTaskBase* Task : Pair.Tasks)
 			{
-				Task->ExecuteTask();
+				FCLLandedTaskContext TaskContext;
+				TaskContext.PlayerController = Cast<APlayerController>(Character->GetController());
+				
+				Task->ExecuteTask(TaskContext);
 			}
 		}
 	}

@@ -3,23 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CLLandedTaskBase.h"
 #include "Engine/DataAsset.h"
 #include "CLPrintStringLandedTask.generated.h"
 
-UCLASS()
-class CURSEDLANDS_API UCLPrintStringLandedTask : public UPrimaryDataAsset
+UCLASS(Blueprintable, EditInlineNew)
+class CURSEDLANDS_API UCLPrintStringLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()
 	
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
+	UPROPERTY(EditDefaultsOnly)
 	FString StringToPrint;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
+	UPROPERTY(EditDefaultsOnly)
 	FColor StringColor;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
+	UPROPERTY(EditDefaultsOnly)
 	float PrintDuration;
 	
-	void ExecuteTask() const;
+public:	
+	virtual void ExecuteTask(const FCLLandedTaskContext& TaskContext) const override;
 };
