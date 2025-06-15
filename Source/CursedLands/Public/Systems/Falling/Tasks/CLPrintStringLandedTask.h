@@ -12,13 +12,13 @@ class CURSEDLANDS_API UCLPrintStringLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "")
 	FString StringToPrint;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "")
 	FColor StringColor;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "")
 	float PrintDuration;
 
 	//~ UCLLandedTaskBase Begin

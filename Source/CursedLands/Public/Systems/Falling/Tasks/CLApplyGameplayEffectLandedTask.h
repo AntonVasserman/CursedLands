@@ -21,25 +21,25 @@ class CURSEDLANDS_API UCLApplyGameplayEffectLandedTask : public UCLLandedTaskBas
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "")
 	TSubclassOf<UGameplayEffect> GameplayEffectClass = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "GameplayEffectClass != nullptr", EditConditionHides))
 	ECLGameplayEffectLevelType GameplayEffectLevelType = ECLGameplayEffectLevelType::Absolute;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::Absolute", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::Absolute", EditConditionHides))
 	float GameplayEffectLevel = 1.f;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MinFallHeight = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MaxFallHeight = 100.f;
 	
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MinGameplayEffectLevel = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MaxGameplayEffectLevel = 1.f;
 
 private:

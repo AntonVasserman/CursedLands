@@ -25,6 +25,21 @@ class UCLLandedConditionBase : public UObject
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
+	TObjectPtr<UCLLandedConditionBase> And {nullptr}; 
+	
 public:
-	virtual bool TestCondition(const FCLLandedConditionContext& ConditionContext) const { return false; }
+	bool TestCondition(const FCLLandedConditionContext& ConditionContext) const;
+
+protected:
+	/**
+	 * Evaluates the internal condition based on the provided landing context.
+	 * Override this method to implement specific landing condition logic.
+	 * This is an example of the Template Method Design Pattern, where we want to high-level logic where we evaluate
+	 * "And"s and "Or"s, but each Condition implements its own internal check.
+	 *
+	 * @param ConditionContext The context of the landing event.
+	 * @return True if the condition is satisfied, false otherwise.
+	 */
+	virtual bool TestConditionInternal(const FCLLandedConditionContext& ConditionContext) const { return false; }
 };

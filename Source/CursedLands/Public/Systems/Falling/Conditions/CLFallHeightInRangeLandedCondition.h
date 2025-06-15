@@ -20,20 +20,20 @@ class CURSEDLANDS_API UCLFallHeightInRangeLandedCondition : public UCLLandedCond
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (AllowPrivateAccess = "true"))
 	ECLFallHeightLandedCondition Condition = ECLFallHeightLandedCondition::LessThan;
 	
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "Condition != ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (AllowPrivateAccess = "true", EditCondition = "Condition != ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThreshold;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThresholdMin;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (AllowPrivateAccess = "true", EditCondition = "Condition == ECLFallHeightLandedCondition::InRange", EditConditionHides))
 	float FallHeightThresholdMax;
 
 	//~ UCLLandedConditionBase Begin
-public:
-	virtual bool TestCondition(const FCLLandedConditionContext& ConditionContext) const override;
+protected:
+	virtual bool TestConditionInternal(const FCLLandedConditionContext& ConditionContext) const override;
 	//~ UCLLandedConditionBase End
 };

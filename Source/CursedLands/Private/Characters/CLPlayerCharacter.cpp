@@ -4,7 +4,6 @@
 #include "Characters/CLPlayerCharacter.h"
 
 #include "CLGameplayTags.h"
-#include "GameplayEffect.h"
 #include "KismetAnimationLibrary.h"
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Components/CLManaComponent.h"
@@ -15,7 +14,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Systems/SoftLanding/CLSoftLandingInterface.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);

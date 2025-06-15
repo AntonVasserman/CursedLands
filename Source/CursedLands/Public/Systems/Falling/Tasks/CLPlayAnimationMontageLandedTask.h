@@ -11,13 +11,13 @@ class CURSEDLANDS_API UCLPlayAnimationMontageLandedTask : public UCLLandedTaskBa
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "")
 	TObjectPtr<UAnimMontage> AnimMontage = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "AnimMontage != nullptr", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "AnimMontage != nullptr", EditConditionHides))
 	uint8 bJumpToSection:1 = false;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "AnimMontage != nullptr && bJumpToSection == true", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "AnimMontage != nullptr && bJumpToSection == true", EditConditionHides))
 	FName SectionName;
 
 	//~ UCLLandedTaskBase Begin

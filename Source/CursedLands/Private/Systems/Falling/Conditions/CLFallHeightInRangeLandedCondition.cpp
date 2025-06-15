@@ -2,7 +2,7 @@
 
 #include "Systems/Falling/Conditions/CLFallHeightInRangeLandedCondition.h"
 
-bool UCLFallHeightInRangeLandedCondition::TestCondition(const FCLLandedConditionContext& ConditionContext) const
+bool UCLFallHeightInRangeLandedCondition::TestConditionInternal(const FCLLandedConditionContext& ConditionContext) const
 {
 	switch (Condition)
 	{

@@ -39,6 +39,7 @@ void UCLPlayerCharacterAnimInstance::UpdateFallData()
 
 	FallHeight = PlayerCharacter->GetFallingComponent()->GetFallHeight();
 	bRolling = PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_Rolling);
+	bStandingUp = PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_StandingUp);
 }
 
 void UCLPlayerCharacterAnimInstance::UpdateTraversalData()

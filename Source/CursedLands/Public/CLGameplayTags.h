@@ -56,6 +56,7 @@ namespace CLGameplayTags
 	
 	// Locomotion Tags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Rolling);
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_StandingUp);
 
 	// Traversal Tags
 	CURSEDLANDS_API extern const TMap<ECLTraversalAction, FGameplayTag> TraversalActionTagMap;

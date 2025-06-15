@@ -11,7 +11,7 @@ class CURSEDLANDS_API UCLPlayForceFeedbackLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "")
 	TObjectPtr<UForceFeedbackEffect> ForceFeedbackEffect;
 
 	//~ UCLLandedTaskBase Begin

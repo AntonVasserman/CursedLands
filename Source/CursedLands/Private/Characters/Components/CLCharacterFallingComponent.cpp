@@ -28,14 +28,9 @@ void UCLCharacterFallingComponent::OnMovementModeChanged(ACharacter* Character, 
 	{
 		FallBeginZ = Character->GetActorLocation().Z;
 	}
-
-	if (PrevMovementMode == MOVE_Falling)
-	{
-		Landed(Character);
-	}
 }
 
-void UCLCharacterFallingComponent::Landed(ACharacter* Character)
+void UCLCharacterFallingComponent::Landed(const FHitResult& Hit)
 {
 	if (CVarShowDebugUCLCharacterFallingComponent->GetBool())
 	{
@@ -46,8 +41,8 @@ void UCLCharacterFallingComponent::Landed(ACharacter* Character)
 	for (FCLLandedConditionTasksPair Pair : LandedTasks)
 	{
 		FCLLandedConditionContext ConditionContext;
-		ConditionContext.Character = Character;
-		ConditionContext.HitActor = nullptr; // TODO
+		ConditionContext.Character = OwnerCharacter;
+		ConditionContext.HitActor = Hit.GetActor();
 		ConditionContext.FallHeight = FallHeight;
 		
 		if (Pair.Condition->TestCondition(ConditionContext))
@@ -57,7 +52,7 @@ void UCLCharacterFallingComponent::Landed(ACharacter* Character)
 				FCLLandedTaskContext TaskContext;
 				TaskContext.Condition = Pair.Condition;
 				TaskContext.FallHeight = FallHeight;
-				TaskContext.Character = Character;
+				TaskContext.Character = OwnerCharacter;
 				TaskContext.FallingComponent = this;
 				
 				Task->ExecuteTask(TaskContext);
@@ -85,6 +80,7 @@ void UCLCharacterFallingComponent::BeginPlay()
 
 	OwnerCharacter = CastChecked<ACharacter>(GetOwner());
 	OwnerCharacter->MovementModeChangedDelegate.AddDynamic(this, &UCLCharacterFallingComponent::OnMovementModeChanged);
+	OwnerCharacter->LandedDelegate.AddDynamic(this, &UCLCharacterFallingComponent::Landed);
 }
 
 //~ End UActorComponent

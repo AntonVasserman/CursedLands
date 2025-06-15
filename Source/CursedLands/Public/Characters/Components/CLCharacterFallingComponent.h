@@ -47,7 +47,8 @@ private:
 	UFUNCTION()
 	void OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode);
 
-	void Landed(ACharacter* Character);
+	UFUNCTION()
+	void Landed(const FHitResult& Hit);
 	
 	//~ Begin UActorComponent
 public:
