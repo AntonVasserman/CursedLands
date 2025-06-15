@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Systems/Falling/Conditions/CLCheckFallHeightLandedCondition.h"
 #include "CLCharacterFallingComponent.generated.h"
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterFalling, Log, All)
 
+class UCLLandedConditionBase;
 class UCLLandedTaskBase;;
 
 USTRUCT()
@@ -16,8 +16,8 @@ struct CURSEDLANDS_API FCLLandedConditionTasksPair
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config")
-	FCLCheckFallHeightLandedCondition Condition;
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
+	TObjectPtr<UCLLandedConditionBase> Condition;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCLLandedTaskBase), Instanced)
 	TArray<TObjectPtr<UCLLandedTaskBase>> Tasks;

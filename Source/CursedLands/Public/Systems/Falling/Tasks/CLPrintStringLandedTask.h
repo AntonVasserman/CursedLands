@@ -7,7 +7,7 @@
 #include "Engine/DataAsset.h"
 #include "CLPrintStringLandedTask.generated.h"
 
-UCLASS(Blueprintable, EditInlineNew)
+UCLASS(EditInlineNew, Meta = (DisplayName = "Print String"))
 class CURSEDLANDS_API UCLPrintStringLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()

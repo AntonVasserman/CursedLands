@@ -5,7 +5,7 @@
 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Systems/Falling/Conditions/CLCheckFallHeightLandedCondition.h"
+#include "Systems/Falling/Conditions/CLFallHeightInRangeLandedCondition.h"
 #include "Systems/Falling/Tasks/CLPrintStringLandedTask.h"
 
 DEFINE_LOG_CATEGORY(LogCharacterFalling);
@@ -45,7 +45,12 @@ void UCLCharacterFallingComponent::Landed(ACharacter* Character)
 
 	for (FCLLandedConditionTasksPair Pair : LandedTasks)
 	{
-		if (Pair.Condition.TestCondition(FallHeight))
+		FCLLandedConditionContext ConditionContext;
+		ConditionContext.Character = Character;
+		ConditionContext.HitActor = nullptr; // TODO
+		ConditionContext.FallHeight = FallHeight;
+		
+		if (Pair.Condition->TestCondition(ConditionContext))
 		{
 			for (const UCLLandedTaskBase* Task : Pair.Tasks)
 			{

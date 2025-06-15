@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Systems/Falling/Conditions/CLCheckFallHeightLandedCondition.h"
+#include "Systems/Falling/Conditions/CLFallHeightInRangeLandedCondition.h"
 #include "CLLandedTaskBase.generated.h"
 
 class UCLCharacterFallingComponent;
@@ -14,7 +14,7 @@ struct CURSEDLANDS_API FCLLandedTaskContext
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FCLCheckFallHeightLandedCondition Condition;
+	TObjectPtr<UCLLandedConditionBase> Condition;
 
 	UPROPERTY()
 	float FallHeight;
@@ -26,7 +26,7 @@ struct CURSEDLANDS_API FCLLandedTaskContext
 	TObjectPtr<UCLCharacterFallingComponent> FallingComponent;
 };
 
-UCLASS(Blueprintable, EditInlineNew)
+UCLASS(Abstract, EditInlineNew, Meta = (DisplayName = "Landed Task Base"))
 class CURSEDLANDS_API UCLLandedTaskBase : public UObject
 {
 	GENERATED_BODY()

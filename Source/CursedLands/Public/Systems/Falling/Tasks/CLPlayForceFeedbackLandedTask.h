@@ -6,7 +6,7 @@
 #include "CLLandedTaskBase.h"
 #include "CLPlayForceFeedbackLandedTask.generated.h"
 
-UCLASS(Blueprintable, EditInlineNew)
+UCLASS(EditInlineNew, Meta = (DisplayName = "Play Force Feedback"))
 class CURSEDLANDS_API UCLPlayForceFeedbackLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()

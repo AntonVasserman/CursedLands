@@ -20,12 +20,7 @@ float UCLApplyGameplayEffectLandedTask::GetLevelToApply(const FCLLandedTaskConte
 		return GameplayEffectLevel;
 	case ECLGameplayEffectLevelType::RelativeToFallHeight:
 		{
-			if (TaskContext.Condition.Condition != ECLFallHeightLandedCondition::InRange)
-			{
-				return MaxGameplayEffectLevel;
-			}
-		
-			const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(TaskContext.FallHeight, TaskContext.Condition.FallHeightThresholdMin, TaskContext.Condition.FallHeightThresholdMax);
+			const float NormalizedFallHeight = UKismetMathLibrary::NormalizeToRange(TaskContext.FallHeight, MinFallHeight, MaxFallHeight);
 			return FMath::Clamp(NormalizedFallHeight, MinGameplayEffectLevel, MaxGameplayEffectLevel);
 		}
 	default:

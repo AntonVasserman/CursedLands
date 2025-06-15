@@ -6,7 +6,7 @@
 #include "CLLandedTaskBase.h"
 #include "CLPlayAnimationMontageLandedTask.generated.h"
 
-UCLASS()
+UCLASS(EditInlineNew, Meta = (DisplayName = "Play Animation Montage"))
 class CURSEDLANDS_API UCLPlayAnimationMontageLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()

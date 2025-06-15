@@ -13,10 +13,10 @@ UENUM()
 enum class ECLGameplayEffectLevelType
 {
 	Absolute				UMETA(DisplayName = "Absolute", Description = "Gameplay Effect Level is a set value" ),
-	RelativeToFallHeight	UMETA(DisplayName = "Relative to Fall Height", Description = "Gameplay Effect Level is based on the Fall Height mapped from the Landed Condition range to the min/max values assigned. In case of a non-range condition will always result in max value assigned.")
+	RelativeToFallHeight	UMETA(DisplayName = "Relative to Fall Height", Description = "Gameplay Effect Level is based on the Fall Height. Mapped from [MinFallHeight,MaxFallHeight] to [MinGameplayEffectLevel,MaxGameplayEffectLevel].")
 };
 
-UCLASS(Blueprintable, EditInlineNew)
+UCLASS(EditInlineNew, Meta = (DisplayName = "Apply Gameplay Effect"))
 class CURSEDLANDS_API UCLApplyGameplayEffectLandedTask : public UCLLandedTaskBase
 {
 	GENERATED_BODY()
@@ -30,6 +30,12 @@ class CURSEDLANDS_API UCLApplyGameplayEffectLandedTask : public UCLLandedTaskBas
 	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::Absolute", EditConditionHides))
 	float GameplayEffectLevel = 1.f;
 
+	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	float MinFallHeight = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	float MaxFallHeight = 100.f;
+	
 	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MinGameplayEffectLevel = 0.f;
 
