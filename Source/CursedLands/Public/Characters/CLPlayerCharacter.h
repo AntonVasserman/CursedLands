@@ -22,9 +22,6 @@ class UGameplayCameraComponent;
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCLPlayerCharacter, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToRoll);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFellToDeath);
-
 UENUM(BlueprintType)
 enum class ECLCardinalDirection : uint8
 {
@@ -94,8 +91,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Locomotion|Falling")
 	FORCEINLINE UCLCharacterFallingComponent* GetFallingComponent() const { return FallingComponent; }
+	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeightForMinFallDamage() const { return FallHeightForMinFallDamage; }
+	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
 	FORCEINLINE float GetFallHeightForMaxFallDamage() const { return FallHeightForMaxFallDamage; }
 
@@ -130,20 +129,13 @@ private:
 	ECLPlayerCharacterCameraMode CameraMode = ECLPlayerCharacterCameraMode::Default;
 	ECLPlayerCharacterMovementMode MovementMode = ECLPlayerCharacterMovementMode::Default;
 
+	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling", Meta = (AllowPrivateAccess = "true"))
 	float FallHeightForMinFallDamage = 800.f;
 
+	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling", Meta = (AllowPrivateAccess = "true"))
 	float FallHeightForMaxFallDamage = 1500.f;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|Animation", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> FallToRollAnimMontage;
-	FOnMontageEnded FallToRollAnimMontageEndedDelegate;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling|Animation", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> FallToDeathAnimMontage;
-	const FName FallToDeathAnimMontage_SectionName_Impact = FName("Impact");
-	const FName FallToDeathAnimMontage_SectionName_DeathLoop = FName("DeathLoop");
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Walking", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
@@ -174,8 +166,6 @@ private:
 	void OnGaitChanged(ECLGait PreviousGait, ECLGait Gait);
 	UFUNCTION()
 	void OnStaminaChanged(float OldValue, float NewValue);
-	void PlayFallToRollAnimMontage();
-	void PlayFallToDeathAnimMontage();
 	void SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const;
 	void SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const;
 	void SetTraversalActionTag(const ECLTraversalAction InTraversalAction, const bool bTagEnabled) const;
@@ -193,7 +183,6 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Crouch(bool bClientSimulation = false) override;
 	virtual bool CanCrouch() const override;
-	virtual void Landed(const FHitResult& Hit) override;
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaSeconds) override;
 protected:

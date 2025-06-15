@@ -24,20 +24,19 @@ class CURSEDLANDS_API UCLApplyGameplayEffectLandedTask : public UCLLandedTaskBas
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayEffect> GameplayEffectClass = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "GameplayEffectClass != nullptr", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr", EditConditionHides))
 	ECLGameplayEffectLevelType GameplayEffectLevelType = ECLGameplayEffectLevelType::Absolute;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::Absolute", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::Absolute", EditConditionHides))
 	float GameplayEffectLevel = 1.f;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MinGameplayEffectLevel = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Meta = (AllowPrivateAccess = "true", EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Meta = (EditCondition = "GameplayEffectClass != nullptr && GameplayEffectLevelType == ECLGameplayEffectLevelType::RelativeToFallHeight", EditConditionHides))
 	float MaxGameplayEffectLevel = 1.f;
 
 private:
-	TOptional<UAbilitySystemComponent*> GetAbilitySystemComponent(const ACharacter* Character) const;
 	float GetLevelToApply(const FCLLandedTaskContext& TaskContext) const;
 
 	//~ UCLLandedTaskBase Begin

@@ -203,23 +203,6 @@ void ACLPlayerCharacter::OnStaminaChanged(float OldValue, float NewValue)
 	}
 }
 
-void ACLPlayerCharacter::PlayFallToRollAnimMontage()
-{
-	checkf(FallToRollAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToRollAnimMontage), *GetFullName());
-	if (GetAnimInstance()->Montage_Play(FallToRollAnimMontage) > 0.f)
-	{
-		GetAbilitySystemComponent()->SetLooseGameplayTagCount(CLGameplayTags::Locomotion_Rolling, 1);
-	}
-	GetAnimInstance()->Montage_SetEndDelegate(FallToRollAnimMontageEndedDelegate, FallToRollAnimMontage);
-}
-
-void ACLPlayerCharacter::PlayFallToDeathAnimMontage()
-{
-	checkf(FallToDeathAnimMontage, TEXT("%s uninitialized in object: %s"), GET_MEMBER_NAME_STRING_CHECKED(ACLPlayerCharacter, FallToDeathAnimMontage), *GetFullName());
-	GetAnimInstance()->Montage_Play(FallToDeathAnimMontage);
-	GetAnimInstance()->Montage_JumpToSection(FallToDeathAnimMontage_SectionName_Impact, FallToDeathAnimMontage);
-}
-
 void ACLPlayerCharacter::SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const
 {
 	if (GetAbilitySystemComponent())
@@ -371,40 +354,12 @@ bool ACLPlayerCharacter::CanCrouch() const
 		!GetCharacterTraversal()->IsDoingTraversalAction(); // Check the player isn't occupied (not traversing)
 }
 
-void ACLPlayerCharacter::Landed(const FHitResult& Hit)
-{
-	Super::Landed(Hit);
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Landed: %s"), *Hit.GetActor()->GetName()));
-
-	if (const float FallHeight = FallingComponent->GetFallHeight();
-		FallHeight >= FallHeightForMinFallDamage && !Hit.GetActor()->Implements<UCLSoftLandingInterface>())
-	{
-		if (FallHeight < FallHeightForMaxFallDamage)
-		{
-			// We play the fall to roll animation even if falling results in death because the FallToRollAnimMontage is responsible for simulating
-			// physics upon death.
-			PlayFallToRollAnimMontage();
-		}
-		else
-		{
-			PlayFallToDeathAnimMontage();
-		}
-	}
-}
-
 void ACLPlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
 	GetCLCharacterMovement()->OnStanceChanged.AddDynamic(this, &ACLPlayerCharacter::OnStanceChanged);
 	GetCLCharacterMovement()->OnGaitChanged.AddDynamic(this, &ACLPlayerCharacter::OnGaitChanged);
-
-	FallToRollAnimMontageEndedDelegate.BindLambda(
-		[this](UAnimMontage* InAnimMontage, bool bInterrupted)
-		{
-			GetAbilitySystemComponent()->RemoveLooseGameplayTag(CLGameplayTags::Locomotion_Rolling);
-		});
 
 	CharacterTraversal->OnTraversalActionStarted.AddDynamic(this, &ACLPlayerCharacter::OnCharacterTraversalActionStarted);
 	CharacterTraversal->OnTraversalActionFinished.AddDynamic(this, &ACLPlayerCharacter::OnCharacterTraversalActionFinished);

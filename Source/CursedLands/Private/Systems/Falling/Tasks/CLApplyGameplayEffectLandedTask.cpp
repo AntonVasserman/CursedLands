@@ -5,37 +5,12 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
+#include "AbilitySystem/CLGameplayAbilitySystemStatics.h"
 #include "Characters/Components/CLCharacterFallingComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 
 //~ UCLLandedTaskBase Begin
-
-TOptional<UAbilitySystemComponent*> UCLApplyGameplayEffectLandedTask::GetAbilitySystemComponent(const ACharacter* Character) const
-{
-	// Try to look for the AbilitySystemComponent by casting to IAbilitySystemInterface
-	if (const IAbilitySystemInterface* CharacterAsAbilitySystemInterface = Cast<IAbilitySystemInterface>(Character);
-		CharacterAsAbilitySystemInterface != nullptr)
-	{
-		// UE_LOG(LogCharacterFalling, Warning, TEXT("AbilitySystem is nullptr in ApplyGameplayEffectLandedTask for Character: %s"), *Character->GetFullName());
-		// return Result;
-
-		if (UAbilitySystemComponent* AbilitySystemComponent = CharacterAsAbilitySystemInterface->GetAbilitySystemComponent();
-			AbilitySystemComponent != nullptr)
-		{
-			return AbilitySystemComponent;
-		}
-	}
-
-	// Try to look for the AbilitySystemComponent by looking for it
-	if (UAbilitySystemComponent* AbilitySystemComponent = Character->FindComponentByClass<UAbilitySystemComponent>();
-		AbilitySystemComponent != nullptr)
-	{
-		return AbilitySystemComponent;
-	}
-	
-	return TOptional<UAbilitySystemComponent*>();
-}
 
 float UCLApplyGameplayEffectLandedTask::GetLevelToApply(const FCLLandedTaskContext& TaskContext) const
 {
@@ -66,7 +41,7 @@ void UCLApplyGameplayEffectLandedTask::ExecuteTask(const FCLLandedTaskContext& T
 	
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 
-	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = GetAbilitySystemComponent(TaskContext.Character);
+	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCLGameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
 
 	// If we can't find the Component we won't throw, we will just not apply the effect
 	if (AbilitySystemComponent.IsSet() == false)
