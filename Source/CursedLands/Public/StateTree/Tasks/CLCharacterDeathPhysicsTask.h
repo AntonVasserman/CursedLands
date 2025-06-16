@@ -13,7 +13,7 @@ struct CURSEDLANDS_API FCL_CharacterDeathPhysicsTaskInstanceData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Context")
-	ACLPlayerController* Controller;
+	TObjectPtr<ACLPlayerController> Controller;
 	
 	/** If true the task will run forever until a transition stops it. */
 	UPROPERTY(EditAnywhere, Category = "Parameter")

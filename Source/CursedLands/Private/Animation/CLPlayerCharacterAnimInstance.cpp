@@ -7,8 +7,8 @@
 #include "AVDrawDebugStatics.h"
 #include "KismetAnimationLibrary.h"
 #include "Characters/CLPlayerCharacter.h"
-#include "Characters/Components/CLCharacterFallingComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Systems/Falling/Components/CLCharacterFallingComponent.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 
 static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(

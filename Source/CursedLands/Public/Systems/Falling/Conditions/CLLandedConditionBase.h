@@ -17,7 +17,7 @@ struct CURSEDLANDS_API FCLLandedConditionContext
 	TObjectPtr<AActor> HitActor;
 
 	UPROPERTY(BlueprintReadOnly)
-	float FallHeight;
+	float FallHeight = 0.f;
 };
 
 UCLASS(Abstract, Blueprintable, EditInlineNew, Meta = (DisplayName = "Landed Condition Base"))

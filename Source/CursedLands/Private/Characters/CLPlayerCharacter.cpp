@@ -8,12 +8,12 @@
 #include "AbilitySystem/Attributes/CLAttributeSet.h"
 #include "AbilitySystem/Components/CLManaComponent.h"
 #include "AbilitySystem/Components/CLStaminaComponent.h"
-#include "Characters/Components/CLCharacterFallingComponent.h"
 #include "Characters/Components/CLCharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Systems/Falling/Components/CLCharacterFallingComponent.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);

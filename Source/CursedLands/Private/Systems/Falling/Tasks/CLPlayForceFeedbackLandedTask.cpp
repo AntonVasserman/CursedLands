@@ -2,8 +2,8 @@
 
 #include "Systems/Falling/Tasks/CLPlayForceFeedbackLandedTask.h"
 
-#include "Characters/Components/CLCharacterFallingComponent.h"
 #include "GameFramework/Character.h"
+#include "Systems/Falling/Components/CLCharacterFallingComponent.h"
 
 //~ UCLLandedTaskBase Begin
 

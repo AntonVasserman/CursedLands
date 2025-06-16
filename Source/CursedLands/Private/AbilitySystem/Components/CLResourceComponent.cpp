@@ -13,7 +13,7 @@ UCLResourceComponent::UCLResourceComponent()
 
 void UCLResourceComponent::InitializeWithAbilitySystem(UCLAbilitySystemComponent* InAbilitySystemComponent)
 {
-	const AActor* OwningActor {GetOwner()};
+	const AActor* OwningActor = GetOwner();
 	check(OwningActor);
 	checkf(AbilitySystemComponent == nullptr, TEXT("%s::%hs: %s for owner %s has already been initialized with an ability system"), *GetClass()->GetName(), __FUNCTION__, *ResourceAttributeSet.GetClass()->GetName(), *OwningActor->GetName());
 	checkf(InAbilitySystemComponent != nullptr, TEXT("%s::%hs: Cannot initialize %s for owner %s, with null input ability system!"), *GetClass()->GetName(), __FUNCTION__, *ResourceAttributeSet.GetClass()->GetName(), *OwningActor->GetName());

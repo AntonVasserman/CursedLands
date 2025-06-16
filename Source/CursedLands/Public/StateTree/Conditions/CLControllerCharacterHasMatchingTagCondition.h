@@ -13,7 +13,7 @@ struct CURSEDLANDS_API FCL_ControllerCharacterHasMatchingTagConditionInstanceDat
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Context")
-	ACLPlayerController* Controller;
+	TObjectPtr<ACLPlayerController> Controller;
 
 	UPROPERTY(EditAnywhere, Category = "Parameter")
 	FGameplayTag Tag;

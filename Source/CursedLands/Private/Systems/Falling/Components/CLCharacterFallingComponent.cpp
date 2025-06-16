@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "Characters/Components/CLCharacterFallingComponent.h"
+#include "Systems/Falling/Components/CLCharacterFallingComponent.h"
 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"

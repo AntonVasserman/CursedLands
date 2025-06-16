@@ -17,7 +17,7 @@ struct CURSEDLANDS_API FCLLandedTaskContext
 	TObjectPtr<UCLLandedConditionBase> Condition;
 
 	UPROPERTY(BlueprintReadOnly)
-	float FallHeight;
+	float FallHeight = 0.f;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ACharacter> Character;
