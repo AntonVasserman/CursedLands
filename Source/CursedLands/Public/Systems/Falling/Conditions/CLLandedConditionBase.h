@@ -5,30 +5,34 @@
 #include "CoreMinimal.h"
 #include "CLLandedConditionBase.generated.h"\
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct CURSEDLANDS_API FCLLandedConditionContext
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ACharacter> Character;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<AActor> HitActor;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	float FallHeight;
 };
 
-UCLASS(Abstract, EditInlineNew, Meta = (DisplayName = "Landed Condition Base"))
+UCLASS(Abstract, Blueprintable, EditInlineNew, Meta = (DisplayName = "Landed Condition Base"))
 class UCLLandedConditionBase : public UObject
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
-	TObjectPtr<UCLLandedConditionBase> And {nullptr}; 
+	TObjectPtr<UCLLandedConditionBase> And {nullptr};
+
+	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
+	TObjectPtr<UCLLandedConditionBase> Or {nullptr};
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	bool TestCondition(const FCLLandedConditionContext& ConditionContext) const;
 
 protected:
@@ -41,5 +45,7 @@ protected:
 	 * @param ConditionContext The context of the landing event.
 	 * @return True if the condition is satisfied, false otherwise.
 	 */
-	virtual bool TestConditionInternal(const FCLLandedConditionContext& ConditionContext) const { return false; }
+	UFUNCTION(BlueprintNativeEvent)
+	bool TestConditionInternal(const FCLLandedConditionContext& ConditionContext) const;
+	virtual bool TestConditionInternal_Implementation(const FCLLandedConditionContext& ConditionContext) const { return false; }
 };

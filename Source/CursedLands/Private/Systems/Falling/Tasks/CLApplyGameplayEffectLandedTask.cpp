@@ -30,10 +30,8 @@ float UCLApplyGameplayEffectLandedTask::GetLevelToApply(const FCLLandedTaskConte
 	}
 }
 
-void UCLApplyGameplayEffectLandedTask::ExecuteTask(const FCLLandedTaskContext& TaskContext) const
+void UCLApplyGameplayEffectLandedTask::ExecuteTask_Implementation(const FCLLandedTaskContext& TaskContext) const
 {
-	Super::ExecuteTask(TaskContext);
-	
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 
 	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCLGameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);

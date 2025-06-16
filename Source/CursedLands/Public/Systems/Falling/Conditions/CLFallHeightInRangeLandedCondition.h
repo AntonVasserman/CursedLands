@@ -34,6 +34,6 @@ class CURSEDLANDS_API UCLFallHeightInRangeLandedCondition : public UCLLandedCond
 
 	//~ UCLLandedConditionBase Begin
 protected:
-	virtual bool TestConditionInternal(const FCLLandedConditionContext& ConditionContext) const override;
+	virtual bool TestConditionInternal_Implementation(const FCLLandedConditionContext& ConditionContext) const override;
 	//~ UCLLandedConditionBase End
 };

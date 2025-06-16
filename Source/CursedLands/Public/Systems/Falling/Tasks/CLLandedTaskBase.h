@@ -8,29 +8,31 @@
 
 class UCLCharacterFallingComponent;
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct CURSEDLANDS_API FCLLandedTaskContext
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UCLLandedConditionBase> Condition;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	float FallHeight;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ACharacter> Character;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UCLCharacterFallingComponent> FallingComponent;
 };
 
-UCLASS(Abstract, EditInlineNew, Meta = (DisplayName = "Landed Task Base"))
+UCLASS(Abstract, Blueprintable, EditInlineNew, Meta = (DisplayName = "Landed Task Base"))
 class CURSEDLANDS_API UCLLandedTaskBase : public UObject
 {
 	GENERATED_BODY()
 	
-public:	
-	virtual void ExecuteTask(const FCLLandedTaskContext& TaskContext) const {}
+public:
+	UFUNCTION(BlueprintNativeEvent)
+	void ExecuteTask(const FCLLandedTaskContext& TaskContext) const;
+	virtual void ExecuteTask_Implementation(const FCLLandedTaskContext& TaskContext) const {}
 };

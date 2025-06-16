@@ -4,7 +4,7 @@
 
 #include "Systems/Falling/CLSoftLandingInterface.h"
 
-bool UCLHitActorImplementsSoftLandingInterfaceLandedCondition::TestConditionInternal(
+bool UCLHitActorImplementsSoftLandingInterfaceLandedCondition::TestConditionInternal_Implementation(
 	const FCLLandedConditionContext& ConditionContext) const
 {
 	// If the Hit Actor isn't passed we don't fail the flow

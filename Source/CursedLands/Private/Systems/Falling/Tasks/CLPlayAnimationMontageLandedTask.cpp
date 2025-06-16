@@ -7,10 +7,8 @@
 
 //~ UCLLandedTaskBase Begin
 
-void UCLPlayAnimationMontageLandedTask::ExecuteTask(const FCLLandedTaskContext& TaskContext) const
+void UCLPlayAnimationMontageLandedTask::ExecuteTask_Implementation(const FCLLandedTaskContext& TaskContext) const
 {
-	Super::ExecuteTask(TaskContext);
-
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 
 	UAnimInstance* AnimInstance = TaskContext.Character->GetMesh()->GetAnimInstance();

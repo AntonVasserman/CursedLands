@@ -7,10 +7,8 @@
 
 //~ UCLLandedTaskBase Begin
 
-void UCLPlayForceFeedbackLandedTask::ExecuteTask(const FCLLandedTaskContext& TaskContext) const
+void UCLPlayForceFeedbackLandedTask::ExecuteTask_Implementation(const FCLLandedTaskContext& TaskContext) const
 {
-	UCLLandedTaskBase::ExecuteTask(TaskContext);
-
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in PlayForceFeedbackLandedTask"));
 
 	APlayerController* PlayerController = Cast<APlayerController>(TaskContext.Character->GetController());

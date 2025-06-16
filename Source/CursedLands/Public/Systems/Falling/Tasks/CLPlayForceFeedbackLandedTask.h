@@ -16,6 +16,6 @@ class CURSEDLANDS_API UCLPlayForceFeedbackLandedTask : public UCLLandedTaskBase
 
 	//~ UCLLandedTaskBase Begin
 public:
-	virtual void ExecuteTask(const FCLLandedTaskContext& TaskContext) const override;
+	virtual void ExecuteTask_Implementation(const FCLLandedTaskContext& TaskContext) const override;
 	//~ UCLLandedTaskBase End
 };

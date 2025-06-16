@@ -4,5 +4,6 @@
 
 bool UCLLandedConditionBase::TestCondition(const FCLLandedConditionContext& ConditionContext) const
 {
-	return TestConditionInternal(ConditionContext) && (And == nullptr || And->TestCondition(ConditionContext));
+	return (TestConditionInternal(ConditionContext) && (And == nullptr || And->TestCondition(ConditionContext)))
+		|| (Or != nullptr && Or->TestCondition(ConditionContext));
 }
