@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "CLGameplayAbility.generated.h"
+#include "CL_GameplayAbility.generated.h"
 
 // TODO
 UCLASS()
-class CURSEDLANDS_API UCLGameplayAbility : public UGameplayAbility
+class CURSEDLANDS_API UCL_GameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
 };

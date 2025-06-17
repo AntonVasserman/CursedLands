@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLGameplayAbilitySystemStatics.generated.h"
+#include "CL_GameplayAbilitySystemStatics.generated.h"
 
 class UAbilitySystemComponent;
 
 UCLASS(MinimalAPI)
-class UCLGameplayAbilitySystemStatics : public UBlueprintFunctionLibrary
+class UCL_GameplayAbilitySystemStatics : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 	

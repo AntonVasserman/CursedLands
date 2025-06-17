@@ -5,27 +5,27 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
-#include "CLAbilitySet.generated.h"
+#include "CL_AbilitySet.generated.h"
 
 struct FGameplayAbilitySpecHandle;
 struct FActiveGameplayEffectHandle;
 class UGameplayEffect;
-class UCLAbilitySystemComponent;
-class UCLAttributeSet;
-class UCLGameplayAbility;
+class UCL_AbilitySystemComponent;
+class UCL_AttributeSet;
+class UCL_GameplayAbility;
 
 /**
  *	Data used by the ability set to grant gameplay abilities.
  */
 USTRUCT(BlueprintType)
-struct FCLAbilitySet_GameplayAbility
+struct FCL_AbilitySet_GameplayAbility
 {
 	GENERATED_BODY()
 
 public:
 	// Gameplay ability to grant.
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UCLGameplayAbility> Ability = nullptr;
+	TSubclassOf<UCL_GameplayAbility> Ability = nullptr;
 
 	// Level of ability to grant.
 	UPROPERTY(EditDefaultsOnly)
@@ -40,7 +40,7 @@ public:
  *	Data used by the ability set to grant gameplay effects.
  */
 USTRUCT(BlueprintType)
-struct FCLAbilitySet_GameplayEffect
+struct FCL_AbilitySet_GameplayEffect
 {
 	GENERATED_BODY()
 	
@@ -58,30 +58,30 @@ public:
  *	Data used by the ability set to grant attribute sets.
  */
 USTRUCT(BlueprintType)
-struct FCLAbilitySet_AttributeSet
+struct FCL_AbilitySet_AttributeSet
 {
 	GENERATED_BODY()
 
 public:
 	// Gameplay attribute to grant
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UCLAttributeSet> AttributeSet;
+	TSubclassOf<UCL_AttributeSet> AttributeSet;
 };
 
 /**
  *	Data used to store handles to what has been granted by the ability set.
  */
 USTRUCT(BlueprintType)
-struct FCLAbilitySet_GrantedHandlers
+struct FCL_AbilitySet_GrantedHandlers
 {
 	GENERATED_BODY()
 	
 public:
 	void AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle);
 	void AddGameplayEffectHandle(const FActiveGameplayEffectHandle& Handle);
-	void AddAttributeSet(UCLAttributeSet* Set);
+	void AddAttributeSet(UCL_AttributeSet* Set);
 
-	void RemoveFromAbilitySystem(UCLAbilitySystemComponent* ASC);
+	void RemoveFromAbilitySystem(UCL_AbilitySystemComponent* ASC);
 
 protected:
 	// Handles to the granted abilities.
@@ -94,35 +94,35 @@ protected:
 
 	// Handles to the granted attribute sets.
 	UPROPERTY()
-	TArray<TObjectPtr<UCLAttributeSet>> AttributeSetHandles;
+	TArray<TObjectPtr<UCL_AttributeSet>> AttributeSetHandles;
 };
 
 /**
  *	Non-mutable data asset used to grant gameplay abilities and gameplay effects.
  */
 UCLASS(BlueprintType, Const)
-class CURSEDLANDS_API UCLAbilitySet : public UPrimaryDataAsset
+class CURSEDLANDS_API UCL_AbilitySet : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
 public:
-	void GiveToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject = nullptr) const;
+	void GiveToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject = nullptr) const;
 
 protected:
 	// Gameplay abilities to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Abilities", Meta = (TitleProperty = Ability))
-	TArray<FCLAbilitySet_GameplayAbility> GrantedGameplayAbilities;
+	TArray<FCL_AbilitySet_GameplayAbility> GrantedGameplayAbilities;
 
 	// Gameplay effects to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects", Meta = (TitleProperty = GameplayEffect))
-	TArray<FCLAbilitySet_GameplayEffect> GrantedGameplayEffects;
+	TArray<FCL_AbilitySet_GameplayEffect> GrantedGameplayEffects;
 
 	// Attribute sets to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Attribute Sets", Meta = (TitleProperty = AttributeSet))
-	TArray<FCLAbilitySet_AttributeSet> GrantedAttributes;
+	TArray<FCL_AbilitySet_AttributeSet> GrantedAttributes;
 
 private:
-	void GiveAttributeSetsToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers) const;
-	void GiveGameplayAbilitiesToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject = nullptr) const;
-	void GiveGameplayEffectsToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers) const;
+	void GiveAttributeSetsToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers) const;
+	void GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject = nullptr) const;
+	void GiveGameplayEffectsToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers) const;
 };

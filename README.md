@@ -80,6 +80,7 @@ Level Design - Anton Vasserman
 - Falling Flat Impact
 - Falling To Roll
 - Running Slide
+- Standing Up
 
 </details>
 

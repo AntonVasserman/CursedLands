@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLResourceAttributeSet.h"
-#include "CLManaAttributeSet.generated.h"
+#include "CL_ResourceAttributeSet.h"
+#include "CL_ManaAttributeSet.generated.h"
 
 UCLASS()
-class CURSEDLANDS_API UCLManaAttributeSet : public UCLResourceAttributeSet
+class CURSEDLANDS_API UCL_ManaAttributeSet : public UCL_ResourceAttributeSet
 {
 	GENERATED_BODY()
 
 public:
-	UCLManaAttributeSet();
+	UCL_ManaAttributeSet();
 	
-	ATTRIBUTE_ACCESSORS(UCLManaAttributeSet, Mana);
-	ATTRIBUTE_ACCESSORS(UCLManaAttributeSet, MaxMana);
+	ATTRIBUTE_ACCESSORS(UCL_ManaAttributeSet, Mana);
+	ATTRIBUTE_ACCESSORS(UCL_ManaAttributeSet, MaxMana);
 	
 private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
@@ -23,7 +23,7 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxMana;
 
-	//~ UCLResourceAttributeSet Begin
+	//~ UCL_ResourceComponent Begin
 public:
 	virtual float GetValue() const override { return GetMana(); }
 	virtual void SetValue(float NewValue) override { SetMana(NewValue); }
@@ -31,5 +31,5 @@ public:
 	virtual float GetMaxValue() const override { return GetMaxMana(); }
 	virtual void SetMaxValue(float NewValue) override { SetMaxMana(NewValue); }
 	virtual FGameplayAttribute GetMaxValueAttribute() const override { return GetMaxManaAttribute(); }
-	//~ UCLResourceAttributeSet End
+	//~ UCL_ResourceComponent End
 };

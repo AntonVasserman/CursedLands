@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
-#include "CLAttributeSet.generated.h"
+#include "CL_AttributeSet.generated.h"
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
@@ -14,12 +14,12 @@ GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 UCLASS()
-class CURSEDLANDS_API UCLAttributeSet : public UAttributeSet
+class CURSEDLANDS_API UCL_AttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 	
 public:
-	UCLAttributeSet();
+	UCL_AttributeSet();
 	
 	TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr> TagToAttributeMapping;
 	

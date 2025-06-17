@@ -1,12 +1,12 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Attributes/CLManaAttributeSet.h"
+#include "AbilitySystem/Attributes/CL_ManaAttributeSet.h"
 
 #include "CLGameplayTags.h"
 #include "GameplayEffectExtension.h"
 
-UCLManaAttributeSet::UCLManaAttributeSet()
+UCL_ManaAttributeSet::UCL_ManaAttributeSet()
 {
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Mana, GetManaAttribute);
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxMana, GetMaxManaAttribute);
