@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLResourceAttributeSet.h"
-#include "CLStaminaAttributeSet.generated.h"
+#include "CL_ResourceAttributeSet.h"
+#include "CL_StaminaAttributeSet.generated.h"
 
 UCLASS()
-class CURSEDLANDS_API UCLStaminaAttributeSet : public UCLResourceAttributeSet
+class CURSEDLANDS_API UCL_StaminaAttributeSet : public UCL_ResourceAttributeSet
 {
 	GENERATED_BODY()
 
 public:
-	UCLStaminaAttributeSet();
+	UCL_StaminaAttributeSet();
 	
-	ATTRIBUTE_ACCESSORS(UCLStaminaAttributeSet, Stamina);
-	ATTRIBUTE_ACCESSORS(UCLStaminaAttributeSet, MaxStamina);
+	ATTRIBUTE_ACCESSORS(UCL_StaminaAttributeSet, Stamina);
+	ATTRIBUTE_ACCESSORS(UCL_StaminaAttributeSet, MaxStamina);
 
 private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
@@ -23,7 +23,7 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxStamina;
 	
-	//~ UCLResourceAttributeSet Begin
+	//~ UCL_ResourceAttributeSet Begin
 public:
 	virtual float GetValue() const override { return GetStamina(); }
 	virtual void SetValue(float NewValue) override { SetStamina(NewValue); }
@@ -31,5 +31,5 @@ public:
 	virtual float GetMaxValue() const override { return GetMaxStamina(); }
 	virtual void SetMaxValue(float NewValue) override { SetMaxStamina(NewValue); }
 	virtual FGameplayAttribute GetMaxValueAttribute() const override { return GetMaxStaminaAttribute(); }
-	//~ UCLResourceAttributeSet End
+	//~ UCL_ResourceAttributeSet End
 };

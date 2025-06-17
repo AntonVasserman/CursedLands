@@ -5,20 +5,20 @@
 
 #include "AVCollisionProfileStatics.h"
 #include "CLGameplayTags.h"
-#include "AbilitySystem/CLAbilitySystemComponent.h"
-#include "AbilitySystem/Attributes/CLAttributeSet.h"
-#include "AbilitySystem/Components/CLHealthComponent.h"
-#include "AbilitySystem/Data/CLAbilitySet.h"
+#include "AbilitySystem/CL_AbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/CL_AttributeSet.h"
+#include "AbilitySystem/Components/CL_HealthComponent.h"
+#include "AbilitySystem/Data/CL_AbilitySet.h"
 #include "Characters/Data/CLPawnData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ACLCharacter::ACLCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	AbilitySystem = CreateDefaultSubobject<UCLAbilitySystemComponent>("AbilitySystem");
+	AbilitySystem = CreateDefaultSubobject<UCL_AbilitySystemComponent>("AbilitySystem");
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
-	HealthComponent = CreateDefaultSubobject<UCLHealthComponent>("HealthComponent");
+	HealthComponent = CreateDefaultSubobject<UCL_HealthComponent>("Health Component");
 }
 
 void ACLCharacter::SimulatePhysics() const
@@ -103,7 +103,7 @@ void ACLCharacter::PossessedBy(AController* NewController)
 
 	check(PawnData);
 
-	for (const UCLAbilitySet* AbilitySet : PawnData->AbilitySets)
+	for (const UCL_AbilitySet* AbilitySet : PawnData->AbilitySets)
 	{
 		check(AbilitySet);
 		AbilitySet->GiveToAbilitySystem(AbilitySystem, nullptr);

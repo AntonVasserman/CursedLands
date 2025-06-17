@@ -1,12 +1,12 @@
 ﻿// Copyright Anton Vasserman, All Rights Reserved.
 
-#include "AbilitySystem/CLGameplayAbilitySystemStatics.h"
+#include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 
-TOptional<UAbilitySystemComponent*> UCLGameplayAbilitySystemStatics::GetAbilitySystemComponent(const ACharacter* Character)
+TOptional<UAbilitySystemComponent*> UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(const ACharacter* Character)
 {
 	// Try to look for the AbilitySystemComponent by casting to IAbilitySystemInterface
 	if (const IAbilitySystemInterface* CharacterAsAbilitySystemInterface = Cast<IAbilitySystemInterface>(Character);

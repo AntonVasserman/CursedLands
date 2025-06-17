@@ -1,16 +1,16 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CL_AttributeSet.h"
 
 #include "CLGameplayTags.h"
 #include "GameplayAbilities/Public/GameplayEffectExtension.h"
 
-UCLAttributeSet::UCLAttributeSet()
+UCL_AttributeSet::UCL_AttributeSet()
 {
 }
 
-FGameplayAttribute UCLAttributeSet::GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const
+FGameplayAttribute UCL_AttributeSet::GetAttributeByGameplayTag(const FGameplayTag& AttributeGameplayTag) const
 {
 	// TODO (CL-58): Return back the usage of FindChecked once CLAttributeProgressBar is refactored
 	checkf(AttributeGameplayTag.MatchesTag(CLGameplayTags::Attributes), TEXT("Trying to get Attribute by Gameplay Tag with a non-attribute Gameplay Tag: %s"), *AttributeGameplayTag.ToString());

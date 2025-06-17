@@ -7,7 +7,7 @@
 #include "CLPlayerCharacterCameraMode.h"
 #include "CLPlayerCharacterMovementMode.h"
 #include "MotionWarpingComponent.h"
-#include "AbilitySystem/CLAbilitySystemComponent.h"
+#include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
 #include "Components/CLCharacterMovementComponent.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
@@ -16,8 +16,8 @@
 enum class ECLPlayerCharacterCameraMode : uint8;
 class UCLCharacterFallingComponent;
 class UCLCharacterTraversalComponent;
-class UCLManaComponent;
-class UCLStaminaComponent;
+class UCL_ManaComponent;
+class UCL_StaminaComponent;
 class UGameplayCameraComponent;
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCLPlayerCharacter, Log, All);
@@ -40,10 +40,10 @@ class CURSEDLANDS_API ACLPlayerCharacter : public ACLCharacter
 	TObjectPtr<UCLCharacterFallingComponent> FallingComponent;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Mana")
-	TObjectPtr<UCLManaComponent> ManaComponent;
+	TObjectPtr<UCL_ManaComponent> ManaComponent;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Stamina")
-	TObjectPtr<UCLStaminaComponent> StaminaComponent;
+	TObjectPtr<UCL_StaminaComponent> StaminaComponent;
 
 public:
 	ACLPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -60,7 +60,7 @@ public:
 	void SetMovementMode(const ECLPlayerCharacterMovementMode InMovementMode);
 	
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Stamina")
-	FORCEINLINE UCLStaminaComponent* GetStaminaComponent() const { return StaminaComponent; }
+	FORCEINLINE UCL_StaminaComponent* GetStaminaComponent() const { return StaminaComponent; }
 	FORCEINLINE bool CanLook() const { return IsAlive(); }
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Movement")

@@ -1,12 +1,13 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Attributes/CLResourceAttributeSet.h"
+#include "AbilitySystem/Attributes/CL_ResourceAttributeSet.h"
 
 #include "GameplayEffectExtension.h"
 
-//~ UCLAttributeSet Begin
-void UCLResourceAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+//~ UCL_AttributeSet Begin
+
+void UCL_ResourceAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
 
@@ -16,7 +17,7 @@ void UCLResourceAttributeSet::PostGameplayEffectExecute(const FGameplayEffectMod
 	}
 }
 
-void UCLResourceAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+void UCL_ResourceAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
@@ -25,4 +26,5 @@ void UCLResourceAttributeSet::PreAttributeChange(const FGameplayAttribute& Attri
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxValue());
 	}
 }
-//~ UCLAttributeSet End
+
+//~ UCL_AttributeSet End

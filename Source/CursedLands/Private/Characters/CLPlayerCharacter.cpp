@@ -5,9 +5,9 @@
 
 #include "CLGameplayTags.h"
 #include "KismetAnimationLibrary.h"
-#include "AbilitySystem/Attributes/CLAttributeSet.h"
-#include "AbilitySystem/Components/CLManaComponent.h"
-#include "AbilitySystem/Components/CLStaminaComponent.h"
+#include "AbilitySystem/Attributes/CL_AttributeSet.h"
+#include "AbilitySystem/Components/CL_ManaComponent.h"
+#include "AbilitySystem/Components/CL_StaminaComponent.h"
 #include "Characters/Components/CLCharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -47,8 +47,8 @@ ACLPlayerCharacter::ACLPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 	CharacterTraversal = CreateDefaultSubobject<UCLCharacterTraversalComponent>("CharacterTraversal");
 
-	ManaComponent = CreateDefaultSubobject<UCLManaComponent>("ManaComponent");
-	StaminaComponent = CreateDefaultSubobject<UCLStaminaComponent>("StaminaComponent");
+	ManaComponent = CreateDefaultSubobject<UCL_ManaComponent>("Mana Component");
+	StaminaComponent = CreateDefaultSubobject<UCL_StaminaComponent>("Stamina Component");
 }
 
 void ACLPlayerCharacter::SetMovementMode(const ECLPlayerCharacterMovementMode InMovementMode)

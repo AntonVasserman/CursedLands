@@ -1,17 +1,17 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Components/CLResourceComponent.h"
+#include "AbilitySystem/Components/CL_ResourceComponent.h"
 
-#include "AbilitySystem/CLAbilitySystemComponent.h"
+#include "AbilitySystem/CL_AbilitySystemComponent.h"
 
-UCLResourceComponent::UCLResourceComponent()
+UCL_ResourceComponent::UCL_ResourceComponent()
 {
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UCLResourceComponent::InitializeWithAbilitySystem(UCLAbilitySystemComponent* InAbilitySystemComponent)
+void UCL_ResourceComponent::InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent)
 {
 	const AActor* OwningActor = GetOwner();
 	check(OwningActor);
@@ -20,7 +20,7 @@ void UCLResourceComponent::InitializeWithAbilitySystem(UCLAbilitySystemComponent
 	
 	AbilitySystemComponent = InAbilitySystemComponent;
 	checkf(ResourceAttributeSetClass != nullptr, TEXT("%s::%hs: Cannot initialize %s for owner %s, because ResourceAttributeSetClass is not set!"), *GetClass()->GetName(), __FUNCTION__, *ResourceAttributeSet.GetClass()->GetName(), *OwningActor->GetName());
-	ResourceAttributeSet = Cast<UCLResourceAttributeSet>(AbilitySystemComponent->GetAttributeSet(ResourceAttributeSetClass));
+	ResourceAttributeSet = Cast<UCL_ResourceAttributeSet>(AbilitySystemComponent->GetAttributeSet(ResourceAttributeSetClass));
 
 	checkf(ResourceAttributeSet != nullptr, TEXT("%s::%hs: Cannot initialize %s for owner %s, with null HealthAttributeSet on the ability system."), *GetClass()->GetName(), __FUNCTION__, *ResourceAttributeSet.GetClass()->GetName(), *OwningActor->GetName());
 	
@@ -36,7 +36,7 @@ void UCLResourceComponent::InitializeWithAbilitySystem(UCLAbilitySystemComponent
 		});
 }
 
-void UCLResourceComponent::UnInitializeFromAbilitySystem()
+void UCL_ResourceComponent::UnInitializeFromAbilitySystem()
 {
 	if (ResourceAttributeSet != nullptr)
 	{
