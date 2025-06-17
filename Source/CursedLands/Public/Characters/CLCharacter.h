@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "CLGameplayTags.h"
 #include "GameplayTagAssetInterface.h"
 #include "GameFramework/Character.h"
 #include "CLCharacter.generated.h"
@@ -33,7 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Health")
 	FORCEINLINE UCL_HealthComponent* GetHealthComponent() const { return HealthComponent; }
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool IsAlive() const { return HasMatchingGameplayTag(CLGameplayTags::Status_Alive); }
+	bool IsAlive() const;
 	FORCEINLINE bool CanMove() const { return IsAlive(); }
 	void SimulatePhysics() const;
 
@@ -43,16 +42,17 @@ protected:
 	TObjectPtr<const UCLPawnData> PawnData;
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level);
+
+	// We do not just use BlueprintNativeEvent here because we want to enforce the Die function to run first and execute
+	// any crucial C++ logic before we delegate to the Blueprint logic.
+	UFUNCTION()
 	virtual void Die();
 	UFUNCTION(BlueprintImplementableEvent, DisplayName = "Die")
 	void Die_BP();
+	
 	UAnimInstance* GetAnimInstance();
 	void SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled);
 
-private:
-	UFUNCTION()
-	void OnHealthChanged(float OldValue, float NewValue);
-	
 	//~ ACharacter Begin
 public:
 	virtual void BeginPlay() override;

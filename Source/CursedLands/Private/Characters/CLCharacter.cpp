@@ -6,7 +6,6 @@
 #include "AVCollisionProfileStatics.h"
 #include "CLGameplayTags.h"
 #include "AbilitySystem/CL_AbilitySystemComponent.h"
-#include "AbilitySystem/Attributes/CL_AttributeSet.h"
 #include "AbilitySystem/Components/CL_HealthComponent.h"
 #include "AbilitySystem/Data/CL_AbilitySet.h"
 #include "Characters/Data/CLPawnData.h"
@@ -19,6 +18,12 @@ ACLCharacter::ACLCharacter(const FObjectInitializer& ObjectInitializer)
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 
 	HealthComponent = CreateDefaultSubobject<UCL_HealthComponent>("HealthComponent");
+}
+
+bool ACLCharacter::IsAlive() const
+{
+	TOptional<bool> IsAliveResult = HealthComponent->IsAlive();
+	return IsAliveResult.IsSet() && IsAliveResult.GetValue();
 }
 
 void ACLCharacter::SimulatePhysics() const
@@ -41,8 +46,6 @@ void ACLCharacter::Die()
 {
 	GetCharacterMovement()->DisableMovement();
 	AbilitySystem->RemoveActiveEffects(FGameplayEffectQuery()); // Empty Query to affect all Active Effects
-	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 0);
-	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Dead, 1);
 	
 	Die_BP();
 }
@@ -67,26 +70,18 @@ void ACLCharacter::SetMovementModeTag(const EMovementMode InMovementMode, const 
 	}
 }
 
-void ACLCharacter::OnHealthChanged(float OldValue, float NewValue)
-{
-	if (NewValue == 0 && IsAlive())
-	{
-		Die();
-	}
-}
-
 //~ ACharacter Begin
 
 void ACLCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Check mandatory dependencies
 	check(AbilitySystem);
-	AbilitySystem->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 1);
 
-	// Setup Health Component Initialization
+	// Set up Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
-	HealthComponent->OnValueChanged.AddDynamic(this, &ACLCharacter::OnHealthChanged);
+	HealthComponent->OnResourceDepleted.AddDynamic(this, &ACLCharacter::Die);
 }
 
 void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)

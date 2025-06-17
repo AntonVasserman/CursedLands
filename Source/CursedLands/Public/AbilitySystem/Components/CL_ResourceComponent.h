@@ -9,7 +9,8 @@
 
 class UCL_AbilitySystemComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCLOnValueChanged, float, OldValue, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCL_OnValueChanged, float, OldValue, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCL_OnValueLimitReached);
 
 UCLASS(Abstract)
 class CURSEDLANDS_API UCL_ResourceComponent : public UActorComponent
@@ -20,13 +21,19 @@ public:
 	UCL_ResourceComponent();
 
 	UPROPERTY(BlueprintAssignable)
-	FCLOnValueChanged OnValueChanged;
+	FCL_OnValueChanged OnValueChanged;
 
 	UPROPERTY(BlueprintAssignable)
-	FCLOnValueChanged OnMaxValueChanged;
+	FCL_OnValueChanged OnMaxValueChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FCL_OnValueLimitReached OnResourceDepleted;
+
+	UPROPERTY(BlueprintAssignable)
+	FCL_OnValueLimitReached OnResourceFull;
 
 	UFUNCTION(BlueprintCallable, Category = "Resource")
-	void InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent);
+	virtual void InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent);
 
 	UFUNCTION(BlueprintCallable, Category = "Resource")
 	void UnInitializeFromAbilitySystem();
@@ -39,10 +46,18 @@ public:
 
 protected:
 	UPROPERTY()
-	TObjectPtr<UCL_AbilitySystemComponent> AbilitySystemComponent {nullptr};
+	TObjectPtr<UCL_AbilitySystemComponent> AbilitySystemComponent = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<const UCL_ResourceAttributeSet> ResourceAttributeSet {nullptr};
+	TObjectPtr<const UCL_ResourceAttributeSet> ResourceAttributeSet = nullptr;
 
-	TSubclassOf<UCL_ResourceAttributeSet> ResourceAttributeSetClass {nullptr};
+	TSubclassOf<UCL_ResourceAttributeSet> ResourceAttributeSetClass = nullptr;
+
+	// Abstract functions meant to be implemented by deriving Resource Components
+	virtual void ResourceDepletedInternal() {};
+	virtual void ResourceFullInternal() {};
+
+private:
+	void ResourceDepleted();
+	void ResourceFull();
 };

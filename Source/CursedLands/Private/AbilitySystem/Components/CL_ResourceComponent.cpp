@@ -28,6 +28,15 @@ void UCL_ResourceComponent::InitializeWithAbilitySystem(UCL_AbilitySystemCompone
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnValueChanged.Broadcast(Data.OldValue, Data.NewValue);
+
+			if (Data.NewValue == 0.f)
+			{
+				ResourceDepleted();
+			}
+			if (Data.NewValue == ResourceAttributeSet->GetMaxValue())
+			{
+				ResourceFull();
+			}
 		});
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ResourceAttributeSet->GetMaxValueAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
@@ -47,5 +56,17 @@ void UCL_ResourceComponent::UnInitializeFromAbilitySystem()
 	}
 	
 	AbilitySystemComponent = nullptr;
+}
+
+void UCL_ResourceComponent::ResourceDepleted()
+{
+	ResourceDepletedInternal();
+	OnResourceDepleted.Broadcast();
+}
+
+void UCL_ResourceComponent::ResourceFull()
+{
+	ResourceFullInternal();
+	OnResourceFull.Broadcast();
 }
 

@@ -14,6 +14,14 @@ class CURSEDLANDS_API UCL_HealthComponent : public UCL_ResourceComponent
 public:
 	UCL_HealthComponent();
 
+	UFUNCTION(BlueprintCallable)
+	TOptional<bool> IsAlive() const;
+
 	//~ UCL_ResourceComponent Begin
+	virtual void InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent) override;
+
+protected:
+	virtual void ResourceDepletedInternal() override;
+	virtual void ResourceFullInternal() override;
 	//~ UCL_ResourceComponent End
 };
