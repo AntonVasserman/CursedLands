@@ -1,16 +1,13 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Attributes/CL_StaminaAttributeSet.h"
+#include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 
 #include "CLGameplayTags.h"
 #include "GameplayEffectExtension.h"
 
-UCL_StaminaAttributeSet::UCL_StaminaAttributeSet()
+UCLStaminaAttributeSet::UCLStaminaAttributeSet()
 {
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Stamina, GetStaminaAttribute);
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxStamina, GetMaxStaminaAttribute);
 }
-
-//~ UCL_ResourceAttributeSet Begin
-//~ UCL_ResourceAttributeSet End

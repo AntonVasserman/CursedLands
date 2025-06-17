@@ -4,7 +4,7 @@
 #include "Systems/Falling/Tasks/CLApplyGameplayEffectLandedTask.h"
 
 #include "AbilitySystemComponent.h"
-#include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
+#include "AbilitySystem/CLGameplayAbilitySystemStatics.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Systems/Falling/Components/CLCharacterFallingComponent.h"
@@ -33,7 +33,7 @@ void UCLApplyGameplayEffectLandedTask::ExecuteTask_Implementation(const FCLLande
 {
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 
-	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
+	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCLGameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
 
 	// If we can't find the Component we won't throw, we will just not apply the effect
 	if (AbilitySystemComponent.IsSet() == false)

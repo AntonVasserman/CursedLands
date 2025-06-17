@@ -1,15 +1,12 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Attributes/CL_HealthAttributeSet.h"
+#include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
 
 #include "CLGameplayTags.h"
 
-UCL_HealthAttributeSet::UCL_HealthAttributeSet()
+UCLHealthAttributeSet::UCLHealthAttributeSet()
 {
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Health, GetHealthAttribute);
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxHealth, GetMaxHealthAttribute);
 }
-
-//~ UCL_ResourceAttributeSet Begin
-//~ UCL_ResourceAttributeSet End

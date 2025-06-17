@@ -6,7 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "CLLogChannels.h"
-#include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
+#include "AbilitySystem/CLGameplayAbilitySystemStatics.h"
 #include "GameFramework/Character.h"
 
 //~ UAnimNotify Begin
@@ -28,7 +28,7 @@ void UCL_AnimNotify_GameplayTagOperation::Notify(USkeletalMeshComponent* MeshCom
 		return;
 	}
 
-	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(Character);
+	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCLGameplayAbilitySystemStatics::GetAbilitySystemComponent(Character);
 
 	// If we can't find the Component we won't throw, we will just not apply the effect
 	if (AbilitySystemComponent.IsSet() == false)

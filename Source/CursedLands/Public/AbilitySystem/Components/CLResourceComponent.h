@@ -3,21 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Attributes/CL_ResourceAttributeSet.h"
+#include "AbilitySystem/Attributes/CLResourceAttributeSet.h"
 #include "Components/ActorComponent.h"
-#include "CL_ResourceComponent.generated.h"
+#include "CLResourceComponent.generated.h"
 
-class UCL_AbilitySystemComponent;
+class UCLAbilitySystemComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCLOnValueChanged, float, OldValue, float, NewValue);
 
 UCLASS(Abstract)
-class CURSEDLANDS_API UCL_ResourceComponent : public UActorComponent
+class CURSEDLANDS_API UCLResourceComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
-	UCL_ResourceComponent();
+	UCLResourceComponent();
 
 	UPROPERTY(BlueprintAssignable)
 	FCLOnValueChanged OnValueChanged;
@@ -26,7 +26,7 @@ public:
 	FCLOnValueChanged OnMaxValueChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Resource")
-	void InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent);
+	void InitializeWithAbilitySystem(UCLAbilitySystemComponent* InAbilitySystemComponent);
 
 	UFUNCTION(BlueprintCallable, Category = "Resource")
 	void UnInitializeFromAbilitySystem();
@@ -39,10 +39,10 @@ public:
 
 protected:
 	UPROPERTY()
-	TObjectPtr<UCL_AbilitySystemComponent> AbilitySystemComponent = nullptr;
+	TObjectPtr<UCLAbilitySystemComponent> AbilitySystemComponent {nullptr};
 
 	UPROPERTY()
-	TObjectPtr<const UCL_ResourceAttributeSet> ResourceAttributeSet = nullptr;
+	TObjectPtr<const UCLResourceAttributeSet> ResourceAttributeSet {nullptr};
 
-	TSubclassOf<UCL_ResourceAttributeSet> ResourceAttributeSetClass = nullptr;
+	TSubclassOf<UCLResourceAttributeSet> ResourceAttributeSetClass {nullptr};
 };

@@ -7,8 +7,8 @@
 #include "UI/CLUserWidget.h"
 #include "CLAttributeProgressBar.generated.h"
 
-class UCL_AttributeSet;
-class UCL_AbilitySystemComponent;
+class UCLAttributeSet;
+class UCLAbilitySystemComponent;
 
 UCLASS()
 class CURSEDLANDS_API UCLAttributeProgressBar : public UCLUserWidget
@@ -29,7 +29,7 @@ protected:
 	void AttributeMaxValueChanged(float NewValue);
 
 private:
-	const UCL_AttributeSet* GetAttributeSetByGameplayTag(const UCL_AbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag);
+	const UCLAttributeSet* GetAttributeSetByGameplayTag(const UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag);
 	
 	//~ UCLUserWidget Begin
 protected:

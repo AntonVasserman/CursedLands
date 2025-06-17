@@ -3,11 +3,11 @@
 
 #include "UI/HUD/CLAttributeProgressBar.h"
 
-#include "AbilitySystem/CL_AbilitySystemComponent.h"
-#include "AbilitySystem/Attributes/CL_AttributeSet.h"
-#include "AbilitySystem/Attributes/CL_HealthAttributeSet.h"
-#include "AbilitySystem/Attributes/CL_ManaAttributeSet.h"
-#include "AbilitySystem/Attributes/CL_StaminaAttributeSet.h"
+#include "AbilitySystem/CLAbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/CLAttributeSet.h"
+#include "AbilitySystem/Attributes/CLHealthAttributeSet.h"
+#include "AbilitySystem/Attributes/CLManaAttributeSet.h"
+#include "AbilitySystem/Attributes/CLStaminaAttributeSet.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -19,9 +19,9 @@ void UCLAttributeProgressBar::NativeConstruct()
 
 	// TODO (CL-58): Remove the usage of GameplayTag here and instead pass the attribute in an Init function of a sort...
 	const ACLPlayerCharacter* PlayerCharacter = CastChecked<ACLPlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	UCL_AbilitySystemComponent* PlayerCharacterAbilitySystemComponent = PlayerCharacter->GetCLAbilitySystemComponent();
+	UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent = PlayerCharacter->GetCLAbilitySystemComponent();
 	// NOTE: we have a constraint here where the CurrentValue and MaxValue attributes MUST be in the same AttributeSet
-	const UCL_AttributeSet* AttributeSet = GetAttributeSetByGameplayTag(PlayerCharacterAbilitySystemComponent, CurrentValueAttributeGameplayTag);
+	const UCLAttributeSet* AttributeSet = GetAttributeSetByGameplayTag(PlayerCharacterAbilitySystemComponent, CurrentValueAttributeGameplayTag);
 	checkf(AttributeSet, TEXT("No AttributeSet with attribute for tag: %s, was found in the PlayerCharacterAbilitySystemComponent"), *CurrentValueAttributeGameplayTag.ToString());
 	const FGameplayAttribute& CurrentValueAttribute = AttributeSet->GetAttributeByGameplayTag(CurrentValueAttributeGameplayTag);
 	const FGameplayAttribute& MaxValueAttribute = AttributeSet->GetAttributeByGameplayTag(MaxValueAttributeGameplayTag);
@@ -44,21 +44,21 @@ void UCLAttributeProgressBar::NativeConstruct()
 	AttributeMaxValueChanged(MaxValueAttribute.GetNumericValue(AttributeSet));
 }
 
-const UCL_AttributeSet* UCLAttributeProgressBar::GetAttributeSetByGameplayTag(const UCL_AbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag)
+const UCLAttributeSet* UCLAttributeProgressBar::GetAttributeSetByGameplayTag(const UCLAbilitySystemComponent* PlayerCharacterAbilitySystemComponent, const FGameplayTag& GameplayTag)
 {
-	if (const UCL_HealthAttributeSet* HealthAttributeSet = CastChecked<UCL_HealthAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCL_HealthAttributeSet::StaticClass()));
+	if (const UCLHealthAttributeSet* HealthAttributeSet = CastChecked<UCLHealthAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLHealthAttributeSet::StaticClass()));
 		HealthAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
 	{
 		return HealthAttributeSet;
 	}
 
-	if (const UCL_ManaAttributeSet* ManaAttributeSet = CastChecked<UCL_ManaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCL_ManaAttributeSet::StaticClass()));
+	if (const UCLManaAttributeSet* ManaAttributeSet = CastChecked<UCLManaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLManaAttributeSet::StaticClass()));
 		ManaAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
 	{
 		return ManaAttributeSet;
 	}
 
-	if (const UCL_StaminaAttributeSet* StaminaAttributeSet = CastChecked<UCL_StaminaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCL_StaminaAttributeSet::StaticClass()));
+	if (const UCLStaminaAttributeSet* StaminaAttributeSet = CastChecked<UCLStaminaAttributeSet>(PlayerCharacterAbilitySystemComponent->GetAttributeSet(UCLStaminaAttributeSet::StaticClass()));
 		StaminaAttributeSet->GetAttributeByGameplayTag(GameplayTag) != nullptr)
 	{
 		return StaminaAttributeSet;

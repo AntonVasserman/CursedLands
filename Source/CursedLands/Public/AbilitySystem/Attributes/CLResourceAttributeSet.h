@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CL_AttributeSet.h"
-#include "CL_ResourceAttributeSet.generated.h"
+#include "CLAttributeSet.h"
+#include "CLResourceAttributeSet.generated.h"
 
 UCLASS(Abstract)
-class CURSEDLANDS_API UCL_ResourceAttributeSet : public UCL_AttributeSet
+class CURSEDLANDS_API UCLResourceAttributeSet : public UCLAttributeSet
 {
 	GENERATED_BODY()
 
@@ -30,9 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Attribute|Resource")
 	virtual FGameplayAttribute GetMaxValueAttribute() const { return nullptr; }
 	
-	//~ UCL_AttributeSet Begin
+	//~ UCLAttributeSet Begin
 protected:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	//~ UCL_AttributeSet End
+	//~ UCLAttributeSet End
 };

@@ -9,8 +9,8 @@
 #include "GameFramework/Character.h"
 #include "CLCharacter.generated.h"
 
-class UCL_AbilitySystemComponent;
-class UCL_HealthComponent;
+class UCLAbilitySystemComponent;
+class UCLHealthComponent;
 class UCLPawnData;
 class UGameplayEffect;
 
@@ -20,18 +20,18 @@ class CURSEDLANDS_API ACLCharacter : public ACharacter, public IAbilitySystemInt
 	GENERATED_BODY()
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System")
-	TObjectPtr<UCL_AbilitySystemComponent> AbilitySystem;
+	TObjectPtr<UCLAbilitySystemComponent> AbilitySystem;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Health")
-	TObjectPtr<UCL_HealthComponent> HealthComponent;
+	TObjectPtr<UCLHealthComponent> HealthComponent;
 
 public:
 	ACLCharacter(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
-	FORCEINLINE UCL_AbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
+	FORCEINLINE UCLAbilitySystemComponent* GetCLAbilitySystemComponent() const { return AbilitySystem; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Health")
-	FORCEINLINE UCL_HealthComponent* GetHealthComponent() const { return HealthComponent; }
+	FORCEINLINE UCLHealthComponent* GetHealthComponent() const { return HealthComponent; }
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool IsAlive() const { return HasMatchingGameplayTag(CLGameplayTags::Status_Alive); }
 	FORCEINLINE bool CanMove() const { return IsAlive(); }

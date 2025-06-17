@@ -1,16 +1,16 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/Data/CL_AbilitySet.h"
+#include "AbilitySystem/Data/CLAbilitySet.h"
 
 #include "ActiveGameplayEffectHandle.h"
 #include "CLLogChannels.h"
 #include "GameplayAbilitySpecHandle.h"
-#include "AbilitySystem/CL_AbilitySystemComponent.h"
-#include "AbilitySystem/Abilities/CL_GameplayAbility.h"
-#include "AbilitySystem/Attributes/CL_AttributeSet.h"
+#include "AbilitySystem/CLAbilitySystemComponent.h"
+#include "AbilitySystem/Abilities/CLGameplayAbility.h"
+#include "AbilitySystem/Attributes/CLAttributeSet.h"
 
-void FCL_AbilitySet_GrantedHandlers::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
+void FCLAbilitySet_GrantedHandlers::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
 {
 	if (Handle.IsValid())
 	{
@@ -18,7 +18,7 @@ void FCL_AbilitySet_GrantedHandlers::AddAbilitySpecHandle(const FGameplayAbility
 	}
 }
 
-void FCL_AbilitySet_GrantedHandlers::AddGameplayEffectHandle(const FActiveGameplayEffectHandle& Handle)
+void FCLAbilitySet_GrantedHandlers::AddGameplayEffectHandle(const FActiveGameplayEffectHandle& Handle)
 {
 	if (Handle.IsValid())
 	{
@@ -26,13 +26,13 @@ void FCL_AbilitySet_GrantedHandlers::AddGameplayEffectHandle(const FActiveGamepl
 	}
 }
 
-void FCL_AbilitySet_GrantedHandlers::AddAttributeSet(UCL_AttributeSet* Set)
+void FCLAbilitySet_GrantedHandlers::AddAttributeSet(UCLAttributeSet* Set)
 {
 	check(Set);
 	AttributeSetHandles.Add(Set);
 }
 
-void FCL_AbilitySet_GrantedHandlers::RemoveFromAbilitySystem(UCL_AbilitySystemComponent* ASC)
+void FCLAbilitySet_GrantedHandlers::RemoveFromAbilitySystem(UCLAbilitySystemComponent* ASC)
 {
 	check(ASC);
 
@@ -52,7 +52,7 @@ void FCL_AbilitySet_GrantedHandlers::RemoveFromAbilitySystem(UCL_AbilitySystemCo
 		}
 	}
 
-	for (UCL_AttributeSet* Set : AttributeSetHandles)
+	for (UCLAttributeSet* Set : AttributeSetHandles)
 	{
 		ASC->RemoveSpawnedAttribute(Set);
 	}
@@ -62,7 +62,7 @@ void FCL_AbilitySet_GrantedHandlers::RemoveFromAbilitySystem(UCL_AbilitySystemCo
 	AttributeSetHandles.Reset();
 }
 
-void UCL_AbilitySet::GiveToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject) const
+void UCLAbilitySet::GiveToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject) const
 {
 	check(ASC);
 
@@ -71,11 +71,11 @@ void UCL_AbilitySet::GiveToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_Ab
 	GiveGameplayEffectsToAbilitySystem(ASC, OutGrantedHandlers);
 }
 
-void UCL_AbilitySet::GiveAttributeSetsToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers) const
+void UCLAbilitySet::GiveAttributeSetsToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers) const
 {
 	for (int32 i = 0; i < GrantedAttributes.Num(); i++)
 	{
-		const FCL_AbilitySet_AttributeSet& SetToGrant = GrantedAttributes[i];
+		const FCLAbilitySet_AttributeSet& SetToGrant = GrantedAttributes[i];
 
 		if (!IsValid(SetToGrant.AttributeSet))
 		{
@@ -83,7 +83,7 @@ void UCL_AbilitySet::GiveAttributeSetsToAbilitySystem(UCL_AbilitySystemComponent
 			continue;
 		}
 
-		UCL_AttributeSet* NewSet = NewObject<UCL_AttributeSet>(ASC->GetOwner(), SetToGrant.AttributeSet);
+		UCLAttributeSet* NewSet = NewObject<UCLAttributeSet>(ASC->GetOwner(), SetToGrant.AttributeSet);
 		ASC->AddAttributeSetSubobject(NewSet);
 
 		if (OutGrantedHandlers)
@@ -93,11 +93,11 @@ void UCL_AbilitySet::GiveAttributeSetsToAbilitySystem(UCL_AbilitySystemComponent
 	}
 }
 
-void UCL_AbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject) const
+void UCLAbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers, UObject* SourceObject) const
 {
 	for (int32 i = 0; i < GrantedGameplayAbilities.Num(); i++)
 	{
-		const FCL_AbilitySet_GameplayAbility& AbilityToGrant = GrantedGameplayAbilities[i];
+		const FCLAbilitySet_GameplayAbility& AbilityToGrant = GrantedGameplayAbilities[i];
 
 		if (!IsValid(AbilityToGrant.Ability))
 		{
@@ -105,7 +105,7 @@ void UCL_AbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemCompo
 			continue;
 		}
 
-		UCL_GameplayAbility* AbilityCDO = AbilityToGrant.Ability->GetDefaultObject<UCL_GameplayAbility>();
+		UCLGameplayAbility* AbilityCDO = AbilityToGrant.Ability->GetDefaultObject<UCLGameplayAbility>();
 
 		FGameplayAbilitySpec AbilitySpec(AbilityCDO, AbilityToGrant.AbilityLevel);
 		AbilitySpec.SourceObject = SourceObject;
@@ -120,11 +120,11 @@ void UCL_AbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemCompo
 	}
 }
 
-void UCL_AbilitySet::GiveGameplayEffectsToAbilitySystem(UCL_AbilitySystemComponent* ASC, FCL_AbilitySet_GrantedHandlers* OutGrantedHandlers) const
+void UCLAbilitySet::GiveGameplayEffectsToAbilitySystem(UCLAbilitySystemComponent* ASC, FCLAbilitySet_GrantedHandlers* OutGrantedHandlers) const
 {
 	for (int32 i = 0; i < GrantedGameplayEffects.Num(); i++)
 	{
-		const FCL_AbilitySet_GameplayEffect& EffectToGrant = GrantedGameplayEffects[i];
+		const FCLAbilitySet_GameplayEffect& EffectToGrant = GrantedGameplayEffects[i];
 
 		if (!IsValid(EffectToGrant.GameplayEffect))
 		{

@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "AbilitySystem/CL_AbilitySystemComponent.h"
+#include "AbilitySystem/CLAbilitySystemComponent.h"
 
 //~ UAbilitySystemComponent Begin
 //~ UAbilitySystemComponent End

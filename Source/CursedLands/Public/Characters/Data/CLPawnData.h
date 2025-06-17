@@ -6,7 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "CLPawnData.generated.h"
 
-class UCL_AbilitySet;
+class UCLAbilitySet;
 
 UCLASS(BlueprintType, Const)
 class CURSEDLANDS_API UCLPawnData : public UPrimaryDataAsset
@@ -15,5 +15,5 @@ class CURSEDLANDS_API UCLPawnData : public UPrimaryDataAsset
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|GameplayAbilitySystem")
-	TArray<TObjectPtr<UCL_AbilitySet>> AbilitySets;
+	TArray<TObjectPtr<UCLAbilitySet>> AbilitySets;
 };

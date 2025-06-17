@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CL_ResourceAttributeSet.h"
-#include "CL_HealthAttributeSet.generated.h"
+#include "CLResourceAttributeSet.h"
+#include "CLHealthAttributeSet.generated.h"
 
 UCLASS()
-class CURSEDLANDS_API UCL_HealthAttributeSet : public UCL_ResourceAttributeSet
+class CURSEDLANDS_API UCLHealthAttributeSet : public UCLResourceAttributeSet
 {
 	GENERATED_BODY()
 
 public:
-	UCL_HealthAttributeSet();
+	UCLHealthAttributeSet();
 
-	ATTRIBUTE_ACCESSORS(UCL_HealthAttributeSet, Health);
-	ATTRIBUTE_ACCESSORS(UCL_HealthAttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UCLHealthAttributeSet, Health);
+	ATTRIBUTE_ACCESSORS(UCLHealthAttributeSet, MaxHealth);
 	
 private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
@@ -23,7 +23,7 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay Ability System|Attributes", Meta = (AllowPrivateAccess))
 	FGameplayAttributeData MaxHealth;
 
-	//~ UCL_ResourceAttributeSet Begin
+	//~ UCLResourceAttributeSet Begin
 public:
 	virtual float GetValue() const override { return GetHealth(); }
 	virtual void SetValue(float NewValue) override { SetHealth(NewValue); }
@@ -31,5 +31,5 @@ public:
 	virtual float GetMaxValue() const override { return GetMaxHealth(); }
 	virtual void SetMaxValue(float NewValue) override { SetMaxHealth(NewValue); }
 	virtual FGameplayAttribute GetMaxValueAttribute() const override { return GetMaxHealthAttribute(); }
-	//~ UCL_ResourceAttributeSet End
+	//~ UCLResourceAttributeSet End
 };

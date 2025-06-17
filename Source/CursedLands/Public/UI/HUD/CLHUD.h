@@ -6,8 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "CLHUD.generated.h"
 
-class UCL_AttributeSet;
-class UCL_AbilitySystemComponent;
+class UCLAttributeSet;
+class UCLAbilitySystemComponent;
 class UCLUserWidget;
 
 UCLASS()
