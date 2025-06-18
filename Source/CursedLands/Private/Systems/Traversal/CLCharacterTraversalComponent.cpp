@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "TraversalSystem/CLCharacterTraversalComponent.h"
+#include "Systems/Traversal/CLCharacterTraversalComponent.h"
 
 #include "AnimationWarpingLibrary.h"
 #include "Chooser.h"
@@ -15,10 +15,10 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Physics/CLCollisionChannels.h"
-#include "TraversalSystem/CLSlidingCheckResult.h"
-#include "TraversalSystem/CLTraversalCheckInput.h"
-#include "TraversalSystem/CLTraversalCheckResult.h"
-#include "TraversalSystem/CLTraversableActor.h"
+#include "Systems/Traversal/CLSlidingCheckResult.h"
+#include "Systems/Traversal/CLTraversableActor.h"
+#include "Systems/Traversal/CLTraversalCheckInput.h"
+#include "Systems/Traversal/CLTraversalCheckResult.h"
 
 DEFINE_LOG_CATEGORY(LogCharacterTraversal);
 

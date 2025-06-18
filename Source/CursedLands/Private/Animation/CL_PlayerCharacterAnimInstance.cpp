@@ -9,7 +9,7 @@
 #include "Characters/CLPlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Systems/Falling/Components/CLCharacterFallingComponent.h"
-#include "TraversalSystem/CLCharacterTraversalComponent.h"
+#include "Systems/Traversal/CLCharacterTraversalComponent.h"
 
 static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
 	TEXT("CLShowDebug.PlayerCharacterAnimInstance"),

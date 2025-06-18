@@ -9,7 +9,7 @@
 #include "MotionWarpingComponent.h"
 #include "Characters/CLCharacter.h"
 #include "Components/CLCharacterMovementComponent.h"
-#include "TraversalSystem/CLCharacterTraversalComponent.h"
+#include "Systems/Traversal/CLCharacterTraversalComponent.h"
 #include "CLPlayerCharacter.generated.h"
 
 enum class ECLPlayerCharacterCameraMode : uint8;

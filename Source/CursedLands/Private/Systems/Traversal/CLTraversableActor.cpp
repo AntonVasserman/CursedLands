@@ -1,7 +1,7 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 
-#include "TraversalSystem/CLTraversableActor.h"
+#include "Systems/Traversal/CLTraversableActor.h"
 
 #include "Components/SplineComponent.h"
 #include "Kismet/KismetMathLibrary.h"

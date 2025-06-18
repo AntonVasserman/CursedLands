@@ -14,7 +14,7 @@
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Systems/Falling/Components/CLCharacterFallingComponent.h"
-#include "TraversalSystem/CLCharacterTraversalComponent.h"
+#include "Systems/Traversal/CLCharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
 
