@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/Attributes/CL_ManaAttributeSet.h"
 
-#include "CLGameplayTags.h"
+#include "CL_GameplayTags.h"
 #include "GameplayEffectExtension.h"
 
 UCL_ManaAttributeSet::UCL_ManaAttributeSet()

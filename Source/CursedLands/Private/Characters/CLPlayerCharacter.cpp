@@ -3,7 +3,7 @@
 
 #include "Characters/CLPlayerCharacter.h"
 
-#include "CLGameplayTags.h"
+#include "CL_GameplayTags.h"
 #include "KismetAnimationLibrary.h"
 #include "AbilitySystem/Attributes/CL_AttributeSet.h"
 #include "AbilitySystem/Components/CL_ManaComponent.h"
@@ -104,10 +104,10 @@ bool ACLPlayerCharacter::CanSprint() const
 {
 	if (
 		!CanMove() || !IsStanding() || IsSprinting() || // Basic check
-		GetCharacterTraversal()->IsDoingTraversalAction() || // If player is occupied (traversing) it can't sprint
+		GetCharacterTraversal()->IsDoingTraversalAction() || // If the player is occupied (traversing) then it can't sprint
 		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
 		GetStaminaComponent()->GetValue() <= 0 || // Check that the PlayerCharacter has Stamina
-		HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue) // Check that the PlayerCharacter isn't fatigued
+		StaminaComponent->IsFatigued()
 		)
 	{
 		return false;
@@ -162,14 +162,8 @@ void ACLPlayerCharacter::Slide()
 	}
 }
 
-void ACLPlayerCharacter::ApplyFatigue()
+void ACLPlayerCharacter::OnFatigueApplied()
 {
-	if (HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue))
-	{
-		return;
-	}
-	
-	ApplyEffectToSelf(FatigueGameplayEffectClass, 1.f);
 	if (IsSprinting())
 	{
 		UnSprint();
@@ -190,14 +184,6 @@ void ACLPlayerCharacter::OnGaitChanged(const ECLGait PreviousGait, const ECLGait
 	if (PreviousGait == ECLGait::Sprinting && Gait != ECLGait::Sprinting)
 	{
 		bFullySprinting = false;
-	}
-}
-
-void ACLPlayerCharacter::OnStaminaChanged(float OldValue, float NewValue)
-{
-	if (NewValue == 0)
-	{
-		ApplyFatigue();
 	}
 }
 
@@ -326,7 +312,7 @@ void ACLPlayerCharacter::BeginPlay()
 
 	// Setup Stamina Component Initialization
 	GetStaminaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
-	GetStaminaComponent()->OnValueChanged.AddDynamic(this, &ACLPlayerCharacter::OnStaminaChanged);
+	GetStaminaComponent()->OnFatigueApplied.AddDynamic(this, &ACLPlayerCharacter::OnFatigueApplied);
 }
 
 //~ ACLCharacter Begin

@@ -6,6 +6,8 @@
 #include "CL_ResourceComponent.h"
 #include "CL_HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCL_OnDied);
+
 UCLASS()
 class CURSEDLANDS_API UCL_HealthComponent : public UCL_ResourceComponent
 {
@@ -14,14 +16,20 @@ class CURSEDLANDS_API UCL_HealthComponent : public UCL_ResourceComponent
 public:
 	UCL_HealthComponent();
 
+	FCL_OnDied OnDied;
+	
 	UFUNCTION(BlueprintCallable)
-	TOptional<bool> IsAlive() const;
+	bool IsAlive() const;
 
+private:
+	void Die() const;
+	
 	//~ UCL_ResourceComponent Begin
+public:
 	virtual void InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent) override;
 
 protected:
-	virtual void ResourceDepletedInternal() override;
-	virtual void ResourceFullInternal() override;
+	virtual void ResourceDepleted() override;
+	virtual void ResourceFull() override;
 	//~ UCL_ResourceComponent End
 };

@@ -58,15 +58,3 @@ void UCL_ResourceComponent::UnInitializeFromAbilitySystem()
 	AbilitySystemComponent = nullptr;
 }
 
-void UCL_ResourceComponent::ResourceDepleted()
-{
-	ResourceDepletedInternal();
-	OnResourceDepleted.Broadcast();
-}
-
-void UCL_ResourceComponent::ResourceFull()
-{
-	ResourceFullInternal();
-	OnResourceFull.Broadcast();
-}
-

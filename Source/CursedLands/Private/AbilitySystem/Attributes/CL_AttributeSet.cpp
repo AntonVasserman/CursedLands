@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/Attributes/CL_AttributeSet.h"
 
-#include "CLGameplayTags.h"
+#include "CL_GameplayTags.h"
 
 UCL_AttributeSet::UCL_AttributeSet()
 {

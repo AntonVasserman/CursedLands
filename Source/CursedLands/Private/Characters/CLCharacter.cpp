@@ -4,7 +4,7 @@
 #include "Characters/CLCharacter.h"
 
 #include "AVCollisionProfileStatics.h"
-#include "CLGameplayTags.h"
+#include "CL_GameplayTags.h"
 #include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Components/CL_HealthComponent.h"
 #include "AbilitySystem/Data/CL_AbilitySet.h"
@@ -81,7 +81,7 @@ void ACLCharacter::BeginPlay()
 
 	// Set up Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
-	HealthComponent->OnResourceDepleted.AddDynamic(this, &ACLCharacter::Die);
+	HealthComponent->OnDied.AddDynamic(this, &ACLCharacter::Die);
 }
 
 void ACLCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)

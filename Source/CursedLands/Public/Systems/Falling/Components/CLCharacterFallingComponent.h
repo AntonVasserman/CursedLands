@@ -36,13 +36,13 @@ public:
 	
 private:
 	UPROPERTY()
-	TObjectPtr<ACharacter> OwnerCharacter {nullptr};
+	TObjectPtr<ACharacter> OwnerCharacter = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
 	TArray<FCLLandedConditionTasksPair> LandedTasks;
 	
-	float FallHeight { 0.f };
-	float FallBeginZ { 0.f };
+	float FallHeight = 0.f;
+	float FallBeginZ = 0.f;
 
 	UFUNCTION()
 	void OnMovementModeChanged(ACharacter* Character, EMovementMode PrevMovementMode, uint8 PreviousCustomMode);

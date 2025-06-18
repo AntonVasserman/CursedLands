@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CLGameplayTags.h"
+#include "CL_GameplayTags.h"
 #include "CLPlayerCharacterCameraMode.h"
 #include "CLPlayerCharacterMovementMode.h"
 #include "MotionWarpingComponent.h"
-#include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "Characters/CLCharacter.h"
 #include "Components/CLCharacterMovementComponent.h"
 #include "TraversalSystem/CLCharacterTraversalComponent.h"
@@ -139,9 +138,6 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Walking", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Gameplay Ability System", Meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayEffect> FatigueGameplayEffectClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionBackwardMin = -130.f;
@@ -159,13 +155,12 @@ private:
 	bool bFullySprinting = false;
 	bool bSprintAfterTraversal = false;
 
-	void ApplyFatigue();
+	UFUNCTION()
+	void OnFatigueApplied();
 	UFUNCTION()
 	void OnStanceChanged(ECLStance PreviousStance, ECLStance Stance);
 	UFUNCTION()
 	void OnGaitChanged(ECLGait PreviousGait, ECLGait Gait);
-	UFUNCTION()
-	void OnStaminaChanged(float OldValue, float NewValue);
 	void SetStanceTag(const ECLStance InStance, const bool bTagEnabled) const;
 	void SetGaitTag(const ECLGait InGait, const bool bTagEnabled) const;
 	void SetTraversalActionTag(const ECLTraversalAction InTraversalAction, const bool bTagEnabled) const;
@@ -188,5 +183,4 @@ public:
 protected:
 	virtual void Die() override;
 	//~ ACLCharacter End
-	
 };

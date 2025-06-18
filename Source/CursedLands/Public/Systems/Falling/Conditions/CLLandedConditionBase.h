@@ -26,10 +26,10 @@ class UCLLandedConditionBase : public UObject
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
-	TObjectPtr<UCLLandedConditionBase> And {nullptr};
+	TObjectPtr<UCLLandedConditionBase> And = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
-	TObjectPtr<UCLLandedConditionBase> Or {nullptr};
+	TObjectPtr<UCLLandedConditionBase> Or = nullptr;
 	
 public:
 	UFUNCTION(BlueprintCallable)

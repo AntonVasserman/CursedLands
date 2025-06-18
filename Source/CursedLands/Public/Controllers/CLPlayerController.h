@@ -7,7 +7,7 @@
 #include "CLPlayerController.generated.h"
 
 class ACLPlayerCharacter;
-class UCLUserWidget;
+class UCL_UserWidget;
 class UInputAction;
 class UInputMappingContext;
 class UStateTreeComponent;
@@ -62,14 +62,14 @@ private:
 	TObjectPtr<UInputAction> PauseMenuAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UCLUserWidget> PauseMenuWidgetClass;
+	TSubclassOf<UCL_UserWidget> PauseMenuWidgetClass;
 	
 #if WITH_EDITOR
 	bool bSlomoRequested = false;
 #endif
 	
 	TObjectPtr<ACLPlayerCharacter> PossessedPlayerCharacter;
-	TObjectPtr<UCLUserWidget> PauseMenuWidget = nullptr;
+	TObjectPtr<UCL_UserWidget> PauseMenuWidget = nullptr;
 	bool bInPausedMenu = false;
 
 #if WITH_EDITOR

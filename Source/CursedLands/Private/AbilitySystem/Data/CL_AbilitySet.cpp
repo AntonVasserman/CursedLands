@@ -4,7 +4,7 @@
 #include "AbilitySystem/Data/CL_AbilitySet.h"
 
 #include "ActiveGameplayEffectHandle.h"
-#include "CLLogChannels.h"
+#include "CL_LogChannels.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/CL_GameplayAbility.h"

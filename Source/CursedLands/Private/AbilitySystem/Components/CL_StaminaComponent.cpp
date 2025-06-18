@@ -2,6 +2,9 @@
 
 #include "AbilitySystem/Components/CL_StaminaComponent.h"
 
+#include "CL_GameplayTags.h"
+#include "CL_LogChannels.h"
+#include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CL_StaminaAttributeSet.h"
 
 UCL_StaminaComponent::UCL_StaminaComponent()
@@ -11,3 +14,48 @@ UCL_StaminaComponent::UCL_StaminaComponent()
 
 	ResourceAttributeSetClass = UCL_StaminaAttributeSet::StaticClass();
 }
+
+bool UCL_StaminaComponent::IsFatigued() const
+{
+	if (AbilitySystemComponent == nullptr)
+	{
+		UE_LOG(LogCLGameplayAbilitySystem, Warning, TEXT("CL_StaminaComponent::%hs: AbilitySystemComponent is not yet initialized."), __FUNCTION__);
+		return false;
+	}
+	
+	return AbilitySystemComponent->HasMatchingGameplayTag(CLGameplayTags::Debuff_Fatigue);
+}
+
+void UCL_StaminaComponent::ApplyFatigue() const
+{
+	if (IsFatigued())
+	{
+		UE_LOG(LogCLGameplayAbilitySystem, Warning, TEXT("CL_StaminaComponent::%hs: %s is already Fatigued, re-apply isn't supported."), __FUNCTION__, *GetOwner()->GetFullName());
+		return;
+	}
+
+	// On the contrary, if the user creates a task, he must assign a gameplay effect to be used with it
+	checkf(FatigueGameplayEffectClass, TEXT("CL_StaminaComponent::%hs: FatigueGameplayEffectClass uninitialized in ApplyGameplayEffectLandedTask for Character: %s"), __FUNCTION__, *GetOwner()->GetFullName());
+
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(FatigueGameplayEffectClass, FatigueGameplayEffectLevel, ContextHandle);
+	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystemComponent);
+	OnFatigueApplied.Broadcast();
+}
+
+//~ UCL_ResourceComponent Begin
+
+void UCL_StaminaComponent::ResourceDepleted()
+{
+	if (bApplyFatigueOnStaminaDepleted)
+	{
+		ApplyFatigue();
+	}
+}
+
+void UCL_StaminaComponent::ResourceFull()
+{
+}
+
+//~ UCL_ResourceComponent End

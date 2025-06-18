@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/Attributes/CL_HealthAttributeSet.h"
 
-#include "CLGameplayTags.h"
+#include "CL_GameplayTags.h"
 
 UCL_HealthAttributeSet::UCL_HealthAttributeSet()
 {

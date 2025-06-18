@@ -3,15 +3,15 @@
 
 #include "Controllers/CLPlayerController.h"
 
-#include "CLLogChannels.h"
+#include "CL_LogChannels.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Characters/CLPlayerCharacter.h"
 #include "Components/StateTreeComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/CLUserWidget.h"
-#include "UI/HUD/CLHUD.h"
+#include "UI/CL_UserWidget.h"
+#include "UI/HUD/CL_HUD.h"
 
 #if WITH_EDITOR
 ACLPlayerController::ACLPlayerController()
@@ -159,7 +159,7 @@ void ACLPlayerController::RequestPauseMenuAction()
 	if (PauseMenuWidget == nullptr)
 	{
 		checkf(PauseMenuWidgetClass, TEXT("PauseMenuWidgetClass uninitialized in object: %s"), *GetFullName());
-		PauseMenuWidget = CreateWidget<UCLUserWidget>(this, PauseMenuWidgetClass);
+		PauseMenuWidget = CreateWidget<UCL_UserWidget>(this, PauseMenuWidgetClass);
 	}
 	
 	TogglePauseMenu();
@@ -209,7 +209,7 @@ void ACLPlayerController::OnPossess(APawn* PawnToPossess)
 	PossessedPlayerCharacter = CastChecked<ACLPlayerCharacter>(PawnToPossess);
 	PossessedPlayerCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
 	
-	ACLHUD* CLHUD = CastChecked<ACLHUD>(GetHUD());
+	ACL_HUD* CLHUD = CastChecked<ACL_HUD>(GetHUD());
 	CLHUD->InitOverlay();
 }
 

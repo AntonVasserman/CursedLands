@@ -5,7 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
-#include "CLLogChannels.h"
+#include "CL_LogChannels.h"
 #include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
 #include "GameFramework/Character.h"
 

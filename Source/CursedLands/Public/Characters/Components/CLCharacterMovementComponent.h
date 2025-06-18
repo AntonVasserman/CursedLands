@@ -160,7 +160,7 @@ public:
 	void UnSprint();
 	
 private:
-	uint8 bWantsToSprint:1 { false };
+	uint8 bWantsToSprint:1 = false;
 	
 	UPROPERTY(Transient, DuplicateTransient)
 	TObjectPtr<ACLPlayerCharacter> PlayerCharacterOwner;
