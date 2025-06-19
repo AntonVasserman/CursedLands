@@ -8,7 +8,7 @@
 #include "AbilitySystem/Attributes/CL_HealthAttributeSet.h"
 #include "AbilitySystem/Attributes/CL_ManaAttributeSet.h"
 #include "AbilitySystem/Attributes/CL_StaminaAttributeSet.h"
-#include "Characters/CLPlayerCharacter.h"
+#include "Characters/CL_PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 struct FOnAttributeChangeData;
@@ -18,7 +18,7 @@ void UCL_AttributeProgressBar::NativeConstruct()
 	Super::NativeConstruct();
 
 	// TODO (CL-58): Remove the usage of GameplayTag here and instead pass the attribute in an Init function of a sort...
-	const ACLPlayerCharacter* PlayerCharacter = CastChecked<ACLPlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	const ACL_PlayerCharacter* PlayerCharacter = CastChecked<ACL_PlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	UCL_AbilitySystemComponent* PlayerCharacterAbilitySystemComponent = PlayerCharacter->GetCLAbilitySystemComponent();
 	// NOTE: we have a constraint here where the CurrentValue and MaxValue attributes MUST be in the same AttributeSet
 	const UCL_AttributeSet* AttributeSet = GetAttributeSetByGameplayTag(PlayerCharacterAbilitySystemComponent, CurrentValueAttributeGameplayTag);

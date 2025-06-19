@@ -6,8 +6,6 @@
 #include "AbilitySystemComponent.h"
 #include "CL_AbilitySystemComponent.generated.h"
 
-struct FCLGameplayTags;
-
 UCLASS()
 class CURSEDLANDS_API UCL_AbilitySystemComponent : public UAbilitySystemComponent
 {

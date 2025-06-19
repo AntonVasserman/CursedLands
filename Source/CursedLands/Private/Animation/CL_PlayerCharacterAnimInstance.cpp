@@ -6,10 +6,10 @@
 #include "AnimCharacterMovementLibrary.h"
 #include "AVDrawDebugStatics.h"
 #include "KismetAnimationLibrary.h"
-#include "Characters/CLPlayerCharacter.h"
+#include "Characters/CL_PlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Systems/Falling/Components/CLCharacterFallingComponent.h"
-#include "Systems/Traversal/CLCharacterTraversalComponent.h"
+#include "Systems/Falling/Components/CL_CharacterFallingComponent.h"
+#include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
 	TEXT("CLShowDebug.PlayerCharacterAnimInstance"),
@@ -21,12 +21,12 @@ bool UCL_PlayerCharacterAnimInstance::IsMovingPerpendicularToPivot() const
 {
 	switch (PivotCardinalDirection)
 	{
-		case ECLCardinalDirection::Forward:
-		case ECLCardinalDirection::Backward:
-			return CardinalDirection != ECLCardinalDirection::Forward && CardinalDirection != ECLCardinalDirection::Backward;
-		case ECLCardinalDirection::Right:
-		case ECLCardinalDirection::Left:
-			return CardinalDirection != ECLCardinalDirection::Right && CardinalDirection != ECLCardinalDirection::Left;
+		case ECL_CardinalDirection::Forward:
+		case ECL_CardinalDirection::Backward:
+			return CardinalDirection != ECL_CardinalDirection::Forward && CardinalDirection != ECL_CardinalDirection::Backward;
+		case ECL_CardinalDirection::Right:
+		case ECL_CardinalDirection::Left:
+			return CardinalDirection != ECL_CardinalDirection::Right && CardinalDirection != ECL_CardinalDirection::Left;
 		default:
 			checkNoEntry();
 			return false;
@@ -48,7 +48,7 @@ void UCL_PlayerCharacterAnimInstance::UpdateTraversalData()
 	bDoingTraverseAction = PlayerCharacter->GetCharacterTraversal()->IsDoingTraversalAction();
 }
 
-void UCL_PlayerCharacterAnimInstance::UpdateAccelerationData(const ACLPlayerCharacter* InPlayerCharacter)
+void UCL_PlayerCharacterAnimInstance::UpdateAccelerationData(const ACL_PlayerCharacter* InPlayerCharacter)
 {
 	Acceleration = InPlayerCharacter->GetCharacterMovement()->GetCurrentAcceleration();
 	Acceleration2D = FVector(Acceleration.X, Acceleration.Y, 0.f);
@@ -56,38 +56,38 @@ void UCL_PlayerCharacterAnimInstance::UpdateAccelerationData(const ACLPlayerChar
 	AccelerationAngle = UKismetAnimationLibrary::CalculateDirection(Acceleration2D, PlayerCharacterRotation);
 }
 
-void UCL_PlayerCharacterAnimInstance::UpdateLocomotionData(const ACLPlayerCharacter* InPlayerCharacter)
+void UCL_PlayerCharacterAnimInstance::UpdateLocomotionData(const ACL_PlayerCharacter* InPlayerCharacter)
 {
 	MovementMode = PlayerCharacter->GetMovementMode();
 	CardinalDirectionAngle = InPlayerCharacter->GetCardinalDirectionAngle();
 	CardinalDirectionAngleWithOffset = UKismetMathLibrary::NormalizeAxis(CardinalDirectionAngle - RootYawOffset); 
 	LastCardinalDirection = CardinalDirection;
 	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
-	const ECLStance NewStance = InPlayerCharacter->GetCLCharacterMovement()->GetStance();
+	const ECL_Stance NewStance = InPlayerCharacter->GetCLCharacterMovement()->GetStance();
 	bStanceChanged = Stance != NewStance;
 	// Stance transition when it was changed but not as an effect of a Traversal action
 	bStanceTransition = bStanceChanged && !bFinishedTraversalAction;
 	Stance = NewStance;
-	const ECLGait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
+	const ECL_Gait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
 	bGaitChanged = Gait != NewGait;
 	Gait = NewGait;
 	
 }
 
-void UCL_PlayerCharacterAnimInstance::UpdateRootYawOffset(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter)
+void UCL_PlayerCharacterAnimInstance::UpdateRootYawOffset(const float DeltaSeconds, const ACL_PlayerCharacter* InPlayerCharacter)
 {
-	if (RootYawOffsetMode == ECLRootYawOffsetMode::Accumulate)
+	if (RootYawOffsetMode == ECL_RootYawOffsetMode::Accumulate)
 	{
 		SetRootYawOffset(RootYawOffset - LastYawDelta);
 	}
 
-	if (RootYawOffsetMode == ECLRootYawOffsetMode::BlendOut)
+	if (RootYawOffsetMode == ECL_RootYawOffsetMode::BlendOut)
 	{
 		const float NewRootYawOffset = FMath::FInterpTo(RootYawOffset, 0.f, DeltaSeconds, 10.f);
 		SetRootYawOffset(NewRootYawOffset);
 	}
 	
-	RootYawOffsetMode = ECLRootYawOffsetMode::BlendOut;
+	RootYawOffsetMode = ECL_RootYawOffsetMode::BlendOut;
 }
 
 void UCL_PlayerCharacterAnimInstance::SetRootYawOffset(const float InRootYawOffset)
@@ -114,14 +114,14 @@ void UCL_PlayerCharacterAnimInstance::ProcessTurnYawCurve()
 	}
 }
 
-void UCL_PlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds, const ACLPlayerCharacter* InPlayerCharacter)
+void UCL_PlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds, const ACL_PlayerCharacter* InPlayerCharacter)
 {
 	// Evaluate new PlayerCharacterRotation
 	LastYawDelta = InPlayerCharacter->GetActorRotation().Yaw - PlayerCharacterRotation.Yaw;
 	PlayerCharacterRotation = InPlayerCharacter->GetActorRotation();
 	
 	// Evaluate LeanAngle
-	if (Gait == ECLGait::Walking)
+	if (Gait == ECL_Gait::Walking)
 	{
 		LeanAngle = 0.f;
 	}
@@ -130,14 +130,14 @@ void UCL_PlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSecond
 		float NormalizedLeanAngle = UKismetMathLibrary::SafeDivide(LastYawDelta, DeltaSeconds);
 		NormalizedLeanAngle = NormalizedLeanAngle * 0.375f; // Multiply by a smaller value to clamp the lean angle
 		NormalizedLeanAngle = FMath::Clamp(NormalizedLeanAngle, -90.0f, 90.0f);
-		NormalizedLeanAngle = CardinalDirection != ECLCardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
+		NormalizedLeanAngle = CardinalDirection != ECL_CardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
 
 		switch (Gait)
 		{
-		case ECLGait::Jogging:
+		case ECL_Gait::Jogging:
 			NormalizedLeanAngle *= 0.8; // For jogging cap at a bit of a lower value than maximum
 			break;
-		case ECLGait::Sprinting:
+		case ECL_Gait::Sprinting:
 			NormalizedLeanAngle *= 1.f; // No effect
 			break;
 		default:
@@ -145,7 +145,7 @@ void UCL_PlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSecond
 			break;
 		}
 	
-		LeanAngle = CardinalDirection != ECLCardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
+		LeanAngle = CardinalDirection != ECL_CardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
 	}
 
 	// Ignore evaluated values if this is the first tick.
@@ -162,7 +162,7 @@ void UCL_PlayerCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	if (ACLPlayerCharacter* OwningPlayerCharacter = Cast<ACLPlayerCharacter>(GetOwningActor()))
+	if (ACL_PlayerCharacter* OwningPlayerCharacter = Cast<ACL_PlayerCharacter>(GetOwningActor()))
 	{
 		PlayerCharacter = OwningPlayerCharacter;
 		FallHeightForMinFallDamage = PlayerCharacter->GetFallHeightForMinFallDamage();
@@ -206,19 +206,19 @@ void UCL_PlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			const FVector2D TextScale = FVector2D(1.5f, 1.5f);
 
 			// Putting them in reverse order since the first added is actually last on screen
-			GEngine->AddOnScreenDebugMessage(71, 0.0f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffsetMode: %s"), *StaticEnum<ECLRootYawOffsetMode>()->GetAuthoredNameStringByValue(static_cast<int64>(RootYawOffsetMode))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(71, 0.0f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffsetMode: %s"), *StaticEnum<ECL_RootYawOffsetMode>()->GetAuthoredNameStringByValue(static_cast<int64>(RootYawOffsetMode))), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(70, 0.f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffset: %f"), RootYawOffset), false, TextScale);
 			
 			GEngine->AddOnScreenDebugMessage(60, 0.0f, TextColor, FString::Printf(TEXT("Rotation Data::LeanAngle: %f"), LeanAngle), false, TextScale);
 
-			GEngine->AddOnScreenDebugMessage(51, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotCardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(51, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotCardinalDirection: %s"), *StaticEnum<ECL_CardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(50, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotAcceleration2D: %s"), *PivotAcceleration2D.ToString()), false, TextScale);
 
-			GEngine->AddOnScreenDebugMessage(44, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::Stance: %s"), *StaticEnum<ECLStance>()->GetAuthoredNameStringByValue(static_cast<int64>(Stance))), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(43, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::Gait: %s"), *StaticEnum<ECLGait>()->GetAuthoredNameStringByValue(static_cast<int64>(Gait))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(44, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::Stance: %s"), *StaticEnum<ECL_Stance>()->GetAuthoredNameStringByValue(static_cast<int64>(Stance))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(43, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::Gait: %s"), *StaticEnum<ECL_Gait>()->GetAuthoredNameStringByValue(static_cast<int64>(Gait))), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(42, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::CardinalDirectionAngle: %f"), CardinalDirectionAngle), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(41, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::CardinalDirection: %s"), *StaticEnum<ECLCardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(CardinalDirection))), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(40, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::MovementMode: %s"), *StaticEnum<ECLPlayerCharacterMovementMode>()->GetAuthoredNameStringByValue(static_cast<int64>(MovementMode))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(41, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::CardinalDirection: %s"), *StaticEnum<ECL_CardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(CardinalDirection))), false, TextScale);
+			GEngine->AddOnScreenDebugMessage(40, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::MovementMode: %s"), *StaticEnum<ECL_PlayerCharacterMovementMode>()->GetAuthoredNameStringByValue(static_cast<int64>(MovementMode))), false, TextScale);
 
 			GEngine->AddOnScreenDebugMessage(32, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::AccelerationAngle: %f"), AccelerationAngle), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(31, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::Accelerating: %d"), bAccelerating), false, TextScale);

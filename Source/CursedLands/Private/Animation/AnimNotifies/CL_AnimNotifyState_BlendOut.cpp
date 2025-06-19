@@ -3,12 +3,12 @@
 
 #include "Animation/AnimNotifies/CL_AnimNotifyState_BlendOut.h"
 
-#include "Characters/CLCharacter.h"
+#include "Characters/CL_Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // TODO (CL-133): Support multiple conditions
-bool UCL_AnimNotifyState_BlendOut::ShouldBlendOut(const ACLCharacter* InCharacter, const ECL_BlendOutCondition InBlendOutCondition)
+bool UCL_AnimNotifyState_BlendOut::ShouldBlendOut(const ACL_Character* InCharacter, const ECL_BlendOutCondition InBlendOutCondition)
 {
 	switch (InBlendOutCondition)
 	{
@@ -37,7 +37,7 @@ void UCL_AnimNotifyState_BlendOut::NotifyTick(USkeletalMeshComponent* MeshComp, 
 {
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 
-	const ACLCharacter* Character = Cast<ACLCharacter>(MeshComp->GetOwner());
+	const ACL_Character* Character = Cast<ACL_Character>(MeshComp->GetOwner());
 	if (Character == nullptr)
 	{
 		return;

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "CL_BlendOutCondition.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "Characters/CLCharacter.h"
+#include "Characters/CL_Character.h"
 #include "CL_AnimNotifyState_BlendOut.generated.h"
 
 UCLASS()
@@ -29,7 +29,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Animation", Meta = (AllowPrivateAccess = "true"))
 	EMontageBlendMode BlendMode = EMontageBlendMode::Inertialization;
 
-	static bool ShouldBlendOut(const ACLCharacter* InCharacter, const ECL_BlendOutCondition InBlendOutCondition);
+	static bool ShouldBlendOut(const ACL_Character* InCharacter, const ECL_BlendOutCondition InBlendOutCondition);
 	
 	//~ UAnimNotifyState Begin
 public:

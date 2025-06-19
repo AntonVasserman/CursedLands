@@ -6,7 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "CL_AnimInstance.generated.h"
 
-class ACLCharacter;
+class ACL_Character;
 class UCharacterMovementComponent;
 
 UCLASS()
@@ -47,7 +47,7 @@ protected:
 
 private:
 	UPROPERTY()
-	TObjectPtr<ACLCharacter> Character;
+	TObjectPtr<ACL_Character> Character;
 	uint8 bFirstThreadSafeUpdate : 1 = true;
 
 	UPROPERTY()

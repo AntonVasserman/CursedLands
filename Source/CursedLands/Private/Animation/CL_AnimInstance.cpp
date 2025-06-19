@@ -3,7 +3,7 @@
 
 #include "Animation/CL_AnimInstance.h"
 
-#include "Characters/CLCharacter.h"
+#include "Characters/CL_Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -40,7 +40,7 @@ void UCL_AnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	if (ACLCharacter* OwningCharacter = Cast<ACLCharacter>(GetOwningActor()))
+	if (ACL_Character* OwningCharacter = Cast<ACL_Character>(GetOwningActor()))
 	{
 		Character = OwningCharacter;
 		MovementComponent = Character->GetCharacterMovement();

@@ -6,9 +6,9 @@
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
 
-enum class ECLTraversalAction : uint8;
-enum class ECLStance : uint8;
-enum class ECLGait : uint8;
+enum class ECL_TraversalAction : uint8;
+enum class ECL_Stance : uint8;
+enum class ECL_Gait : uint8;
 
 namespace CLGameplayTags
 {
@@ -44,12 +44,12 @@ namespace CLGameplayTags
 	CURSEDLANDS_API extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
 
 	// Locomotion Stance Tags
-	CURSEDLANDS_API extern const TMap<ECLStance, FGameplayTag> StanceTagMap;
+	CURSEDLANDS_API extern const TMap<ECL_Stance, FGameplayTag> StanceTagMap;
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Stance_Standing);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Stance_Crouching);
 	
 	// Locomotion Gait Tags
-	CURSEDLANDS_API extern const TMap<ECLGait, FGameplayTag> GaitTagMap;
+	CURSEDLANDS_API extern const TMap<ECL_Gait, FGameplayTag> GaitTagMap;
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Walking);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Jogging);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Gait_Sprinting);
@@ -59,7 +59,7 @@ namespace CLGameplayTags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_StandingUp);
 
 	// Traversal Tags
-	CURSEDLANDS_API extern const TMap<ECLTraversalAction, FGameplayTag> TraversalActionTagMap;
+	CURSEDLANDS_API extern const TMap<ECL_TraversalAction, FGameplayTag> TraversalActionTagMap;
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Hurdle);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Mantle);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Vault);

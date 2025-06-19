@@ -4,8 +4,8 @@
 #include "CL_GameplayTags.h"
 
 #include "Engine/EngineTypes.h"
-#include "Characters/Components/CLCharacterMovementComponent.h"
-#include "Systems/Traversal/CLTraversalAction.h"
+#include "Characters/Components/CL_ExtendedCharacterMovementComponent.h"
+#include "Systems/Traversal/CL_TraversalAction.h"
 
 namespace CLGameplayTags
 {
@@ -54,21 +54,21 @@ namespace CLGameplayTags
 	// Locomotion Stance Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Stance_Standing, "Locomotion.Stance.Standing", "Stance tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Stance_Crouching, "Locomotion.Stance.Crouching", "Stance tag")
-	const TMap<ECLStance, FGameplayTag> StanceTagMap =
+	const TMap<ECL_Stance, FGameplayTag> StanceTagMap =
 	{
-		{ ECLStance::Standing, Locomotion_Stance_Standing },
-		{ ECLStance::Crouching, Locomotion_Stance_Crouching }
+		{ ECL_Stance::Standing, Locomotion_Stance_Standing },
+		{ ECL_Stance::Crouching, Locomotion_Stance_Crouching }
 	};
 	
 	// Locomotion Gait Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Walking, "Locomotion.Gait.Walking", "Gait tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Jogging, "Locomotion.Gait.Jogging", "Gait tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Gait_Sprinting, "Locomotion.Gait.Sprinting", "Gait tag")
-	const TMap<ECLGait, FGameplayTag> GaitTagMap =
+	const TMap<ECL_Gait, FGameplayTag> GaitTagMap =
 	{
-		{ ECLGait::Walking, Locomotion_Gait_Walking },
-		{ ECLGait::Jogging, Locomotion_Gait_Jogging },
-		{ ECLGait::Sprinting, Locomotion_Gait_Sprinting }
+		{ ECL_Gait::Walking, Locomotion_Gait_Walking },
+		{ ECL_Gait::Jogging, Locomotion_Gait_Jogging },
+		{ ECL_Gait::Sprinting, Locomotion_Gait_Sprinting }
 	};
 	
 	// Locomotion Tags
@@ -80,11 +80,11 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Mantle, "Traversal.Action.Mantle", "Traversal action tag indicating a mantle");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Vault, "Traversal.Action.Vault", "Traversal action tag indicating a vault");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Slide, "Traversal.Action.Slide", "Traversal action tag indicating a slide");
-	const TMap<ECLTraversalAction, FGameplayTag> TraversalActionTagMap =
+	const TMap<ECL_TraversalAction, FGameplayTag> TraversalActionTagMap =
 	{
-		{ ECLTraversalAction::Hurdle, Traversal_Action_Hurdle },
-		{ ECLTraversalAction::Mantle, Traversal_Action_Mantle },
-		{ ECLTraversalAction::Vault, Traversal_Action_Vault },
-		{ ECLTraversalAction::Slide, Traversal_Action_Slide }
+		{ ECL_TraversalAction::Hurdle, Traversal_Action_Hurdle },
+		{ ECL_TraversalAction::Mantle, Traversal_Action_Mantle },
+		{ ECL_TraversalAction::Vault, Traversal_Action_Vault },
+		{ ECL_TraversalAction::Slide, Traversal_Action_Slide }
 	};
 }
