@@ -22,8 +22,7 @@ ACL_Character::ACL_Character(const FObjectInitializer& ObjectInitializer)
 
 bool ACL_Character::IsAlive() const
 {
-	TOptional<bool> IsAliveResult = HealthComponent->IsAlive();
-	return IsAliveResult.IsSet() && IsAliveResult.GetValue();
+	return HealthComponent->IsAlive();
 }
 
 void ACL_Character::SimulatePhysics() const

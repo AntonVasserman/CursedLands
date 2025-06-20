@@ -7,7 +7,7 @@
 
 //~ UCLLandedTaskBase Begin
 
-void UCL_PlayForceFeedbackLandedTask::ExecuteTask_Implementation(const FCL_LandedTaskContext& TaskContext) const
+void UCL_PlayForceFeedbackLandedTask::ExecuteTaskInternal_Implementation(const FCL_LandedTaskContext& TaskContext) const
 {
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in PlayForceFeedbackLandedTask"));
 

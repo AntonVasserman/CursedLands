@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CL_LandedConditionBase.h"
+#include "CL_LandedConstraintBase.h"
 #include "Engine/DataAsset.h"
-#include "CL_HitActorImplementsSoftLandingInterfaceLandedCondition.generated.h"
+#include "CL_HitActorImplementsSoftLandingInterfaceLandedConstraint.generated.h"
 
 struct FCL_LandedConditionContext;
 
@@ -17,15 +17,15 @@ enum class ECL_ImplementsInterfaceOption : uint8
 };
 
 UCLASS(EditInlineNew, Meta = (DisplayName = "Hit Actor Implements Soft Landing Interface"))
-class CURSEDLANDS_API UCL_HitActorImplementsSoftLandingInterfaceLandedCondition : public UCL_LandedConditionBase
+class CURSEDLANDS_API UCL_HitActorImplementsSoftLandingInterfaceLandedConstraint : public UCL_LandedConstraintBase
 {
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (AllowPrivateAccess = "true"))
 	ECL_ImplementsInterfaceOption ImplementsOption = ECL_ImplementsInterfaceOption::MustImplement;
 
-	//~ UCLLandedConditionBase Begin
+	//~ UCL_LandedConstraintBase Begin
 protected:
-	virtual bool TestConditionInternal_Implementation(const FCL_LandedConditionContext& ConditionContext) const override;
-	//~ UCLLandedConditionBase End
+	virtual bool TestConstraint_Implementation(const FCL_LandedConstraintContext& ConstraintContext) const override;
+	//~ UCL_LandedConstraintBase End
 };

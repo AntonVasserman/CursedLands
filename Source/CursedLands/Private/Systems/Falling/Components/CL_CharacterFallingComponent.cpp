@@ -5,7 +5,7 @@
 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Systems/Falling/Conditions/CL_FallHeightInRangeLandedCondition.h"
+#include "Systems/Falling/Conditions/CL_FallingCondition.h"
 #include "Systems/Falling/Tasks/CL_PrintStringLandedTask.h"
 
 DEFINE_LOG_CATEGORY(LogCharacterFalling);
@@ -38,21 +38,20 @@ void UCL_CharacterFallingComponent::Landed(const FHitResult& Hit)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Falling: %f"), FallHeight));
 	}
 
-	for (FCL_LandedConditionTasksPair Pair : LandedTasks)
+	for (FCL_FallingConditionAndTasks ConditionToTasks : ConditionsToTasks)
 	{
-		FCL_LandedConditionContext ConditionContext;
+		FCL_FallingConditionContext ConditionContext;
 		ConditionContext.Character = OwnerCharacter;
-		ConditionContext.HitActor = Hit.GetActor();
 		ConditionContext.FallHeight = FallHeight;
-		
-		if (Pair.Condition->TestCondition(ConditionContext))
+
+		if (ConditionToTasks.Condition.TestCondition(ConditionContext))
 		{
-			for (const UCL_LandedTaskBase* Task : Pair.Tasks)
+			for (const UCL_LandedTaskBase* Task : ConditionToTasks.LandedTasks)
 			{
 				FCL_LandedTaskContext TaskContext;
-				TaskContext.Condition = Pair.Condition;
-				TaskContext.FallHeight = FallHeight;
 				TaskContext.Character = OwnerCharacter;
+				TaskContext.HitActor = Hit.GetActor();
+				TaskContext.FallHeight = FallHeight;
 				TaskContext.FallingComponent = this;
 				
 				Task->ExecuteTask(TaskContext);

@@ -4,23 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Systems/Falling/Conditions/CL_FallingCondition.h"
 #include "CL_CharacterFallingComponent.generated.h"
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterFalling, Log, All)
 
-class UCL_LandedConditionBase;
-class UCL_LandedTaskBase;;
+class UCL_LandedTaskBase;
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_LandedConditionTasksPair
+struct CURSEDLANDS_API FCL_FallingConditionAndTasks
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCLLandedConditionBase), Instanced)
-	TObjectPtr<UCL_LandedConditionBase> Condition;
+	UPROPERTY(EditDefaultsOnly, Category = "Config")
+	FCL_FallingCondition Condition;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCLLandedTaskBase), Instanced)
-	TArray<TObjectPtr<UCL_LandedTaskBase>> Tasks;
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCL_LandedTaskBase), Instanced)
+	TArray<TObjectPtr<UCL_LandedTaskBase>> LandedTasks;
 };
 
 UCLASS()
@@ -39,7 +39,7 @@ private:
 	TObjectPtr<ACharacter> OwnerCharacter = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
-	TArray<FCL_LandedConditionTasksPair> LandedTasks;
+	TArray<FCL_FallingConditionAndTasks> ConditionsToTasks;
 	
 	float FallHeight = 0.f;
 	float FallBeginZ = 0.f;

@@ -7,7 +7,7 @@
 
 //~ UCLLandedTaskBase Begin
 
-void UCL_PlayAnimationMontageLandedTask::ExecuteTask_Implementation(const FCL_LandedTaskContext& TaskContext) const
+void UCL_PlayAnimationMontageLandedTask::ExecuteTaskInternal_Implementation(const FCL_LandedTaskContext& TaskContext) const
 {
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 

@@ -4,7 +4,7 @@
 
 //~ UCLLandedTaskBase Begin
 
-void UCL_PrintStringLandedTask::ExecuteTask_Implementation(const FCL_LandedTaskContext& TaskContext) const
+void UCL_PrintStringLandedTask::ExecuteTaskInternal_Implementation(const FCL_LandedTaskContext& TaskContext) const
 {
 	GEngine->AddOnScreenDebugMessage(-1, PrintDuration, StringColor, *StringToPrint);
 }

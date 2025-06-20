@@ -29,7 +29,7 @@ float UCL_ApplyGameplayEffectLandedTask::GetLevelToApply(const FCL_LandedTaskCon
 	}
 }
 
-void UCL_ApplyGameplayEffectLandedTask::ExecuteTask_Implementation(const FCL_LandedTaskContext& TaskContext) const
+void UCL_ApplyGameplayEffectLandedTask::ExecuteTaskInternal_Implementation(const FCL_LandedTaskContext& TaskContext) const
 {
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 

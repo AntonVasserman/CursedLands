@@ -23,6 +23,6 @@ class CURSEDLANDS_API UCL_PrintStringLandedTask : public UCL_LandedTaskBase
 
 	//~ UCLLandedTaskBase Begin
 public:	
-	virtual void ExecuteTask_Implementation(const FCL_LandedTaskContext& TaskContext) const override;
+	virtual void ExecuteTaskInternal_Implementation(const FCL_LandedTaskContext& TaskContext) const override;
 	//~ UCLLandedTaskBase End
 };

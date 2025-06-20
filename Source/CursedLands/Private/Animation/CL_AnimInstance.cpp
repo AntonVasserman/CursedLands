@@ -53,7 +53,11 @@ void UCL_AnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 
 	if (Character)
 	{
+// We don't want to run this code in the editor because it relies on the GAS Component.
+// The GAS Component is initialized only on BeginPlay so we shouldn't do this code in the Editor.
+#ifndef WITH_EDITOR
 		bAlive = Character->IsAlive();
+#endif
 		UpdateVelocityData();
 		UpdateFallData();
 		UpdateLocationData(DeltaSeconds);
