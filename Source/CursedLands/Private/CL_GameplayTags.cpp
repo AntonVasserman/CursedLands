@@ -75,6 +75,17 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Rolling, "Locomotion.Rolling", "Locomotion tag indicating rolling");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_StandingUp, "Locomotion.StandingUp", "Locomotion tag indicating standing up from fall");
 
+	// Falling Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Falling_Light, "Falling.Light", "Falling tag indicating light fall");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Falling_Medium, "Falling.Medium", "Falling tag indicating medium fall");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Falling_Deadly, "Falling.Deadly", "Falling tag indicating deadly fall");
+	const TMap<FGameplayTag, ECL_FallType> TagToFallingMap =
+	{
+		{ Falling_Light, ECL_FallType::Light },
+		{ Falling_Medium, ECL_FallType::Medium },
+		{ Falling_Deadly, ECL_FallType::Deadly },
+	};
+	
 	// Traversal Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Hurdle, "Traversal.Action.Hurdle", "Traversal action tag indicating a hurdle");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Traversal_Action_Mantle, "Traversal.Action.Mantle", "Traversal action tag indicating a mantle");

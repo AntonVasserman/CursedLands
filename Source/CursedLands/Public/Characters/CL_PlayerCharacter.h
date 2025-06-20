@@ -90,12 +90,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Locomotion|Falling")
 	FORCEINLINE UCL_CharacterFallingComponent* GetFallingComponent() const { return FallingComponent; }
-	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
-	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
-	FORCEINLINE float GetFallHeightForMinFallDamage() const { return FallHeightForMinFallDamage; }
-	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
-	UFUNCTION(BlueprintCallable, Category = "Character Movement|Falling")
-	FORCEINLINE float GetFallHeightForMaxFallDamage() const { return FallHeightForMaxFallDamage; }
 
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE UCL_CharacterTraversalComponent* GetCharacterTraversal() const { return CharacterTraversal; }
@@ -128,14 +122,6 @@ private:
 	ECL_PlayerCharacterCameraMode CameraMode = ECL_PlayerCharacterCameraMode::Default;
 	ECL_PlayerCharacterMovementMode MovementMode = ECL_PlayerCharacterMovementMode::Default;
 
-	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling", Meta = (AllowPrivateAccess = "true"))
-	float FallHeightForMinFallDamage = 800.f;
-
-	// TODO (CL-156): Remove in favor of additional case in CharacterFallingComponent
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Falling", Meta = (AllowPrivateAccess = "true"))
-	float FallHeightForMaxFallDamage = 1500.f;
-	
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Walking", Meta = (AllowPrivateAccess = "true"))
 	float MinWalkSpeed = 20.f;
 

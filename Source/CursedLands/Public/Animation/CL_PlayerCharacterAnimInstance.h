@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CL_AnimInstance.h"
+#include "Systems/Falling/CL_FallType.h"
 #include "CL_PlayerCharacterAnimInstance.generated.h"
 
 enum class ECL_Stance : uint8;
@@ -81,9 +82,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bStandingUp;
 	UPROPERTY(BlueprintReadOnly, Category = "Fall Data|Constants", Meta = (AllowPrivateAccess = "true"))
-	float FallHeightForMinFallDamage;
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data|Constants", Meta = (AllowPrivateAccess = "true"))
-	float FallHeightForMaxFallDamage;
+	ECL_FallType FallType;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Acceleration;

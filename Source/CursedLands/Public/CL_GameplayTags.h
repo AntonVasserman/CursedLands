@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
+#include "Systems/Falling/CL_FallType.h"
 
 enum class ECL_TraversalAction : uint8;
 enum class ECL_Stance : uint8;
@@ -58,6 +59,12 @@ namespace CLGameplayTags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_Rolling);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Locomotion_StandingUp);
 
+	// Falling Tags
+	CURSEDLANDS_API extern const TMap<FGameplayTag, ECL_FallType> TagToFallingMap;
+	CURSEDLANDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Falling_Light);
+	CURSEDLANDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Falling_Medium);
+	CURSEDLANDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Falling_Deadly);
+	
 	// Traversal Tags
 	CURSEDLANDS_API extern const TMap<ECL_TraversalAction, FGameplayTag> TraversalActionTagMap;
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Hurdle);

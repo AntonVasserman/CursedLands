@@ -38,6 +38,25 @@ void UCL_PlayerCharacterAnimInstance::UpdateFallData()
 	Super::UpdateFallData();
 
 	FallHeight = PlayerCharacter->GetFallingComponent()->GetFallHeight();
+	// TODO (CL-na): I don't like this solution, design a better solution
+	if (PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Falling_Light))
+	{
+		FallType = ECL_FallType::Light;
+	}
+	else if (PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Falling_Medium))
+	{
+		FallType = ECL_FallType::Medium;
+	}
+	else if (PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Falling_Deadly))
+	{
+		FallType = ECL_FallType::Deadly;
+	}
+	else
+	{
+		FallType = ECL_FallType::Light;
+	}
+	//
+	
 	bRolling = PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_Rolling);
 	bStandingUp = PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Locomotion_StandingUp);
 }
@@ -165,8 +184,6 @@ void UCL_PlayerCharacterAnimInstance::NativeInitializeAnimation()
 	if (ACL_PlayerCharacter* OwningPlayerCharacter = Cast<ACL_PlayerCharacter>(GetOwningActor()))
 	{
 		PlayerCharacter = OwningPlayerCharacter;
-		FallHeightForMinFallDamage = PlayerCharacter->GetFallHeightForMinFallDamage();
-		FallHeightForMaxFallDamage = PlayerCharacter->GetFallHeightForMaxFallDamage();
 	}
 }
 
@@ -223,7 +240,8 @@ void UCL_PlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			GEngine->AddOnScreenDebugMessage(32, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::AccelerationAngle: %f"), AccelerationAngle), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(31, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::Accelerating: %d"), bAccelerating), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(30, 0.0f, TextColor, FString::Printf(TEXT("Acceleration Data::Acceleration: %s"), *Acceleration.ToString()), false, TextScale);
-			
+
+			GEngine->AddOnScreenDebugMessage(22, 0.0f, TextColor, FString::Printf(TEXT("Fall Data::FallType: %s"), *StaticEnum<ECL_FallType>()->GetAuthoredNameStringByValue(static_cast<int64>(FallType))), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(21, 0.0f, TextColor, FString::Printf(TEXT("Fall Data::FallHeight: %f"), FallHeight), false, TextScale);
 			GEngine->AddOnScreenDebugMessage(20, 0.0f, TextColor, FString::Printf(TEXT("Fall Data::Falling: %d"), bFalling), false, TextScale);
 

@@ -21,8 +21,8 @@ class CURSEDLANDS_API UCL_PrintStringLandedTask : public UCL_LandedTaskBase
 	UPROPERTY(EditDefaultsOnly, Category = "")
 	float PrintDuration;
 
-	//~ UCLLandedTaskBase Begin
+	//~ UCL_LandedTaskBase Begin
 public:	
 	virtual void ExecuteTaskInternal_Implementation(const FCL_LandedTaskContext& TaskContext) const override;
-	//~ UCLLandedTaskBase End
+	//~ UCL_LandedTaskBase End
 };

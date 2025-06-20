@@ -6,7 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 
-TOptional<UAbilitySystemComponent*> UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(const ACharacter* Character)
+UAbilitySystemComponent* UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(const ACharacter* Character)
 {
 	// Try to look for the AbilitySystemComponent by casting to IAbilitySystemInterface
 	if (const IAbilitySystemInterface* CharacterAsAbilitySystemInterface = Cast<IAbilitySystemInterface>(Character);
@@ -26,5 +26,5 @@ TOptional<UAbilitySystemComponent*> UCL_GameplayAbilitySystemStatics::GetAbility
 		return AbilitySystemComponent;
 	}
 	
-	return TOptional<UAbilitySystemComponent*>();
+	return nullptr;
 }

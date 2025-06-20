@@ -33,10 +33,10 @@ void UCL_ApplyGameplayEffectLandedTask::ExecuteTaskInternal_Implementation(const
 {
 	checkf(TaskContext.Character, TEXT("TaskContext.Character uninitialized in ApplyGameplayEffectLandedTask"));
 
-	TOptional<UAbilitySystemComponent*> AbilitySystemComponent = UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
+	UAbilitySystemComponent* AbilitySystemComponent = UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
 
 	// If we can't find the Component we won't throw, we will just not apply the effect
-	if (AbilitySystemComponent.IsSet() == false)
+	if (AbilitySystemComponent == nullptr)
 	{
 		UE_LOG(LogCharacterFalling, Warning, TEXT("Couldn't find AbilitySystemComponent on for Character: %s, in ApplyGameplayEffectLandedTask"), *TaskContext.Character->GetFullName());
 		return;
@@ -45,10 +45,11 @@ void UCL_ApplyGameplayEffectLandedTask::ExecuteTaskInternal_Implementation(const
 	// On the contrary, if the user creates a task, he must assign a gameplay effect to be used with it
 	checkf(GameplayEffectClass, TEXT("GameplayEffectClass uninitialized in ApplyGameplayEffectLandedTask for Character: %s"), *TaskContext.Character->GetFullName());
 
-	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent.GetValue()->MakeEffectContext();
+	// TODO (CL-167): Extract to a GAS Operation :)
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
 	ContextHandle.AddSourceObject(TaskContext.FallingComponent);
-	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent.GetValue()->MakeOutgoingSpec(GameplayEffectClass, GetLevelToApply(TaskContext), ContextHandle);
-	AbilitySystemComponent.GetValue()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystemComponent.GetValue());
+	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, GetLevelToApply(TaskContext), ContextHandle);
+	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystemComponent);
 }
 
 //~ UCLLandedTaskBase End

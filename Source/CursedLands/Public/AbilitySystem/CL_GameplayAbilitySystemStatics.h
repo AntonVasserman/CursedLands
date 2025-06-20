@@ -14,5 +14,5 @@ class UCL_GameplayAbilitySystemStatics : public UBlueprintFunctionLibrary
 	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
-	static TOptional<UAbilitySystemComponent*> GetAbilitySystemComponent(const ACharacter* Character);
+	static UAbilitySystemComponent* GetAbilitySystemComponent(const ACharacter* Character);
 };

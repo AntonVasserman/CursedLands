@@ -9,18 +9,34 @@
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterFalling, Log, All)
 
+class UCL_FallingTaskBase;
 class UCL_LandedTaskBase;
+
+UENUM(BlueprintType)
+enum class ECL_FallingRangeState : uint8
+{
+	Outside		UMETA(DisplayName = "Outside"),
+	Inside		UMETA(DisplayName = "Inside"),
+};
 
 USTRUCT()
 struct CURSEDLANDS_API FCL_FallingConditionAndTasks
 {
 	GENERATED_BODY()
 
+	ECL_FallingRangeState State = ECL_FallingRangeState::Outside;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
 	FCL_FallingCondition Condition;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCL_LandedTaskBase), Instanced)
 	TArray<TObjectPtr<UCL_LandedTaskBase>> LandedTasks;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCL_FallingTaskBase), Instanced)
+	TArray<TObjectPtr<UCL_FallingTaskBase>> FallingEnterTasks;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config", Meta = (BaseClass = UCL_FallingTaskBase), Instanced)
+	TArray<TObjectPtr<UCL_FallingTaskBase>> FallingExitTasks;
 };
 
 UCLASS()
