@@ -8,11 +8,10 @@
 #include "CL_PlayerCharacterAnimInstance.generated.h"
 
 enum class ECL_Stance : uint8;
-struct FFloatSpringState;
-class ACL_PlayerCharacter;
 enum class ECL_CardinalDirection : uint8;
 enum class ECL_Gait : uint8;
 enum class ECL_PlayerCharacterMovementMode : uint8;
+class ACL_PlayerCharacter;
 
 UENUM(BlueprintType)
 enum class ECL_RootYawOffsetMode : uint8
@@ -20,49 +19,6 @@ enum class ECL_RootYawOffsetMode : uint8
 	BlendOut	UMETA(DisplayName = "Blend Out"),
 	Hold		UMETA(DisplayName = "Hold"),
 	Accumulate	UMETA(DisplayName = "Accumulate"),
-};
-
-USTRUCT(BlueprintType)
-struct FCL_DirectionalAnimation
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> ForwardAnimSequence;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> BackwardAnimSequence;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> RightAnimSequence;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> LeftAnimSequence;
-
-	FCL_DirectionalAnimation()
-		: ForwardAnimSequence(nullptr), BackwardAnimSequence(nullptr), RightAnimSequence(nullptr), LeftAnimSequence(nullptr)
-	{
-	}
-};
-
-USTRUCT(BlueprintType)
-struct FCL_FallAnimation
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> LightFallAnimSequence;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> HeavyFallAnimSequence;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimSequenceBase> DeadlyFallAnimSequence;
-
-	FCL_FallAnimation()
-		: LightFallAnimSequence(nullptr), HeavyFallAnimSequence(nullptr), DeadlyFallAnimSequence(nullptr)
-	{
-	}
 };
 
 UCLASS()
