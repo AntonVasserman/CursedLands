@@ -1,7 +1,6 @@
 // Copyright Anton Vasserman, All Rights Reserved.
 
 using UnrealBuildTool;
-using System.Collections.Generic;
 
 public class CursedLandsEditorTarget : TargetRules
 {

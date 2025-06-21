@@ -2,7 +2,7 @@
 
 #include "StateTree/Tasks/CL_CharacterDeathPhysicsTask.h"
 
-#include "AVCollisionProfileStatics.h"
+#include "AV_CollisionProfileStatics.h"
 #include "StateTreeExecutionContext.h"
 #include "Characters/CL_Character.h"
 #include "Controllers/CL_PlayerController.h"
@@ -13,7 +13,7 @@ EStateTreeRunStatus FCL_CharacterDeathPhysicsTask::EnterState(FStateTreeExecutio
 
 	const ACL_Character* Character = CastChecked<ACL_Character>(InstanceData.Controller->GetCharacter());
 	Character->GetMesh()->SetSimulatePhysics(true);
-	Character->GetMesh()->SetCollisionProfileName(UAVCollisionProfileStatics::Ragdoll_ProfileName);
+	Character->GetMesh()->SetCollisionProfileName(UAV_CollisionProfileStatics::Ragdoll_ProfileName);
 	
 	return InstanceData.bRunForever ? EStateTreeRunStatus::Running : EStateTreeRunStatus::Succeeded;
 }

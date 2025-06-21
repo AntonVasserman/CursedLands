@@ -4,7 +4,7 @@
 #include "Animation/CL_PlayerCharacterAnimInstance.h"
 
 #include "AnimCharacterMovementLibrary.h"
-#include "AVDrawDebugStatics.h"
+#include "AV_DrawDebugStatics.h"
 #include "KismetAnimationLibrary.h"
 #include "Characters/CL_PlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -254,11 +254,11 @@ void UCL_PlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			// Draw Direction/Velocity Vector
 			const FVector DebugVectorStart = FVector(CharacterLocation.X, CharacterLocation.Y, CharacterLocation.Z - 60.f);
 			const FVector VelocityDebugVectorEnd = DebugVectorStart + Velocity;
-			UAVDrawDebugStatics::DrawDebugNamedDirectionalArrow(GetWorld(), DebugVectorStart, VelocityDebugVectorEnd, FString(TEXT("Velocity")), FColor::Green, 200.f);
+			UAV_DrawDebugStatics::DrawDebugNamedDirectionalArrow(GetWorld(), DebugVectorStart, VelocityDebugVectorEnd, FString(TEXT("Velocity")), FColor::Green, 200.f);
 
 			// Draw Acceleration Vector
 			const FVector AccelerationDebugVectorEnd = DebugVectorStart + Acceleration;
-			UAVDrawDebugStatics::DrawDebugNamedDirectionalArrow(GetWorld(), DebugVectorStart, AccelerationDebugVectorEnd, FString(TEXT("Acceleration")), FColor::Yellow, 200.f);
+			UAV_DrawDebugStatics::DrawDebugNamedDirectionalArrow(GetWorld(), DebugVectorStart, AccelerationDebugVectorEnd, FString(TEXT("Acceleration")), FColor::Yellow, 200.f);
 
 			// Draw Predicted Ground Movement Stop Location
 			const FVector StopLocationPrediction = UAnimCharacterMovementLibrary::PredictGroundMovementStopLocation(

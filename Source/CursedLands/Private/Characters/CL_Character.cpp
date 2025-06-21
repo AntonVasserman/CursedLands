@@ -3,7 +3,7 @@
 
 #include "Characters/CL_Character.h"
 
-#include "AVCollisionProfileStatics.h"
+#include "AV_CollisionProfileStatics.h"
 #include "CL_GameplayTags.h"
 #include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Components/CL_HealthComponent.h"
@@ -28,7 +28,7 @@ bool ACL_Character::IsAlive() const
 void ACL_Character::SimulatePhysics() const
 {
 	GetMesh()->SetSimulatePhysics(true);
-	GetMesh()->SetCollisionProfileName(UAVCollisionProfileStatics::Ragdoll_ProfileName);
+	GetMesh()->SetCollisionProfileName(UAV_CollisionProfileStatics::Ragdoll_ProfileName);
 }
 
 void ACL_Character::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, const float Level)

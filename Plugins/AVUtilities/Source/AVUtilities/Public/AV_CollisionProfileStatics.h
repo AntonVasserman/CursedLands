@@ -3,10 +3,10 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "AVCollisionProfileStatics.generated.h"
+#include "AV_CollisionProfileStatics.generated.h"
 
 UCLASS(MinimalAPI)
-class UAVCollisionProfileStatics : public UBlueprintFunctionLibrary
+class UAV_CollisionProfileStatics : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 

@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "AVDrawDebugStatics.generated.h"
+#include "AV_DrawDebugStatics.generated.h"
 
 UCLASS()
-class AVUTILITIES_API UAVDrawDebugStatics : public UBlueprintFunctionLibrary
+class AVUTILITIES_API UAV_DrawDebugStatics : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
