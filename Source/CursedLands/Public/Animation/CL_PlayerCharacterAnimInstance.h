@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "CL_AnimInstance.h"
-#include "Systems/Falling/CL_FallType.h"
 #include "CL_PlayerCharacterAnimInstance.generated.h"
 
-enum class ECL_Stance : uint8;
 enum class ECL_CardinalDirection : uint8;
+enum class ECL_FallType : uint8;
 enum class ECL_Gait : uint8;
 enum class ECL_PlayerCharacterMovementMode : uint8;
+enum class ECL_Stance : uint8;
 class ACL_PlayerCharacter;
 
 UENUM(BlueprintType)
@@ -37,7 +37,7 @@ protected:
 	bool bRolling;
 	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bStandingUp;
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data|Constants", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_FallType FallType;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))

@@ -9,11 +9,11 @@
 #include "AbilitySystem/Components/CL_ManaComponent.h"
 #include "AbilitySystem/Components/CL_StaminaComponent.h"
 #include "Characters/Components/CL_ExtendedCharacterMovementComponent.h"
+#include "Components/AV_CharacterFallComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Systems/Falling/Components/CL_CharacterFallingComponent.h"
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
@@ -41,8 +41,8 @@ ACL_PlayerCharacter::ACL_PlayerCharacter(const FObjectInitializer& ObjectInitial
 	GameplayCamera->SetupAttachment(GetMesh());
 	GameplayCamera->SetRelativeLocation(InitialGameplayCameraRelativeLocation);
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
-
-	FallingComponent = CreateDefaultSubobject<UCL_CharacterFallingComponent>("CharacterFalling");
+	
+	CharacterFallComponent = CreateDefaultSubobject<UAV_CharacterFallComponent>("CharacterFall");
 	
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 	CharacterTraversal = CreateDefaultSubobject<UCL_CharacterTraversalComponent>("CharacterTraversal");

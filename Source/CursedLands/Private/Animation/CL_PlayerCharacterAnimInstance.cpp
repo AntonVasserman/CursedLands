@@ -7,8 +7,9 @@
 #include "AV_DrawDebugStatics.h"
 #include "KismetAnimationLibrary.h"
 #include "Characters/CL_PlayerCharacter.h"
+#include "Components/AV_CharacterFallComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Systems/Falling/Components/CL_CharacterFallingComponent.h"
+#include "Systems/CharacterFall/CL_FallType.h"
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
@@ -37,7 +38,7 @@ void UCL_PlayerCharacterAnimInstance::UpdateFallData()
 {
 	Super::UpdateFallData();
 
-	FallHeight = PlayerCharacter->GetFallingComponent()->GetFallHeight();
+	FallHeight = PlayerCharacter->GetCharacterFallComponent()->GetFallHeight();
 	// TODO (CL-na): I don't like this solution, design a better solution
 	if (PlayerCharacter->HasMatchingGameplayTag(CLGameplayTags::Falling_Light))
 	{

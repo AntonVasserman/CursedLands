@@ -28,6 +28,7 @@ public class CursedLands : ModuleRules
 				"AnimationWarpingRuntime",
 				"AnimGraphRuntime",
 				"AnimationLocomotionLibraryRuntime",
+				"AVCharacterFall",
 				"AVUtilities",
 				"Chooser",
 				"GameplayTags",

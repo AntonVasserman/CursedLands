@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
-#include "Systems/Falling/CL_FallType.h"
 
-enum class ECL_TraversalAction : uint8;
-enum class ECL_Stance : uint8;
+enum class ECL_FallType : uint8;
 enum class ECL_Gait : uint8;
+enum class ECL_Stance : uint8;
+enum class ECL_TraversalAction : uint8;
 
 namespace CLGameplayTags
 {
