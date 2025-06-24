@@ -2,7 +2,7 @@
 
 #include "AVCharacterFall.h"
 
-#include "Components/AV_CharacterFallComponent.h"
+#include "AV_CharacterFallLogChannels.h"
 
 #define LOCTEXT_NAMESPACE "FAVCharacterFallModule"
 

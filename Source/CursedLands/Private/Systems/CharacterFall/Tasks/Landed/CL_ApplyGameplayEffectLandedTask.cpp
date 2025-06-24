@@ -4,6 +4,7 @@
 #include "Systems/CharacterFall/Tasks/Landed/CL_ApplyGameplayEffectLandedTask.h"
 
 #include "AbilitySystemComponent.h"
+#include "AV_CharacterFallLogChannels.h"
 #include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
 #include "Components/AV_CharacterFallComponent.h"
 #include "GameFramework/Character.h"

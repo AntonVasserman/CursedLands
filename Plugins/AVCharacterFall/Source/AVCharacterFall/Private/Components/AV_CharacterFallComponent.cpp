@@ -1,17 +1,13 @@
 ﻿// Copyright Anton Vasserman, All Rights Reserved.
 
-
 #include "Components/AV_CharacterFallComponent.h"
 
+#include "AV_CharacterFallLogChannels.h"
+#include "Components/Models/AV_FallRangeTasks.h"
 #include "Engine/Engine.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Tasks/Falling/AV_FallingTaskBase.h"
-#include "Tasks/Landed/AV_LandedTaskBase.h"
 
-DEFINE_LOG_CATEGORY(LogAV_CharacterFall);
-
-// TODO: Add more logs...
 static TAutoConsoleVariable CVarShowDebugAVCharacterFallComponent(
 	TEXT("AVShowDebug.CharacterFallComponent"),
 	false,
@@ -29,6 +25,11 @@ void UAV_CharacterFallComponent::OnMovementModeChanged(ACharacter* Character, EM
 		CurrentMovementMode == MOVE_Falling)
 	{
 		FallBeginZ = Character->GetActorLocation().Z;
+		UE_LOG(LogAV_CharacterFall, Display, TEXT("%s::%hs: Starting evaluating Fall Height, with Fall Begin Z: %f"), *GetClass()->GetName(), __FUNCTION__, FallBeginZ);
+		if (CVarShowDebugAVCharacterFallComponent->GetBool())
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Starting evaluating Fall Height, with Fall Begin Z: %f"), FallBeginZ));
+		}
 	}
 }
 
@@ -42,23 +43,13 @@ void UAV_CharacterFallComponent::Landed(const FHitResult& Hit)
 
 	FAV_FallRangeContext FallRangeContext;
 	FallRangeContext.Character = OwnerCharacter;
+	FallRangeContext.CharacterFallComponent = this;
 	FallRangeContext.FallHeight = FallHeight;
-	
-	for (FAV_FallingConditionAndTasks ConditionToTasks : ConditionsToTasks)
+	FallRangeContext.HitActor = Hit.GetActor();
+		
+	for (FAV_FallRangeTasks& FallRangeTasks : FallRangesTasks)
 	{
-		if (ConditionToTasks.FallRange.TestRange(FallRangeContext))
-		{
-			FAV_LandedTaskContext TaskContext;
-			TaskContext.Character = OwnerCharacter;
-			TaskContext.HitActor = Hit.GetActor();
-			TaskContext.FallHeight = FallHeight;
-			TaskContext.FallingComponent = this;
-			
-			for (const UAV_LandedTaskBase* Task : ConditionToTasks.LandedTasks)
-			{
-				Task->ExecuteTask(TaskContext);
-			}
-		}
+		FallRangeTasks.TestRange(FallRangeContext);
 	}
 }
 
@@ -75,63 +66,12 @@ void UAV_CharacterFallComponent::TickComponent(float DeltaTime, ELevelTick TickT
 
 		FAV_FallRangeContext FallRangeContext;
 		FallRangeContext.Character = OwnerCharacter;
+		FallRangeContext.CharacterFallComponent = this;
 		FallRangeContext.FallHeight = FallHeight;
-
-		// Use reference here because we change the struct's state
-		for (FAV_FallingConditionAndTasks& ConditionToTasks : ConditionsToTasks)
+		
+		for (FAV_FallRangeTasks& FallRangeTasks : FallRangesTasks)
 		{
-			const bool bConditionMet = ConditionToTasks.FallRange.TestRange(FallRangeContext);
-
-			switch (ConditionToTasks.State)
-			{
-			case EAV_FallRangeState::Outside:
-				if (bConditionMet)
-				{
-					ConditionToTasks.State = EAV_FallRangeState::Inside;
-					FAV_FallingTaskContext TaskContext;
-					TaskContext.Character = OwnerCharacter;
-					TaskContext.FallingComponent = this;
-					for (const UAV_FallingTaskBase* Task : ConditionToTasks.FallingEnterTasks)
-					{
-						Task->ExecuteTask(TaskContext);
-					}
-				}
-				break;
-			case EAV_FallRangeState::Inside:
-				if (!bConditionMet)
-				{
-					ConditionToTasks.State = EAV_FallRangeState::Outside;
-					FAV_FallingTaskContext TaskContext;
-					TaskContext.Character = OwnerCharacter;
-					TaskContext.FallingComponent = this;
-					for (const UAV_FallingTaskBase* Task : ConditionToTasks.FallingExitTasks)
-					{
-						Task->ExecuteTask(TaskContext);
-					}
-				}
-				break;
-			default:
-				checkNoEntry();
-			}
-		}
-	}
-	else // Not Falling anymore
-	{
-		// Use reference here because we change the struct's state
-		for (FAV_FallingConditionAndTasks& ConditionToTasks : ConditionsToTasks)
-		{
-			if (ConditionToTasks.State == EAV_FallRangeState::Inside)
-			{
-				ConditionToTasks.State = EAV_FallRangeState::Outside;
-				for (const UAV_FallingTaskBase* Task : ConditionToTasks.FallingExitTasks)
-				{
-					FAV_FallingTaskContext TaskContext;
-					TaskContext.Character = OwnerCharacter;
-					TaskContext.FallingComponent = this;
-			
-					Task->ExecuteTask(TaskContext);
-				}
-			}
+			FallRangeTasks.TestRange(FallRangeContext);
 		}
 	}
 }

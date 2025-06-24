@@ -4,9 +4,9 @@
 #include "Systems/CharacterFall/Tasks/Falling/CL_GASOperationFallingTask.h"
 
 #include "AbilitySystemComponent.h"
+#include "AV_CharacterFallLogChannels.h"
 #include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
 #include "AbilitySystem/Operations/CL_GASOperationBase.h"
-#include "Components/AV_CharacterFallComponent.h"
 #include "GameFramework/Character.h"
 
 //~ UAV_FallingTaskBase Begin

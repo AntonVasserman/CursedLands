@@ -2,7 +2,7 @@
 
 #include "Operations/AV_AddDebugMessageOperation.h"
 
-#include "Components/AV_CharacterFallComponent.h"
+#include "AV_CharacterFallLogChannels.h"
 #include "Engine/Engine.h"
 
 void FAV_AddDebugMessageOperation::Execute() const

@@ -3,35 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AV_FallRange.h"
 #include "Components/ActorComponent.h"
 #include "AV_CharacterFallComponent.generated.h"
 
-class UAV_FallingTaskBase;
-class UAV_LandedTaskBase;
-
-AVCHARACTERFALL_API DECLARE_LOG_CATEGORY_EXTERN(LogAV_CharacterFall, Log, All);
-
-// TODO: I don't like this name...
-USTRUCT()
-struct AVCHARACTERFALL_API FAV_FallingConditionAndTasks
-{
-	GENERATED_BODY()
-
-	EAV_FallRangeState State = EAV_FallRangeState::Outside;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "")
-	FAV_FallRange FallRange;
-
-	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UAV_LandedTaskBase), Instanced)
-	TArray<TObjectPtr<UAV_LandedTaskBase>> LandedTasks;
-
-	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UAV_FallingTaskBase), Instanced)
-	TArray<TObjectPtr<UAV_FallingTaskBase>> FallingEnterTasks;
-
-	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (BaseClass = UAV_FallingTaskBase), Instanced)
-	TArray<TObjectPtr<UAV_FallingTaskBase>> FallingExitTasks;
-};
+struct FAV_FallRangeTasks;
 
 UCLASS(MinimalAPI, Meta=(BlueprintSpawnableComponent))
 class UAV_CharacterFallComponent : public UActorComponent
@@ -49,7 +24,7 @@ private:
 	TObjectPtr<ACharacter> OwnerCharacter = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
-	TArray<FAV_FallingConditionAndTasks> ConditionsToTasks;
+	TArray<FAV_FallRangeTasks> FallRangesTasks;
 	
 	float FallHeight = 0.f;
 	float FallBeginZ = 0.f;

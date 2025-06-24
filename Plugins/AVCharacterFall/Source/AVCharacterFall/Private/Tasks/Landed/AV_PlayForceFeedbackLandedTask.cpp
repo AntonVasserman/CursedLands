@@ -2,7 +2,7 @@
 
 #include "Tasks/Landed/AV_PlayForceFeedbackLandedTask.h"
 
-#include "Components/AV_CharacterFallComponent.h"
+#include "AV_CharacterFallLogChannels.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PlayerController.h"
 
