@@ -6,9 +6,9 @@
 
 class FAVCharacterFallModule : public IModuleInterface
 {
+	//~ IModuleInterface Begin
 public:
-
-	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
+	//~ IModuleInterface End
 };

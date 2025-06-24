@@ -21,6 +21,11 @@
 			"Name": "AVCharacterFall",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "AVCharacterFallEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	]
 }

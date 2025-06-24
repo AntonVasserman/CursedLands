@@ -41,7 +41,10 @@
 		},
 		{
 			"Name": "AVUtilities",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "Chooser",
@@ -49,7 +52,10 @@
 		},
 		{
 			"Name": "AVLevelPrototyping",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "StateTree",

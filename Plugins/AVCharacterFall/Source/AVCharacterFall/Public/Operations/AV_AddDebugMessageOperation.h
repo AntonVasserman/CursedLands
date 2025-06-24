@@ -21,7 +21,7 @@ struct AVCHARACTERFALL_API FAV_AddDebugMessageOperation
 	FString Message;
 
 	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "bOnScreen", EditConditionHides))
-	FColor MessageColor;
+	FColor MessageColor = FColor::White;
 
 	UPROPERTY(EditDefaultsOnly, Category = "", Meta = (EditCondition = "bOnScreen", EditConditionHides))
 	float Duration = 5.f;

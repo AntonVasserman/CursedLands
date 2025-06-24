@@ -12,6 +12,8 @@ class AVCHARACTERFALL_API UAV_AddDebugMessageFallingTask : public UAV_FallingTas
 {
 	GENERATED_BODY()
 
+	friend class FAV_AddDebugMessageFallingTaskDetailCustomization;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "")
 	FAV_AddDebugMessageOperation Operation;
 

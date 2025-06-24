@@ -1,10 +1,10 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
 
-public class AVCharacterFall : ModuleRules
+public class AVCharacterFallEditor : ModuleRules
 {
-	public AVCharacterFall(ReadOnlyTargetRules Target) : base(Target)
+	public AVCharacterFallEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -13,16 +13,17 @@ public class AVCharacterFall : ModuleRules
 			{
 				"Core",
 			});
-		
+
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"AVCharacterFall",
 				"CoreUObject",
 				"Engine",
 				"Slate",
 				"SlateCore",
 			});
-
+		
 		if (Target.bBuildEditor)
 		{
 			PrivateDependencyModuleNames.AddRange(new string[] { "Projects" });
