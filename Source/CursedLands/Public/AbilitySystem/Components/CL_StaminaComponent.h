@@ -27,7 +27,7 @@ public:
 
 	FCL_OnFatigueApplied OnFatigueApplied;
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Stamina")
 	bool IsFatigued() const;
 	
 private:

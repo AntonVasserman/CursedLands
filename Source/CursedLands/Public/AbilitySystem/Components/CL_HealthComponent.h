@@ -17,8 +17,8 @@ public:
 	UCL_HealthComponent();
 
 	FCL_OnDied OnDied;
-	
-	UFUNCTION(BlueprintCallable)
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
 	bool IsAlive() const;
 
 private:
