@@ -25,6 +25,7 @@ class CURSEDLANDS_API UCL_StaminaComponent : public UCL_ResourceComponent
 public:
 	UCL_StaminaComponent();
 
+	UPROPERTY(BlueprintAssignable, Category = "Stamina")
 	FCL_OnFatigueApplied OnFatigueApplied;
 	
 	UFUNCTION(BlueprintCallable, Category = "Stamina")

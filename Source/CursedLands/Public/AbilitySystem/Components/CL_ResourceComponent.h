@@ -19,10 +19,10 @@ class CURSEDLANDS_API UCL_ResourceComponent : public UActorComponent
 public:
 	UCL_ResourceComponent();
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Category = "Resource")
 	FCL_OnValueChanged OnValueChanged;
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Category = "Resource")
 	FCL_OnValueChanged OnMaxValueChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Resource")

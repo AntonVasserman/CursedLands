@@ -16,6 +16,7 @@ class CURSEDLANDS_API UCL_HealthComponent : public UCL_ResourceComponent
 public:
 	UCL_HealthComponent();
 
+	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FCL_OnDied OnDied;
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
