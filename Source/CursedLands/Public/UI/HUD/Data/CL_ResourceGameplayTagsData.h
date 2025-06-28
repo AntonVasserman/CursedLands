@@ -13,10 +13,6 @@ class CURSEDLANDS_API UCL_ResourceGameplayTagsData : public UPrimaryDataAsset
 	GENERATED_BODY()
 	
 public:
-	// TODO ???
-	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resource")
-	// FText ResourceDisplayName;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "")
 	FCL_ResourceGameplayTags ResourceTags;
 };

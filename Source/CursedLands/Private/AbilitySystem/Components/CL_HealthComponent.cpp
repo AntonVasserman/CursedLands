@@ -36,6 +36,8 @@ void UCL_HealthComponent::Die() const
 	AbilitySystemComponent->SetLooseGameplayTagCount(CLGameplayTags::Status_Dead, 1);
 }
 
+//~ UCL_ResourceComponent Begin
+
 void UCL_HealthComponent::InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent)
 {
 	Super::InitializeWithAbilitySystem(InAbilitySystemComponent);
@@ -43,8 +45,6 @@ void UCL_HealthComponent::InitializeWithAbilitySystem(UCL_AbilitySystemComponent
 	// In initialization the health should be full and the character should be alive
 	AbilitySystemComponent->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 1);
 }
-
-//~ UCL_ResourceComponent Begin
 
 void UCL_HealthComponent::ResourceStateChanged(ECL_ResourceState OldState, ECL_ResourceState NewState)
 {
