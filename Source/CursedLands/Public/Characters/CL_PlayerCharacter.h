@@ -58,7 +58,9 @@ public:
 	FORCEINLINE ECL_PlayerCharacterMovementMode GetMovementMode() const { return MovementMode; }
 	UFUNCTION(BlueprintCallable, Category = "Locomotion")
 	void SetMovementMode(const ECL_PlayerCharacterMovementMode InMovementMode);
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Mana")
+	FORCEINLINE UCL_ManaComponent* GetManaComponent() const { return ManaComponent; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Stamina")
 	FORCEINLINE UCL_StaminaComponent* GetStaminaComponent() const { return StaminaComponent; }
 	FORCEINLINE bool CanLook() const { return IsAlive(); }
@@ -141,9 +143,8 @@ private:
 	ECL_CardinalDirection CardinalDirection = ECL_CardinalDirection::Forward;
 	bool bFullySprinting = false;
 	bool bSprintAfterTraversal = false;
-
-	UFUNCTION()
-	void OnFatigueApplied();
+	
+	void FatigueApplied();
 	UFUNCTION()
 	void OnStanceChanged(ECL_Stance PreviousStance, ECL_Stance Stance);
 	UFUNCTION()
@@ -169,5 +170,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 protected:
 	virtual void Die() override;
+	virtual void OnGameplayTagNewOrRemoved(FGameplayTag GameplayTag, int NewCount) override;
 	//~ ACLCharacter End
 };

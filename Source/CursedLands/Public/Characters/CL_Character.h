@@ -42,7 +42,7 @@ protected:
 	TObjectPtr<const UCL_PawnData> PawnData;
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float Level);
-
+	
 	// We do not just use BlueprintNativeEvent here because we want to enforce the Die function to run first and execute
 	// any crucial C++ logic before we delegate to the Blueprint logic.
 	UFUNCTION()
@@ -52,6 +52,7 @@ protected:
 	
 	UAnimInstance* GetAnimInstance();
 	void SetMovementModeTag(const EMovementMode InMovementMode, const uint8 InCustomMovementMode, const bool bTagEnabled);
+	virtual void OnGameplayTagNewOrRemoved(FGameplayTag GameplayTag, int NewCount);
 
 	//~ ACharacter Begin
 public:

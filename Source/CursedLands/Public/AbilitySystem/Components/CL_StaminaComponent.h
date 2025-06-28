@@ -6,8 +6,6 @@
 #include "CL_ResourceComponent.h"
 #include "CL_StaminaComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCL_OnFatigueApplied);
-
 UCLASS()
 class CURSEDLANDS_API UCL_StaminaComponent : public UCL_ResourceComponent
 {
@@ -25,9 +23,6 @@ class CURSEDLANDS_API UCL_StaminaComponent : public UCL_ResourceComponent
 public:
 	UCL_StaminaComponent();
 
-	UPROPERTY(BlueprintAssignable, Category = "Stamina")
-	FCL_OnFatigueApplied OnFatigueApplied;
-	
 	UFUNCTION(BlueprintCallable, Category = "Stamina")
 	bool IsFatigued() const;
 	
@@ -36,7 +31,6 @@ private:
 	
 	//~ UCL_ResourceComponent Begin
 protected:
-	virtual void ResourceDepleted() override;
-	virtual void ResourceFull() override;
+	virtual void ResourceStateChanged(ECL_ResourceState OldState, ECL_ResourceState NewState) override;
 	//~ UCL_ResourceComponent End
 };

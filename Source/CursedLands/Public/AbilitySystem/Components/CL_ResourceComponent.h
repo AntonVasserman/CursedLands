@@ -11,6 +11,33 @@ class UCL_AbilitySystemComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCL_OnValueChanged, float, OldValue, float, NewValue);
 
+UENUM()
+enum class ECL_ResourceState : uint8
+{
+	Full		UMETA(DisplayName = "Full"),
+	Normal		UMETA(DisplayName = "Normal"),
+	Critical	UMETA(DisplayName = "Critical"),
+	Depleted	UMETA(DisplayName = "Depleted"),
+};
+
+USTRUCT(BlueprintType)
+struct FCL_ResourceGameplayTags
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "")
+	FGameplayTag Full;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "")
+	FGameplayTag Normal;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "")
+	FGameplayTag Critical;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "")
+	FGameplayTag Depleted;
+};
+
 UCLASS(Abstract)
 class CURSEDLANDS_API UCL_ResourceComponent : public UActorComponent
 {
@@ -45,8 +72,16 @@ protected:
 	TObjectPtr<const UCL_ResourceAttributeSet> ResourceAttributeSet = nullptr;
 
 	TSubclassOf<UCL_ResourceAttributeSet> ResourceAttributeSetClass = nullptr;
+	FCL_ResourceGameplayTags ResourceGameplayTags;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Resource", Meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float CriticalSectionThresholdInPercentage = 0.2f;
 
 	// Abstract functions meant to be implemented by deriving Resource Components
-	virtual void ResourceDepleted() {};
-	virtual void ResourceFull() {};
+	virtual void ResourceStateChanged(ECL_ResourceState OldState, ECL_ResourceState NewState) {};
+
+private:
+	ECL_ResourceState EvaluateResourceState(float Value) const;
+
+	FGameplayTag GetResourceGameplayTag(ECL_ResourceState State) const;
 };

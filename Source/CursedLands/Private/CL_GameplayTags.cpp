@@ -26,6 +26,20 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_Stamina, "Attributes.General.Stamina", "A resource used to do actions such as sprint and attack");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_General_MaxStamina, "Attributes.General.MaxStamina", "Maximum amount of Stamina obtainable");
 
+	// Resource Attributes
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Full, "Resource.Health.Full", "Health resource is full");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Normal, "Resource.Health.Normal", "Health resource is at a normal amount");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Critical, "Resource.Health.Critical", "Health resource is at a critical amount");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Depleted, "Resource.Health.Depleted", "Health resource is depleted");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Full, "Resource.Mana.Full", "Mana resource is full");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Normal, "Resource.Mana.Normal", "Mana resource is at a normal amount");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Critical, "Resource.Mana.Critical", "Mana resource is at a critical amount");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Depleted, "Resource.Mana.Depleted", "Mana resource is depleted");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Full, "Resource.Stamina.Full", "Stamina resource is full");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Normal, "Resource.Stamina.Normal", "Stamina resource is at a normal amount");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Critical, "Resource.Stamina.Critical", "Stamina resource is at a critical amount");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Depleted, "Resource.Stamina.Depleted", "Stamina resource is depleted");
+	
 	// Debuffs
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Fatigue, "Debuff.Fatigue", "Fatigue Debuff tag");
 	

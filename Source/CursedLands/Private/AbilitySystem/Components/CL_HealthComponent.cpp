@@ -13,6 +13,10 @@ UCL_HealthComponent::UCL_HealthComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	ResourceAttributeSetClass = UCL_HealthAttributeSet::StaticClass();
+	ResourceGameplayTags.Full = CLGameplayTags::Resource_Health_Full;
+	ResourceGameplayTags.Normal = CLGameplayTags::Resource_Health_Normal;
+	ResourceGameplayTags.Critical = CLGameplayTags::Resource_Health_Critical;
+	ResourceGameplayTags.Depleted = CLGameplayTags::Resource_Health_Depleted;
 }
 
 bool UCL_HealthComponent::IsAlive() const
@@ -30,7 +34,6 @@ void UCL_HealthComponent::Die() const
 {
 	AbilitySystemComponent->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 0);
 	AbilitySystemComponent->SetLooseGameplayTagCount(CLGameplayTags::Status_Dead, 1);
-	OnDied.Broadcast();
 }
 
 void UCL_HealthComponent::InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent)
@@ -41,15 +44,18 @@ void UCL_HealthComponent::InitializeWithAbilitySystem(UCL_AbilitySystemComponent
 	AbilitySystemComponent->SetLooseGameplayTagCount(CLGameplayTags::Status_Alive, 1);
 }
 
-void UCL_HealthComponent::ResourceDepleted()
+//~ UCL_ResourceComponent Begin
+
+void UCL_HealthComponent::ResourceStateChanged(ECL_ResourceState OldState, ECL_ResourceState NewState)
 {
-	if (IsAlive())
+	if (NewState == ECL_ResourceState::Depleted)
 	{
-		// Health depleted meaning the character is dead
-		Die();
+		if (IsAlive())
+		{
+			// Health depleted meaning the character is dead
+			Die();
+		}
 	}
 }
 
-void UCL_HealthComponent::ResourceFull()
-{
-}
+//~ UCL_ResourceComponent End

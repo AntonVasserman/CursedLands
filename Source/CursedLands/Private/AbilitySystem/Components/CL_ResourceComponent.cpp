@@ -24,18 +24,19 @@ void UCL_ResourceComponent::InitializeWithAbilitySystem(UCL_AbilitySystemCompone
 
 	checkf(ResourceAttributeSet != nullptr, TEXT("%s::%hs: Cannot initialize %s for owner %s, with null HealthAttributeSet on the ability system."), *GetClass()->GetName(), __FUNCTION__, *ResourceAttributeSet.GetClass()->GetName(), *OwningActor->GetName());
 	
+	AbilitySystemComponent->AddLooseGameplayTag(ResourceGameplayTags.Full);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ResourceAttributeSet->GetValueAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnValueChanged.Broadcast(Data.OldValue, Data.NewValue);
 
-			if (Data.NewValue == 0.f)
+			const ECL_ResourceState OldState = EvaluateResourceState(Data.OldValue);
+			const ECL_ResourceState NewState = EvaluateResourceState(Data.NewValue);
+			if (OldState != NewState)
 			{
-				ResourceDepleted();
-			}
-			if (Data.NewValue == ResourceAttributeSet->GetMaxValue())
-			{
-				ResourceFull();
+				AbilitySystemComponent->RemoveLooseGameplayTag(GetResourceGameplayTag(OldState));
+				AbilitySystemComponent->AddLooseGameplayTag(GetResourceGameplayTag(NewState));
+				ResourceStateChanged(OldState, NewState);
 			}
 		});
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ResourceAttributeSet->GetMaxValueAttribute()).AddLambda(
@@ -56,5 +57,39 @@ void UCL_ResourceComponent::UnInitializeFromAbilitySystem()
 	}
 	
 	AbilitySystemComponent = nullptr;
+}
+
+ECL_ResourceState UCL_ResourceComponent::EvaluateResourceState(float Value) const
+{
+	if (Value == 0.f)
+	{
+		return ECL_ResourceState::Depleted;
+	}
+	
+	if (Value == ResourceAttributeSet->GetMaxValue())
+	{
+		return ECL_ResourceState::Full;
+	}
+	
+	const float ValuePercentage = Value / ResourceAttributeSet->GetMaxValue();
+	return ValuePercentage > CriticalSectionThresholdInPercentage ? ECL_ResourceState::Normal : ECL_ResourceState::Critical;
+}
+
+FGameplayTag UCL_ResourceComponent::GetResourceGameplayTag(ECL_ResourceState State) const
+{
+	switch (State)
+	{
+	case ECL_ResourceState::Full:
+		return ResourceGameplayTags.Full;
+	case ECL_ResourceState::Normal:
+		return ResourceGameplayTags.Normal;
+	case ECL_ResourceState::Critical:
+		return ResourceGameplayTags.Critical;
+	case ECL_ResourceState::Depleted:
+		return ResourceGameplayTags.Depleted;
+	default:
+		checkNoEntry();
+		return FGameplayTag();
+	};
 }
 

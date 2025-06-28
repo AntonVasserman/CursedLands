@@ -13,6 +13,10 @@ UCL_StaminaComponent::UCL_StaminaComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	ResourceAttributeSetClass = UCL_StaminaAttributeSet::StaticClass();
+	ResourceGameplayTags.Full = CLGameplayTags::Resource_Stamina_Full;
+	ResourceGameplayTags.Normal = CLGameplayTags::Resource_Stamina_Normal;
+	ResourceGameplayTags.Critical = CLGameplayTags::Resource_Stamina_Critical;
+	ResourceGameplayTags.Depleted = CLGameplayTags::Resource_Stamina_Depleted;
 }
 
 bool UCL_StaminaComponent::IsFatigued() const
@@ -41,21 +45,19 @@ void UCL_StaminaComponent::ApplyFatigue() const
 	ContextHandle.AddSourceObject(this);
 	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(FatigueGameplayEffectClass, FatigueGameplayEffectLevel, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), AbilitySystemComponent);
-	OnFatigueApplied.Broadcast();
 }
 
 //~ UCL_ResourceComponent Begin
 
-void UCL_StaminaComponent::ResourceDepleted()
+void UCL_StaminaComponent::ResourceStateChanged(ECL_ResourceState OldState, ECL_ResourceState NewState)
 {
-	if (bApplyFatigueOnStaminaDepleted)
+	if (NewState == ECL_ResourceState::Depleted)
 	{
-		ApplyFatigue();
+		if (bApplyFatigueOnStaminaDepleted)
+		{
+			ApplyFatigue();
+		}
 	}
-}
-
-void UCL_StaminaComponent::ResourceFull()
-{
 }
 
 //~ UCL_ResourceComponent End

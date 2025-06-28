@@ -69,6 +69,17 @@ void ACL_Character::SetMovementModeTag(const EMovementMode InMovementMode, const
 	}
 }
 
+void ACL_Character::OnGameplayTagNewOrRemoved(FGameplayTag GameplayTag, int NewCount)
+{
+	if (GameplayTag == CLGameplayTags::Status_Dead)
+	{
+		if (NewCount > 0)
+		{
+			Die();
+		}
+	}
+}
+
 //~ ACharacter Begin
 
 void ACL_Character::BeginPlay()
@@ -80,7 +91,8 @@ void ACL_Character::BeginPlay()
 
 	// Set up Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
-	HealthComponent->OnDied.AddDynamic(this, &ACL_Character::Die);
+	AbilitySystem->RegisterGameplayTagEvent(CLGameplayTags::Status_Dead, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACL_Character::OnGameplayTagNewOrRemoved);
 }
 
 void ACL_Character::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)

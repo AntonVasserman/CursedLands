@@ -5,6 +5,7 @@
 
 #include "CL_GameplayTags.h"
 #include "KismetAnimationLibrary.h"
+#include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CL_AttributeSet.h"
 #include "AbilitySystem/Components/CL_ManaComponent.h"
 #include "AbilitySystem/Components/CL_StaminaComponent.h"
@@ -162,7 +163,7 @@ void ACL_PlayerCharacter::Slide()
 	}
 }
 
-void ACL_PlayerCharacter::OnFatigueApplied()
+void ACL_PlayerCharacter::FatigueApplied()
 {
 	if (IsSprinting())
 	{
@@ -310,9 +311,13 @@ void ACL_PlayerCharacter::BeginPlay()
 
 	InitialGameplayCameraRelativeLocation = GameplayCamera->GetRelativeLocation();
 
+	// Setup Mana Component Initialization
+	GetManaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
+	
 	// Setup Stamina Component Initialization
 	GetStaminaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
-	GetStaminaComponent()->OnFatigueApplied.AddDynamic(this, &ACL_PlayerCharacter::OnFatigueApplied);
+	GetAbilitySystemComponent()->RegisterGameplayTagEvent(CLGameplayTags::Debuff_Fatigue, EGameplayTagEventType::NewOrRemoved)
+		.AddUObject(this, &ACL_PlayerCharacter::OnGameplayTagNewOrRemoved);
 }
 
 //~ ACLCharacter Begin
@@ -401,6 +406,19 @@ void ACL_PlayerCharacter::Die()
 	GetGameplayCamera()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 	
 	Super::Die();
+}
+
+void ACL_PlayerCharacter::OnGameplayTagNewOrRemoved(FGameplayTag GameplayTag, int NewCount)
+{
+	Super::OnGameplayTagNewOrRemoved(GameplayTag, NewCount);
+	
+	if (GameplayTag == CLGameplayTags::Debuff_Fatigue)
+	{
+		if (NewCount > 0)
+		{
+			FatigueApplied();
+		}
+	}
 }
 
 //~ ACLCharacter End
