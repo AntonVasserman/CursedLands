@@ -10,6 +10,7 @@
 
 class UCL_AttributeSet;
 class UCL_AbilitySystemComponent;
+class UCL_ResourceGameplayTagsData;
 
 // TODO: Maybe rename into "ResourceProgressBar"...
 UCLASS()
@@ -23,9 +24,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Gameplay Ability System", Meta = (ExposeOnSpawn="true"))
 	FGameplayTag MaxValueAttributeGameplayTag;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Gameplay Ability System", Meta = (ExposeOnSpawn="true"))
-	FCL_ResourceGameplayTags ResourceGameplayTags;
+	TObjectPtr<UCL_ResourceGameplayTagsData> ResourceGameplayTags;
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void AttributeCurrentValueChanged(float NewValue);

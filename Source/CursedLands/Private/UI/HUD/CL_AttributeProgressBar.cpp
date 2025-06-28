@@ -3,6 +3,7 @@
 
 #include "UI/HUD/CL_AttributeProgressBar.h"
 
+#include "CL_LogChannels.h"
 #include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CL_AttributeSet.h"
 #include "AbilitySystem/Attributes/CL_HealthAttributeSet.h"
@@ -26,6 +27,8 @@ void UCL_AttributeProgressBar::NativeConstruct()
 	const FGameplayAttribute& CurrentValueAttribute = AttributeSet->GetAttributeByGameplayTag(CurrentValueAttributeGameplayTag);
 	const FGameplayAttribute& MaxValueAttribute = AttributeSet->GetAttributeByGameplayTag(MaxValueAttributeGameplayTag);
 
+	checkf(ResourceGameplayTags != nullptr, TEXT("%s::%hs: Cannot initialize because %s is not set!"), *GetClass()->GetName(), __FUNCTION__, CL_VARIABLE_NAME(ResourceGameplayTags));
+	
 	// Bind to Value Change Delegate
 	PlayerCharacterAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CurrentValueAttribute).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
