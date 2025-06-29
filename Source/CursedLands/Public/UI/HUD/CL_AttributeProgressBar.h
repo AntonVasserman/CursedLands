@@ -12,7 +12,7 @@ class UCL_AttributeSet;
 class UCL_AbilitySystemComponent;
 class UCL_ResourceGameplayTagsData;
 
-// TODO: Maybe rename into "ResourceProgressBar"...
+// TODO (CL-172): Maybe rename into "ResourceProgressBar"...
 UCLASS()
 class CURSEDLANDS_API UCL_AttributeProgressBar : public UCL_UserWidget
 {
