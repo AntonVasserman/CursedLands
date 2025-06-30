@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.1",
 	"FriendlyName": "AVCharacterFall",
 	"Description": "This Plugin contains the CFC (Character Fall Component) and all of classes to use and extend it.",
 	"Category": "Other",

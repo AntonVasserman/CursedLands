@@ -24,11 +24,11 @@ void UAV_CharacterFallComponent::OnMovementModeChanged(ACharacter* Character, EM
 	if (const EMovementMode CurrentMovementMode = Character->GetCharacterMovement()->MovementMode;
 		CurrentMovementMode == MOVE_Falling)
 	{
-		FallBeginZ = Character->GetActorLocation().Z;
-		UE_LOG(LogAV_CharacterFall, Display, TEXT("%s::%hs: Starting evaluating Fall Height, with Fall Begin Z: %f"), *GetClass()->GetName(), __FUNCTION__, FallBeginZ);
+		bEvaluateFallBeginZ = true;
+		UE_LOG(LogAV_CharacterFall, Display, TEXT("%s::%hs: Evaluation of Fall Height requested"), *GetClass()->GetName(), __FUNCTION__);
 		if (CVarShowDebugAVCharacterFallComponent->GetBool())
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Starting evaluating Fall Height, with Fall Begin Z: %f"), FallBeginZ));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Evaluation of Fall Height requested"));
 		}
 	}
 }
@@ -58,20 +58,33 @@ void UAV_CharacterFallComponent::Landed(const FHitResult& Hit)
 void UAV_CharacterFallComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// We want to always evaluate FallHeight as we allow using it for multiple functionalities 
-	if (OwnerCharacter->GetCharacterMovement()->MovementMode == MOVE_Falling)
+	
+	if (OwnerCharacter->GetCharacterMovement()->MovementMode == MOVE_Falling && GetOwner()->GetVelocity().Z < 0.f)
 	{
-		FallHeight = FallBeginZ - GetOwner()->GetActorLocation().Z;
-
-		FAV_FallRangeContext FallRangeContext;
-		FallRangeContext.Character = OwnerCharacter;
-		FallRangeContext.CharacterFallComponent = this;
-		FallRangeContext.FallHeight = FallHeight;
-		
-		for (FAV_FallRangeTasks& FallRangeTasks : FallRangesTasks)
+		if (bEvaluateFallBeginZ)
 		{
-			FallRangeTasks.TestRange(FallRangeContext);
+			FallBeginZ = GetOwner()->GetActorLocation().Z;
+			UE_LOG(LogAV_CharacterFall, Display, TEXT("%s::%hs: Starting evaluating Fall Height, with Fall Begin Z: %f"), *GetClass()->GetName(), __FUNCTION__, FallBeginZ);
+			if (CVarShowDebugAVCharacterFallComponent->GetBool())
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Starting evaluating Fall Height, with Fall Begin Z: %f"), FallBeginZ));
+			}
+			
+			bEvaluateFallBeginZ = false;
+		}
+		else
+		{
+			FallHeight = FallBeginZ - GetOwner()->GetActorLocation().Z;
+
+			FAV_FallRangeContext FallRangeContext;
+			FallRangeContext.Character = OwnerCharacter;
+			FallRangeContext.CharacterFallComponent = this;
+			FallRangeContext.FallHeight = FallHeight;
+		
+			for (FAV_FallRangeTasks& FallRangeTasks : FallRangesTasks)
+			{
+				FallRangeTasks.TestRange(FallRangeContext);
+			}
 		}
 	}
 }

@@ -25,8 +25,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
 	TArray<FAV_FallRangeTasks> FallRangesTasks;
-	
+
 	float FallHeight = 0.f;
+	bool bEvaluateFallBeginZ = false;
 	float FallBeginZ = 0.f;
 	
 	UFUNCTION()
