@@ -3,7 +3,6 @@
 
 #include "CL_AssetManager.h"
 
-#include "CL_GameplayTags.h"
 #include "CL_LogChannels.h"
 
 UCL_AssetManager& UCL_AssetManager::Get()
