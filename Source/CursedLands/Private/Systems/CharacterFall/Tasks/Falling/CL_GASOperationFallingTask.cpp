@@ -3,9 +3,9 @@
 
 #include "Systems/CharacterFall/Tasks/Falling/CL_GASOperationFallingTask.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AV_CharacterFallLogChannels.h"
-#include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
 #include "AbilitySystem/Operations/CL_GASOperationBase.h"
 #include "GameFramework/Character.h"
 
@@ -15,7 +15,7 @@ void UCL_GASOperationFallingTask::ExecuteTask_Implementation(const FAV_FallingTa
 {
 	checkf(TaskContext.Character, TEXT("%s::%hs: TaskContext.Character uninitialized"), *GetClass()->GetName(), __FUNCTION__);
 
-	UAbilitySystemComponent* AbilitySystemComponent = UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
+	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TaskContext.Character);
 
 	// If we can't find the Component we won't throw, we will just not apply the effect
 	if (AbilitySystemComponent == nullptr)

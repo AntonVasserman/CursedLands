@@ -7,12 +7,12 @@
 #include "Engine/DataAsset.h"
 #include "CL_AbilitySet.generated.h"
 
-struct FGameplayAbilitySpecHandle;
 struct FActiveGameplayEffectHandle;
-class UGameplayEffect;
+struct FGameplayAbilitySpecHandle;
 class UCL_AbilitySystemComponent;
 class UCL_AttributeSet;
 class UCL_GameplayAbility;
+class UGameplayEffect;
 
 /**
  *	Data used by the ability set to grant gameplay abilities.

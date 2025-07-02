@@ -3,9 +3,9 @@
 
 #include "Systems/CharacterFall/Tasks/Landed/CL_ApplyGameplayEffectLandedTask.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AV_CharacterFallLogChannels.h"
-#include "AbilitySystem/CL_GameplayAbilitySystemStatics.h"
 #include "Components/AV_CharacterFallComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -35,7 +35,7 @@ void UCL_ApplyGameplayEffectLandedTask::ExecuteTaskInternal_Implementation(
 {
 	checkf(TaskContext.Character, TEXT("%s::%hs: TaskContext.Character uninitialized"), *GetClass()->GetName(), __FUNCTION__);
 
-	UAbilitySystemComponent* AbilitySystemComponent = UCL_GameplayAbilitySystemStatics::GetAbilitySystemComponent(TaskContext.Character);
+	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TaskContext.Character);
 
 	// If we can't find the Component we won't throw, we will just not apply the effect
 	if (AbilitySystemComponent == nullptr)
