@@ -7,47 +7,47 @@
 #include "CL_TraversalAction.h"
 #include "CL_TraversalCheckResult.generated.h"
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct FCL_TraversalCheckResult
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	ECL_TraversalAction Action = ECL_TraversalAction::None;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	FCL_LedgeCheckResult FrontLedgeCheckResult;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	FCL_LedgeCheckResult BackLedgeCheckResult;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	float BackLedgeHeight = 0.f;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	bool bHasBackFloor = false;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	FVector BackFloorLocation = FVector::ZeroVector;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	float BackFloorHeight = 0.f;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	float ObstacleHeight = 0.f;
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	float ObstacleDepth = 0.f;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	TObjectPtr<UPrimitiveComponent> HitComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	TObjectPtr<UAnimMontage> ChosenMontage = nullptr;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	float StartTime = 0.f;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	float PlayRate = 1.f;
 };

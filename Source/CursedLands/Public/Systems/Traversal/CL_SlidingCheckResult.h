@@ -6,14 +6,14 @@
 #include "Characters/Components/CL_ExtendedCharacterMovementComponent.h"
 #include "CL_SlidingCheckResult.generated.h"
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct FCL_SlidingCheckResult
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	ECL_Stance SlideEndStance = ECL_Stance::Standing;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	FVector SlideEndLocation = FVector::ZeroVector;
 };

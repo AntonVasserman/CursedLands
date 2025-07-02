@@ -8,61 +8,59 @@
 #include "Components/ActorComponent.h"
 #include "CL_CharacterTraversalComponent.generated.h"
 
-struct FCL_SlidingCheckResult;
-class ACL_Character;
 enum class ECL_TraversalAction : uint8;
 enum class ECL_Gait : uint8;
-class UChooserTable;
-class ACL_TraversableActor;
-struct FCL_TraversalCheckResult;
+struct FCL_SlidingCheckResult;
 struct FCL_TraversalCheckInput;
-class UCharacterMovementComponent;
+struct FCL_TraversalCheckResult;
+class ACL_TraversableActor;
+class UChooserTable;
 class UMotionWarpingComponent;
 
 CURSEDLANDS_API DECLARE_LOG_CATEGORY_EXTERN(LogCharacterTraversal, Log, All); 
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct CURSEDLANDS_API FCL_TraversalChooserInput
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	bool bHasFrontLedge = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	bool bHasBackLedge = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	bool bHasBackFloor = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	float ObstacleHeight = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	float ObstacleDepth = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	float BackLedgeHeight = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	TEnumAsByte<EMovementMode> MovementMode = MOVE_None;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	ECL_Gait Gait = ECL_Gait::Walking;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	float Speed = 0.f;
 };
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct CURSEDLANDS_API FCL_TraversalChooserOutput
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	ECL_TraversalAction ActionType = ECL_TraversalAction::None;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Traversal System", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	float AnimMontagePlayRate = 1.f;
 };
 
