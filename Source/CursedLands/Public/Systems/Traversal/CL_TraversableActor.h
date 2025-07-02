@@ -42,9 +42,5 @@ private:
 	USplineComponent* FindLedgeClosestToLocation(const FVector& Location) const;
 	
 	//~ AStaticMeshActor Begin
-public:
-	virtual void Tick(float DeltaTime) override;
-protected:
-	virtual void BeginPlay() override;	
 	//~ AStaticMeshActor End
 };

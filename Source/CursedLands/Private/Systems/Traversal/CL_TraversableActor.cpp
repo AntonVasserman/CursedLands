@@ -78,18 +78,5 @@ void ACL_TraversableActor::CheckLedges(const FVector& ActorLocation, const FVect
 	OutBackLedgeCheckResult.LedgeNormal = ClosestTransformToFrontLedge.GetRotation().GetUpVector();
 }
 
-
 //~ AStaticMeshActor Begin
-
-void ACL_TraversableActor::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void ACL_TraversableActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 //~ AStaticMeshActor End
