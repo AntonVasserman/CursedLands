@@ -32,14 +32,17 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SlomoAction;
 #endif
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> MoveAction_Gamepad;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> MoveAction;
+	TObjectPtr<UInputAction> MoveAction_Keyboard;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
-	// This action is used only for Keyboard. With a controller we don't toggle walking, it's blended together with jogging
+	// This action is used only for Keyboard. With a controller we don't toggle walking, it's should be blended with jogging
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleWalkAction;
 	
@@ -63,21 +66,29 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UCL_UserWidget> PauseMenuWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Movement", Meta = (AllowPrivateAccess = "true"))
+	float WalkToJogInputThreshold = 0.4f;
 	
 #if WITH_EDITOR
 	bool bSlomoRequested = false;
 #endif
-	
+
+	UPROPERTY()
 	TObjectPtr<ACL_PlayerCharacter> PossessedPlayerCharacter;
+	UPROPERTY()
 	TObjectPtr<UCL_UserWidget> PauseMenuWidget = nullptr;
 	bool bInPausedMenu = false;
+	// TODO (CL-177): Transition to use the EnhancedInput's 'OnInputDeviceChanged' event to understand if Gamepad/Keyboard was changed...
+	bool bLastUsedKeyboard = true;
 
 #if WITH_EDITOR
 	void RequestSlomoStarted();
 	void RequestSlomoTriggered(const FInputActionValue& InValue);
 #endif
-	
-	void RequestMoveAction(const FInputActionValue& InValue);
+
+	void RequestMoveAction_Gamepad(const FInputActionValue& InValue);
+	void RequestMoveAction_Keyboard(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleWalkAction();
 	void RequestToggleSprintAction();
@@ -87,6 +98,7 @@ private:
 	void RequestSlideAction();
 	void RequestPauseMenuAction();
 
+	void AddMovementVector(const FVector2D& InMovementVector2D);
 	UFUNCTION(BlueprintCallable, Category = "Menus")
 	void TogglePauseMenu();
 

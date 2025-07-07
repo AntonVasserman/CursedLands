@@ -48,19 +48,69 @@ void ACL_PlayerController::RequestSlomoTriggered(const FInputActionValue& InValu
 }
 #endif
 
-void ACL_PlayerController::RequestMoveAction(const FInputActionValue& InValue)
+void ACL_PlayerController::RequestMoveAction_Gamepad(const FInputActionValue& InValue)
 {
+	bLastUsedKeyboard = false;
+	
 	if (!PossessedPlayerCharacter->CanMove())
 	{
 		return;
 	}
 
+	FVector2D MovementVector = InValue.Get<FVector2D>();
+	const float MovementSpeed = MovementVector.Size();
+
+	// If walking isn't supported for the character, we try to normalize movement so that movement vector size is always
+	// 1.0, resulting in always Jogging.
+	if (PossessedPlayerCharacter->GetCLCharacterMovement()->CanEverWalk() == false)
+	{
+		if (const float Length = MovementVector.Size();
+			Length > KINDA_SMALL_NUMBER) // Prevent division by zero
+		{
+			MovementVector = MovementVector / Length;
+		}
+	}
+	else if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Jogging && MovementSpeed < WalkToJogInputThreshold)
+	{
+		RequestToggleWalkAction();
+	}
+	else if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Walking && MovementSpeed >= WalkToJogInputThreshold)
+	{
+		RequestToggleWalkAction();
+	}
+	
+	// Call regular move action
+	AddMovementVector(MovementVector);
+}
+
+void ACL_PlayerController::RequestMoveAction_Keyboard(const FInputActionValue& InValue)
+{
+	if (bLastUsedKeyboard == false)
+	{
+		if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Walking)
+		{
+			// Return to Jogging
+			RequestToggleWalkAction();
+		}
+	}
+	
+	bLastUsedKeyboard = true;
+	
+	if (!PossessedPlayerCharacter->CanMove())
+	{
+		return;
+	}
+
+	const FVector2D MovementVector = InValue.Get<FVector2D>();
+	AddMovementVector(MovementVector);
+}
+
+void ACL_PlayerController::AddMovementVector(const FVector2D& InMovementVector2D)
+{
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-	const FVector2D MovementVector = InValue.Get<FVector2D>();
 
 	// In case Player Character is in strafing movement mode, sprinting and changes direction from forward direction then stop sprinting
 	if (
@@ -72,8 +122,8 @@ void ACL_PlayerController::RequestMoveAction(const FInputActionValue& InValue)
 		PossessedPlayerCharacter->UnSprint();
 	}
 	
-	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
-	PossessedPlayerCharacter->AddMovementInput(RightDirection, MovementVector.X);
+	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, InMovementVector2D.Y);
+	PossessedPlayerCharacter->AddMovementInput(RightDirection, InMovementVector2D.X);
 }
 
 void ACL_PlayerController::RequestLookAction(const FInputActionValue& InValue)
@@ -234,8 +284,10 @@ void ACL_PlayerController::SetupInputComponent()
 	
 	checkf(LookAction, TEXT("LookAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestLookAction);
-	checkf(MoveAction, TEXT("MoveAction uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestMoveAction);
+	checkf(MoveAction_Gamepad, TEXT("MoveAction_Gamepad uninitialized in object: %s"), *GetFullName());
+	EnhancedInputComponent->BindAction(MoveAction_Gamepad, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestMoveAction_Gamepad);
+	checkf(MoveAction_Keyboard, TEXT("MoveAction_Keyboard uninitialized in object: %s"), *GetFullName());
+	EnhancedInputComponent->BindAction(MoveAction_Keyboard, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestMoveAction_Keyboard);
 	checkf(ToggleCrouchAction, TEXT("ToggleCrouchAction uninitialized in object: %s"), *GetFullName());
 	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestToggleCrouchAction);
 	checkf(ToggleWalkAction, TEXT("ToggleWalkAction uninitialized in object: %s"), *GetFullName());
