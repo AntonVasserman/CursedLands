@@ -75,7 +75,7 @@ private:
 #endif
 
 	UPROPERTY()
-	TObjectPtr<ACL_PlayerCharacter> PossessedPlayerCharacter;
+	TObjectPtr<ACL_PlayerCharacter> PossessedPlayerCharacter = nullptr;
 	UPROPERTY()
 	TObjectPtr<UCL_UserWidget> PauseMenuWidget = nullptr;
 	bool bInPausedMenu = false;

@@ -515,6 +515,7 @@ void UCL_CharacterTraversalComponent::TickComponent(float DeltaTime, ELevelTick 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// TODO (CL-178): Transfer all of this login into a custom AnimNotify State so it all can be handled in the AnimMontage
 	if (bDoingTraversalAction && CurrentInProgressTraversalAction == ECL_TraversalAction::Slide)
 	{
 		CurrentInProgressTraversalActionDuration += DeltaTime;
