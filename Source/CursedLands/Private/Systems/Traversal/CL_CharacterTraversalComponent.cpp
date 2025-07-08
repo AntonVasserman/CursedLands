@@ -473,12 +473,8 @@ bool UCL_CharacterTraversalComponent::ExecuteSlidingCheck(FCL_SlidingCheckResult
 
 void UCL_CharacterTraversalComponent::SlidingActionFinished(const FCL_SlidingCheckResult& SlidingCheckResult)
 {
-	const float HeightDeltaFromLastFrame = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - InitialCapsuleHalfHeight; 
-	CharacterOwner->GetGameplayCamera()->AddLocalOffset(FVector(0.f, 0.f, HeightDeltaFromLastFrame));
-	CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(InitialCapsuleHalfHeight);
 	bDoingTraversalAction = false;
 	CurrentInProgressTraversalAction = ECL_TraversalAction::None;
-	CurrentInProgressTraversalActionDuration = 0;
 
 	switch (SlidingCheckResult.SlideEndStance)
 	{
@@ -503,30 +499,11 @@ void UCL_CharacterTraversalComponent::BeginPlay()
 	// Cache the OwnerActor, the owner of this component shouldn't be a subject of change
 	CharacterOwner = Cast<ACL_PlayerCharacter>(GetOwner());
 	checkf(CharacterOwner, TEXT("%s failed to initialize the CharacterOwner!"), *GetName());
-	InitialCapsuleHalfHeight = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	CharacterOwner->MovementModeChangedDelegate.AddDynamic(this, &UCL_CharacterTraversalComponent::OnMovementModeChanged);
 	
 	// Check that the owner actor has the required dependency components
 	OwnerMotionWarpingComponent = CharacterOwner->FindComponentByClass<UMotionWarpingComponent>();
 	checkf(OwnerMotionWarpingComponent, TEXT("%s needs to have a MotionWarpingComponent for CharacterTraversalComponent function properly!"), *CharacterOwner->GetName());
-}
-
-void UCL_CharacterTraversalComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// TODO (CL-178): Transfer all of this login into a custom AnimNotify State so it all can be handled in the AnimMontage
-	if (bDoingTraversalAction && CurrentInProgressTraversalAction == ECL_TraversalAction::Slide)
-	{
-		CurrentInProgressTraversalActionDuration += DeltaTime;
-		
-		float StandToSlideAlpha;
-		UAnimationWarpingLibrary::GetCurveValueFromAnimation(SlidingAnimMontage, StandToSlideAlphaCurveName, CurrentInProgressTraversalActionDuration, StandToSlideAlpha);
-		const float NewHalfHeight = FMath::Lerp(InitialCapsuleHalfHeight, SlidingHalfHeight, 1.f - StandToSlideAlpha);
-		const float HeightDeltaFromLastFrame = CharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - NewHalfHeight; 
-		CharacterOwner->GetGameplayCamera()->AddLocalOffset(FVector(0.f, 0.f, HeightDeltaFromLastFrame));
-		CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(NewHalfHeight);
-	}
 }
 
 //~ UActorComponent End

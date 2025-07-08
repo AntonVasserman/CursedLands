@@ -40,7 +40,6 @@ ACL_PlayerCharacter::ACL_PlayerCharacter(const FObjectInitializer& ObjectInitial
 
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
-	GameplayCamera->SetRelativeLocation(InitialGameplayCameraRelativeLocation);
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 	
 	CharacterFallComponent = CreateDefaultSubobject<UAV_CharacterFallComponent>("CharacterFall");
@@ -309,8 +308,6 @@ void ACL_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitialGameplayCameraRelativeLocation = GameplayCamera->GetRelativeLocation();
-
 	// Setup Mana Component Initialization
 	GetManaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
 	
@@ -389,14 +386,6 @@ void ACL_PlayerCharacter::Tick(float DeltaSeconds)
 		{
 			UnSprint();
 		}
-	}
-
-	// Update Camera
-	// TODO (CL-132): Should move this logic into a dedicated custom CL_GameplayCameraComponent 
-	if (GetGameplayCamera()->GetAttachParent() != nullptr && GetGameplayCamera()->GetRelativeLocation() != InitialGameplayCameraRelativeLocation)
-	{
-		constexpr float InterpolationSpeed = 10.f;
-		GetGameplayCamera()->SetRelativeLocation(FMath::VInterpTo(GetGameplayCamera()->GetRelativeLocation(), InitialGameplayCameraRelativeLocation, DeltaSeconds, InterpolationSpeed));
 	}
 }
 

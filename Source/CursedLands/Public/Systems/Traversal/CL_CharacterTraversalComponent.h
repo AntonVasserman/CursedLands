@@ -95,14 +95,11 @@ private:
 	const FName BackFloorWarpTargetName = TEXT("BackFloor");
 	const FName DistanceFromLedgeCurveName = TEXT("Distance_From_Ledge");
 	const FName SlideEndLocationWarpTargetName = TEXT("SlideEndLocation");
-	const FName StandToSlideAlphaCurveName = TEXT("StandToSlideAlpha");
 	const float SlidingHalfHeight = 40.f;
 	const float SlidingTraceDistance = 500.f;
 	
 	bool bDoingTraversalAction = false;
 	ECL_TraversalAction CurrentInProgressTraversalAction = ECL_TraversalAction::None;
-	float CurrentInProgressTraversalActionDuration = 0.f;
-	float InitialCapsuleHalfHeight = 0.f;
 
 	UPROPERTY(Transient, DuplicateTransient)
 	TObjectPtr<ACL_PlayerCharacter> CharacterOwner;
@@ -135,6 +132,5 @@ private:
 public:
 	UFUNCTION()
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//~ UActorComponent End
 };
