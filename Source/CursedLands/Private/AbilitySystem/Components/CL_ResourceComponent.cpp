@@ -4,6 +4,9 @@
 #include "AbilitySystem/Components/CL_ResourceComponent.h"
 
 #include "AbilitySystem/CL_AbilitySystemComponent.h"
+#include "MVVMGameSubsystem.h"
+#include "MVVMSubsystem.h"
+#include "UI/ViewModels/CL_ResourceViewModel.h"
 
 UCL_ResourceComponent::UCL_ResourceComponent()
 {
@@ -28,8 +31,6 @@ void UCL_ResourceComponent::InitializeWithAbilitySystem(UCL_AbilitySystemCompone
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ResourceAttributeSet->GetValueAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
-			OnValueChanged.Broadcast(Data.OldValue, Data.NewValue);
-
 			const ECL_ResourceState OldState = EvaluateResourceState(Data.OldValue);
 			const ECL_ResourceState NewState = EvaluateResourceState(Data.NewValue);
 			if (OldState != NewState)
@@ -38,11 +39,19 @@ void UCL_ResourceComponent::InitializeWithAbilitySystem(UCL_AbilitySystemCompone
 				AbilitySystemComponent->AddLooseGameplayTag(GetResourceGameplayTag(NewState));
 				ResourceStateChanged(OldState, NewState);
 			}
+
+			if (ResourceViewModel != nullptr)
+			{
+				ResourceViewModel->SetCurrentValue(Data.NewValue);
+			}
 		});
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ResourceAttributeSet->GetMaxValueAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
-			OnMaxValueChanged.Broadcast(Data.OldValue, Data.NewValue);
+			if (ResourceViewModel != nullptr)
+			{
+				ResourceViewModel->SetMaxValue(Data.NewValue);
+			}
 		});
 }
 
@@ -57,6 +66,31 @@ void UCL_ResourceComponent::UnInitializeFromAbilitySystem()
 	}
 	
 	AbilitySystemComponent = nullptr;
+}
+
+void UCL_ResourceComponent::InitializeViewModel()
+{
+	const UMVVMGameSubsystem* ViewModelGameSubsystem = GetOwner()->GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>();
+	check(ViewModelGameSubsystem);
+
+	UMVVMViewModelCollectionObject* GlobalViewModelCollection = ViewModelGameSubsystem->GetViewModelCollection();
+	check(GlobalViewModelCollection);
+	
+	FMVVMViewModelContext NewResourceViewModelContext;
+	NewResourceViewModelContext.ContextClass = UCL_ResourceViewModel::StaticClass();
+	NewResourceViewModelContext.ContextName = ResourceViewModelContextName;
+	
+	if (NewResourceViewModelContext.IsValid())
+	{
+		UCL_ResourceViewModel* NewResourceViewModel = NewObject<UCL_ResourceViewModel>();
+		NewResourceViewModel->SetCurrentValue(ResourceAttributeSet->GetValue());
+		NewResourceViewModel->SetMaxValue(ResourceAttributeSet->GetMaxValue());
+
+		ResourceViewModel = NewResourceViewModel;
+		GlobalViewModelCollection->AddViewModelInstance(NewResourceViewModelContext, NewResourceViewModel);
+		
+		OnResourceViewModelInstantiated.Broadcast(NewResourceViewModel);
+	}
 }
 
 ECL_ResourceState UCL_ResourceComponent::EvaluateResourceState(float Value) const

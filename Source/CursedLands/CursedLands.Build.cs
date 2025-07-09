@@ -20,6 +20,7 @@ public class CursedLands : ModuleRules
 				"GameplayCameras",
 				"GameplayAbilities",
 				"GameplayStateTreeModule",
+				"ModelViewViewModel",
 				"StateTreeModule"
 			});
 		PrivateDependencyModuleNames.AddRange(

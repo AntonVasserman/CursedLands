@@ -7,7 +7,7 @@
 #include "Engine/DataAsset.h"
 #include "CL_ResourceGameplayTagsData.generated.h"
 
-UCLASS()
+UCLASS(BlueprintType)
 class CURSEDLANDS_API UCL_ResourceGameplayTagsData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()

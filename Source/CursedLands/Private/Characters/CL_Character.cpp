@@ -91,6 +91,7 @@ void ACL_Character::BeginPlay()
 
 	// Set up Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
+	HealthComponent->InitializeViewModel();
 	AbilitySystem->RegisterGameplayTagEvent(CLGameplayTags::Status_Dead, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &ACL_Character::OnGameplayTagNewOrRemoved);
 }

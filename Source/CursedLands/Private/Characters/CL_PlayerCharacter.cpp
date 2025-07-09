@@ -310,9 +310,11 @@ void ACL_PlayerCharacter::BeginPlay()
 
 	// Setup Mana Component Initialization
 	GetManaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
+	GetManaComponent()->InitializeViewModel();
 	
 	// Setup Stamina Component Initialization
 	GetStaminaComponent()->InitializeWithAbilitySystem(GetCLAbilitySystemComponent());
+	GetStaminaComponent()->InitializeViewModel();
 	GetAbilitySystemComponent()->RegisterGameplayTagEvent(CLGameplayTags::Debuff_Fatigue, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &ACL_PlayerCharacter::OnGameplayTagNewOrRemoved);
 }
