@@ -71,10 +71,6 @@ protected:
 	bool bGaitChanged;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Locomotion SM Data", Meta = (AllowPrivateAccess = "true"))
-	FVector PivotAcceleration2D;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion SM Data", Meta = (AllowPrivateAccess = "true"))
-	float LastPivotTime = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion SM Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_CardinalDirection PivotCardinalDirection;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
