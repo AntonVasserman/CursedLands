@@ -26,10 +26,6 @@ class CURSEDLANDS_API UCL_PlayerCharacterAnimInstance : public UCL_AnimInstance
 {
 	GENERATED_BODY()
 
-public:
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Helper Functions|Locomotion", Meta = (BlueprintThreadSafe))
-	bool IsMovingPerpendicularToPivot() const;
-	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	float FallHeight = 0.f;
@@ -70,9 +66,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bGaitChanged;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion SM Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_CardinalDirection PivotCardinalDirection;
-	
 	UPROPERTY(BlueprintReadOnly, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	float LeanAngle;
 	FRotator PlayerCharacterRotation;

@@ -18,22 +18,6 @@ static TAutoConsoleVariable CVarShowDebugCLPlayerAnimInstance(
 	TEXT("Shows the Debug information of the CLPlayerAnimInstance class"),
 	ECVF_Default);
 
-bool UCL_PlayerCharacterAnimInstance::IsMovingPerpendicularToPivot() const
-{
-	switch (PivotCardinalDirection)
-	{
-		case ECL_CardinalDirection::Forward:
-		case ECL_CardinalDirection::Backward:
-			return CardinalDirection != ECL_CardinalDirection::Forward && CardinalDirection != ECL_CardinalDirection::Backward;
-		case ECL_CardinalDirection::Right:
-		case ECL_CardinalDirection::Left:
-			return CardinalDirection != ECL_CardinalDirection::Right && CardinalDirection != ECL_CardinalDirection::Left;
-		default:
-			checkNoEntry();
-			return false;
-	}
-}
-
 void UCL_PlayerCharacterAnimInstance::UpdateFallData()
 {
 	Super::UpdateFallData();
@@ -229,7 +213,7 @@ void UCL_PlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			
 			GEngine->AddOnScreenDebugMessage(60, 0.0f, TextColor, FString::Printf(TEXT("Rotation Data::LeanAngle: %f"), LeanAngle), false, TextScale);
 
-			GEngine->AddOnScreenDebugMessage(51, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotCardinalDirection: %s"), *StaticEnum<ECL_CardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);
+			// GEngine->AddOnScreenDebugMessage(51, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotCardinalDirection: %s"), *StaticEnum<ECL_CardinalDirection>()->GetAuthoredNameStringByValue(static_cast<int64>(PivotCardinalDirection))), false, TextScale);
 			// GEngine->AddOnScreenDebugMessage(50, 0.0f, TextColor, FString::Printf(TEXT("Locomotion SM Data::PivotAcceleration2D: %s"), *PivotAcceleration2D.ToString()), false, TextScale);
 
 			GEngine->AddOnScreenDebugMessage(44, 0.0f, TextColor, FString::Printf(TEXT("Locomotion Data::Stance: %s"), *StaticEnum<ECL_Stance>()->GetAuthoredNameStringByValue(static_cast<int64>(Stance))), false, TextScale);
