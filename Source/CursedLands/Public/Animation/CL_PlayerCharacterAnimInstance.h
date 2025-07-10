@@ -13,94 +13,73 @@ enum class ECL_PlayerCharacterMovementMode : uint8;
 enum class ECL_Stance : uint8;
 class ACL_PlayerCharacter;
 
-UENUM(BlueprintType)
-enum class ECL_RootYawOffsetMode : uint8
-{
-	BlendOut	UMETA(DisplayName = "Blend Out"),
-	Hold		UMETA(DisplayName = "Hold"),
-	Accumulate	UMETA(DisplayName = "Accumulate"),
-};
-
 UCLASS()
 class CURSEDLANDS_API UCL_PlayerCharacterAnimInstance : public UCL_AnimInstance
 {
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	float FallHeight = 0.f;
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bRolling;
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bStandingUp;
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_FallType FallType;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Acceleration;
-	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Acceleration2D;
-	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	bool bAccelerating;
-	UPROPERTY(BlueprintReadOnly, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	float AccelerationAngle;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_PlayerCharacterMovementMode MovementMode;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionAngle;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionAngleWithOffset;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_CardinalDirection LastCardinalDirection;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_CardinalDirection CardinalDirection;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_Stance Stance;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bStanceChanged;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bStanceTransition;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	ECL_Gait Gait;
-	UPROPERTY(BlueprintReadOnly, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bGaitChanged;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	float LeanAngle;
+	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	FRotator PlayerCharacterRotation;
+	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	float LastYawDelta;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Root Yaw Offset Data", Meta = (AllowPrivateAccess = "true"))
-	float RootYawOffset;
-	UPROPERTY(BlueprintReadWrite, Category = "Root Yaw Offset SM Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_RootYawOffsetMode RootYawOffsetMode = ECL_RootYawOffsetMode::BlendOut;
-	UPROPERTY(BlueprintReadWrite, Category = "Root Yaw Offset SM Data", Meta = (AllowPrivateAccess = "true"))
-	float TurnYawCurveValue;
 
+	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	bool bDoingTraverseAction;
+	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	bool bFinishedTraversalAction;
 
 private:
-	const FName RootRotationYawCurveName = TEXT("root_rotation_Z");
-	const FName IsTurningCurveName = TEXT("IsTurning");
-	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACL_PlayerCharacter> PlayerCharacter;
+	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	uint8 bFirstThreadSafeUpdate : 1 = true;
 
 	virtual void UpdateFallData() override;
 	void UpdateTraversalData();
 	void UpdateAccelerationData(const ACL_PlayerCharacter* InPlayerCharacter);
-	void UpdateLocomotionData(const ACL_PlayerCharacter* InPlayerCharacter);
-	void UpdateRootYawOffset(const float DeltaSeconds, const ACL_PlayerCharacter* InPlayerCharacter);
-	void SetRootYawOffset(const float InRootYawOffset);
-	UFUNCTION(BlueprintCallable, Category = "Root Yaw Offset", Meta = (AllowPrivateAccess = "true", BlueprintThreadSafe))
-	void ProcessTurnYawCurve();
 
-	// Note that Rotation Data depends on the Locomotion data (on both Gait and Cardinal Direction) 
-	void UpdateRotationData(const float DeltaSeconds, const ACL_PlayerCharacter* InPlayerCharacter);
-	
 	//~ UCLAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;

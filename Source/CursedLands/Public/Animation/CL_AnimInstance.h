@@ -19,34 +19,34 @@ public:
 	FORCEINLINE UCharacterMovementComponent* GetCharacterMovementComponent() { return MovementComponent;}
 	
 protected:
-	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	bool bAlive = true;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
 	FVector LastCharacterLocation;
-	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
 	FVector CharacterLocation;
-	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
 	float CharacterLocationDeltaSizeXY;
-	UPROPERTY(BlueprintReadOnly, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
 	float CharacterLocationDeltaSizeXYSpeed;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Velocity2D;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
 	float Velocity2DSize;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bFalling = false;
 
 	virtual void UpdateFallData();
 
 private:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACL_Character> Character;
 	uint8 bFirstThreadSafeUpdate : 1 = true;
 

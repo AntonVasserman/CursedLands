@@ -60,106 +60,6 @@ void UCL_PlayerCharacterAnimInstance::UpdateAccelerationData(const ACL_PlayerCha
 	AccelerationAngle = UKismetAnimationLibrary::CalculateDirection(Acceleration2D, PlayerCharacterRotation);
 }
 
-void UCL_PlayerCharacterAnimInstance::UpdateLocomotionData(const ACL_PlayerCharacter* InPlayerCharacter)
-{
-	MovementMode = PlayerCharacter->GetMovementMode();
-	CardinalDirectionAngle = InPlayerCharacter->GetCardinalDirectionAngle();
-	CardinalDirectionAngleWithOffset = UKismetMathLibrary::NormalizeAxis(CardinalDirectionAngle - RootYawOffset); 
-	LastCardinalDirection = CardinalDirection;
-	CardinalDirection = InPlayerCharacter->GetCardinalDirection();
-	const ECL_Stance NewStance = InPlayerCharacter->GetCLCharacterMovement()->GetStance();
-	bStanceChanged = Stance != NewStance;
-	// Stance transition when it was changed but not as an effect of a Traversal action
-	bStanceTransition = bStanceChanged && !bFinishedTraversalAction;
-	Stance = NewStance;
-	const ECL_Gait NewGait = InPlayerCharacter->GetCLCharacterMovement()->GetGait();
-	bGaitChanged = Gait != NewGait;
-	Gait = NewGait;
-	
-}
-
-void UCL_PlayerCharacterAnimInstance::UpdateRootYawOffset(const float DeltaSeconds, const ACL_PlayerCharacter* InPlayerCharacter)
-{
-	if (RootYawOffsetMode == ECL_RootYawOffsetMode::Accumulate)
-	{
-		SetRootYawOffset(RootYawOffset - LastYawDelta);
-	}
-
-	if (RootYawOffsetMode == ECL_RootYawOffsetMode::BlendOut)
-	{
-		const float NewRootYawOffset = FMath::FInterpTo(RootYawOffset, 0.f, DeltaSeconds, 10.f);
-		SetRootYawOffset(NewRootYawOffset);
-	}
-	
-	RootYawOffsetMode = ECL_RootYawOffsetMode::BlendOut;
-}
-
-void UCL_PlayerCharacterAnimInstance::SetRootYawOffset(const float InRootYawOffset)
-{
-	RootYawOffset = UKismetMathLibrary::NormalizeAxis(InRootYawOffset);
-}
-
-void UCL_PlayerCharacterAnimInstance::ProcessTurnYawCurve()
-{
-	const float LastTurnYawCurveValue = TurnYawCurveValue;
-	const float IsTurningCurveValue = GetCurveValue(IsTurningCurveName);
-	if (UKismetMathLibrary::NearlyEqual_FloatFloat(IsTurningCurveValue, 0.f))
-	{
-		TurnYawCurveValue = 0.f;
-	}
-	else
-	{
-		const float RootRotationYawCurveValue = GetCurveValue(RootRotationYawCurveName);
-		TurnYawCurveValue = UKismetMathLibrary::SafeDivide(RootRotationYawCurveValue, IsTurningCurveValue);
-		if (LastTurnYawCurveValue != 0.f)
-		{
-			SetRootYawOffset(RootYawOffset - (TurnYawCurveValue - LastTurnYawCurveValue));
-		}
-	}
-}
-
-void UCL_PlayerCharacterAnimInstance::UpdateRotationData(const float DeltaSeconds, const ACL_PlayerCharacter* InPlayerCharacter)
-{
-	// Evaluate new PlayerCharacterRotation
-	LastYawDelta = InPlayerCharacter->GetActorRotation().Yaw - PlayerCharacterRotation.Yaw;
-	PlayerCharacterRotation = InPlayerCharacter->GetActorRotation();
-	
-	// Evaluate LeanAngle
-	if (Gait == ECL_Gait::Walking)
-	{
-		LeanAngle = 0.f;
-	}
-	else
-	{
-		float NormalizedLeanAngle = UKismetMathLibrary::SafeDivide(LastYawDelta, DeltaSeconds);
-		NormalizedLeanAngle = NormalizedLeanAngle * 0.375f; // Multiply by a smaller value to clamp the lean angle
-		NormalizedLeanAngle = FMath::Clamp(NormalizedLeanAngle, -90.0f, 90.0f);
-		NormalizedLeanAngle = CardinalDirection != ECL_CardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
-
-		switch (Gait)
-		{
-		case ECL_Gait::Jogging:
-			NormalizedLeanAngle *= 0.8; // For jogging cap at a bit of a lower value than maximum
-			break;
-		case ECL_Gait::Sprinting:
-			NormalizedLeanAngle *= 1.f; // No effect
-			break;
-		default:
-			checkNoEntry();
-			break;
-		}
-	
-		LeanAngle = CardinalDirection != ECL_CardinalDirection::Backward ? NormalizedLeanAngle : -NormalizedLeanAngle;
-	}
-
-	// Ignore evaluated values if this is the first tick.
-	if (bFirstThreadSafeUpdate)
-	{
-		LastYawDelta = 0.f;
-		LeanAngle = 0.f;
-	}
-}
-
 //~ UCLAnimInstance Begin
 
 void UCL_PlayerCharacterAnimInstance::NativeInitializeAnimation()
@@ -183,11 +83,6 @@ void UCL_PlayerCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float Delt
 
 	UpdateTraversalData();
 	UpdateAccelerationData(PlayerCharacter);
-	UpdateLocomotionData(PlayerCharacter);
-	UpdateRotationData(DeltaSeconds, PlayerCharacter);
-	UpdateRootYawOffset(DeltaSeconds, PlayerCharacter);
-
-	bFirstThreadSafeUpdate = false;
 }
 
 void UCL_PlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -208,8 +103,8 @@ void UCL_PlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			const FVector2D TextScale = FVector2D(1.5f, 1.5f);
 
 			// Putting them in reverse order since the first added is actually last on screen
-			GEngine->AddOnScreenDebugMessage(71, 0.0f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffsetMode: %s"), *StaticEnum<ECL_RootYawOffsetMode>()->GetAuthoredNameStringByValue(static_cast<int64>(RootYawOffsetMode))), false, TextScale);
-			GEngine->AddOnScreenDebugMessage(70, 0.f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffset: %f"), RootYawOffset), false, TextScale);
+			// GEngine->AddOnScreenDebugMessage(71, 0.0f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffsetMode: %s"), *StaticEnum<ECL_RootYawOffsetMode>()->GetAuthoredNameStringByValue(static_cast<int64>(RootYawOffsetMode))), false, TextScale);
+			// GEngine->AddOnScreenDebugMessage(70, 0.f, TextColor, FString::Printf(TEXT("Root Yaw Offset Data::RootYawOffset: %f"), RootYawOffset), false, TextScale);
 			
 			GEngine->AddOnScreenDebugMessage(60, 0.0f, TextColor, FString::Printf(TEXT("Rotation Data::LeanAngle: %f"), LeanAngle), false, TextScale);
 
