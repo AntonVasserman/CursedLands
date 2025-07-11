@@ -14,10 +14,6 @@ class CURSEDLANDS_API UCL_AnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
-public:
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Movement")
-	FORCEINLINE UCharacterMovementComponent* GetCharacterMovementComponent() { return MovementComponent;}
-	
 protected:
 	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	bool bAlive = true;
@@ -43,19 +39,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
 	bool bFalling = false;
 
-	virtual void UpdateFallData();
-
 private:
 	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACL_Character> Character;
-	uint8 bFirstThreadSafeUpdate : 1 = true;
 
-	UPROPERTY()
-	TObjectPtr<UCharacterMovementComponent> MovementComponent;
-
-	void UpdateLocationData(const float DeltaTime);
-	void UpdateVelocityData();
-	
 	//~ UAnimInstance Begin
 public:
 	virtual void NativeInitializeAnimation() override;

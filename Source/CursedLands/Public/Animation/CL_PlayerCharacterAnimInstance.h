@@ -76,14 +76,8 @@ private:
 	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	uint8 bFirstThreadSafeUpdate : 1 = true;
 
-	virtual void UpdateFallData() override;
-	void UpdateTraversalData();
-	void UpdateAccelerationData(const ACL_PlayerCharacter* InPlayerCharacter);
-
 	//~ UCLAnimInstance Begin
 public:
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	//~ UCLAnimInstance End
 };
