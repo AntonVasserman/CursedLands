@@ -17,14 +17,4 @@ UCLASS()
 class CURSEDLANDS_API UCL_PlayerCharacterAnimInstance : public UCL_AnimInstance
 {
 	GENERATED_BODY()
-
-protected:
-	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
-	FVector Acceleration;
-	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
-	FVector Acceleration2D;
-	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
-	bool bAccelerating;
-	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
-	float AccelerationAngle;
 };
