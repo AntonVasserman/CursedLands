@@ -18,15 +18,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	bool bAlive = true;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
-	FVector LastCharacterLocation;
-	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
-	FVector CharacterLocation;
-	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
-	float CharacterLocationDeltaSizeXY;
-	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
-	float CharacterLocationDeltaSizeXYSpeed;
-
 private:
 	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACL_Character> Character;
