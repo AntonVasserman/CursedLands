@@ -58,6 +58,10 @@ public:
 	FORCEINLINE ECL_PlayerCharacterMovementMode GetMovementMode() const { return MovementMode; }
 	UFUNCTION(BlueprintCallable, Category = "Locomotion")
 	void SetMovementMode(const ECL_PlayerCharacterMovementMode InMovementMode);
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	FORCEINLINE bool IsRolling() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_Rolling); }
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	FORCEINLINE bool IsStandingUp() const { return HasMatchingGameplayTag(CLGameplayTags::Locomotion_StandingUp); }
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Mana")
 	FORCEINLINE UCL_ManaComponent* GetManaComponent() const { return ManaComponent; }
@@ -93,6 +97,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Character Fall")
 	FORCEINLINE UAV_CharacterFallComponent* GetCharacterFallComponent() const { return CharacterFallComponent; }
+	UFUNCTION(BlueprintCallable, Category = "Fall")
+	ECL_FallType GetFallType() const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE UCL_CharacterTraversalComponent* GetCharacterTraversal() const { return CharacterTraversal; }

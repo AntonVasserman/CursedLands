@@ -15,6 +15,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Systems/CharacterFall/CL_FallType.h"
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
@@ -133,6 +134,20 @@ void ACL_PlayerCharacter::Sprint()
 void ACL_PlayerCharacter::UnSprint()
 {
 	GetCLCharacterMovement()->RequestUnSprinting();
+}
+
+ECL_FallType ACL_PlayerCharacter::GetFallType() const
+{
+	if (HasMatchingGameplayTag(CLGameplayTags::Falling_Light))
+	{
+		return ECL_FallType::Light;
+	}
+	else if (HasMatchingGameplayTag(CLGameplayTags::Falling_Medium))
+	{
+		return ECL_FallType::Medium;
+	}
+
+	return ECL_FallType::Deadly;
 }
 
 bool ACL_PlayerCharacter::CanTraverse() const

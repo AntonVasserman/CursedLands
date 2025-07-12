@@ -6,26 +6,11 @@
 #include "Animation/AnimInstance.h"
 #include "CL_AnimInstance.generated.h"
 
-class ACL_Character;
-class UCharacterMovementComponent;
-
 UCLASS()
 class CURSEDLANDS_API UCL_AnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
-	bool bAlive = true;
-
-private:
-	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ACL_Character> Character;
-
 	//~ UAnimInstance Begin
-public:
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 	//~ UAnimInstance End
-	
 };
