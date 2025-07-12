@@ -27,15 +27,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Location Data", Meta = (AllowPrivateAccess = "true"))
 	float CharacterLocationDeltaSizeXYSpeed;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
-	FVector Velocity;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
-	FVector Velocity2D;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
-	float Velocity2DSize;
-
 private:
 	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACL_Character> Character;
