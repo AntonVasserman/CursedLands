@@ -64,20 +64,4 @@ protected:
 	FRotator PlayerCharacterRotation;
 	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
 	float LastYawDelta;
-
-	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
-	bool bDoingTraverseAction;
-	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
-	bool bFinishedTraversalAction;
-
-private:
-	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ACL_PlayerCharacter> PlayerCharacter;
-	UPROPERTY(BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
-	uint8 bFirstThreadSafeUpdate : 1 = true;
-
-	//~ UCLAnimInstance Begin
-public:
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-	//~ UCLAnimInstance End
 };

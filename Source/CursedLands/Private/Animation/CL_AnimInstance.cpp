@@ -4,8 +4,6 @@
 #include "Animation/CL_AnimInstance.h"
 
 #include "Characters/CL_Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/KismetMathLibrary.h"
 
 //~ UAnimInstance Begin
 
