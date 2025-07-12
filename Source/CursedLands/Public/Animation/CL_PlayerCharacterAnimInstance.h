@@ -19,15 +19,6 @@ class CURSEDLANDS_API UCL_PlayerCharacterAnimInstance : public UCL_AnimInstance
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
-	float FallHeight = 0.f;
-	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
-	bool bRolling;
-	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
-	bool bStandingUp;
-	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_FallType FallType;
-
 	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	FVector Acceleration;
 	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))

@@ -36,9 +36,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Velocity Data", Meta = (AllowPrivateAccess = "true"))
 	float Velocity2DSize;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Fall Data", Meta = (AllowPrivateAccess = "true"))
-	bool bFalling = false;
-
 private:
 	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ACL_Character> Character;
