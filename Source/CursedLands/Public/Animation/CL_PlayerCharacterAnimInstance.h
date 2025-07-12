@@ -57,11 +57,4 @@ protected:
 	ECL_Gait Gait;
 	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
 	bool bGaitChanged;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
-	float LeanAngle;
-	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
-	FRotator PlayerCharacterRotation;
-	UPROPERTY(BlueprintReadWrite, Category = "Rotation Data", Meta = (AllowPrivateAccess = "true"))
-	float LastYawDelta;
 };
