@@ -27,25 +27,4 @@ protected:
 	bool bAccelerating;
 	UPROPERTY(BlueprintReadWrite, Category = "Acceleration Data", Meta = (AllowPrivateAccess = "true"))
 	float AccelerationAngle;
-	
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_PlayerCharacterMovementMode MovementMode;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	float CardinalDirectionAngle;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	float CardinalDirectionAngleWithOffset;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_CardinalDirection LastCardinalDirection;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_CardinalDirection CardinalDirection;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_Stance Stance;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	bool bStanceChanged;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	bool bStanceTransition;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	ECL_Gait Gait;
-	UPROPERTY(BlueprintReadWrite, Category = "Locomotion Data", Meta = (AllowPrivateAccess = "true"))
-	bool bGaitChanged;
 };
