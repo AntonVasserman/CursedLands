@@ -36,6 +36,9 @@ class CURSEDLANDS_API ACL_PlayerCharacter : public ACL_Character
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USkeletalMeshComponent> ConcreteMesh;
+	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Character Fall")
 	TObjectPtr<UAV_CharacterFallComponent> CharacterFallComponent;
 	

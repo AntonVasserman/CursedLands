@@ -39,6 +39,14 @@ ACL_PlayerCharacter::ACL_PlayerCharacter(const FObjectInitializer& ObjectInitial
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	GetCharacterMovement()->SetCrouchedHalfHeight(65.f);
 
+	// Set up the "Abstract" Skeletal Mesh
+	GetMesh()->SetVisibility(false);
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+
+	// Set up the "Concrete" Skeletal Mesh
+	ConcreteMesh = CreateDefaultSubobject<USkeletalMeshComponent>("ConcreteMesh");
+	ConcreteMesh->SetupAttachment(GetMesh());
+	
 	GameplayCamera = CreateDefaultSubobject<UGameplayCameraComponent>("GameplayCamera");
 	GameplayCamera->SetupAttachment(GetMesh());
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
@@ -142,7 +150,8 @@ ECL_FallType ACL_PlayerCharacter::GetFallType() const
 	{
 		return ECL_FallType::Light;
 	}
-	else if (HasMatchingGameplayTag(CLGameplayTags::Falling_Medium))
+	
+	if (HasMatchingGameplayTag(CLGameplayTags::Falling_Medium))
 	{
 		return ECL_FallType::Medium;
 	}
