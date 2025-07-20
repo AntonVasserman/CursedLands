@@ -147,8 +147,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Locomotion", Meta = (AllowPrivateAccess = "true"))
 	float CardinalDirectionDeadzone = 20.f;
 
+	UPROPERTY(BlueprintReadonly, Meta = (AllowPrivateAccess = "true"))
+	bool bJustLanded = false;
+	
 	float CardinalDirectionAngle = 0.f;
 	ECL_CardinalDirection CardinalDirection = ECL_CardinalDirection::Forward;
+	float JustLandedResetTime = 0.f;
 	bool bFullySprinting = false;
 	bool bSprintAfterTraversal = false;
 	
@@ -174,6 +178,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Crouch(bool bClientSimulation = false) override;
 	virtual bool CanCrouch() const override;
+	virtual void Landed(const FHitResult& Hit) override;
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaSeconds) override;
 protected:

@@ -366,6 +366,14 @@ bool ACL_PlayerCharacter::CanCrouch() const
 		!GetCharacterTraversal()->IsDoingTraversalAction(); // Check the player isn't occupied (not traversing)
 }
 
+void ACL_PlayerCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+
+	bJustLanded = true;
+	JustLandedResetTime = 0.3f;
+}
+
 void ACL_PlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -381,6 +389,15 @@ void ACL_PlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	if (bJustLanded)
+	{
+		JustLandedResetTime -= DeltaSeconds;
+		if (JustLandedResetTime <= 0.f)
+		{
+			bJustLanded = false;
+		}
+	}
+	
 	UpdateCardinalDirectionAngle();
 	UpdateCardinalDirection();
 
