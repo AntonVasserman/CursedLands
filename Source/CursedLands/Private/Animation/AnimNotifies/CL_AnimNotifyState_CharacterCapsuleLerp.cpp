@@ -52,7 +52,7 @@ void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyBegin(USkeletalMeshComponen
 	}
 
 	TotalLerpDuration = TotalDuration;
-	CurrentLerpDuration = 0.f;
+	ElapsedTime = 0.f;
 
 	if (bLerpHalfHeight)
 	{
@@ -80,8 +80,8 @@ void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyTick(USkeletalMeshComponent
 		return;
 	}
 
-	CurrentLerpDuration = FMath::Min(CurrentLerpDuration + FrameDeltaTime, TotalLerpDuration);
-	const float LerpAlpha = CurrentLerpDuration / TotalLerpDuration;
+	ElapsedTime = FMath::Min(ElapsedTime + FrameDeltaTime, TotalLerpDuration);
+	const float LerpAlpha = ElapsedTime / TotalLerpDuration;
 
 	if (bLerpHalfHeight)
 	{
@@ -111,6 +111,6 @@ void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyEnd(USkeletalMeshComponent*
 
 	InitialHalfHeight = 0.f;
 	InitialRadius = 0.f;
-	CurrentLerpDuration = 0.f;
+	ElapsedTime = 0.f;
 	TotalLerpDuration = 0.f;
 }

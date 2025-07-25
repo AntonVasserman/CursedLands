@@ -21,7 +21,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "bLerpRadius", EditConditionHides))
 	float NewRadius = 40.f;
 	
-	float CurrentLerpDuration = 0.f;
+	float ElapsedTime = 0.f;
 	float TotalLerpDuration = 0.f;
 	
 	float InitialHalfHeight = 0.f;
