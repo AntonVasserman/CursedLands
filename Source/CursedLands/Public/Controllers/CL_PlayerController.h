@@ -3,15 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CommonInputTypeEnum.h"
 #include "GameFramework/PlayerController.h"
 #include "CL_PlayerController.generated.h"
 
+enum class ECommonInputType : uint8;
+struct FInputActionValue;
 class ACL_PlayerCharacter;
 class UCL_UserWidget;
 class UInputAction;
 class UInputMappingContext;
 class UStateTreeComponent;
-struct FInputActionValue;
 
 UCLASS()
 class CURSEDLANDS_API ACL_PlayerController : public APlayerController
@@ -26,42 +28,45 @@ public:
 	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputMappingContext> DefaultMappingContext;
-
-#if WITH_EDITORONLY_DATA
+	TObjectPtr<UInputMappingContext> DefaultMouseAndKeyboardMappingContext;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputMappingContext> DefaultGamepadMappingContext;
+	
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|MouseAndKeyboard|Debug", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SlomoAction;
 #endif
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|Gamepad", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction_Gamepad;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|MouseAndKeyboard", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction_Keyboard;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
 	// This action is used only for Keyboard. With a controller we don't toggle walking, it's should be blended with jogging
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|MouseAndKeyboard", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleWalkAction;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleSprintAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ToggleCrouchAction;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> JumpAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> TraverseAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SlideAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> PauseMenuAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
@@ -79,8 +84,7 @@ private:
 	UPROPERTY()
 	TObjectPtr<UCL_UserWidget> PauseMenuWidget = nullptr;
 	bool bInPausedMenu = false;
-	// TODO (CL-177): Transition to use the EnhancedInput's 'OnInputDeviceChanged' event to understand if Gamepad/Keyboard was changed...
-	bool bLastUsedKeyboard = true;
+	ECommonInputType CurrentInputType;
 
 #if WITH_EDITOR
 	void RequestSlomoStarted();
@@ -99,9 +103,12 @@ private:
 	void RequestPauseMenuAction();
 
 	void AddMovementVector(const FVector2D& InMovementVector2D);
+	UInputMappingContext* GetCurrentInputMappingContext() const;
+	UFUNCTION()
+	void OnInputMethodChanged(ECommonInputType NewInputType);
 	UFUNCTION(BlueprintCallable, Category = "Menus")
 	void TogglePauseMenu();
-
+	
 	//~ APlayerController Begin
 protected:
 	virtual void BeginPlay() override;

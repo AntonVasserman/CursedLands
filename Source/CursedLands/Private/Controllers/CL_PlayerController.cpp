@@ -4,6 +4,8 @@
 #include "Controllers/CL_PlayerController.h"
 
 #include "CL_LogChannels.h"
+#include "CommonInputSubsystem.h"
+#include "CommonInputTypeEnum.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Characters/CL_PlayerCharacter.h"
@@ -50,8 +52,6 @@ void ACL_PlayerController::RequestSlomoTriggered(const FInputActionValue& InValu
 
 void ACL_PlayerController::RequestMoveAction_Gamepad(const FInputActionValue& InValue)
 {
-	bLastUsedKeyboard = false;
-	
 	if (!PossessedPlayerCharacter->CanMove())
 	{
 		return;
@@ -85,17 +85,6 @@ void ACL_PlayerController::RequestMoveAction_Gamepad(const FInputActionValue& In
 
 void ACL_PlayerController::RequestMoveAction_Keyboard(const FInputActionValue& InValue)
 {
-	if (bLastUsedKeyboard == false)
-	{
-		if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Walking)
-		{
-			// Return to Jogging
-			RequestToggleWalkAction();
-		}
-	}
-	
-	bLastUsedKeyboard = true;
-	
 	if (!PossessedPlayerCharacter->CanMove())
 	{
 		return;
@@ -124,6 +113,50 @@ void ACL_PlayerController::AddMovementVector(const FVector2D& InMovementVector2D
 	
 	PossessedPlayerCharacter->AddMovementInput(ForwardDirection, InMovementVector2D.Y);
 	PossessedPlayerCharacter->AddMovementInput(RightDirection, InMovementVector2D.X);
+}
+
+UInputMappingContext* ACL_PlayerController::GetCurrentInputMappingContext() const
+{
+	switch (CurrentInputType)
+	{
+		case ECommonInputType::MouseAndKeyboard:
+			return DefaultMouseAndKeyboardMappingContext;
+		case ECommonInputType::Gamepad:
+			return DefaultGamepadMappingContext;
+		default:
+			checkNoEntry();
+			return nullptr;
+	}
+}
+
+void ACL_PlayerController::OnInputMethodChanged(ECommonInputType NewInputType)
+{
+	UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+
+	// This call should be fine even if a mapping context wasn't added, due to TMap not throwing on 'Remove' for a missing KVP
+	EnhancedInputSubsystem->RemoveMappingContext(GetCurrentInputMappingContext());
+	
+	switch (NewInputType)
+	{
+	case ECommonInputType::MouseAndKeyboard:
+		if (CurrentInputType == ECommonInputType::Gamepad)
+		{
+			if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Walking)
+			{
+				// Return to Jogging
+				RequestToggleWalkAction();
+			}
+		}
+		EnhancedInputSubsystem->AddMappingContext(DefaultMouseAndKeyboardMappingContext, 0);
+		break;
+	case ECommonInputType::Gamepad:
+		EnhancedInputSubsystem->AddMappingContext(DefaultGamepadMappingContext, 0);
+		break;
+	default:
+		checkNoEntry();
+	}
+
+	CurrentInputType = NewInputType;
 }
 
 void ACL_PlayerController::RequestLookAction(const FInputActionValue& InValue)
@@ -243,13 +276,21 @@ void ACL_PlayerController::TogglePauseMenu()
 void ACL_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	checkf(DefaultMappingContext, TEXT("DefaultMappingContext uninitialized in object: %s"), *GetFullName());
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	checkf(Subsystem, TEXT("Enhanced Input isn't set in Project Settings. Failure in object: %s"), *GetFullName());
+	// Enhanced Input Setup
+	checkf(DefaultMouseAndKeyboardMappingContext, TEXT("DefaultMouseAndKeyboardMappingContext uninitialized in object: %s"), *GetFullName());
+	checkf(DefaultGamepadMappingContext, TEXT("DefaultGamepadMappingContext uninitialized in object: %s"), *GetFullName());
+
+	UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	checkf(EnhancedInputSubsystem, TEXT("Enhanced Input isn't set in Project Settings. Failure in object: %s"), *GetFullName());
 	
-	Subsystem->AddMappingContext(DefaultMappingContext, 0);
+	// Common Input Setup
+	UCommonInputSubsystem* CommonInputSubsystem = ULocalPlayer::GetSubsystem<UCommonInputSubsystem>(GetLocalPlayer());
+	checkf(CommonInputSubsystem, TEXT("Common Input isn't set in Project Settings. Failure in object: %s"), *GetFullName());
+	
+	CurrentInputType = CommonInputSubsystem->GetCurrentInputType();
+	EnhancedInputSubsystem->AddMappingContext(GetCurrentInputMappingContext(), 0);
+	CommonInputSubsystem->OnInputMethodChangedNative.AddUObject(this, &ACL_PlayerController::OnInputMethodChanged);
 }
 
 void ACL_PlayerController::OnPossess(APawn* PawnToPossess)

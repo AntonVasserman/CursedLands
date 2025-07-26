@@ -32,6 +32,8 @@ public class CursedLands : ModuleRules
 				"AVCharacterFall",
 				"AVUtilities",
 				"Chooser",
+				"CommonInput",
+				"CommonUI",
 				"GameplayTags",
 				"GameplayTasks",
 				"MotionWarping"
