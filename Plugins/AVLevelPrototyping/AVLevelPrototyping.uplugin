@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "0.3",
+	"VersionName": "0.4",
 	"FriendlyName": "AVLevelPrototyping",
 	"Description": "This is a Plugin for Level Prototyping",
 	"Category": "Other",
