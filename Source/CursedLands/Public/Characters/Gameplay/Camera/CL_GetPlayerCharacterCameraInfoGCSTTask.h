@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Characters/CL_PlayerCharacterCameraMode.h"
+#include "Characters/Components/CL_ExtendedCharacterMovementComponent.h"
 #include "Directors/CameraDirectorStateTreeSchema.h"
 #include "UObject/Object.h"
 
@@ -21,13 +23,13 @@ struct CURSEDLANDS_API FCL_GetPlayerCharacterCameraInfoGCSTTaskInstanceData
 	ACL_PlayerCharacter* PlayerCharacterRef = nullptr;
 	
 	UPROPERTY(EditAnywhere, Category = "Outputs")
-	ECL_Stance Stance;
+	ECL_Stance Stance = ECL_Stance::Standing;
 
 	UPROPERTY(EditAnywhere, Category = "Outputs")
-	ECL_PlayerCharacterCameraMode CameraMode;
+	ECL_PlayerCharacterCameraMode CameraMode = ECL_PlayerCharacterCameraMode::Default;
 
 	UPROPERTY(EditAnywhere, Category = "Outputs")
-	bool bSprinting;
+	bool bSprinting = false;
 };
 
 USTRUCT(Meta = (DisplayName = "Get Player Character Camera Info", Category = "Cameras"))
