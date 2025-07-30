@@ -12,6 +12,7 @@
 #include "Components/StateTreeComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "UI/CL_UserWidget.h"
 #include "UI/HUD/CL_HUD.h"
 
@@ -100,7 +101,7 @@ void ACL_PlayerController::AddMovementVector(const FVector2D& InMovementVector2D
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
+	
 	// In case Player Character is in strafing movement mode, sprinting and changes direction from forward direction then stop sprinting
 	if (
 		PossessedPlayerCharacter->GetMovementMode() == ECL_PlayerCharacterMovementMode::Strafing &&
