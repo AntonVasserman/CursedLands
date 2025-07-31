@@ -113,4 +113,7 @@ namespace CLGameplayTags
 		{ ECL_TraversalAction::Vault, Traversal_Action_Vault },
 		{ ECL_TraversalAction::Slide, Traversal_Action_Slide }
 	};
+
+	// State Tree Events
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(StateTree_Events_ReevaluateCameraRig, "StateTree.Events.ReevaluateCameraRig", "Indicates that we need to re-evaluate the CameraRig in the Gameplay Camera");
 }
