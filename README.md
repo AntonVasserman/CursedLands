@@ -40,7 +40,22 @@ Level Design - Anton Vasserman
 ## Credits - Assets
 
 <details>
+<summary><h3 style="display:inline"><strong>ActionRPG (Epic Games)</strong></h3></summary>
+
+#### Audio
+- A_Character_Potion_01
+- A_Character_Potion_02
+#### Materials
+- M_PotionGlass
+#### Meshes
+- SM_PotionBottle
+
+</details>
+
+<details>
 <summary><h3 style="display:inline"><strong>Game Animation Sample (Epic Games)</strong></h3></summary>
+
+TODO: Update this...
 
 #### Audio
 - Foley_bs_1p_body_concrete_tumble_X
