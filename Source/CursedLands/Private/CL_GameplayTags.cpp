@@ -116,4 +116,5 @@ namespace CLGameplayTags
 
 	// State Tree Events
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(StateTree_Events_ReevaluateCameraRig, "StateTree.Events.ReevaluateCameraRig", "Indicates that we need to re-evaluate the CameraRig in the Gameplay Camera");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(StateTree_Events_Landed, "StateTree.Events.Landed", "Indicates that the Actor just landed after being in a falling state");
 }

@@ -86,5 +86,6 @@ namespace CLGameplayTags
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Traversal_Action_Slide);
 
 	// State Tree Events
+	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(StateTree_Events_Landed);
 	CURSEDLANDS_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(StateTree_Events_ReevaluateCameraRig);
 }
