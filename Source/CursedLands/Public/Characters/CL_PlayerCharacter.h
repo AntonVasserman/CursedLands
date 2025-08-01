@@ -13,7 +13,6 @@
 #include "CL_PlayerCharacter.generated.h"
 
 enum class ECL_PlayerCharacterCameraMode : uint8;
-class UAV_CharacterFallComponent;
 class UCL_CharacterFallingComponent;
 class UCL_CharacterTraversalComponent;
 class UCL_ManaComponent;
@@ -38,9 +37,6 @@ class CURSEDLANDS_API ACL_PlayerCharacter : public ACL_Character
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> ConcreteMesh;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Character Fall", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAV_CharacterFallComponent> CharacterFallComponent;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Mana")
 	TObjectPtr<UCL_ManaComponent> ManaComponent;
@@ -97,9 +93,7 @@ public:
 	void Sprint();
 	UFUNCTION(BlueprintCallable, Category = "Character Movement|Walking|Sprint")
 	void UnSprint();
-
-	UFUNCTION(BlueprintCallable, Category = "Character Fall")
-	FORCEINLINE UAV_CharacterFallComponent* GetCharacterFallComponent() const { return CharacterFallComponent; }
+	
 	UFUNCTION(BlueprintCallable, Category = "Fall")
 	ECL_FallType GetFallType() const;
 	

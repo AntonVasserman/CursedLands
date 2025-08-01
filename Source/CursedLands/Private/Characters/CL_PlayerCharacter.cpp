@@ -51,8 +51,6 @@ ACL_PlayerCharacter::ACL_PlayerCharacter(const FObjectInitializer& ObjectInitial
 	GameplayCamera->SetupAttachment(GetMesh());
 	GameplayCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 	
-	CharacterFallComponent = CreateDefaultSubobject<UAV_CharacterFallComponent>("CharacterFall");
-	
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 	CharacterTraversal = CreateDefaultSubobject<UCL_CharacterTraversalComponent>("CharacterTraversal");
 
