@@ -40,8 +40,7 @@ EStateTreeRunStatus FCL_GameplayTagTask::EnterState(
 	return EStateTreeRunStatus::Running;
 }
 
-void FCL_GameplayTagTask::ExitState(FStateTreeExecutionContext& Context,
-	const FStateTreeTransitionResult& Transition) const
+void FCL_GameplayTagTask::ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
 {
 	const FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
 
