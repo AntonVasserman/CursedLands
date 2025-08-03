@@ -27,6 +27,7 @@ protected:
 	//~ Begin UStateTreeComponentSchema
 public:
 	virtual void PostLoad() override;
+	virtual void SetContextData(FContextDataSetter& ContextDataSetter, bool bLogErrors) const override;
 
 #if WITH_EDITOR
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;

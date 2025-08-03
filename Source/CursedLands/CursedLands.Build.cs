@@ -19,8 +19,12 @@ public class CursedLands : ModuleRules
 				"EnhancedInput",
 				"GameplayCameras",
 				"GameplayAbilities",
+				"GameplayTags",
+				"GameplayTasks",
 				"GameplayStateTreeModule",
 				"ModelViewViewModel",
+				"NavigationSystem",
+				"PropertyBindingUtils",
 				"StateTreeModule"
 			});
 		PrivateDependencyModuleNames.AddRange(
@@ -34,8 +38,6 @@ public class CursedLands : ModuleRules
 				"Chooser",
 				"CommonInput",
 				"CommonUI",
-				"GameplayTags",
-				"GameplayTasks",
 				"MotionWarping"
 			});
 	}

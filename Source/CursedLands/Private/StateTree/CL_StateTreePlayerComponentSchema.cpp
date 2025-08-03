@@ -3,7 +3,9 @@
 
 #include "StateTree/CL_StateTreePlayerComponentSchema.h"
 
+#include "BrainComponent.h"
 #include "StateTreeExecutionContext.h"
+#include "StateTreeTypes.h"
 #include "Controllers/CL_PlayerController.h"
 #include "GameFramework/Pawn.h"
 
@@ -30,6 +32,25 @@ void UCL_StateTreePlayerComponentSchema::PostLoad()
 	ContextDataDescs[1].Struct = PlayerControllerClass.Get();
 }
 
+void UCL_StateTreePlayerComponentSchema::SetContextData(FContextDataSetter& ContextDataSetter, bool bLogErrors) const
+{
+	const FName PlayerControllerName = UE::GameplayStateTree::Private::Name_CLPlayerController;
+
+	const UBrainComponent* BrainComponent = ContextDataSetter.GetComponent();
+	checkf(BrainComponent, TEXT("Failed to get BrainComponent from ContextDataSetter"));
+
+	const APawn* Pawn = Cast<APawn>(BrainComponent->GetOwner());
+	checkf(Pawn, TEXT("Failed to get Pawn from BrainComponent"));
+
+	APlayerController* PlayerController = Cast<APlayerController>(Pawn->GetController());
+	checkf(PlayerController, TEXT("Failed to get PlayerController from Pawn"));
+
+	// TODO (CL-130): Fix the LNK2019 and LNK1120 this generates:
+	// ContextDataSetter.SetContextDataByName(PlayerControllerName, FStateTreeDataView(PlayerController));
+	
+	Super::SetContextData(ContextDataSetter, bLogErrors);
+}
+
 #if WITH_EDITOR
 void UCL_StateTreePlayerComponentSchema::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
@@ -37,7 +58,7 @@ void UCL_StateTreePlayerComponentSchema::PostEditChangeChainProperty(FPropertyCh
 
 	if (const FProperty* Property = PropertyChangedEvent.Property)
 	{
-		if (Property->GetOwnerClass() == UCL_StateTreePlayerComponentSchema::StaticClass()
+		if (Property->GetOwnerClass() == StaticClass()
 			&& Property->GetFName() == GET_MEMBER_NAME_CHECKED(UCL_StateTreePlayerComponentSchema, PlayerControllerClass))
 		{
 			ContextDataDescs[1].Struct = PlayerControllerClass.Get();
