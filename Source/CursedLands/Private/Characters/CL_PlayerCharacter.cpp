@@ -5,17 +5,15 @@
 
 #include "CL_GameplayTags.h"
 #include "KismetAnimationLibrary.h"
-#include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/CL_AttributeSet.h"
 #include "AbilitySystem/Components/CL_ManaComponent.h"
 #include "AbilitySystem/Components/CL_StaminaComponent.h"
 #include "Characters/Components/CL_ExtendedCharacterMovementComponent.h"
-#include "Components/AV_CharacterFallComponent.h"
+#include "Characters/Fall/CL_FallType.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Systems/CharacterFall/CL_FallType.h"
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);

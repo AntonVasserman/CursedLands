@@ -5,7 +5,7 @@
 
 #include "Engine/EngineTypes.h"
 #include "Characters/Components/CL_ExtendedCharacterMovementComponent.h"
-#include "Systems/CharacterFall/CL_FallType.h"
+#include "Characters/Fall/CL_FallType.h"
 #include "Systems/Traversal/CL_TraversalAction.h"
 
 namespace CLGameplayTags
