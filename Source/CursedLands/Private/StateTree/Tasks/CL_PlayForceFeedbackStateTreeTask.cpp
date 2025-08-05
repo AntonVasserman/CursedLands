@@ -22,7 +22,7 @@ EStateTreeRunStatus FCL_PlayForceFeedbackStateTreeTask::EnterState(FStateTreeExe
 	Params.Tag = InstanceData.ForceFeedbackTag;
 	Params.bLooping = InstanceData.bLoop;
 	
-	InstanceData.Context->ClientPlayForceFeedback(InstanceData.ForceFeedbackEffect, Params);
+	InstanceData.Controller->ClientPlayForceFeedback(InstanceData.ForceFeedbackEffect, Params);
 	
 	return EStateTreeRunStatus::Succeeded;
 }

@@ -21,7 +21,7 @@ UCL_StateTreePlayerComponentSchema::UCL_StateTreePlayerComponentSchema(const FOb
 	// Make the Actor a pawn by default so it bind to the controlled pawn instead of the CLPlayerController.
 	ContextActorClass = APawn::StaticClass();
 	ContextDataDescs[0].Struct = ContextActorClass.Get();
-	ContextDataDescs.Emplace(UE::GameplayStateTree::Private::Name_CLPlayerController, PlayerControllerClass.Get(), FGuid(0xA24EA97C, 0xD9E24BAC, 0xB41A4A8F, 0x63EA36FD));
+	ContextDataDescs.Emplace(UE::GameplayStateTree::Private::Name_CLPlayerController, PlayerControllerClass.Get(), FGuid::NewGuid());
 }
 
 //~ Begin UStateTreeSchema
@@ -32,23 +32,22 @@ void UCL_StateTreePlayerComponentSchema::PostLoad()
 	ContextDataDescs[1].Struct = PlayerControllerClass.Get();
 }
 
-void UCL_StateTreePlayerComponentSchema::SetContextData(FContextDataSetter& ContextDataSetter, bool bLogErrors) const
+bool UCL_StateTreePlayerComponentSchema::SetContextRequirements(UBrainComponent& BrainComponent, FStateTreeExecutionContext& Context, bool bLogErrors)
 {
 	const FName PlayerControllerName = UE::GameplayStateTree::Private::Name_CLPlayerController;
 
-	const UBrainComponent* BrainComponent = ContextDataSetter.GetComponent();
-	checkf(BrainComponent, TEXT("Failed to get BrainComponent from ContextDataSetter"));
-
-	const APawn* Pawn = Cast<APawn>(BrainComponent->GetOwner());
+	// Here we basically strict this StateTree to only be applied to Pawns, not controllers
+	const APawn* Pawn = Cast<APawn>(BrainComponent.GetOwner());
 	checkf(Pawn, TEXT("Failed to get Pawn from BrainComponent"));
 
-	APlayerController* PlayerController = Cast<APlayerController>(Pawn->GetController());
-	checkf(PlayerController, TEXT("Failed to get PlayerController from Pawn"));
-
-	// TODO (CL-130): Fix the LNK2019 and LNK1120 this generates:
-	// ContextDataSetter.SetContextDataByName(PlayerControllerName, FStateTreeDataView(PlayerController));
+	// The Controller has the potential of being null upon closing the game, so we don't check here, just use an if
+	if (ACL_PlayerController* PlayerController = Cast<ACL_PlayerController>(Pawn->GetController());
+		PlayerController != nullptr)
+	{
+		Context.SetContextDataByName(PlayerControllerName, FStateTreeDataView(PlayerController));
+	}
 	
-	Super::SetContextData(ContextDataSetter, bLogErrors);
+	return Super::SetContextRequirements(BrainComponent, Context, bLogErrors);
 }
 
 #if WITH_EDITOR

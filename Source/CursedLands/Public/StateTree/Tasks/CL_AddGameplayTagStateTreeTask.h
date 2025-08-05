@@ -5,33 +5,33 @@
 #include "CoreMinimal.h"
 #include "StateTreeTaskBase.h"
 #include "UObject/Object.h"
-#include "CL_GameplayTagTask.generated.h"
-
-class UCL_GASOperationBase;
-class ACL_PlayerController;
+#include "CL_AddGameplayTagStateTreeTask.generated.h"
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_GameplayTagTaskInstanceData
+struct CURSEDLANDS_API FCL_AddGameplayTagStateTreeTaskInstanceData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<ACL_PlayerController> Controller;
+	TObjectPtr<AActor> Actor;
 
-	UPROPERTY(EditAnywhere, Category = "", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Parameters")
 	FGameplayTag GameplayTag;
 };
 
-USTRUCT(Meta = (DisplayName = "Gameplay Tag StateTree Task"))
-struct CURSEDLANDS_API FCL_GameplayTagTask : public FStateTreeTaskCommonBase
+USTRUCT(Meta = (DisplayName = "Add Gameplay Tag"))
+struct CURSEDLANDS_API FCL_AddGameplayTagStateTreeTask : public FStateTreeTaskCommonBase
 {
 	GENERATED_BODY()
 
-	FCL_GameplayTagTask();
+	FCL_AddGameplayTagStateTreeTask();
 	
-	using FInstanceDataType = FCL_GameplayTagTaskInstanceData;
+	using FInstanceDataType = FCL_AddGameplayTagStateTreeTaskInstanceData;
 
 	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
 	virtual void ExitState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;
+
+	UPROPERTY(EditAnywhere, Category = "Parameters")
+	bool bRemoveOnExit = false;
 };

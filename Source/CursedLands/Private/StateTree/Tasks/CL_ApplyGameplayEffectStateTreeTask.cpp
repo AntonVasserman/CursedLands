@@ -16,9 +16,8 @@ FCL_ApplyGameplayEffectStateTreeTask::FCL_ApplyGameplayEffectStateTreeTask()
 EStateTreeRunStatus FCL_ApplyGameplayEffectStateTreeTask::EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
 {
 	const FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
-
-	ACharacter* Character = Cast<ACharacter>(InstanceData.Context->GetPawn());
-	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Character);
+	
+	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InstanceData.Character);
 	
 	if (AbilitySystemComponent == nullptr)
 	{

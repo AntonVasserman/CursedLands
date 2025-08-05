@@ -13,19 +13,12 @@ class ACL_PlayerCharacter;
 class UCL_UserWidget;
 class UInputAction;
 class UInputMappingContext;
-class UStateTreeComponent;
 
 UCLASS()
 class CURSEDLANDS_API ACL_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "StateTree", Meta = (AllowPrivateAccess = "true"))
-	UStateTreeComponent* PlayerStateTreeComponent;
-
-public:
-	ACL_PlayerController();
-	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMouseAndKeyboardMappingContext;

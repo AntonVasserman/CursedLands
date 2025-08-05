@@ -12,7 +12,7 @@ struct CURSEDLANDS_API FCL_PlayAnimMontageStateTreeTaskInstanceData : public FSt
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<APlayerController> Context;
+	TObjectPtr<ACharacter> Character;
 
 	UPROPERTY(EditAnywhere, Category = "Parameters")
 	TObjectPtr<UAnimMontage> AnimMontage = nullptr;

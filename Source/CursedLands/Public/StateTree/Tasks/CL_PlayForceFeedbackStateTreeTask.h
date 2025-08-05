@@ -13,15 +13,15 @@ struct CURSEDLANDS_API FCL_PlayForceFeedbackStateTreeTaskInstanceData
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<APlayerController> Context;
+	TObjectPtr<APlayerController> Controller;
 
-	UPROPERTY(EditAnywhere, Category = "Parameters", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Parameters")
 	TObjectPtr<UForceFeedbackEffect> ForceFeedbackEffect;
 
-	UPROPERTY(EditAnywhere, Category = "Parameters", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Parameters")
 	FName ForceFeedbackTag;
 
-	UPROPERTY(EditAnywhere, Category = "Parameters", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Parameters")
 	bool bLoop;
 };
 

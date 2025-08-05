@@ -3,28 +3,26 @@
 #pragma once
 
 #include "StateTreeConditionBase.h"
-#include "CL_ControllerCharacterHasMatchingTagCondition.generated.h"
-
-class ACL_PlayerController;
+#include "CL_HasMatchingTagStateTreeCondition.generated.h"
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_ControllerCharacterHasMatchingTagConditionInstanceData
+struct CURSEDLANDS_API FCL_HasMatchingTagStateTreeConditionInstanceData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<ACL_PlayerController> Controller;
+	TObjectPtr<AActor> Actor;
 
 	UPROPERTY(EditAnywhere, Category = "Parameter")
 	FGameplayTag Tag;
 };
 
-USTRUCT(DisplayName = "Controller Character Has Matching Tag")
-struct CURSEDLANDS_API FCL_ControllerCharacterHasMatchingTagCondition : public FStateTreeConditionCommonBase
+USTRUCT(DisplayName = "Has Matching Tag")
+struct CURSEDLANDS_API FCL_HasMatchingTagStateTreeCondition : public FStateTreeConditionCommonBase
 {
 	GENERATED_BODY()
 
-	using FInstanceDataType = FCL_ControllerCharacterHasMatchingTagConditionInstanceData;
+	using FInstanceDataType = FCL_HasMatchingTagStateTreeConditionInstanceData;
 
 	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 	virtual bool TestCondition(FStateTreeExecutionContext& Context) const override;

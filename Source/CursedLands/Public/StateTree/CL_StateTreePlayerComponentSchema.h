@@ -12,7 +12,7 @@ class ACL_PlayerController;
 * State tree schema to be used with CLStateTreePlayerComponent. 
 * It guarantees access to an CLPlayerController and the Actor context value can be used to access the controlled pawn.
 */
-UCLASS(BlueprintType, EditInlineNew, CollapseCategories, meta = (DisplayName = "StateTree Player Component", CommonSchema))
+UCLASS(BlueprintType, EditInlineNew, CollapseCategories, Meta = (DisplayName = "StateTree Player Component", CommonSchema))
 class CURSEDLANDS_API UCL_StateTreePlayerComponentSchema : public UStateTreeComponentSchema
 {
 	GENERATED_BODY()
@@ -27,7 +27,7 @@ protected:
 	//~ Begin UStateTreeComponentSchema
 public:
 	virtual void PostLoad() override;
-	virtual void SetContextData(FContextDataSetter& ContextDataSetter, bool bLogErrors) const override;
+	static bool SetContextRequirements(UBrainComponent& BrainComponent, FStateTreeExecutionContext& Context, bool bLogErrors = false);
 
 #if WITH_EDITOR
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;

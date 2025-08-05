@@ -12,6 +12,7 @@
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 #include "CL_PlayerCharacter.generated.h"
 
+class UCL_StateTreePlayerComponent;
 enum class ECL_PlayerCharacterCameraMode : uint8;
 class UCL_CharacterFallingComponent;
 class UCL_CharacterTraversalComponent;
@@ -37,6 +38,9 @@ class CURSEDLANDS_API ACL_PlayerCharacter : public ACL_Character
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> ConcreteMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Brain", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCL_StateTreePlayerComponent> StateTreePlayer;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Gameplay Ability System|Mana")
 	TObjectPtr<UCL_ManaComponent> ManaComponent;

@@ -14,9 +14,8 @@ FCL_PlayAnimMontageStateTreeTask::FCL_PlayAnimMontageStateTreeTask()
 EStateTreeRunStatus FCL_PlayAnimMontageStateTreeTask::EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const
 {
 	const FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
-
-	const ACharacter* Character = Cast<ACharacter>(InstanceData.Context->GetPawn());
-	UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+	
+	UAnimInstance* AnimInstance = InstanceData.Character->GetMesh()->GetAnimInstance();
 	
 	if (!IsValid(InstanceData.AnimMontage))
 	{

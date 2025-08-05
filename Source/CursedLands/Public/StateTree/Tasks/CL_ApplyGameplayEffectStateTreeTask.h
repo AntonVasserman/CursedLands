@@ -14,7 +14,7 @@ struct CURSEDLANDS_API FCL_ApplyGameplayEffectStateTreeTaskInstanceData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<APlayerController> Context;
+	TObjectPtr<ACharacter> Character;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Parameters")
 	TSubclassOf<UGameplayEffect> GameplayEffectClass = nullptr;

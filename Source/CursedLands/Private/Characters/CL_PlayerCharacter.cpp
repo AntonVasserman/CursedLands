@@ -14,6 +14,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "StateTree/CL_StateTreePlayerComponent.h"
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
@@ -52,6 +53,8 @@ ACL_PlayerCharacter::ACL_PlayerCharacter(const FObjectInitializer& ObjectInitial
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 	CharacterTraversal = CreateDefaultSubobject<UCL_CharacterTraversalComponent>("CharacterTraversal");
 
+	StateTreePlayer = CreateDefaultSubobject<UCL_StateTreePlayerComponent>("StateTreePlayer");
+	
 	ManaComponent = CreateDefaultSubobject<UCL_ManaComponent>("ManaComponent");
 	StaminaComponent = CreateDefaultSubobject<UCL_StaminaComponent>("StaminaComponent");
 }

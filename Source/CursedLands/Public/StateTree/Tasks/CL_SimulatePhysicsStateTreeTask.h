@@ -3,29 +3,23 @@
 #pragma once
 
 #include "StateTreeTaskBase.h"
-#include "CL_CharacterDeathPhysicsTask.generated.h"
-
-class ACL_PlayerController;
+#include "CL_SimulatePhysicsStateTreeTask.generated.h"
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_CharacterDeathPhysicsTaskInstanceData
+struct CURSEDLANDS_API FCL_SimulatePhysicsStateTreeTaskInstanceData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<ACL_PlayerController> Controller;
-	
-	/** If true the task will run forever until a transition stops it. */
-	UPROPERTY(EditAnywhere, Category = "Parameter")
-	bool bRunForever = false;
+	TObjectPtr<ACharacter> Character;
 };
 
-USTRUCT(Meta = (DisplayName = "Character Death Physics"))
-struct CURSEDLANDS_API FCL_CharacterDeathPhysicsTask : public FStateTreeTaskCommonBase
+USTRUCT(Meta = (DisplayName = "Simulate Physics"))
+struct CURSEDLANDS_API FCL_SimulatePhysicsStateTreeTask : public FStateTreeTaskCommonBase
 {
 	GENERATED_BODY()
 
-	using FInstanceDataType = FCL_CharacterDeathPhysicsTaskInstanceData;
+	using FInstanceDataType = FCL_SimulatePhysicsStateTreeTaskInstanceData;
 	
 	virtual const UStruct* GetInstanceDataType() const override { return FInstanceDataType::StaticStruct(); }
 	virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context, const FStateTreeTransitionResult& Transition) const override;

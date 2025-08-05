@@ -17,12 +17,6 @@
 #include "UI/HUD/CL_HUD.h"
 
 #if WITH_EDITOR
-ACL_PlayerController::ACL_PlayerController()
-{
-	// TODO (CL-130): Create a StateTree Schema for CLPlayerController and CLPlayerCharacter
-	PlayerStateTreeComponent = CreateDefaultSubobject<UStateTreeComponent>(TEXT("PlayerStateTree"));
-}
-
 void ACL_PlayerController::RequestSlomoStarted()
 {
 	bSlomoRequested = true;
