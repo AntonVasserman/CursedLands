@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CL_PlayerController.generated.h"
 
+class UCL_InputConfig;
 enum class ECommonInputType : uint8;
 struct FInputActionValue;
 class ACL_PlayerCharacter;
@@ -30,38 +31,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|MouseAndKeyboard|Debug", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SlomoAction;
 #endif
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|Gamepad", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> MoveAction_Gamepad;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|MouseAndKeyboard", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> MoveAction_Keyboard;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> LookAction;
-
-	// This action is used only for Keyboard. With a controller we don't toggle walking, it's should be blended with jogging
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions|MouseAndKeyboard", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> ToggleWalkAction;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCL_InputConfig> InputConfig;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> ToggleSprintAction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> ToggleCrouchAction;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> JumpAction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> TraverseAction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> SlideAction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input|Actions", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> PauseMenuAction;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UCL_UserWidget> PauseMenuWidgetClass;
 
@@ -85,7 +58,7 @@ private:
 #endif
 
 	void RequestMoveAction_Gamepad(const FInputActionValue& InValue);
-	void RequestMoveAction_Keyboard(const FInputActionValue& InValue);
+	void RequestMoveAction_KeyboardAndMouse(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleWalkAction();
 	void RequestToggleSprintAction();

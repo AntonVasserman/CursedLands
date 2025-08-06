@@ -10,8 +10,22 @@
 
 namespace CLGameplayTags
 {
-	// Statuses
+	// InputTags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Move_Gamepad, "InputTag.Move.Gamepad", "InputTag for Move Action using Gamepad");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Move_KeyboardAndMouse, "InputTag.Move.KeyboardAndMouse", "InputTag for Move Action using Keyboard and Mouse");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Look, "InputTag.Look", "InputTag for Look Action");
 
+	// TODO(CL-222): Update those...
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Walk, "InputTag.Walk", "InputTag for Walk Toggle Action");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Sprint, "InputTag.Sprint", "InputTag for Sprint Toggle Action");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Crouch, "InputTag.Crouch", "InputTag for Crouch Toggle Action");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Jump, "InputTag.Jump", "InputTag for Jump Action");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Traverse, "InputTag.Traverse", "InputTag for Traverse Action");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Slide, "InputTag.Slide", "InputTag for Slide Action");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_PauseMenu, "InputTag.PauseMenu", "InputTag for opening the Pause Menu");
+	
+	// Statuses
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Alive, "Status.Alive", "Character status tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Dead, "Status.Dead", "Character status tag");
 	

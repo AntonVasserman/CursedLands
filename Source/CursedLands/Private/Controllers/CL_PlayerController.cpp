@@ -11,6 +11,7 @@
 #include "Characters/CL_PlayerCharacter.h"
 #include "Components/StateTreeComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
+#include "Input/CL_InputComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "UI/CL_UserWidget.h"
@@ -78,7 +79,7 @@ void ACL_PlayerController::RequestMoveAction_Gamepad(const FInputActionValue& In
 	AddMovementVector(MovementVector);
 }
 
-void ACL_PlayerController::RequestMoveAction_Keyboard(const FInputActionValue& InValue)
+void ACL_PlayerController::RequestMoveAction_KeyboardAndMouse(const FInputActionValue& InValue)
 {
 	if (!PossessedPlayerCharacter->CanMove())
 	{
@@ -311,33 +312,31 @@ void ACL_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UCL_InputComponent* CLInputComponent = CastChecked<UCL_InputComponent>(InputComponent);
 
+	// TODO(CL-223): Think how to refactor this to fit into the new input system we have...
 #if WITH_EDITOR
-	EnhancedInputComponent->BindAction(SlomoAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestSlomoStarted);
-	EnhancedInputComponent->BindAction(SlomoAction, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestSlomoTriggered);
+	CLInputComponent->BindAction(SlomoAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestSlomoStarted);
+	CLInputComponent->BindAction(SlomoAction, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestSlomoTriggered);
 #endif
-	
-	checkf(LookAction, TEXT("LookAction uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestLookAction);
-	checkf(MoveAction_Gamepad, TEXT("MoveAction_Gamepad uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(MoveAction_Gamepad, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestMoveAction_Gamepad);
-	checkf(MoveAction_Keyboard, TEXT("MoveAction_Keyboard uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(MoveAction_Keyboard, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestMoveAction_Keyboard);
-	checkf(ToggleCrouchAction, TEXT("ToggleCrouchAction uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(ToggleCrouchAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestToggleCrouchAction);
-	checkf(ToggleWalkAction, TEXT("ToggleWalkAction uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(ToggleWalkAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestToggleWalkAction);
-	checkf(ToggleSprintAction, TEXT("ToggleSprintAction uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(ToggleSprintAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestToggleSprintAction);
-	checkf(JumpAction, TEXT("JumpAction uninitialized in object: %s"), *GetFullName())
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestJumpAction);
-	checkf(TraverseAction, TEXT("TraverseAction uninitialized in object: %s"), *GetFullName())
-	EnhancedInputComponent->BindAction(TraverseAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestTraverseAction);
-	checkf(SlideAction, TEXT("SlideAction uninitialized in object: %s"), *GetFullName())
-	EnhancedInputComponent->BindAction(SlideAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestSlideAction);
-	checkf(PauseMenuAction, TEXT("PauseMenuAction uninitialized in object: %s"), *GetFullName());
-	EnhancedInputComponent->BindAction(PauseMenuAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestPauseMenuAction);
+
+	checkf(InputConfig, TEXT("InputConfig uninitialized in: %s"), *GetFullName());
+	// TODO(CL-222): Bind Abilities here...
+	// TArray<uint32> BindHandles;
+	// CLInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, /*out*/ BindHandles);
+
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::RequestLookAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Move_Gamepad, ETriggerEvent::Triggered, this, &ThisClass::RequestMoveAction_Gamepad);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Move_KeyboardAndMouse, ETriggerEvent::Triggered, this, &ThisClass::RequestMoveAction_KeyboardAndMouse);
+
+	// TODO(CL-222):
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Crouch, ETriggerEvent::Started, this, &ThisClass::RequestToggleCrouchAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Walk, ETriggerEvent::Started, this, &ThisClass::RequestToggleWalkAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &ThisClass::RequestToggleSprintAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::RequestJumpAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Slide, ETriggerEvent::Started, this, &ThisClass::RequestSlideAction);
+	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_PauseMenu, ETriggerEvent::Started, this, &ThisClass::RequestPauseMenuAction);
 }
 
 //~ APlayerController End

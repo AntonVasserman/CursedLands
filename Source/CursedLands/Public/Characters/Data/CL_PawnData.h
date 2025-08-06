@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "CL_PawnData.generated.h"
 
+class UCL_InputConfig;
 class UCL_AbilitySet;
 
 UCLASS(BlueprintType, Const)
