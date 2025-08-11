@@ -68,12 +68,12 @@ void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyBegin(USkeletalMeshComponen
 void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
-
+	
 	if (ShouldNotify() == false)
 	{
 		return;
 	}
-	
+
 	const ACharacter* Character = Cast<ACharacter>(MeshComp->GetOwner());
 	if (Character == nullptr)
 	{
@@ -82,15 +82,17 @@ void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyTick(USkeletalMeshComponent
 
 	ElapsedTime = FMath::Min(ElapsedTime + FrameDeltaTime, TotalLerpDuration);
 	const float LerpAlpha = ElapsedTime / TotalLerpDuration;
-
+	const float NextHalfHeight = FMath::Lerp(InitialHalfHeight, NewHalfHeight, LerpAlpha);
+	const float NextRadius = FMath::Lerp(InitialRadius, NewRadius, LerpAlpha);
+	
 	if (bLerpHalfHeight)
 	{
-		Character->GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp(InitialHalfHeight, NewHalfHeight, LerpAlpha));
+		Character->GetCapsuleComponent()->SetCapsuleHalfHeight(NextHalfHeight);
 	}
 	
 	if (bLerpRadius)
 	{
-		Character->GetCapsuleComponent()->SetCapsuleRadius(FMath::Lerp(InitialRadius, NewRadius, LerpAlpha));
+		Character->GetCapsuleComponent()->SetCapsuleRadius(NextRadius);
 	}
 }
 
