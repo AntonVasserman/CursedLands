@@ -19,7 +19,6 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Walk, "InputTag.Walk", "InputTag for Walk Toggle Action");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Sprint, "InputTag.Sprint", "InputTag for Sprint Toggle Action");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Crouch, "InputTag.Crouch", "InputTag for Crouch Toggle Action");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Jump, "InputTag.Jump", "InputTag for Jump Action");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Traverse, "InputTag.Traverse", "InputTag for Traverse Action");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Slide, "InputTag.Slide", "InputTag for Slide Action");
 

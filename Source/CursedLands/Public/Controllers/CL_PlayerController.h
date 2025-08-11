@@ -7,10 +7,11 @@
 #include "GameFramework/PlayerController.h"
 #include "CL_PlayerController.generated.h"
 
-class UCL_InputConfig;
 enum class ECommonInputType : uint8;
+struct FGameplayTag;
 struct FInputActionValue;
 class ACL_PlayerCharacter;
+class UCL_InputConfig;
 class UCL_UserWidget;
 class UInputAction;
 class UInputMappingContext;
@@ -63,11 +64,13 @@ private:
 	void RequestToggleWalkAction();
 	void RequestToggleSprintAction();
 	void RequestToggleCrouchAction();
-	void RequestJumpAction();
 	void RequestTraverseAction();
 	void RequestSlideAction();
 	void RequestPauseMenuAction();
 
+	void AbilityInputPressed(FGameplayTag InputTag);
+	void AbilityInputReleased(FGameplayTag InputTag);
+	
 	void AddMovementVector(const FVector2D& InMovementVector2D);
 	UInputMappingContext* GetCurrentInputMappingContext() const;
 	UFUNCTION()
@@ -76,6 +79,8 @@ private:
 	void TogglePauseMenu();
 	
 	//~ APlayerController Begin
+public:
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* PawnToPossess) override;

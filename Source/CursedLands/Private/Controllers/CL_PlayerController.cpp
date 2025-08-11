@@ -8,12 +8,11 @@
 #include "CommonInputTypeEnum.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/CL_AbilitySystemComponent.h"
 #include "Characters/CL_PlayerCharacter.h"
-#include "Components/StateTreeComponent.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Input/CL_InputComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "UI/CL_UserWidget.h"
 #include "UI/HUD/CL_HUD.h"
 
@@ -209,14 +208,6 @@ void ACL_PlayerController::RequestToggleCrouchAction()
 	}
 }
 
-void ACL_PlayerController::RequestJumpAction()
-{
-	if (PossessedPlayerCharacter->CanJump())
-	{
-		PossessedPlayerCharacter->Jump();
-	}
-}
-
 void ACL_PlayerController::RequestTraverseAction()
 {
 	if (PossessedPlayerCharacter->CanTraverse())
@@ -244,6 +235,30 @@ void ACL_PlayerController::RequestPauseMenuAction()
 	TogglePauseMenu();
 }
 
+void ACL_PlayerController::AbilityInputPressed(FGameplayTag InputTag)
+{
+	UCL_AbilitySystemComponent* AbilitySystemComponent = PossessedPlayerCharacter->GetCLAbilitySystemComponent();
+	if (AbilitySystemComponent == nullptr)
+	{
+		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, TEXT("AbilitySystemComponent found null PlayerController for PossessedCharacter: %s"), *PossessedPlayerCharacter->GetFullName());
+		return;
+	}
+	
+	AbilitySystemComponent->AbilityInputPressed(InputTag);
+}
+
+void ACL_PlayerController::AbilityInputReleased(FGameplayTag InputTag)
+{
+	UCL_AbilitySystemComponent* AbilitySystemComponent = PossessedPlayerCharacter->GetCLAbilitySystemComponent();
+	if (AbilitySystemComponent == nullptr)
+	{
+		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, TEXT("AbilitySystemComponent found null PlayerController for PossessedCharacter: %s"), *PossessedPlayerCharacter->GetFullName());
+		return;
+	}
+	
+	AbilitySystemComponent->AbilityInputReleased(InputTag);
+}
+
 void ACL_PlayerController::TogglePauseMenu()
 {
 	if (!bInPausedMenu)
@@ -268,6 +283,21 @@ void ACL_PlayerController::TogglePauseMenu()
 }
 
 //~ APlayerController Begin
+
+void ACL_PlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	if (UCL_AbilitySystemComponent* AbilitySystemComponent = PossessedPlayerCharacter->GetCLAbilitySystemComponent();
+		AbilitySystemComponent != nullptr)
+	{
+		AbilitySystemComponent->ProcessAbilityInput(DeltaTime, bGamePaused);	
+	}
+	else
+	{
+		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, TEXT("AbilitySystemComponent found null PlayerController for PossessedCharacter: %s"), *PossessedPlayerCharacter->GetFullName());
+	}
+	
+	Super::PostProcessInput(DeltaTime, bGamePaused);
+}
 
 void ACL_PlayerController::BeginPlay()
 {
@@ -321,9 +351,7 @@ void ACL_PlayerController::SetupInputComponent()
 #endif
 
 	checkf(InputConfig, TEXT("InputConfig uninitialized in: %s"), *GetFullName());
-	// TODO(CL-222): Bind Abilities here...
-	// TArray<uint32> BindHandles;
-	// CLInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, /*out*/ BindHandles);
+	CLInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputPressed, &ThisClass::AbilityInputReleased);
 
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::RequestLookAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Move_Gamepad, ETriggerEvent::Triggered, this, &ThisClass::RequestMoveAction_Gamepad);
@@ -333,7 +361,6 @@ void ACL_PlayerController::SetupInputComponent()
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Crouch, ETriggerEvent::Started, this, &ThisClass::RequestToggleCrouchAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Walk, ETriggerEvent::Started, this, &ThisClass::RequestToggleWalkAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &ThisClass::RequestToggleSprintAction);
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::RequestJumpAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Slide, ETriggerEvent::Started, this, &ThisClass::RequestSlideAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_PauseMenu, ETriggerEvent::Started, this, &ThisClass::RequestPauseMenuAction);
