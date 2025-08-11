@@ -7,8 +7,8 @@
 
 void UCL_ApplyGameplayEffectOperation::Execute_Implementation(UAbilitySystemComponent* InAbilitySystemComponent) const
 {
-	checkf(InAbilitySystemComponent, TEXT("%s::%hs: AbilitySystemComponent uninitialized"), *GetClass()->GetName(), __FUNCTION__);
-	checkf(GameplayEffectClass, TEXT("%s::%hs: GameplayEffectClass uninitialized"), *GetClass()->GetName(), __FUNCTION__);
+	checkf(InAbilitySystemComponent, TEXT("%s: AbilitySystemComponent uninitialized"), __FUNCTIONW__);
+	checkf(GameplayEffectClass, TEXT("%s: GameplayEffectClass uninitialized"), *GetClass()->GetName(), __FUNCTIONW__);
 
 	const FGameplayEffectContextHandle ContextHandle = InAbilitySystemComponent->MakeEffectContext();
 	const FGameplayEffectSpecHandle SpecHandle = InAbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, GameplayEffectLevel, ContextHandle);

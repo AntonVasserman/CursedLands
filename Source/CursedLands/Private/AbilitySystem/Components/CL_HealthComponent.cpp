@@ -23,7 +23,7 @@ bool UCL_HealthComponent::IsAlive() const
 {
 	if (AbilitySystemComponent == nullptr)
 	{
-		UE_LOG(LogCLGameplayAbilitySystem, Warning, TEXT("CL_HealthComponent::%hs: AbilitySystemComponent is not yet initialized."), __FUNCTION__);
+		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, "AbilitySystemComponent is not yet initialized.");
 		return false;
 	}
 	

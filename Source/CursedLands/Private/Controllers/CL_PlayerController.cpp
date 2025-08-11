@@ -21,7 +21,7 @@
 void ACL_PlayerController::RequestSlomoStarted()
 {
 	bSlomoRequested = true;
-	UE_LOG(LogCL, Display, TEXT("Slomo Update Requested"));
+	CL_LOG(Display, "Slomo Update Requested");
 	// TODO: Generate a proper key for the DebugMessage or remove the DebugMessage entirely???
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Slomo Update Requested")));
 }
@@ -38,7 +38,7 @@ void ACL_PlayerController::RequestSlomoTriggered(const FInputActionValue& InValu
 	const float NewSlomoValue = FMath::Clamp(CurrentSlomoValue + SlomoInput, 0.25f, 1.0f);
 	
 	GetWorld()->GetWorldSettings()->SetTimeDilation(NewSlomoValue);
-	UE_LOG(LogCL, Display, TEXT("Slomo Updated from: '%f', to: '%f'"), CurrentSlomoValue, NewSlomoValue);
+	CL_LOG(Display, "Slomo Updated from: '%f', to: '%f'", CurrentSlomoValue, NewSlomoValue);
 	// TODO: Generate a proper key for the DebugMessage or remove the DebugMessage entirely???
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Slomo Updated from: '%f', to: '%f'"), CurrentSlomoValue, NewSlomoValue));
 	

@@ -21,6 +21,7 @@
 #include "Systems/Traversal/CL_TraversalCheckResult.h"
 
 DEFINE_LOG_CATEGORY(LogCharacterTraversal);
+#define CL_LOG_CHARACTER_TRAVERSAL(LogLevel, Format, ...) UE_LOG(LogCharacterTraversal, LogLevel, TEXT("%s: " Format), __FUNCTIONW__, ##__VA_ARGS__)
 
 static TAutoConsoleVariable CVarShowDebugCLCharacterTraversal(
 	TEXT("CLShowDebug.CharacterTraversal"),
@@ -149,14 +150,14 @@ ACL_TraversableActor* UCL_CharacterTraversalComponent::TraceForTraversableActor(
 
 	if (OutHit.bBlockingHit == false)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("TraceForTraversableActor: Traversal Object wasn't found"));
+		CL_LOG_CHARACTER_TRAVERSAL(Display, "TraceForTraversableActor: Traversal Object wasn't found");
 		return nullptr;
 	}
 
 	ACL_TraversableActor* TraversableActor = CastChecked<ACL_TraversableActor>(OutHit.GetActor());
 	if (TraversableActor == nullptr)
 	{
-		UE_LOG(LogCharacterTraversal, Warning, TEXT("TraceForTraversableActor: Failed to Cast Traversal Object into a TraversableActor"));
+		CL_LOG_CHARACTER_TRAVERSAL(Warning, "TraceForTraversableActor: Failed to Cast Traversal Object into a TraversableActor");
 		return nullptr;
 	}
 
@@ -195,7 +196,7 @@ bool UCL_CharacterTraversalComponent::ExecuteTraversalCheck(FCL_TraversalCheckRe
 	ACL_TraversableActor* TraversableActor = TraceForTraversableActor(HitResult, bDebug);
 	if (TraversableActor == nullptr)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor wasn't found"));
+		CL_LOG_CHARACTER_TRAVERSAL(Display, "ExecuteTraversalCheck: TraversableActor wasn't found");
 		return false;
 	}
 
@@ -214,7 +215,7 @@ bool UCL_CharacterTraversalComponent::ExecuteTraversalCheck(FCL_TraversalCheckRe
 	
 	if (!FrontLedgeCheckResult.bHasLedge)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor doesn't have a valid Front Ledge"));
+		CL_LOG_CHARACTER_TRAVERSAL(Display, "ExecuteTraversalCheck: TraversableActor doesn't have a valid Front Ledge");
 		return false;
 	}
 
@@ -227,7 +228,7 @@ bool UCL_CharacterTraversalComponent::ExecuteTraversalCheck(FCL_TraversalCheckRe
 	CapsuleTraceToCheckRoomOnLedge(ActorLocation, CapsuleRadius, CapsuleHalfHeight, OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation, OutTraversalCheckResult.FrontLedgeCheckResult.LedgeNormal, FrontLedgeRoomCheckLocation, FrontLedgeRoomCheckHitResult, bDebug);
 	if (FrontLedgeRoomCheckHitResult.bBlockingHit || FrontLedgeRoomCheckHitResult.bStartPenetrating)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor has no room on the Front ledge"));
+		CL_LOG_CHARACTER_TRAVERSAL(Display, "ExecuteTraversalCheck: TraversableActor has no room on the Front ledge");
 		OutTraversalCheckResult.FrontLedgeCheckResult = FCL_LedgeCheckResult(); // Clear the front ledge, as it is blocked
 		return false;
 	}
@@ -240,7 +241,7 @@ bool UCL_CharacterTraversalComponent::ExecuteTraversalCheck(FCL_TraversalCheckRe
 	// We traverse only over obstacles that are 0.75 the Characters Height
 	if (OutTraversalCheckResult.ObstacleHeight > CapsuleHalfHeight * 1.5f)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("ExecuteTraversalCheck: TraversableActor's Obstacle height: %f, is too high"), OutTraversalCheckResult.ObstacleHeight);
+		CL_LOG_CHARACTER_TRAVERSAL(Display, "ExecuteTraversalCheck: TraversableActor's Obstacle height: %f, is too high", OutTraversalCheckResult.ObstacleHeight);
 		return false;
 	}
 	
@@ -305,7 +306,7 @@ bool UCL_CharacterTraversalComponent::ExecuteTraversalCheck(FCL_TraversalCheckRe
 	UObject* ChooserResult = UChooserFunctionLibrary::EvaluateObjectChooserBase(TraversalChooserContext, UChooserFunctionLibrary::MakeEvaluateChooser(TraversalAnimMontageChooserTable.Get()), UAnimMontage::StaticClass());
 	if (ChooserResult == nullptr)
 	{
-		UE_LOG(LogCharacterTraversal, Display, TEXT("%s failed to choose TraversalAnimMontage!"), *GetName());
+		CL_LOG_CHARACTER_TRAVERSAL(Display, "%s failed to choose TraversalAnimMontage!", *GetName());
 		return false;
 	}
 	
@@ -323,11 +324,11 @@ bool UCL_CharacterTraversalComponent::ExecuteTraversalCheck(FCL_TraversalCheckRe
 	UMotionWarpingUtilities::GetMotionWarpingWindowsForWarpTargetFromAnimation(OutTraversalCheckResult.ChosenMontage, FrontLedgeWarpTargetName, OutWindows);
 
 	float DistanceFromFrontLedge = UKismetMathLibrary::Vector_Distance(OutTraversalCheckResult.FrontLedgeCheckResult.LedgeLocation, ActorLocation);
-	UE_LOG(LogCharacterTraversal, Display, TEXT("DistanceFromFrontLedge: %f"), DistanceFromFrontLedge);
+	CL_LOG_CHARACTER_TRAVERSAL(Display, "DistanceFromFrontLedge: %f", DistanceFromFrontLedge);
 	float AnimMontageFrontLedgeMotionWarpStartTime = OutWindows[0].StartTime;
-	UE_LOG(LogCharacterTraversal, Display, TEXT("AnimMontageFrontLedgeMotionWarpStartTime: %f"), AnimMontageFrontLedgeMotionWarpStartTime);
+	CL_LOG_CHARACTER_TRAVERSAL(Display, "AnimMontageFrontLedgeMotionWarpStartTime: %f", AnimMontageFrontLedgeMotionWarpStartTime);
 	OutTraversalCheckResult.StartTime = UKismetMathLibrary::MapRangeClamped(DistanceFromFrontLedge, 450.f, 0.f, 0.f, AnimMontageFrontLedgeMotionWarpStartTime);
-	UE_LOG(LogCharacterTraversal, Display, TEXT("OutTraversalCheckResult.StartTime: %f"), OutTraversalCheckResult.StartTime);
+	CL_LOG_CHARACTER_TRAVERSAL(Display, "OutTraversalCheckResult.StartTime: %f", OutTraversalCheckResult.StartTime);
 	
 	return true;
 }

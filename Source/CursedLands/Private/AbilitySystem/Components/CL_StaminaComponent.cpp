@@ -23,7 +23,7 @@ bool UCL_StaminaComponent::IsFatigued() const
 {
 	if (AbilitySystemComponent == nullptr)
 	{
-		UE_LOG(LogCLGameplayAbilitySystem, Warning, TEXT("CL_StaminaComponent::%hs: AbilitySystemComponent is not yet initialized."), __FUNCTION__);
+		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, "AbilitySystemComponent is not yet initialized.")
 		return false;
 	}
 	
@@ -34,7 +34,7 @@ void UCL_StaminaComponent::ApplyFatigue() const
 {
 	if (IsFatigued())
 	{
-		UE_LOG(LogCLGameplayAbilitySystem, Warning, TEXT("CL_StaminaComponent::%hs: %s is already Fatigued, re-apply isn't supported."), __FUNCTION__, *GetOwner()->GetFullName());
+		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, "%s is already Fatigued, re-apply isn't supported.", *GetOwner()->GetFullName());
 		return;
 	}
 

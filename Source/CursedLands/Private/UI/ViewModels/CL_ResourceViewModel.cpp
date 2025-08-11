@@ -36,7 +36,7 @@ float UCL_ResourceViewModel::GetValuePercentage() const
 {
 	if (MaxValue == 0.f)
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s::%hs: MaxValue is 0. Returning 0!"), *GetClass()->GetName(), __FUNCTION__);
+		CL_LOG(Warning, "MaxValue is 0. Returning 0!");
 	}
 
 	return UKismetMathLibrary::SafeDivide(CurrentValue, MaxValue);

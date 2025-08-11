@@ -27,7 +27,7 @@ void UCL_AnimNotify_GASOperation::Notify(USkeletalMeshComponent* MeshComp, UAnim
 	ACharacter* Character = Cast<ACharacter>(MeshComp->GetOwner());
 	if (Character == nullptr)
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s::%hs: MeshComp's Owner: '%s' is not of type ACharacter"), *GetClass()->GetName(), __FUNCTION__, *Character->GetFullName());
+		CL_LOG(Warning, "MeshComp's Owner: '%s' is not of type ACharacter", *Character->GetFullName());
 		return;
 	}
 
@@ -37,7 +37,7 @@ void UCL_AnimNotify_GASOperation::Notify(USkeletalMeshComponent* MeshComp, UAnim
 	// If we can't find the Component we won't throw, we will just not apply the effect
 	if (AbilitySystemComponent == nullptr)
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s::%hs: Couldn't find AbilitySystemComponent on for Character: %s"), *GetClass()->GetName(), __FUNCTION__, *Character->GetFullName());
+		CL_LOG(Warning, "Couldn't find AbilitySystemComponent on for Character: %s", *Character->GetFullName());
 		return;
 	}
 
@@ -46,11 +46,11 @@ void UCL_AnimNotify_GASOperation::Notify(USkeletalMeshComponent* MeshComp, UAnim
 	#ifdef WITH_EDITOR
 	if (GASOperation == nullptr)
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s::%hs: GASOperation uninitialized for Character: %s"), *GetClass()->GetName(), __FUNCTION__, *Character->GetFullName());
+		CL_LOG(Warning, "GASOperation uninitialized for Character: %s", *Character->GetFullName());
 		return;
 	}
 	#else
-	checkf(GASOperation, TEXT("%s::%hs: GASOperation uninitialized for Character: %s"), *GetClass()->GetName(), __FUNCTION__, *Character->GetFullName());
+	checkf(GASOperation, TEXT("%s: GASOperation uninitialized for Character: %s"), __FUNCTIONW__, *Character->GetFullName());
 	#endif
 	
 	GASOperation->Execute(AbilitySystemComponent);

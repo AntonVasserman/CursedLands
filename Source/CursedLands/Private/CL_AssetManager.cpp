@@ -13,8 +13,8 @@ UCL_AssetManager& UCL_AssetManager::Get()
 	{
 		return *CLAssetManager;
 	}
-
-	UE_LOG(LogCL, Fatal, TEXT("Invalid AssetManagerClassName in DefaultEngine.ini.  It must be set to UCL_AssetManager!"));
+	
+	CL_LOG(Fatal, "Invalid AssetManagerClassName in DefaultEngine.ini.  It must be set to UCL_AssetManager!");
 
 	// Fatal error above prevents this from being called.
 	return *NewObject<UCL_AssetManager>();

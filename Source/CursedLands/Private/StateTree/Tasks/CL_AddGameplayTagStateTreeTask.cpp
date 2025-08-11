@@ -22,7 +22,7 @@ EStateTreeRunStatus FCL_AddGameplayTagStateTreeTask::EnterState(FStateTreeExecut
 	// If we can't find the Component we won't throw, we will just not add the Tag
 	if (AbilitySystemComponent == nullptr)
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s::%hs: Couldn't find AbilitySystemComponent on for Actor: %s"), *StaticStruct()->GetName(), __FUNCTION__, *InstanceData.Actor->GetFullName());
+		CL_LOG(Warning, "Couldn't find AbilitySystemComponent on for Actor: %s", *InstanceData.Actor->GetFullName());
 		return EStateTreeRunStatus::Failed;
 	}
 
@@ -40,7 +40,7 @@ void FCL_AddGameplayTagStateTreeTask::ExitState(FStateTreeExecutionContext& Cont
 	// If we can't find the Component we won't throw, we will just not add the Tag
 	if (AbilitySystemComponent == nullptr)
 	{
-		UE_LOG(LogCL, Warning, TEXT("%s::%hs: Couldn't find AbilitySystemComponent on for Actor: %s"), *StaticStruct()->GetName(), __FUNCTION__, *InstanceData.Actor->GetFullName());
+		CL_LOG(Warning, "Couldn't find AbilitySystemComponent on for Actor: %s", *InstanceData.Actor->GetFullName());
 	}
 
 	if (bRemoveOnExit)

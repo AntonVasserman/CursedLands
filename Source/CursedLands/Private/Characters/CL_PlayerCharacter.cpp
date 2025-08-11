@@ -4,6 +4,7 @@
 #include "Characters/CL_PlayerCharacter.h"
 
 #include "CL_GameplayTags.h"
+#include "CL_LogChannels.h"
 #include "KismetAnimationLibrary.h"
 #include "AbilitySystem/Attributes/CL_AttributeSet.h"
 #include "AbilitySystem/Components/CL_ManaComponent.h"
@@ -18,6 +19,8 @@
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 
 DEFINE_LOG_CATEGORY(LogCLPlayerCharacter);
+
+#define CL_LOG_PLAYER_CHARACTER(LogLevel, Format, ...) UE_LOG(LogCLPlayerCharacter, LogLevel, TEXT("%s: " Format), __FUNCTIONW__, ##__VA_ARGS__)
 
 ACL_PlayerCharacter::ACL_PlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCL_ExtendedCharacterMovementComponent>(CharacterMovementComponentName))
@@ -98,7 +101,7 @@ void ACL_PlayerCharacter::Walk()
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	else if (!GetCLCharacterMovement()->CanEverWalk())
 	{
-		UE_LOG(LogCLPlayerCharacter, Warning, TEXT("%s is trying to walk, but walking is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
+		CL_LOG_PLAYER_CHARACTER(Warning, "%s is trying to walk, but walking is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)", *GetName());
 	}
 #endif
 }
@@ -133,7 +136,7 @@ void ACL_PlayerCharacter::Sprint()
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	else if (!GetCLCharacterMovement()->CanEverSprint())
 	{
-		UE_LOG(LogCLPlayerCharacter, Warning, TEXT("%s is trying to sprint, but sprinting is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)"), *GetName());
+		CL_LOG_PLAYER_CHARACTER(Warning, "%s is trying to sprint, but sprinting is disabled on this character! (check CLCharacterMovementComponent::CharacterMovementProps)", *GetName());
 	}
 #endif
 }
@@ -301,7 +304,7 @@ void ACL_PlayerCharacter::UpdateCardinalDirection()
 
 void ACL_PlayerCharacter::OnCharacterTraversalActionStarted(const ECL_TraversalAction TraversalAction)
 {
-	UE_LOG(LogCLPlayerCharacter, Display, TEXT("%hs: Started Traversal Action '%s'"), __FUNCTION__, *StaticEnum<ECL_TraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
+	CL_LOG_PLAYER_CHARACTER(Display, "Started Traversal Action '%s'", *StaticEnum<ECL_TraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
 
 	SetTraversalActionTag(TraversalAction, true);
 	bUseControllerRotationYaw = false;
@@ -313,7 +316,7 @@ void ACL_PlayerCharacter::OnCharacterTraversalActionStarted(const ECL_TraversalA
 
 void ACL_PlayerCharacter::OnCharacterTraversalActionFinished(const ECL_TraversalAction TraversalAction)
 {
-	UE_LOG(LogCLPlayerCharacter, Display, TEXT("%hs: Finished Traversal Action '%s'"), __FUNCTION__, *StaticEnum<ECL_TraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
+	CL_LOG_PLAYER_CHARACTER(Display, "Finished Traversal Action '%s'", *StaticEnum<ECL_TraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
 
 	SetTraversalActionTag(TraversalAction, false);
 	bUseControllerRotationYaw = true;
@@ -387,7 +390,7 @@ void ACL_PlayerCharacter::PostInitializeComponents()
 void ACL_PlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
+	
 	if (bJustLanded)
 	{
 		JustLandedResetTime -= DeltaSeconds;

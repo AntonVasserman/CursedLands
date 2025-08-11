@@ -6,7 +6,7 @@
 
 void UCL_GameplayTagOperation::Execute_Implementation(UAbilitySystemComponent* InAbilitySystemComponent) const
 {
-	checkf(InAbilitySystemComponent, TEXT("%s::%hs: AbilitySystemComponent uninitialized"), *GetClass()->GetName(), __FUNCTION__);
+	checkf(InAbilitySystemComponent, TEXT("%s: AbilitySystemComponent uninitialized"), __FUNCTIONW__);
 	
 	switch (OperationType)
 	{

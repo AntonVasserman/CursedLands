@@ -79,7 +79,7 @@ void UCL_AbilitySet::GiveAttributeSetsToAbilitySystem(UCL_AbilitySystemComponent
 
 		if (!IsValid(SetToGrant.AttributeSet))
 		{
-			UE_LOG(LogCLGameplayAbilitySystem, Error, TEXT("GrantedAttributes[%d] on ability set [%s] is not valid"), i, *GetNameSafe(this));
+			CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Error, "GrantedAttributes[%d] on ability set [%s] is not valid", i, *GetNameSafe(this));
 			continue;
 		}
 
@@ -101,7 +101,7 @@ void UCL_AbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemCompo
 
 		if (!IsValid(AbilityToGrant.Ability))
 		{
-			UE_LOG(LogCLGameplayAbilitySystem, Error, TEXT("GrantedGameplayAbilities[%d] on ability set [%s] is not valid"), i, *GetNameSafe(this));
+			CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Error, "GrantedGameplayAbilities[%d] on ability set [%s] is not valid", i, *GetNameSafe(this));
 			continue;
 		}
 
@@ -128,7 +128,7 @@ void UCL_AbilitySet::GiveGameplayEffectsToAbilitySystem(UCL_AbilitySystemCompone
 
 		if (!IsValid(EffectToGrant.GameplayEffect))
 		{
-			UE_LOG(LogCLGameplayAbilitySystem, Error, TEXT("GrantedGameplayEffects[%d] on ability set [%s] is not valid"), i, *GetNameSafe(this));
+			CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Error, "GrantedGameplayEffects[%d] on ability set [%s] is not valid", i, *GetNameSafe(this));
 			continue;
 		}
 

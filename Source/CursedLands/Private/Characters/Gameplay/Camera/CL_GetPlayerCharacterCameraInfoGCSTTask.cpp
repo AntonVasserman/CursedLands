@@ -19,7 +19,7 @@ EStateTreeRunStatus FCL_GetPlayerCharacterCameraInfoGCSTTask::EnterState(FStateT
 	InstanceData.PlayerCharacterRef = Cast<ACL_PlayerCharacter>(Cast<UGameplayCameraComponent>(Context.GetOwner())->GetOwner());
 	if (!InstanceData.PlayerCharacterRef)
 	{
-		UE_LOG(LogCL, Error, TEXT("Failed to get PlayerCharacterRef from StateTreeExecutionContext"));
+		CL_LOG(Error, "Failed to get PlayerCharacterRef from StateTreeExecutionContext");
 		return EStateTreeRunStatus::Failed;
 	}
 	
