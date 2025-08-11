@@ -42,13 +42,19 @@ Level Design - Anton Vasserman
 <details>
 <summary><h3 style="display:inline"><strong>ActionRPG (Epic Games)</strong></h3></summary>
 
-#### Audio
-- A_Character_Potion_01
-- A_Character_Potion_02
 #### Materials
 - M_PotionGlass
 #### Meshes
 - SM_PotionBottle
+
+</details>
+
+<details>
+<summary><h3 style="display:inline"><strong>Aura (Stephen Ulibarri)</strong></h3></summary>
+
+#### Audio
+- SFX_Potion_Consume_0X
+- SFX_Potion_PopsOut_0X
 
 </details>
 
