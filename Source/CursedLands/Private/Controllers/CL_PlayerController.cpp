@@ -224,17 +224,6 @@ void ACL_PlayerController::RequestSlideAction()
 	}
 }
 
-void ACL_PlayerController::RequestPauseMenuAction()
-{
-	if (PauseMenuWidget == nullptr)
-	{
-		checkf(PauseMenuWidgetClass, TEXT("PauseMenuWidgetClass uninitialized in object: %s"), *GetFullName());
-		PauseMenuWidget = CreateWidget<UCL_UserWidget>(this, PauseMenuWidgetClass);
-	}
-	
-	TogglePauseMenu();
-}
-
 void ACL_PlayerController::AbilityInputPressed(FGameplayTag InputTag)
 {
 	UCL_AbilitySystemComponent* AbilitySystemComponent = PossessedPlayerCharacter->GetCLAbilitySystemComponent();
@@ -257,29 +246,6 @@ void ACL_PlayerController::AbilityInputReleased(FGameplayTag InputTag)
 	}
 	
 	AbilitySystemComponent->AbilityInputReleased(InputTag);
-}
-
-void ACL_PlayerController::TogglePauseMenu()
-{
-	if (!bInPausedMenu)
-	{
-		PauseMenuWidget->AddToViewport();
-		SetShowMouseCursor(true);
-		FInputModeGameAndUI InputMode;
-		InputMode.SetWidgetToFocus(PauseMenuWidget->TakeWidget());
-		InputMode.SetHideCursorDuringCapture(false);
-		SetInputMode(FInputModeGameAndUI());
-		UGameplayStatics::SetGamePaused(this, true);
-		bInPausedMenu = true;
-	}
-	else
-	{
-		UGameplayStatics::SetGamePaused(this, false);
-		SetInputMode(FInputModeGameOnly());
-		SetShowMouseCursor(false);
-		PauseMenuWidget->RemoveFromParent();
-		bInPausedMenu = false;
-	}
 }
 
 //~ APlayerController Begin
@@ -363,7 +329,6 @@ void ACL_PlayerController::SetupInputComponent()
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &ThisClass::RequestToggleSprintAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Slide, ETriggerEvent::Started, this, &ThisClass::RequestSlideAction);
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_PauseMenu, ETriggerEvent::Started, this, &ThisClass::RequestPauseMenuAction);
 }
 
 //~ APlayerController End

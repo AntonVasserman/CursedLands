@@ -36,9 +36,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Input", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCL_InputConfig> InputConfig;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Menus", Meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UCL_UserWidget> PauseMenuWidgetClass;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Movement", Meta = (AllowPrivateAccess = "true", ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
 	float WalkToJogInputThreshold = 0.4f;
 	
@@ -48,9 +45,6 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<ACL_PlayerCharacter> PossessedPlayerCharacter = nullptr;
-	UPROPERTY()
-	TObjectPtr<UCL_UserWidget> PauseMenuWidget = nullptr;
-	bool bInPausedMenu = false;
 	ECommonInputType CurrentInputType;
 
 #if WITH_EDITOR
@@ -66,7 +60,6 @@ private:
 	void RequestToggleCrouchAction();
 	void RequestTraverseAction();
 	void RequestSlideAction();
-	void RequestPauseMenuAction();
 
 	void AbilityInputPressed(FGameplayTag InputTag);
 	void AbilityInputReleased(FGameplayTag InputTag);
@@ -75,8 +68,6 @@ private:
 	UInputMappingContext* GetCurrentInputMappingContext() const;
 	UFUNCTION()
 	void OnInputMethodChanged(ECommonInputType NewInputType);
-	UFUNCTION(BlueprintCallable, Category = "Menus")
-	void TogglePauseMenu();
 	
 	//~ APlayerController Begin
 public:
