@@ -23,17 +23,17 @@ public:
 	FORCEINLINE UCL_PrimaryGameLayoutWidget* GetPrimaryGameLayout() const { return PrimaryOverlayWidget; }
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	FORCEINLINE UClass* GetPauseMenuWidgetClass() const { return PauseMenuWidgetClass != nullptr ? PauseMenuWidgetClass.LoadSynchronous() : nullptr; }
+	FORCEINLINE TSubclassOf<UCL_CommonActivatableWidget> GetPauseMenuWidgetClass() const { return PauseMenuWidgetClass; }
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Config|UI|PrimaryGameLayout")
-	TSoftClassPtr<UCL_PrimaryGameLayoutWidget> PrimaryOverlayWidgetClass;
+	TSubclassOf<UCL_PrimaryGameLayoutWidget> PrimaryOverlayWidgetClass;
 	UPROPERTY()
 	TObjectPtr<UCL_PrimaryGameLayoutWidget> PrimaryOverlayWidget;
 	UPROPERTY(EditDefaultsOnly, Category = "Config|UI")
-	TSoftClassPtr<UCL_CommonActivatableWidget> GameHUDWidgetClass;
+	TSubclassOf<UCL_CommonActivatableWidget> GameHUDWidgetClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Config|UI")
-	TSoftClassPtr<UCL_CommonActivatableWidget> PauseMenuWidgetClass;
+	TSubclassOf<UCL_CommonActivatableWidget> PauseMenuWidgetClass;
 
 	//~ AHUD Begin
 	//~ AHUD End

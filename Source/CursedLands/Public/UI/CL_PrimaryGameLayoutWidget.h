@@ -8,6 +8,7 @@
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "CL_PrimaryGameLayoutWidget.generated.h"
 
+class UCL_CommonActivatableWidget;
 class UCommonActivatableWidget;
 
 UCLASS(Abstract/*, Meta = (DisableNativeTick)*/)
@@ -22,7 +23,7 @@ public:
 	UCL_PrimaryGameLayoutWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
 	
 	UFUNCTION(BlueprintCallable, Category = "UI|Layer")
-	UCommonActivatableWidget* PushWidgetToLayerStack(UPARAM(Meta = (Categories = "UI.Layer")) FGameplayTag LayerTag, UClass* ActivatableWidgetClass);
+	UCommonActivatableWidget* PushWidgetToLayerStack(UPARAM(Meta = (Categories = "UI.Layer")) FGameplayTag LayerTag, TSubclassOf<UCL_CommonActivatableWidget> ActivatableWidgetClass);
 
 	UFUNCTION(BlueprintCallable, Category = "UI|Layer")
 	UCommonActivatableWidgetContainerBase* GetLayerWidget(UPARAM(Meta = (Categories = "UI.Layer")) FGameplayTag LayerTag) const;

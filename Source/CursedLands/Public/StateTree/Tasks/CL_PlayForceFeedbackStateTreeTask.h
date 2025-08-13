@@ -13,16 +13,16 @@ struct CURSEDLANDS_API FCL_PlayForceFeedbackStateTreeTaskInstanceData
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, Category = "Context")
-	TObjectPtr<APlayerController> Controller;
+	TObjectPtr<APlayerController> Controller = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Parameters")
-	TObjectPtr<UForceFeedbackEffect> ForceFeedbackEffect;
+	TObjectPtr<UForceFeedbackEffect> ForceFeedbackEffect = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Parameters")
-	FName ForceFeedbackTag;
+	FName ForceFeedbackTag = NAME_None;
 
 	UPROPERTY(EditAnywhere, Category = "Parameters")
-	bool bLoop;
+	bool bLoop = false;
 };
 
 USTRUCT(Meta = (DisplayName = "Play Force Feedback"))

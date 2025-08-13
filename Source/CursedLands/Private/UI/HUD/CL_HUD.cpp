@@ -11,11 +11,11 @@
 void ACL_HUD::InitPrimaryGameLayout()
 {
 	checkf(PrimaryOverlayWidgetClass, TEXT("PrimaryOverlayWidgetClass uninitialized in object: %s"), *GetFullName());
-	PrimaryOverlayWidget = CreateWidget<UCL_PrimaryGameLayoutWidget>(GetWorld(), PrimaryOverlayWidgetClass.LoadSynchronous());
+	PrimaryOverlayWidget = CreateWidget<UCL_PrimaryGameLayoutWidget>(GetWorld(), PrimaryOverlayWidgetClass);
 	PrimaryOverlayWidget->AddToViewport();
 
 	checkf(GameHUDWidgetClass, TEXT("GameHUDWidgetClass uninitialized in object: %s"), *GetFullName());
-	PrimaryOverlayWidget->PushWidgetToLayerStack(CLGameplayTags::UI_Layer_Game, GameHUDWidgetClass.LoadSynchronous());
+	PrimaryOverlayWidget->PushWidgetToLayerStack(CLGameplayTags::UI_Layer_Game, GameHUDWidgetClass);
 }
 
 //~ AHUD Begin
