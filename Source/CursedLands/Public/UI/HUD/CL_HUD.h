@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "UI/CL_CommonActivatableWidget.h"
 #include "CL_HUD.generated.h"
 
-class UCL_AttributeSet;
-class UCL_AbilitySystemComponent;
+class UCL_CommonActivatableWidget;
+class UCL_PrimaryGameLayoutWidget;
 class UCL_UserWidget;
 
 UCLASS()
@@ -16,14 +17,23 @@ class CURSEDLANDS_API ACL_HUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	void InitOverlay();
+	void InitPrimaryGameLayout();
+	
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FORCEINLINE UCL_PrimaryGameLayoutWidget* GetPrimaryGameLayout() const { return PrimaryOverlayWidget; }
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FORCEINLINE UClass* GetPauseMenuWidgetClass() const { return PauseMenuWidgetClass != nullptr ? PauseMenuWidgetClass.LoadSynchronous() : nullptr; }
 	
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Config|Overlay")
-	TSubclassOf<UCL_UserWidget> OverlayWidgetClass;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Config|UI|PrimaryGameLayout")
+	TSoftClassPtr<UCL_PrimaryGameLayoutWidget> PrimaryOverlayWidgetClass;
 	UPROPERTY()
-	TObjectPtr<UCL_UserWidget> OverlayWidget;
+	TObjectPtr<UCL_PrimaryGameLayoutWidget> PrimaryOverlayWidget;
+	UPROPERTY(EditDefaultsOnly, Category = "Config|UI")
+	TSoftClassPtr<UCL_CommonActivatableWidget> GameHUDWidgetClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Config|UI")
+	TSoftClassPtr<UCL_CommonActivatableWidget> PauseMenuWidgetClass;
 
 	//~ AHUD Begin
 	//~ AHUD End

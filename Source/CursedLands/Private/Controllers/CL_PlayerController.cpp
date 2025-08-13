@@ -293,7 +293,7 @@ void ACL_PlayerController::OnPossess(APawn* PawnToPossess)
 	PossessedPlayerCharacter->GetGameplayCamera()->ActivateCameraForPlayerController(this);
 	
 	ACL_HUD* CLHUD = CastChecked<ACL_HUD>(GetHUD());
-	CLHUD->InitOverlay();
+	CLHUD->InitPrimaryGameLayout();
 }
 
 void ACL_PlayerController::OnUnPossess()
