@@ -184,18 +184,6 @@ void ACL_PlayerController::RequestToggleWalkAction()
 	}
 }
 
-void ACL_PlayerController::RequestToggleSprintAction()
-{
-	if (PossessedPlayerCharacter->IsSprinting())
-	{
-		PossessedPlayerCharacter->UnSprint();
-	}
-	else if (PossessedPlayerCharacter->CanSprint())
-	{
-		PossessedPlayerCharacter->Sprint();
-	}
-}
-
 void ACL_PlayerController::RequestToggleCrouchAction()
 {
 	if (PossessedPlayerCharacter->IsCrouching())
@@ -326,7 +314,6 @@ void ACL_PlayerController::SetupInputComponent()
 	// TODO(CL-222):
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Crouch, ETriggerEvent::Started, this, &ThisClass::RequestToggleCrouchAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Walk, ETriggerEvent::Started, this, &ThisClass::RequestToggleWalkAction);
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &ThisClass::RequestToggleSprintAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Slide, ETriggerEvent::Started, this, &ThisClass::RequestSlideAction);
 }

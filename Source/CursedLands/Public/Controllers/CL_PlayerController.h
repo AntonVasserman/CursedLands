@@ -56,7 +56,6 @@ private:
 	void RequestMoveAction_KeyboardAndMouse(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestToggleWalkAction();
-	void RequestToggleSprintAction();
 	void RequestToggleCrouchAction();
 	void RequestTraverseAction();
 	void RequestSlideAction();
