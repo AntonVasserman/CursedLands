@@ -174,14 +174,6 @@ void ACL_PlayerController::RequestTraverseAction()
 	}
 }
 
-void ACL_PlayerController::RequestSlideAction()
-{
-	if (PossessedPlayerCharacter->CanSlide())
-	{
-		PossessedPlayerCharacter->Slide();
-	}
-}
-
 void ACL_PlayerController::AbilityInputPressed(FGameplayTag InputTag)
 {
 	UCL_AbilitySystemComponent* AbilitySystemComponent = PossessedPlayerCharacter->GetCLAbilitySystemComponent();
@@ -283,7 +275,6 @@ void ACL_PlayerController::SetupInputComponent()
 
 	// TODO(CL-222):
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Slide, ETriggerEvent::Started, this, &ThisClass::RequestSlideAction);
 }
 
 //~ APlayerController End

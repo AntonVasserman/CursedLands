@@ -56,7 +56,6 @@ private:
 	void RequestMoveAction_KeyboardAndMouse(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
 	void RequestTraverseAction();
-	void RequestSlideAction();
 
 	void AbilityInputPressed(FGameplayTag InputTag);
 	void AbilityInputReleased(FGameplayTag InputTag);

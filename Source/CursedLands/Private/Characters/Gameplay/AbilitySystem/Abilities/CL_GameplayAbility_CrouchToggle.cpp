@@ -14,7 +14,7 @@ bool UCL_GameplayAbility_CrouchToggle::IsToggled(const ACL_PlayerCharacter* Play
 
 bool UCL_GameplayAbility_CrouchToggle::CanToggle(const ACL_PlayerCharacter* PlayerCharacter) const
 {
-	return PlayerCharacter->CanCrouch();
+	return PlayerCharacter->IsSprinting() == false && PlayerCharacter->CanCrouch();
 }
 
 bool UCL_GameplayAbility_CrouchToggle::CanUnToggle(const ACL_PlayerCharacter* PlayerCharacter) const

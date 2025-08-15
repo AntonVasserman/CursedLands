@@ -27,7 +27,6 @@ EStateTreeRunStatus FCL_MotionMatchAndPlayAnimMontageStateTreeTask::EnterState(F
 
 	UAnimInstance* AnimInstance = InstanceData.Character->GetMesh()->GetAnimInstance();
 
-	// MakeArrayView(&Context, 1)
 	FPoseSearchBlueprintResult Result;
 	UPoseSearchLibrary::MotionMatch(
 		AnimInstance,

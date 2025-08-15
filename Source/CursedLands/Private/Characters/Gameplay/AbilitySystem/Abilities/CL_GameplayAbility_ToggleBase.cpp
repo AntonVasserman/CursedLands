@@ -34,6 +34,7 @@ void UCL_GameplayAbility_ToggleBase::ActivateAbility(const FGameplayAbilitySpecH
 {
 	// We shouldn't be able to reach here with an object that isn't ACL_PlayerCharacter
 	ACL_PlayerCharacter* PlayerCharacter = CastChecked<ACL_PlayerCharacter>(ActorInfo->AvatarActor.Get());
+	CommitAbility(Handle, ActorInfo, ActivationInfo);
 
 	if (IsToggled(PlayerCharacter))
 	{
