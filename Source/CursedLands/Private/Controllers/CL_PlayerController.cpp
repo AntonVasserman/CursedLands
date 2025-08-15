@@ -67,11 +67,11 @@ void ACL_PlayerController::RequestMoveAction_Gamepad(const FInputActionValue& In
 	}
 	else if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Jogging && MovementSpeed < WalkToJogInputThreshold)
 	{
-		RequestToggleWalkAction();
+		PossessedPlayerCharacter->Walk();
 	}
 	else if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Walking && MovementSpeed >= WalkToJogInputThreshold)
 	{
-		RequestToggleWalkAction();
+		PossessedPlayerCharacter->UnWalk();
 	}
 	
 	// Call regular move action
@@ -139,7 +139,7 @@ void ACL_PlayerController::OnInputMethodChanged(ECommonInputType NewInputType)
 			if (PossessedPlayerCharacter->GetCLCharacterMovement()->GetGait() == ECL_Gait::Walking)
 			{
 				// Return to Jogging
-				RequestToggleWalkAction();
+				PossessedPlayerCharacter->UnWalk();
 			}
 		}
 		EnhancedInputSubsystem->AddMappingContext(DefaultMouseAndKeyboardMappingContext, 0);
@@ -164,36 +164,6 @@ void ACL_PlayerController::RequestLookAction(const FInputActionValue& InValue)
 	const FVector2D LookAxisVector = InValue.Get<FVector2D>();
 	AddYawInput(LookAxisVector.X);
 	AddPitchInput(LookAxisVector.Y);
-}
-
-void ACL_PlayerController::RequestToggleWalkAction()
-{
-	// In Crouching Stance the default is Walking, so we don't support toggling out of it
-	if (PossessedPlayerCharacter->IsCrouching())
-	{
-		return;
-	}
-	
-	if (PossessedPlayerCharacter->IsWalking())
-	{
-		PossessedPlayerCharacter->UnWalk();
-	}
-	else if (PossessedPlayerCharacter->CanWalk())
-	{
-		PossessedPlayerCharacter->Walk();
-	}
-}
-
-void ACL_PlayerController::RequestToggleCrouchAction()
-{
-	if (PossessedPlayerCharacter->IsCrouching())
-	{
-		PossessedPlayerCharacter->UnCrouch();
-	}
-	else if (PossessedPlayerCharacter->CanCrouch())
-	{
-		PossessedPlayerCharacter->Crouch();
-	}
 }
 
 void ACL_PlayerController::RequestTraverseAction()
@@ -312,8 +282,6 @@ void ACL_PlayerController::SetupInputComponent()
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Move_KeyboardAndMouse, ETriggerEvent::Triggered, this, &ThisClass::RequestMoveAction_KeyboardAndMouse);
 
 	// TODO(CL-222):
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Crouch, ETriggerEvent::Started, this, &ThisClass::RequestToggleCrouchAction);
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Walk, ETriggerEvent::Started, this, &ThisClass::RequestToggleWalkAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Slide, ETriggerEvent::Started, this, &ThisClass::RequestSlideAction);
 }
