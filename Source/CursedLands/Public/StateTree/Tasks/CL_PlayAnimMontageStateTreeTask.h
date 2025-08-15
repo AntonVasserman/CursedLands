@@ -7,7 +7,7 @@
 #include "CL_PlayAnimMontageStateTreeTask.generated.h"
 
 USTRUCT()
-struct CURSEDLANDS_API FCL_PlayAnimMontageStateTreeTaskInstanceData : public FStateTreeTaskBase
+struct CURSEDLANDS_API FCL_PlayAnimMontageStateTreeTaskInstanceData
 {
 	GENERATED_BODY()
 	
@@ -21,7 +21,7 @@ struct CURSEDLANDS_API FCL_PlayAnimMontageStateTreeTaskInstanceData : public FSt
 	bool bJumpToSection = false;
 
 	UPROPERTY(EditAnywhere, Category = "Parameters", Meta = (EditCondition = "AnimMontage != nullptr && bJumpToSection == true", EditConditionHides))
-	FName SectionName;
+	FName SectionName = NAME_None;
 };
 
 USTRUCT(Meta = (DisplayName = "Play Anim Montage"))

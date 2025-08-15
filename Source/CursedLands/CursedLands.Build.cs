@@ -24,6 +24,7 @@ public class CursedLands : ModuleRules
 				"GameplayStateTreeModule",
 				"ModelViewViewModel",
 				"NavigationSystem",
+				"PoseSearch",
 				"PropertyBindingUtils",
 				"StateTreeModule"
 			});
