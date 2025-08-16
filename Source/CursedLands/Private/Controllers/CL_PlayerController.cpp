@@ -246,7 +246,6 @@ void ACL_PlayerController::SetupInputComponent()
 	
 	UCL_InputComponent* CLInputComponent = CastChecked<UCL_InputComponent>(InputComponent);
 
-	// TODO(CL-223): Think how to refactor this to fit into the new input system we have...
 #if WITH_EDITOR
 	CLInputComponent->BindAction(SlomoAction, ETriggerEvent::Started, this, &ACL_PlayerController::RequestSlomoStarted);
 	CLInputComponent->BindAction(SlomoAction, ETriggerEvent::Triggered, this, &ACL_PlayerController::RequestSlomoTriggered);

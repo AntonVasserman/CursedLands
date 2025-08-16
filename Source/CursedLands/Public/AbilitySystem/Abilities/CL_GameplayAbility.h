@@ -7,6 +7,7 @@
 #include "CL_GameplayAbility.generated.h"
 
 class ACL_Character;
+class ACL_PlayerCharacter;
 
 UENUM(BlueprintType)
 enum class ECL_AbilityActivationPolicy : uint8
@@ -24,8 +25,12 @@ class CURSEDLANDS_API UCL_GameplayAbility : public UGameplayAbility
 public:
 	ECL_AbilityActivationPolicy GetActivationPolicy() const { return ActivationPolicy; }
 
+	// TODO: Change this to ACL_PlayerCharacter or add a different function and add usages for it everywhere...
 	UFUNCTION(BlueprintCallable)
-	ACL_Character* GetCLPlayerCharacterFromActorInfo() const;
+	ACL_Character* GetCLCharacterFromActorInfo() const;
+
+	UFUNCTION(BlueprintCallable)
+	ACL_PlayerCharacter* GetCLPlayerCharacterFromActorInfo() const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Ability Activation")

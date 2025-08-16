@@ -7,30 +7,7 @@
 #include "Characters/CL_Character.h"
 #include "Characters/CL_PlayerCharacter.h"
 
-//~ Begin UCL_GameplayAbility
-
-bool UCL_GameplayAbility_Jump::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
-{
-	if (Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) == false)
-	{
-		return false;
-	}
-	
-	if (ActorInfo == nullptr || ActorInfo->AvatarActor.IsValid() == false)
-	{
-		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, "Cannot activate ability - ActorInfo is null or AvatarActor is invalid");
-		return false;
-	}
-
-	const ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get(), ECastCheckedType::NullAllowed);
-	if (Character == nullptr)
-	{
-		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, "Cannot activate ability - AvatarActor is not of type ACharacter");
-		return false;
-	}
-	
-	return Character->CanJump();
-}
+//~ Begin UCL_GameplayAbility_PlayerCharacterBase
 
 void UCL_GameplayAbility_Jump::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
 {
@@ -52,11 +29,14 @@ void UCL_GameplayAbility_Jump::InputReleased(const FGameplayAbilitySpecHandle Ha
 	CancelAbility(Handle, ActorInfo, ActivationInfo, false);
 }
 
-void UCL_GameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+bool UCL_GameplayAbility_Jump::CanActivateAbilityInternal(const ACL_PlayerCharacter* PlayerCharacter, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
-	// We shouldn't be able to get here with something that isn't ACharacter
-	ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
-	Character->Jump();
+	return PlayerCharacter->CanJump();
 }
 
-//~ End UCL_GameplayAbility
+void UCL_GameplayAbility_Jump::ActivateAbilityInternal(ACL_PlayerCharacter* PlayerCharacter, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+{
+	PlayerCharacter->Jump();
+}
+
+//~ End UCL_GameplayAbility_PlayerCharacterBase
