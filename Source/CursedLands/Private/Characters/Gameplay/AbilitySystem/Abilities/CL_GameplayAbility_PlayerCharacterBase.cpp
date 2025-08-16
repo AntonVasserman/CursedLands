@@ -21,7 +21,7 @@ bool UCL_GameplayAbility_PlayerCharacterBase::CanActivateAbility(const FGameplay
 		return false;
 	}
 
-	const ACL_PlayerCharacter* PlayerCharacter = CastChecked<ACL_PlayerCharacter>(ActorInfo->AvatarActor.Get(), ECastCheckedType::NullAllowed);
+	const ACL_PlayerCharacter* PlayerCharacter = GetCLPlayerCharacterFromActorInfo(ActorInfo);
 	if (PlayerCharacter == nullptr)
 	{
 		CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Warning, "Cannot activate ability - AvatarActor is not of type ACL_PlayerCharacter");
@@ -33,7 +33,7 @@ bool UCL_GameplayAbility_PlayerCharacterBase::CanActivateAbility(const FGameplay
 
 void UCL_GameplayAbility_PlayerCharacterBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	ACL_PlayerCharacter* PlayerCharacter = CastChecked<ACL_PlayerCharacter>(ActorInfo->AvatarActor.Get());
+	ACL_PlayerCharacter* PlayerCharacter = GetCLPlayerCharacterFromActorInfo(ActorInfo);
 	return ActivateAbilityInternal(PlayerCharacter, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 

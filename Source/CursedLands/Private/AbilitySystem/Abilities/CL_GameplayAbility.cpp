@@ -6,12 +6,12 @@
 #include "Characters/CL_Character.h"
 #include "Characters/CL_PlayerCharacter.h"
 
-ACL_Character* UCL_GameplayAbility::GetCLCharacterFromActorInfo() const
+ACL_Character* UCL_GameplayAbility::GetCLCharacterFromActorInfo(const FGameplayAbilityActorInfo* ActorInfo) const
 {
-	return CurrentActorInfo ? Cast<ACL_Character>(CurrentActorInfo->AvatarActor.Get()) : nullptr;
+	return ActorInfo ? Cast<ACL_Character>(ActorInfo->AvatarActor.Get()) : nullptr;
 }
 
-ACL_PlayerCharacter* UCL_GameplayAbility::GetCLPlayerCharacterFromActorInfo() const
+ACL_PlayerCharacter* UCL_GameplayAbility::GetCLPlayerCharacterFromActorInfo(const FGameplayAbilityActorInfo* ActorInfo) const
 {
-	return CurrentActorInfo ? Cast<ACL_PlayerCharacter>(CurrentActorInfo->AvatarActor.Get()) : nullptr;
+	return ActorInfo ? Cast<ACL_PlayerCharacter>(ActorInfo->AvatarActor.Get()) : nullptr;
 }

@@ -24,13 +24,8 @@ class CURSEDLANDS_API UCL_GameplayAbility : public UGameplayAbility
 
 public:
 	ECL_AbilityActivationPolicy GetActivationPolicy() const { return ActivationPolicy; }
-
-	// TODO: Change this to ACL_PlayerCharacter or add a different function and add usages for it everywhere...
-	UFUNCTION(BlueprintCallable)
-	ACL_Character* GetCLCharacterFromActorInfo() const;
-
-	UFUNCTION(BlueprintCallable)
-	ACL_PlayerCharacter* GetCLPlayerCharacterFromActorInfo() const;
+	ACL_Character* GetCLCharacterFromActorInfo(const FGameplayAbilityActorInfo* ActorInfo) const;
+	ACL_PlayerCharacter* GetCLPlayerCharacterFromActorInfo(const FGameplayAbilityActorInfo* ActorInfo) const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Ability Activation")
