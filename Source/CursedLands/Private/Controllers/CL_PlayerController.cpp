@@ -12,8 +12,6 @@
 #include "Characters/CL_PlayerCharacter.h"
 #include "GameFramework/GameplayCameraComponent.h"
 #include "Input/CL_InputComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "UI/CL_UserWidget.h"
 #include "UI/HUD/CL_HUD.h"
 
 #if WITH_EDITOR
@@ -21,8 +19,6 @@ void ACL_PlayerController::RequestSlomoStarted()
 {
 	bSlomoRequested = true;
 	CL_LOG(Display, "Slomo Update Requested");
-	// TODO: Generate a proper key for the DebugMessage or remove the DebugMessage entirely???
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Slomo Update Requested")));
 }
 
 void ACL_PlayerController::RequestSlomoTriggered(const FInputActionValue& InValue)
@@ -38,8 +34,6 @@ void ACL_PlayerController::RequestSlomoTriggered(const FInputActionValue& InValu
 	
 	GetWorld()->GetWorldSettings()->SetTimeDilation(NewSlomoValue);
 	CL_LOG(Display, "Slomo Updated from: '%f', to: '%f'", CurrentSlomoValue, NewSlomoValue);
-	// TODO: Generate a proper key for the DebugMessage or remove the DebugMessage entirely???
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Slomo Updated from: '%f', to: '%f'"), CurrentSlomoValue, NewSlomoValue));
 	
 	bSlomoRequested = false;
 }
@@ -166,14 +160,6 @@ void ACL_PlayerController::RequestLookAction(const FInputActionValue& InValue)
 	AddPitchInput(LookAxisVector.Y);
 }
 
-void ACL_PlayerController::RequestTraverseAction()
-{
-	if (PossessedPlayerCharacter->CanTraverse())
-	{
-		PossessedPlayerCharacter->Traverse();
-	}
-}
-
 void ACL_PlayerController::AbilityInputPressed(FGameplayTag InputTag)
 {
 	UCL_AbilitySystemComponent* AbilitySystemComponent = PossessedPlayerCharacter->GetCLAbilitySystemComponent();
@@ -272,9 +258,6 @@ void ACL_PlayerController::SetupInputComponent()
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::RequestLookAction);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Move_Gamepad, ETriggerEvent::Triggered, this, &ThisClass::RequestMoveAction_Gamepad);
 	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Move_KeyboardAndMouse, ETriggerEvent::Triggered, this, &ThisClass::RequestMoveAction_KeyboardAndMouse);
-
-	// TODO(CL-222):
-	CLInputComponent->BindNativeAction(InputConfig, CLGameplayTags::InputTag_Traverse, ETriggerEvent::Started, this, &ThisClass::RequestTraverseAction);
 }
 
 //~ APlayerController End

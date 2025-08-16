@@ -55,7 +55,6 @@ private:
 	void RequestMoveAction_Gamepad(const FInputActionValue& InValue);
 	void RequestMoveAction_KeyboardAndMouse(const FInputActionValue& InValue);
 	void RequestLookAction(const FInputActionValue& InValue);
-	void RequestTraverseAction();
 
 	void AbilityInputPressed(FGameplayTag InputTag);
 	void AbilityInputReleased(FGameplayTag InputTag);
