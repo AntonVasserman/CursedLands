@@ -78,7 +78,9 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Additional Content
+Content/ActionRPG/*
 Content/AdvancedLocomotionV4/*
+Content/AdvancedPortalSystemVFX/*
 Content/AncientContent/*
 Content/Aura/*
 Content/BlackAlder/*
