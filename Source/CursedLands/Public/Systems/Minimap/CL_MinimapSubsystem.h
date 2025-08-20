@@ -9,6 +9,8 @@
 class ACL_MinimapSensor;
 class UCapsuleComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMinimapSensorOwningPawnChanged, APawn*, OldPawn, APawn*, NewPawn);
+
 UCLASS()
 class CURSEDLANDS_API UCL_MinimapSubsystem : public ULocalPlayerSubsystem
 {
@@ -16,6 +18,10 @@ class CURSEDLANDS_API UCL_MinimapSubsystem : public ULocalPlayerSubsystem
 
 	UPROPERTY()
 	TObjectPtr<ACL_MinimapSensor> MinimapSensor = nullptr;
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnMinimapSensorOwningPawnChanged OnMinimapSensorOwningPawnChanged;
 	
 private:
 	UPROPERTY()

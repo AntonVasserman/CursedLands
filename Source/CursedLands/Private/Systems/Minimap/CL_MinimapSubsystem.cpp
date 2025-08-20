@@ -69,6 +69,7 @@ void UCL_MinimapSubsystem::OnPlayerControllerPossessedPawnChanged(APawn* OldPawn
 	ClearMinimapSensor(OldPawn);
 	InitMinimapSensor(NewPawn);
 	CurrentPawn = NewPawn;
+	OnMinimapSensorOwningPawnChanged.Broadcast(OldPawn, CurrentPawn);
 }
 
 void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* OtherActor)
