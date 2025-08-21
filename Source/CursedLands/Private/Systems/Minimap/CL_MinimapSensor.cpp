@@ -45,11 +45,11 @@ void ACL_MinimapSensor::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCom
 		return;
 	}
 
-	if (const UActorComponent* MinimapIconComponent = OtherActor->GetComponentByClass(UCL_MinimapIconComponent::StaticClass());
+	if (UCL_MinimapIconComponent* MinimapIconComponent = OtherActor->GetComponentByClass<UCL_MinimapIconComponent>();
 		IsValid(MinimapIconComponent))
 	{
 		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Began overlap with %s", *OtherActor->GetName());
-		OnBeginOverlap.Broadcast(OtherActor);
+		OnBeginOverlap.Broadcast(OtherActor, MinimapIconComponent);
 	}
 }
 
@@ -61,11 +61,11 @@ void ACL_MinimapSensor::OnCapsuleEndOverlap(UPrimitiveComponent* OverlappedCompo
 		return;
 	}
 
-	if (const UActorComponent* MinimapIconComponent = OtherActor->GetComponentByClass(UCL_MinimapIconComponent::StaticClass());
+	if (UCL_MinimapIconComponent* MinimapIconComponent = OtherActor->GetComponentByClass<UCL_MinimapIconComponent>();
 		IsValid(MinimapIconComponent))
 	{
 		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Ended overlap with %s", *OtherActor->GetName());
-		OnEndOverlap.Broadcast(OtherActor);
+		OnEndOverlap.Broadcast(OtherActor, MinimapIconComponent);
 	}
 }
 
@@ -83,11 +83,11 @@ void ACL_MinimapSensor::BeginPlay()
 
 	for (AActor* Actor : OverlappingActors)
 	{
-		if (const UActorComponent* MinimapIconComponent = Actor->GetComponentByClass(UCL_MinimapIconComponent::StaticClass());
-		IsValid(MinimapIconComponent))
+		if (UCL_MinimapIconComponent* MinimapIconComponent = Actor->GetComponentByClass<UCL_MinimapIconComponent>();
+			IsValid(MinimapIconComponent))
 		{
 			CL_LOG_MINIMAP_SYSTEM_DISPLAY("Began overlap with %s", *Actor->GetName());
-			OnBeginOverlap.Broadcast(Actor);
+			OnBeginOverlap.Broadcast(Actor, MinimapIconComponent);
 		}
 	}
 }

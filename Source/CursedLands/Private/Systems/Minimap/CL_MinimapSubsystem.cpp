@@ -5,6 +5,7 @@
 
 #include "CL_LogChannels.h"
 #include "Systems/Minimap/CL_MinimapSensor.h"
+#include "Systems/Minimap/Components/CL_MinimapIconComponent.h"
 
 void UCL_MinimapSubsystem::InitMinimapSensor(APawn* InNewPawn)
 {
@@ -59,6 +60,21 @@ void UCL_MinimapSubsystem::ClearMinimapSensor(APawn* InOldPawn)
 	CL_LOG_MINIMAP_SYSTEM_DISPLAY("MinimapSensor destroyed");
 }
 
+void UCL_MinimapSubsystem::SampleActorsWithMinimapLocations()
+{
+	for (TPair<UCL_MinimapIconComponent*, FVector>& MinimapIconLastRelativeLocation : MinimapIconToLastRelativeLocation)
+	{
+		AActor* Actor = MinimapIconLastRelativeLocation.Key->GetOwner();
+		FVector NewRelativeLocation = Actor->GetActorLocation() - MinimapSensor->GetActorLocation();
+		if (FVector LocationDiff = NewRelativeLocation - MinimapIconLastRelativeLocation.Value;
+			LocationDiff.Size() > ActorsLocationAcceptableDelta)
+		{
+			MinimapIconLastRelativeLocation.Value = NewRelativeLocation;
+			OnActorWithMinimapIconRelativeLocationUpdated.Broadcast(MinimapIconLastRelativeLocation.Key, MinimapIconLastRelativeLocation.Value);
+		}
+	}
+}
+
 void UCL_MinimapSubsystem::OnPlayerControllerPossessedPawnChanged(APawn* OldPawn, APawn* NewPawn)
 {
 	CL_LOG_MINIMAP_SYSTEM_DISPLAY(
@@ -72,23 +88,26 @@ void UCL_MinimapSubsystem::OnPlayerControllerPossessedPawnChanged(APawn* OldPawn
 	OnMinimapSensorOwningPawnChanged.Broadcast(OldPawn, CurrentPawn);
 }
 
-void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* OtherActor)
+void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent)
 {
-	if (IsValid(OtherActor))
+	if (IsValid(Actor))
 	{
-		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received BEGIN OVERLAP with %s", *OtherActor->GetName());
-		OverlappingActors.Add(OtherActor);
-		CL_LOG_MINIMAP_SYSTEM_DISPLAY("New count of OverlappingActors: %d", OverlappingActors.Num());
+		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received BEGIN OVERLAP with %s", *Actor->GetName());
+		const FVector MinimapIconRelativeLocation = Actor->GetActorLocation() - MinimapSensor->GetActorLocation();
+		MinimapIconToLastRelativeLocation.Add(MinimapIconComponent, MinimapIconRelativeLocation);
+		OnActorWithMinimapIconDetected.Broadcast(MinimapIconComponent, MinimapIconRelativeLocation);
+		CL_LOG_MINIMAP_SYSTEM_DISPLAY("New count of Minimap Icons: %d", MinimapIconToLastRelativeLocation.Num());
 	}
 }
 
-void UCL_MinimapSubsystem::OnMinimapSensorEndOverlap(AActor* OtherActor)
+void UCL_MinimapSubsystem::OnMinimapSensorEndOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent)
 {
-	if (IsValid(OtherActor))
+	if (IsValid(Actor))
 	{
-		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received END OVERLAP with %s", *OtherActor->GetName());
-		OverlappingActors.Remove(OtherActor);
-		CL_LOG_MINIMAP_SYSTEM_DISPLAY("New count of OverlappingActors: %d", OverlappingActors.Num());
+		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received END OVERLAP with %s", *Actor->GetName());
+		MinimapIconToLastRelativeLocation.Remove(MinimapIconComponent);
+		OnActorWithMinimapIconLost.Broadcast(MinimapIconComponent);
+		CL_LOG_MINIMAP_SYSTEM_DISPLAY("New count of Minimap Icons: %d", MinimapIconToLastRelativeLocation.Num());
 	}
 }
 
@@ -97,6 +116,13 @@ void UCL_MinimapSubsystem::OnMinimapSensorEndOverlap(AActor* OtherActor)
 void UCL_MinimapSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
+	GetWorld()->GetTimerManager().SetTimer(
+		ActorsWithMinimapLocationSamplingTimer,
+		this,
+		&UCL_MinimapSubsystem::SampleActorsWithMinimapLocations,
+		ActorsWithMinimapLocationSamplingTimerInterval,
+		true);
 }
 
 void UCL_MinimapSubsystem::PlayerControllerChanged(APlayerController* NewPlayerController)

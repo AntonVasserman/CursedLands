@@ -6,9 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "CL_MinimapSensor.generated.h"
 
+class UCL_MinimapIconComponent;
 class UCapsuleComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMinimapSensorOverlap, AActor*, OtherActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMinimapSensorOverlap, AActor*, Actor, UCL_MinimapIconComponent*, MinimapIconComponent);
 
 UCLASS()
 class CURSEDLANDS_API ACL_MinimapSensor : public AActor

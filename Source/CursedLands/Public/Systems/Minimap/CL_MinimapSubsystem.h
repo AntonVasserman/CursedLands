@@ -6,10 +6,14 @@
 #include "Subsystems/LocalPlayerSubsystem.h"
 #include "CL_MinimapSubsystem.generated.h"
 
+class UCL_MinimapIconComponent;
 class ACL_MinimapSensor;
 class UCapsuleComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMinimapSensorOwningPawnChanged, APawn*, OldPawn, APawn*, NewPawn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActorWithMinimapIconDetected, UCL_MinimapIconComponent*, MinimapIconComponent, FVector, Location);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActorWithMinimapIconRelativeLocationUpdated, UCL_MinimapIconComponent*, MinimapIconComponent, FVector, NewLocation);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorWithMinimapIconLost, UCL_MinimapIconComponent*, MinimapIconComponent);
 
 UCLASS()
 class CURSEDLANDS_API UCL_MinimapSubsystem : public ULocalPlayerSubsystem
@@ -22,6 +26,17 @@ class CURSEDLANDS_API UCL_MinimapSubsystem : public ULocalPlayerSubsystem
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnMinimapSensorOwningPawnChanged OnMinimapSensorOwningPawnChanged;
+	UPROPERTY(BlueprintAssignable)
+	FOnActorWithMinimapIconDetected OnActorWithMinimapIconDetected;
+	UPROPERTY(BlueprintAssignable)
+	FOnActorWithMinimapIconRelativeLocationUpdated OnActorWithMinimapIconRelativeLocationUpdated;
+	UPROPERTY(BlueprintAssignable)
+	FOnActorWithMinimapIconLost OnActorWithMinimapIconLost;
+
+	UFUNCTION(BlueprintCallable, Category = "Minimap")
+	FORCEINLINE float GetMinimapCollisionCapsuleRadius() const { return MinimapCollisionCapsuleRadius; }
+	UFUNCTION(BlueprintCallable, Category = "Minimap")
+	FORCEINLINE float GetMinimapCollisionCapsuleHalfHeight() const { return MinimapCollisionCapsuleHalfHeight; }
 	
 private:
 	UPROPERTY()
@@ -31,20 +46,25 @@ private:
 	APawn* CurrentPawn = nullptr;
 
 	UPROPERTY()
-	TSet<AActor*> OverlappingActors;
+	TMap<UCL_MinimapIconComponent*, FVector> MinimapIconToLastRelativeLocation;
 
 	float MinimapCollisionCapsuleRadius = 1000.f;
 	float MinimapCollisionCapsuleHalfHeight = 5000.f;
+
+	FTimerHandle ActorsWithMinimapLocationSamplingTimer;
+	float ActorsWithMinimapLocationSamplingTimerInterval = 0.01f;
+	float ActorsLocationAcceptableDelta = 5.f;
 	
 	void InitMinimapSensor(APawn* InNewPawn);
 	void ClearMinimapSensor(APawn* InOldPawn);
+	void SampleActorsWithMinimapLocations();
 	
 	UFUNCTION()
 	void OnPlayerControllerPossessedPawnChanged(APawn* OldPawn, APawn* NewPawn);
 	UFUNCTION()
-	void OnMinimapSensorBeginOverlap(AActor* OtherActor);
+	void OnMinimapSensorBeginOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent);
 	UFUNCTION()
-	void OnMinimapSensorEndOverlap(AActor* OtherActor);
+	void OnMinimapSensorEndOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent);
 	
 	//~ Begin ULocalPlayerSubsystem
 public:
