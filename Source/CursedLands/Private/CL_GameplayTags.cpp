@@ -10,6 +10,9 @@
 
 namespace CLGameplayTags
 {
+	// Cheats
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Cheat_Ability_WhiteMonster, "Cheat.Ability.WhiteMonster", "Cheat ability that grants infinite stamina for the duration of the tag");
+	
 	// UI Layers
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Layer_Game, "UI.Layer.Game", "UI Layer for the Game HUD");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Layer_PauseMenu, "UI.Layer.PauseMenu", "UI Layer for the Pause Menu");
@@ -50,14 +53,17 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Normal, "Resource.Health.Normal", "Health resource is at a normal amount");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Critical, "Resource.Health.Critical", "Health resource is at a critical amount");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Depleted, "Resource.Health.Depleted", "Health resource is depleted");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Health_Infinite, "Resource.Health.Infinite", "Health resource is infinite");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Full, "Resource.Mana.Full", "Mana resource is full");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Normal, "Resource.Mana.Normal", "Mana resource is at a normal amount");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Critical, "Resource.Mana.Critical", "Mana resource is at a critical amount");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Depleted, "Resource.Mana.Depleted", "Mana resource is depleted");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Mana_Infinite, "Resource.Mana.Infinite", "Mana resource is infinite");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Full, "Resource.Stamina.Full", "Stamina resource is full");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Normal, "Resource.Stamina.Normal", "Stamina resource is at a normal amount");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Critical, "Resource.Stamina.Critical", "Stamina resource is at a critical amount");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Depleted, "Resource.Stamina.Depleted", "Stamina resource is depleted");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Resource_Stamina_Infinite, "Resource.Stamina.Infinite", "Stamina resource is infinite");
 	
 	// Debuffs
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Debuff_Fatigue, "Debuff.Fatigue", "Fatigue Debuff tag");

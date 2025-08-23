@@ -29,6 +29,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System|Attribute|Resource")
 	virtual FGameplayAttribute GetMaxValueAttribute() const { return nullptr; }
+
+protected:
+	FGameplayTag ResourceInfiniteGameplayTag = FGameplayTag::EmptyTag; // This needs to be overriden in the derived classes
 	
 	//~ UCL_AttributeSet Begin
 protected:

@@ -12,7 +12,7 @@ void UCL_ResourceAttributeSet::PostGameplayEffectExecute(const FGameplayEffectMo
 
 	if (Data.EvaluatedData.Attribute == GetValueAttribute())
 	{
-		SetValue(FMath::Clamp(GetValue(), 0.f, GetMaxValue()));
+		SetValue(FMath::Clamp(GetOwningAbilitySystemComponent()->HasMatchingGameplayTag(ResourceInfiniteGameplayTag) ? GetMaxValue() : GetValue(), 0.f, GetMaxValue()));
 	}
 }
 
@@ -22,7 +22,7 @@ void UCL_ResourceAttributeSet::PreAttributeChange(const FGameplayAttribute& Attr
 
 	if (Attribute == GetValueAttribute())
 	{
-		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxValue());
+		NewValue = FMath::Clamp(GetOwningAbilitySystemComponent()->HasMatchingGameplayTag(ResourceInfiniteGameplayTag) ? GetMaxValue() : NewValue, 0.f, GetMaxValue());
 	}
 }
 //~ UCL_AttributeSet End

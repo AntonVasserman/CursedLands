@@ -9,4 +9,5 @@ UCL_HealthAttributeSet::UCL_HealthAttributeSet()
 {
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_Health, GetHealthAttribute);
 	TagToAttributeMapping.Add(CLGameplayTags::Attributes_General_MaxHealth, GetMaxHealthAttribute);
+	ResourceInfiniteGameplayTag = CLGameplayTags::Resource_Health_Infinite;
 }
