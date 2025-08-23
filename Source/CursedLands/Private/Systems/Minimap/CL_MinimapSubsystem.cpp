@@ -28,7 +28,7 @@ void UCL_MinimapSubsystem::InitMinimapSensor(APawn* InNewPawn)
 	
 	MinimapSensor->InitializeSensor(MinimapCollisionCapsuleRadius, MinimapCollisionCapsuleHalfHeight);
 	MinimapSensor->AttachToActor(InNewPawn, FAttachmentTransformRules::KeepRelativeTransform);
-		
+	
 	MinimapSensor->OnBeginOverlap.AddDynamic(this, &UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap);
 	MinimapSensor->OnEndOverlap.AddDynamic(this, &UCL_MinimapSubsystem::OnMinimapSensorEndOverlap);
 	
@@ -56,8 +56,12 @@ void UCL_MinimapSubsystem::ClearMinimapSensor(APawn* InOldPawn)
 		
 	MinimapSensor->Destroy();
 	MinimapSensor = nullptr;
-		
+
 	CL_LOG_MINIMAP_SYSTEM_DISPLAY("MinimapSensor destroyed");
+	
+	MinimapIconToLastRelativeLocation.Empty();
+	
+	CL_LOG_MINIMAP_SYSTEM_DISPLAY("Minimap Icon map emptied");
 }
 
 void UCL_MinimapSubsystem::SampleActorsWithMinimapLocations()
