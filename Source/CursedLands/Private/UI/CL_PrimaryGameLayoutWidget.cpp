@@ -3,8 +3,8 @@
 
 #include "UI/CL_PrimaryGameLayoutWidget.h"
 
+#include "Engine/GameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/CL_CommonActivatableWidget.h"
 #include "UI/HUD/CL_HUD.h"
 
 UCL_PrimaryGameLayoutWidget* UCL_PrimaryGameLayoutWidget::GetPrimaryGameLayoutForPrimaryPlayer(const UObject* WorldContextObject)
@@ -21,7 +21,7 @@ UCL_PrimaryGameLayoutWidget* UCL_PrimaryGameLayoutWidget::GetPrimaryGameLayout(A
 	return CLHUD->GetPrimaryGameLayout();
 }
 
-UCommonActivatableWidget* UCL_PrimaryGameLayoutWidget::PushWidgetToLayerStack(FGameplayTag LayerName, TSubclassOf<UCL_CommonActivatableWidget> ActivatableWidgetClass)
+UCommonActivatableWidget* UCL_PrimaryGameLayoutWidget::PushWidgetToLayerStack(FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> ActivatableWidgetClass)
 {
 	checkf(ActivatableWidgetClass, TEXT("%s: ActivatableWidgetClass uninitialized"), __FUNCTIONW__);
 	
