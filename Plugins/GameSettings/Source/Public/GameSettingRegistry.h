@@ -7,8 +7,6 @@
 
 #include "GameSettingRegistry.generated.h"
 
-#define UE_API GAMESETTINGS_API
-
 struct FGameplayTag;
 
 //--------------------------------------
@@ -23,8 +21,8 @@ enum class EGameSettingChangeReason : uint8;
 /**
  * 
  */
-UCLASS(MinimalAPI, Abstract, BlueprintType)
-class UGameSettingRegistry : public UObject
+UCLASS(Abstract, BlueprintType)
+class GAMESETTINGS_API UGameSettingRegistry : public UObject
 {
 	GENERATED_BODY()
 
@@ -43,19 +41,19 @@ public:
 	FOnExecuteNavigation OnExecuteNavigationEvent;
 
 public:
-	UE_API UGameSettingRegistry();
+	UGameSettingRegistry();
 
-	UE_API void Initialize(ULocalPlayer* InLocalPlayer);
+	void Initialize(ULocalPlayer* InLocalPlayer);
 
-	UE_API virtual void Regenerate();
+	virtual void Regenerate();
 
-	UE_API virtual bool IsFinishedInitializing() const;
+	virtual bool IsFinishedInitializing() const;
 
-	UE_API virtual void SaveChanges();
+	virtual void SaveChanges();
 	
-	UE_API void GetSettingsForFilter(const FGameSettingFilterState& FilterState, TArray<UGameSetting*>& InOutSettings);
+	void GetSettingsForFilter(const FGameSettingFilterState& FilterState, TArray<UGameSetting*>& InOutSettings);
 
-	UE_API UGameSetting* FindSettingByDevName(const FName& SettingDevName);
+	UGameSetting* FindSettingByDevName(const FName& SettingDevName);
 
 	template<typename T = UGameSetting>
 	T* FindSettingByDevNameChecked(const FName& SettingDevName)
@@ -66,19 +64,19 @@ public:
 	}
 
 protected:
-	UE_API virtual void OnInitialize(ULocalPlayer* InLocalPlayer) PURE_VIRTUAL(, )
+	virtual void OnInitialize(ULocalPlayer* InLocalPlayer) PURE_VIRTUAL(, )
 
 	virtual void OnSettingApplied(UGameSetting* Setting) { }
 	
-	UE_API void RegisterSetting(UGameSetting* InSetting);
-	UE_API void RegisterInnerSettings(UGameSetting* InSetting);
+	void RegisterSetting(UGameSetting* InSetting);
+	void RegisterInnerSettings(UGameSetting* InSetting);
 
 	// Internal event handlers.
-	UE_API void HandleSettingChanged(UGameSetting* Setting, EGameSettingChangeReason Reason);
-	UE_API void HandleSettingApplied(UGameSetting* Setting);
-	UE_API void HandleSettingEditConditionsChanged(UGameSetting* Setting);
-	UE_API void HandleSettingNamedAction(UGameSetting* Setting, FGameplayTag GameSettings_Action_Tag);
-	UE_API void HandleSettingNavigation(UGameSetting* Setting);
+	void HandleSettingChanged(UGameSetting* Setting, EGameSettingChangeReason Reason);
+	void HandleSettingApplied(UGameSetting* Setting);
+	void HandleSettingEditConditionsChanged(UGameSetting* Setting);
+	void HandleSettingNamedAction(UGameSetting* Setting, FGameplayTag GameSettings_Action_Tag);
+	void HandleSettingNavigation(UGameSetting* Setting);
 
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<UGameSetting>> TopLevelSettings;
@@ -89,5 +87,3 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<ULocalPlayer> OwningLocalPlayer;
 };
-
-#undef UE_API

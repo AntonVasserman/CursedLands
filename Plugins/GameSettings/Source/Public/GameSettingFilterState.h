@@ -7,8 +7,6 @@
 #include "UObject/ObjectPtr.h"
 #include "GameSettingFilterState.generated.h"
 
-#define UE_API GAMESETTINGS_API
-
 class ULocalPlayer;
 class UGameSetting;
 class UGameSettingCollection;
@@ -26,13 +24,13 @@ enum class EGameSettingChangeReason : uint8
  * The filter state is intended to be any and all filtering we support.
  */
 USTRUCT()
-struct FGameSettingFilterState
+struct GAMESETTINGS_API FGameSettingFilterState
 {
 	GENERATED_BODY()
 
 public:
 
-	UE_API FGameSettingFilterState();
+	FGameSettingFilterState();
 
 	UPROPERTY()
 	bool bIncludeDisabled = true;
@@ -47,12 +45,12 @@ public:
 	bool bIncludeNestedPages = false;
 
 public:
-	UE_API void SetSearchText(const FString& InSearchText);
+	void SetSearchText(const FString& InSearchText);
 
-	UE_API bool DoesSettingPassFilter(const UGameSetting& InSetting) const;
+	bool DoesSettingPassFilter(const UGameSetting& InSetting) const;
 
-	UE_API void AddSettingToRootList(UGameSetting* InSetting);
-	UE_API void AddSettingToAllowList(UGameSetting* InSetting);
+	void AddSettingToRootList(UGameSetting* InSetting);
+	void AddSettingToAllowList(UGameSetting* InSetting);
 
 	bool IsSettingInAllowList(const UGameSetting* InSetting) const
 	{
@@ -80,7 +78,7 @@ private:
  * Editable state captures the current visibility and enabled state of a setting. As well
  * as the reasons it got into that state.
  */
-class FGameSettingEditableState
+class GAMESETTINGS_API FGameSettingEditableState
 {
 public:
 	FGameSettingEditableState()
@@ -104,13 +102,13 @@ public:
 	const TArray<FString>& GetDisabledOptions() const { return DisabledOptions; }
 
 	/** Hides the setting, you don't have to provide a user facing reason, but you do need to specify a developer reason. */
-	UE_API void Hide(const FString& DevReason);
+	void Hide(const FString& DevReason);
 
 	/** Disables the setting, you need to provide a reason you disabled this setting. */
-	UE_API void Disable(const FText& Reason);
+	void Disable(const FText& Reason);
 
 	/** Discrete Options that should be hidden from the user. Currently used only by Parental Controls. */
-	UE_API void DisableOption(const FString& Option);
+	void DisableOption(const FString& Option);
 
 	template<typename EnumType>
 	void DisableEnumOption(EnumType InEnumValue)
@@ -121,7 +119,7 @@ public:
 	/**
 	 * Prevents the setting from being reset if the user resets the settings on the screen to their defaults.
 	 */
-	UE_API void UnableToReset();
+	void UnableToReset();
 
 	/**
 	 * Hide from analytics, you may want to do this if for example, we just want to prevent noise, such as platform
@@ -156,7 +154,7 @@ private:
  * Edit conditions can monitor the state of the game or of other settings and adjust the 
  * visibility.
  */
-class FGameSettingEditCondition : public TSharedFromThis<FGameSettingEditCondition>
+class GAMESETTINGS_API FGameSettingEditCondition : public TSharedFromThis<FGameSettingEditCondition>
 {
 public:
 	FGameSettingEditCondition() { }
@@ -197,5 +195,3 @@ public:
 	/** Generate useful debugging text for this edit condition.  Helpful when things don't work as expected. */
 	virtual FString ToString() const { return TEXT(""); }
 };
-
-#undef UE_API

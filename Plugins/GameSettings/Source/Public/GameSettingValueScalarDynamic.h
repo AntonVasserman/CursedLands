@@ -6,8 +6,6 @@
 
 #include "GameSettingValueScalarDynamic.generated.h"
 
-#define UE_API GAMESETTINGS_API
-
 struct FNumberFormattingOptions;
 
 class FGameSettingDataSource;
@@ -19,50 +17,50 @@ class UObject;
 
 typedef TFunction<FText(double SourceValue, double NormalizedValue)> FSettingScalarFormatFunction;
 
-UCLASS(MinimalAPI)
-class UGameSettingValueScalarDynamic : public UGameSettingValueScalar
+UCLASS()
+class GAMESETTINGS_API UGameSettingValueScalarDynamic : public UGameSettingValueScalar
 {
 	GENERATED_BODY()
 
 public:
-	static UE_API FSettingScalarFormatFunction Raw;
-	static UE_API FSettingScalarFormatFunction RawOneDecimal;
-	static UE_API FSettingScalarFormatFunction RawTwoDecimals;
-	static UE_API FSettingScalarFormatFunction ZeroToOnePercent;
-	static UE_API FSettingScalarFormatFunction ZeroToOnePercent_OneDecimal;
-	static UE_API FSettingScalarFormatFunction SourceAsPercent1;
-	static UE_API FSettingScalarFormatFunction SourceAsPercent100;
-	static UE_API FSettingScalarFormatFunction SourceAsInteger;
+	static FSettingScalarFormatFunction Raw;
+	static FSettingScalarFormatFunction RawOneDecimal;
+	static FSettingScalarFormatFunction RawTwoDecimals;
+	static FSettingScalarFormatFunction ZeroToOnePercent;
+	static FSettingScalarFormatFunction ZeroToOnePercent_OneDecimal;
+	static FSettingScalarFormatFunction SourceAsPercent1;
+	static FSettingScalarFormatFunction SourceAsPercent100;
+	static FSettingScalarFormatFunction SourceAsInteger;
 private:
 	static const FNumberFormattingOptions& GetOneDecimalFormattingOptions();
 	
 public:
-	UE_API UGameSettingValueScalarDynamic();
+	UGameSettingValueScalarDynamic();
 
 	/** UGameSettingValue */
-	UE_API virtual void Startup() override;
-	UE_API virtual void StoreInitial() override;
-	UE_API virtual void ResetToDefault() override;
-	UE_API virtual void RestoreToInitial() override;
+	virtual void Startup() override;
+	virtual void StoreInitial() override;
+	virtual void ResetToDefault() override;
+	virtual void RestoreToInitial() override;
 
 	/** UGameSettingValueScalar */
-	UE_API virtual TOptional<double> GetDefaultValue() const override;
-	UE_API virtual void SetValue(double Value, EGameSettingChangeReason Reason = EGameSettingChangeReason::Change) override;
-	UE_API virtual double GetValue() const override;
-	UE_API virtual TRange<double> GetSourceRange() const override;
-	UE_API virtual double GetSourceStep() const override;
-	UE_API virtual FText GetFormattedText() const override;
+	virtual TOptional<double> GetDefaultValue() const override;
+	virtual void SetValue(double Value, EGameSettingChangeReason Reason = EGameSettingChangeReason::Change) override;
+	virtual double GetValue() const override;
+	virtual TRange<double> GetSourceRange() const override;
+	virtual double GetSourceStep() const override;
+	virtual FText GetFormattedText() const override;
 
 	/** UGameSettingValueDiscreteDynamic */
-	UE_API void SetDynamicGetter(const TSharedRef<FGameSettingDataSource>& InGetter);
-	UE_API void SetDynamicSetter(const TSharedRef<FGameSettingDataSource>& InSetter);
-	UE_API void SetDefaultValue(double InValue);
+	void SetDynamicGetter(const TSharedRef<FGameSettingDataSource>& InGetter);
+	void SetDynamicSetter(const TSharedRef<FGameSettingDataSource>& InSetter);
+	void SetDefaultValue(double InValue);
 
 	/**  */
-	UE_API void SetDisplayFormat(FSettingScalarFormatFunction InDisplayFormat);
+	void SetDisplayFormat(FSettingScalarFormatFunction InDisplayFormat);
 	
 	/**  */
-	UE_API void SetSourceRangeAndStep(const TRange<double>& InRange, double InSourceStep);
+	void SetSourceRangeAndStep(const TRange<double>& InRange, double InSourceStep);
 	
 	/**
 	 * The SetSourceRangeAndStep defines the actual range the numbers could move in, but often
@@ -71,7 +69,7 @@ public:
 	 * a bar that travels from 0 to 100, the user can't set anything lower than some minimum, e.g. 1.
 	 * That is the Minimum Limit.
 	 */
-	UE_API void SetMinimumLimit(const TOptional<double>& InMinimum);
+	void SetMinimumLimit(const TOptional<double>& InMinimum);
 
 	/**
 	 * The SetSourceRangeAndStep defines the actual range the numbers could move in, but rarely
@@ -80,13 +78,13 @@ public:
 	 * a bar that travels from 0 to 100, the user can't set anything lower than some maximum, e.g. 95.
 	 * That is the Maximum Limit.
 	 */
-	UE_API void SetMaximumLimit(const TOptional<double>& InMaximum);
+	void SetMaximumLimit(const TOptional<double>& InMaximum);
 	
 protected:
 	/** UGameSettingValue */
-	UE_API virtual void OnInitialized() override;
+	virtual void OnInitialized() override;
 
-	UE_API void OnDataSourcesReady();
+	void OnDataSourcesReady();
 
 protected:
 
@@ -103,5 +101,3 @@ protected:
 
 	FSettingScalarFormatFunction DisplayFormat;
 };
-
-#undef UE_API

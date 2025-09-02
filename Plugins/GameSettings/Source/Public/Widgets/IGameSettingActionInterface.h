@@ -7,8 +7,6 @@
 
 #include "IGameSettingActionInterface.generated.h"
 
-#define UE_API GAMESETTINGS_API
-
 class UGameSetting;
 class UObject;
 struct FFrame;
@@ -19,14 +17,12 @@ class UGameSettingActionInterface : public UInterface
 	GENERATED_UINTERFACE_BODY()
 };
 
-class IGameSettingActionInterface
+class GAMESETTINGS_API IGameSettingActionInterface
 {
 	GENERATED_BODY()
 
 public:
-	/** */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	UE_API bool ExecuteActionForSetting(FGameplayTag ActionTag, UGameSetting* InSetting);
+	bool ExecuteActionForSetting(FGameplayTag ActionTag, UGameSetting* InSetting);
 };
 
-#undef UE_API

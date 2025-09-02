@@ -6,8 +6,6 @@
 
 #include "GameSettingAction.generated.h"
 
-#define UE_API GAMESETTINGS_API
-
 //--------------------------------------
 // UGameSettingAction
 //--------------------------------------
@@ -19,13 +17,13 @@ DECLARE_DELEGATE_TwoParams(UGameSettingCustomAction, UGameSetting* /*Setting*/, 
 /**
  * 
  */
-UCLASS(MinimalAPI)
-class UGameSettingAction : public UGameSetting
+UCLASS()
+class GAMESETTINGS_API UGameSettingAction : public UGameSetting
 {
 	GENERATED_BODY()
 
 public:
-	UE_API UGameSettingAction();
+	UGameSettingAction();
 
 public:
 
@@ -45,7 +43,7 @@ public:
 
 	bool HasCustomAction() const { return CustomAction.IsBound(); }
 	void SetCustomAction(UGameSettingCustomAction InAction) { CustomAction = InAction; }
-	UE_API void SetCustomAction(TFunction<void(ULocalPlayer*)> InAction);
+	void SetCustomAction(TFunction<void(ULocalPlayer*)> InAction);
 
 	/**
 	 * By default actions don't dirty the settings, since the majority of them either do things you can't
@@ -54,11 +52,11 @@ public:
 	 */
 	void SetDoesActionDirtySettings(bool Value) { bDirtyAction = Value; }
 
-	UE_API virtual void ExecuteAction();
+	virtual void ExecuteAction();
 
 protected:
 	/** UGameSettingValue */
-	UE_API virtual void OnInitialized() override;
+	virtual void OnInitialized() override;
 
 protected:
 	FText ActionText;
@@ -66,5 +64,3 @@ protected:
 	UGameSettingCustomAction CustomAction;
 	bool bDirtyAction = false;
 };
-
-#undef UE_API

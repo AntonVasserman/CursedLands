@@ -5,29 +5,25 @@
 #include "GameSettingDataSource.h"
 #include "PropertyPathHelpers.h"
 
-#define UE_API GAMESETTINGS_API
-
 class ULocalPlayer;
 
 //--------------------------------------
 // FGameSettingDataSourceDynamic
 //--------------------------------------
 
-class FGameSettingDataSourceDynamic : public FGameSettingDataSource
+class GAMESETTINGS_API FGameSettingDataSourceDynamic : public FGameSettingDataSource
 {
 public:
-	UE_API FGameSettingDataSourceDynamic(const TArray<FString>& InDynamicPath);
+	FGameSettingDataSourceDynamic(const TArray<FString>& InDynamicPath);
 
-	UE_API virtual bool Resolve(ULocalPlayer* InLocalPlayer) override;
+	virtual bool Resolve(ULocalPlayer* InLocalPlayer) override;
 
-	UE_API virtual FString GetValueAsString(ULocalPlayer* InLocalPlayer) const override;
+	virtual FString GetValueAsString(ULocalPlayer* InLocalPlayer) const override;
 
-	UE_API virtual void SetValue(ULocalPlayer* InLocalPlayer, const FString& Value) override;
+	virtual void SetValue(ULocalPlayer* InLocalPlayer, const FString& Value) override;
 
-	UE_API virtual FString ToString() const override;
+	virtual FString ToString() const override;
 
 private:
 	FCachedPropertyPath DynamicPath;
 };
-
-#undef UE_API

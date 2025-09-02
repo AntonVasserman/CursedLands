@@ -5,8 +5,6 @@
 #include "GameSettingFilterState.h"
 #include "GameplayTagContainer.h"
 
-#define UE_API GAMESETTINGS_API
-
 class ULocalPlayer;
 
 //////////////////////////////////////////////////////////////////////
@@ -14,17 +12,17 @@ class ULocalPlayer;
 
 // Edit condition for game settings that checks CommonUI's platform traits
 // to determine whether or not to show a setting
-class FWhenPlatformHasTrait : public FGameSettingEditCondition
+class GAMESETTINGS_API FWhenPlatformHasTrait : public FGameSettingEditCondition
 {
 public:
-	static UE_API TSharedRef<FWhenPlatformHasTrait> KillIfMissing(FGameplayTag InVisibilityTag, const FString& InKillReason);
-	static UE_API TSharedRef<FWhenPlatformHasTrait> DisableIfMissing(FGameplayTag InVisibilityTag, const FText& InDisableReason);
+	static TSharedRef<FWhenPlatformHasTrait> KillIfMissing(FGameplayTag InVisibilityTag, const FString& InKillReason);
+	static TSharedRef<FWhenPlatformHasTrait> DisableIfMissing(FGameplayTag InVisibilityTag, const FText& InDisableReason);
 
-	static UE_API TSharedRef<FWhenPlatformHasTrait> KillIfPresent(FGameplayTag InVisibilityTag, const FString& InKillReason);
-	static UE_API TSharedRef<FWhenPlatformHasTrait> DisableIfPresent(FGameplayTag InVisibilityTag, const FText& InDisableReason);
+	static TSharedRef<FWhenPlatformHasTrait> KillIfPresent(FGameplayTag InVisibilityTag, const FString& InKillReason);
+	static TSharedRef<FWhenPlatformHasTrait> DisableIfPresent(FGameplayTag InVisibilityTag, const FText& InDisableReason);
 
 	//~FGameSettingEditCondition interface
-	UE_API virtual void GatherEditState(const ULocalPlayer* InLocalPlayer, FGameSettingEditableState& InOutEditState) const override;
+	virtual void GatherEditState(const ULocalPlayer* InLocalPlayer, FGameSettingEditableState& InOutEditState) const override;
 	//~End of FGameSettingEditCondition interface
 
 private:
@@ -33,5 +31,3 @@ private:
 	FString KillReason;
 	FText DisableReason;
 };
-
-#undef UE_API
