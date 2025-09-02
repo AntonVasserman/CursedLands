@@ -27,29 +27,31 @@ public:
 
 protected:
 	UPROPERTY()
+	TObjectPtr<UGameSettingCollection> VideoSettings;
+
+	UPROPERTY()
 	TObjectPtr<UGameSettingCollection> GameSettings;
-
-	/*
-	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> HUDSettings;
-
-	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> AccessabilitySettings;
-	*/
 	
 	UPROPERTY()
 	TObjectPtr<UGameSettingCollection> AudioSettings;
 
-	/*
 	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> VideoSettings;
-
+	TObjectPtr<UGameSettingCollection> UISettings;
+	
+	UPROPERTY()
+	TObjectPtr<UGameSettingCollection> AccessibilitySettings;
+	
+	/*
 	UPROPERTY()
 	TObjectPtr<UGameSettingCollection> ControlsSettings;
 	*/
-	
+
+	UGameSettingCollection* InitializeVideoSettings(UCL_LocalPlayer* InLocalPlayer);
 	UGameSettingCollection* InitializeGameSettings(UCL_LocalPlayer* InLocalPlayer);
 	UGameSettingCollection* InitializeAudioSettings(UCL_LocalPlayer* InLocalPlayer);
+	UGameSettingCollection* InitializeUISettings(UCL_LocalPlayer* InLocalPlayer);
+	UGameSettingCollection* InitializeAccessibilitySettings(UCL_LocalPlayer* InLocalPlayer);
+	// UGameSettingCollection* InitializeControlsSettings(UCL_LocalPlayer* InLocalPlayer);
 	
 	//~ Begin UGameSettingRegistry
 public:

@@ -4,6 +4,7 @@
 #include "Settings/CL_GameSettingRegistry.h"
 
 #include "GameSettingCollection.h"
+#include "GameSettingValueDiscreteDynamic.h"
 #include "GameSettingValueScalarDynamic.h"
 #include "DataSource/GameSettingDataSourceDynamic.h"
 #include "EditCondition/WhenPlayingAsPrimaryPlayer.h"
@@ -25,16 +26,24 @@ UCL_GameSettingRegistry* UCL_GameSettingRegistry::Get(UCL_LocalPlayer* InLocalPl
 	return Registry;
 }
 
+UGameSettingCollection* UCL_GameSettingRegistry::InitializeVideoSettings(UCL_LocalPlayer* InLocalPlayer)
+{
+	UGameSettingCollection* VideoSettingCollection = NewObject<UGameSettingCollection>();
+	VideoSettingCollection->SetDevName(TEXT("VideoCollection"));
+	VideoSettingCollection->SetDisplayName(LOCTEXT("VideoCollection_Name", "Video"));
+	VideoSettingCollection->Initialize(InLocalPlayer);
+
+	return VideoSettingCollection;
+}
+
 UGameSettingCollection* UCL_GameSettingRegistry::InitializeGameSettings(UCL_LocalPlayer* InLocalPlayer)
 {
-	UGameSettingCollection* Screen = NewObject<UGameSettingCollection>();
-	Screen->SetDevName(TEXT("GameCollection"));
-	Screen->SetDisplayName(LOCTEXT("GameCollection_Name", "Game"));
-	Screen->Initialize(InLocalPlayer);
+	UGameSettingCollection* GameSettingCollection = NewObject<UGameSettingCollection>();
+	GameSettingCollection->SetDevName(TEXT("GameCollection"));
+	GameSettingCollection->SetDisplayName(LOCTEXT("GameCollection_Name", "Game"));
+	GameSettingCollection->Initialize(InLocalPlayer);
 
-	// TODO
-
-	return Screen;
+	return GameSettingCollection;
 }
 
 UGameSettingCollection* UCL_GameSettingRegistry::InitializeAudioSettings(UCL_LocalPlayer* InLocalPlayer)
@@ -50,25 +59,119 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeAudioSettings(UCL_Loc
 		VolumeSettings->SetDevName(TEXT("VolumeCollection"));
 		VolumeSettings->SetDisplayName(LOCTEXT("VolumeCollection_Name", "Volume"));
 		AudioSettingCollection->AddSetting(VolumeSettings);
-		
+
+		// MasterVolume
 		{
-			UGameSettingValueScalarDynamic* OverallVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
-			OverallVolumeSetting->SetDevName(TEXT("OverallVolume"));
-			OverallVolumeSetting->SetDisplayName(LOCTEXT("OverallVolume_Name", "Overall"));
-			OverallVolumeSetting->SetDescriptionRichText(LOCTEXT("OverallVolume_Description", "Adjusts the volume of everything."));
+			UGameSettingValueScalarDynamic* MasterVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
+			MasterVolumeSetting->SetDevName(TEXT("MasterVolume"));
+			MasterVolumeSetting->SetDisplayName(LOCTEXT("MasterVolume_Name", "Master"));
+			MasterVolumeSetting->SetDescriptionRichText(LOCTEXT("MasterVolume_Description", "Adjusts the volume of everything."));
 
-			OverallVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetOverallVolume));
-			OverallVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetOverallVolume));
-			OverallVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetOverallVolume());
-			OverallVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
+			MasterVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetMasterVolume));
+			MasterVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetMasterVolume));
+			MasterVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetMasterVolume());
+			MasterVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
 
-			OverallVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
+			MasterVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
 
-			VolumeSettings->AddSetting(OverallVolumeSetting);
+			VolumeSettings->AddSetting(MasterVolumeSetting);
+		}
+
+		// MusicVolume
+		{
+			UGameSettingValueScalarDynamic* MusicVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
+			MusicVolumeSetting->SetDevName(TEXT("MusicVolume"));
+			MusicVolumeSetting->SetDisplayName(LOCTEXT("MusicVolume_Name", "Music"));
+			MusicVolumeSetting->SetDescriptionRichText(LOCTEXT("MusicVolume_Description", "Adjusts the music volume."));
+
+			MusicVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetMusicVolume));
+			MusicVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetMusicVolume));
+			MusicVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetMusicVolume());
+			MusicVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
+
+			MusicVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
+
+			VolumeSettings->AddSetting(MusicVolumeSetting);
+		}
+
+		// EffectsVolume
+		{
+			UGameSettingValueScalarDynamic* EffectsVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
+			EffectsVolumeSetting->SetDevName(TEXT("EffectsVolume"));
+			EffectsVolumeSetting->SetDisplayName(LOCTEXT("EffectsVolume_Name", "Effects"));
+			EffectsVolumeSetting->SetDescriptionRichText(LOCTEXT("EffectsVolume_Description", "Adjusts the effects volume."));
+
+			EffectsVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetEffectsVolume));
+			EffectsVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetEffectsVolume));
+			EffectsVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetEffectsVolume());
+			EffectsVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
+
+			EffectsVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
+
+			VolumeSettings->AddSetting(EffectsVolumeSetting);
+		}
+
+		// VoiceVolume
+		{
+			UGameSettingValueScalarDynamic* VoiceVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
+			VoiceVolumeSetting->SetDevName(TEXT("VoiceVolume"));
+			VoiceVolumeSetting->SetDisplayName(LOCTEXT("VoiceVolume_Name", "Voice"));
+			VoiceVolumeSetting->SetDescriptionRichText(LOCTEXT("VoiceVolume_Description", "Adjusts the voice volume."));
+
+			VoiceVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetVoiceVolume));
+			VoiceVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetVoiceVolume));
+			VoiceVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetVoiceVolume());
+			VoiceVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
+
+			VoiceVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
+
+			VolumeSettings->AddSetting(VoiceVolumeSetting);
 		}
 	}
 
 	return AudioSettingCollection;
+}
+
+UGameSettingCollection* UCL_GameSettingRegistry::InitializeUISettings(UCL_LocalPlayer* InLocalPlayer)
+{
+	UGameSettingCollection* UISettingCollection = NewObject<UGameSettingCollection>();
+	UISettingCollection->SetDevName(TEXT("UICollection"));
+	UISettingCollection->SetDisplayName(LOCTEXT("UICollection_Name", "UI"));
+	UISettingCollection->Initialize(InLocalPlayer);
+
+	// Minimap
+	{
+		UGameSettingCollection* MinimapSettings = NewObject<UGameSettingCollection>();
+		MinimapSettings->SetDevName(TEXT("MinimapCollection"));
+		MinimapSettings->SetDisplayName(LOCTEXT("MinimapCollection_Name", "Minimap"));
+		UISettingCollection->AddSetting(MinimapSettings);
+
+		// RotateMinimap
+		{
+			UGameSettingValueDiscreteDynamic_Bool* RotateMinimapSetting = NewObject<UGameSettingValueDiscreteDynamic_Bool>();
+			RotateMinimapSetting->SetDevName(TEXT("RotateMinimap"));
+			RotateMinimapSetting->SetDisplayName(LOCTEXT("RotateMinimap_Name", "Rotate Minimap"));
+			RotateMinimapSetting->SetDescriptionRichText(LOCTEXT("RotateMinimap_Description", "TODO"));
+
+			RotateMinimapSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetRotateMinimap));
+			RotateMinimapSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetRotateMinimap));
+			RotateMinimapSetting->SetDefaultValue(true);
+
+			MinimapSettings->AddSetting(RotateMinimapSetting);
+		}
+	}
+	
+	return UISettingCollection;
+}
+
+UGameSettingCollection* UCL_GameSettingRegistry::InitializeAccessibilitySettings(UCL_LocalPlayer* InLocalPlayer)
+{
+	UGameSettingCollection* AccessibilitySettingCollection = NewObject<UGameSettingCollection>();
+	AccessibilitySettingCollection->SetDevName(TEXT("AccessibilityCollection"));
+	AccessibilitySettingCollection->SetDisplayName(LOCTEXT("AccessibilityCollection_Name", "Accessibility"));
+	AccessibilitySettingCollection->Initialize(InLocalPlayer);
+
+	return AccessibilitySettingCollection;
 }
 
 //~ Begin UGameSettingRegistry
@@ -87,12 +190,22 @@ void UCL_GameSettingRegistry::SaveChanges()
 void UCL_GameSettingRegistry::OnInitialize(ULocalPlayer* InLocalPlayer)
 {
 	UCL_LocalPlayer* LocalPlayer = CastChecked<UCL_LocalPlayer>(InLocalPlayer);
+	check(LocalPlayer);
 
+	VideoSettings = InitializeVideoSettings(LocalPlayer);
+	RegisterSetting(VideoSettings);
+	
 	GameSettings = InitializeGameSettings(LocalPlayer);
 	RegisterSetting(GameSettings);
 	
 	AudioSettings = InitializeAudioSettings(LocalPlayer);
 	RegisterSetting(AudioSettings);
+
+	UISettings = InitializeUISettings(LocalPlayer);
+	RegisterSetting(UISettings);
+
+	AccessibilitySettings = InitializeAccessibilitySettings(LocalPlayer);
+	RegisterSetting(AccessibilitySettings);
 }
 
 //~ End UGameSettingRegistry
