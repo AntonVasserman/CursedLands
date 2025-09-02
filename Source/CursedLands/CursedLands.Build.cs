@@ -26,7 +26,7 @@ public class CursedLands : ModuleRules
 				"NavigationSystem",
 				"PoseSearch",
 				"PropertyBindingUtils",
-				"StateTreeModule"
+				"StateTreeModule",
 			});
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
@@ -38,6 +38,7 @@ public class CursedLands : ModuleRules
 				"Chooser",
 				"CommonInput",
 				"CommonUI",
+				"GameSettings",
 				"MotionWarping"
 			});
 	}
