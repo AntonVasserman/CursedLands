@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Characters/CL_PlayerCharacterCameraMode.h"
 #include "GameFramework/GameUserSettings.h"
 #include "CL_GameLocalUserSettings.generated.h"
 
@@ -28,7 +29,7 @@ public:
 	
 private:
 	UPROPERTY(Config)
-	ECL_PlayerCharacterCameraMode CameraDistance;
+	ECL_PlayerCharacterCameraMode CameraDistance = ECL_PlayerCharacterCameraMode::Default;
 	// End Game Settings
 	
 	// Begin Audio Settings
@@ -73,7 +74,7 @@ public:
 	
 private:
 	UPROPERTY(Config)
-	bool bRotateMinimap;
+	bool bRotateMinimap = true;
 	// End UI Settings
 	
 	// Begin Accessibility Settings

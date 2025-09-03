@@ -38,6 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Minimap")
 	FORCEINLINE float GetMinimapCollisionCapsuleHalfHeight() const { return MinimapCollisionCapsuleHalfHeight; }
 	
+	UFUNCTION(BlueprintCallable, Category = "Minimap|Settings")
+	FORCEINLINE bool GetRotateMinimap() const;
+	
 private:
 	UPROPERTY()
 	APlayerController* CurrentPlayerController = nullptr;

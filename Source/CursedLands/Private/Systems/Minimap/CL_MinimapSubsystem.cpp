@@ -4,8 +4,14 @@
 #include "Systems/Minimap/CL_MinimapSubsystem.h"
 
 #include "CL_LogChannels.h"
+#include "Settings/CL_GameLocalUserSettings.h"
 #include "Systems/Minimap/CL_MinimapSensor.h"
 #include "Systems/Minimap/Components/CL_MinimapIconComponent.h"
+
+bool UCL_MinimapSubsystem::GetRotateMinimap() const
+{
+	return UCL_GameLocalUserSettings::Get()->GetRotateMinimap();
+}
 
 void UCL_MinimapSubsystem::InitMinimapSensor(APawn* InNewPawn)
 {

@@ -62,6 +62,7 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeGameSettings(UCL_Loca
 			CameraDistanceSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetCameraDistance));
 			CameraDistanceSetting->AddEnumOption(ECL_PlayerCharacterCameraMode::Default, LOCTEXT("CameraDistanceDefault", "Default"));
 			CameraDistanceSetting->AddEnumOption(ECL_PlayerCharacterCameraMode::Close, LOCTEXT("CameraDistanceClose", "Close"));
+			CameraDistanceSetting->SetDefaultValue(ECL_PlayerCharacterCameraMode::Default);
 
 			CameraSettings->AddSetting(CameraDistanceSetting);
 		}
@@ -179,7 +180,7 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeUISettings(UCL_LocalP
 
 			RotateMinimapSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetRotateMinimap));
 			RotateMinimapSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetRotateMinimap));
-			RotateMinimapSetting->SetDefaultValue(true);
+			RotateMinimapSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetRotateMinimap());
 
 			MinimapSettings->AddSetting(RotateMinimapSetting);
 		}
