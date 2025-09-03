@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Settings/CL_GameLocalUserSettings.h"
 #include "Subsystems/LocalPlayerSubsystem.h"
 #include "CL_MinimapSubsystem.generated.h"
 
@@ -32,6 +33,9 @@ public:
 	FOnActorWithMinimapIconRelativeLocationUpdated OnActorWithMinimapIconRelativeLocationUpdated;
 	UPROPERTY(BlueprintAssignable)
 	FOnActorWithMinimapIconLost OnActorWithMinimapIconLost;
+
+	UPROPERTY(BlueprintAssignable)
+	FCL_OnRotateMinimapChanged OnRotateMinimapChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Minimap")
 	FORCEINLINE float GetMinimapCollisionCapsuleRadius() const { return MinimapCollisionCapsuleRadius; }
@@ -68,6 +72,9 @@ private:
 	void OnMinimapSensorBeginOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent);
 	UFUNCTION()
 	void OnMinimapSensorEndOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent);
+	
+	UFUNCTION()
+	void LocalSettings_OnRotateMinimapChanged(bool bNewRotateMinimap);
 	
 	//~ Begin ULocalPlayerSubsystem
 public:

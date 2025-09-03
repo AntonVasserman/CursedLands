@@ -121,12 +121,19 @@ void UCL_MinimapSubsystem::OnMinimapSensorEndOverlap(AActor* Actor, UCL_MinimapI
 	}
 }
 
+void UCL_MinimapSubsystem::LocalSettings_OnRotateMinimapChanged(bool bNewRotateMinimap)
+{
+	OnRotateMinimapChanged.Broadcast(bNewRotateMinimap);
+}
+
 //~ Begin ULocalPlayerSubsystem
 
 void UCL_MinimapSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
+	UCL_GameLocalUserSettings::Get()->OnRotateMinimapChanged.AddDynamic(this, &UCL_MinimapSubsystem::LocalSettings_OnRotateMinimapChanged);
+	
 	GetWorld()->GetTimerManager().SetTimer(
 		ActorsWithMinimapLocationSamplingTimer,
 		this,

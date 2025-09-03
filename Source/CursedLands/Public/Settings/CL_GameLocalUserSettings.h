@@ -9,6 +9,8 @@
 
 enum class ECL_PlayerCharacterCameraMode : uint8;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnRotateMinimapChanged, bool, bNewRotateMinimap);
+
 UCLASS()
 class CURSEDLANDS_API UCL_GameLocalUserSettings : public UGameUserSettings
 {
@@ -67,6 +69,7 @@ private:
 
 	// Begin UI Settings
 public:
+	FCL_OnRotateMinimapChanged OnRotateMinimapChanged;
 	UFUNCTION()
 	bool GetRotateMinimap() const;
 	UFUNCTION()

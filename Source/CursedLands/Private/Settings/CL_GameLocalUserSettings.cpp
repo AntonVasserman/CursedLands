@@ -76,6 +76,7 @@ bool UCL_GameLocalUserSettings::GetRotateMinimap() const
 void UCL_GameLocalUserSettings::SetRotateMinimap(bool bInRotateMinimap)
 {
 	bRotateMinimap = bInRotateMinimap;
+	OnRotateMinimapChanged.Broadcast(bRotateMinimap);
 }
 // End UI Settings
 
