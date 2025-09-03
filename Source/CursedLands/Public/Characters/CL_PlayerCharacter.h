@@ -9,6 +9,7 @@
 #include "MotionWarpingComponent.h"
 #include "Characters/CL_Character.h"
 #include "Components/CL_ExtendedCharacterMovementComponent.h"
+#include "Settings/CL_GameLocalUserSettings.h"
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 #include "CL_PlayerCharacter.generated.h"
 
@@ -53,9 +54,7 @@ public:
 
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")
-	FORCEINLINE ECL_PlayerCharacterCameraMode GetCameraMode() const { return CameraMode; }
-	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")
-	FORCEINLINE void SetCameraMode(const ECL_PlayerCharacterCameraMode InCameraMode) { CameraMode = InCameraMode; }
+	FORCEINLINE ECL_PlayerCharacterCameraMode GetCameraMode() const { return UCL_GameLocalUserSettings::Get()->GetCameraDistance(); }
 	
 	UFUNCTION(BlueprintCallable, Category = "Locomotion")
 	FORCEINLINE ECL_PlayerCharacterMovementMode GetMovementMode() const { return MovementMode; }
@@ -128,7 +127,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Traversal", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCL_CharacterTraversalComponent> CharacterTraversal;
 
-	ECL_PlayerCharacterCameraMode CameraMode = ECL_PlayerCharacterCameraMode::Default;
+	// ECL_PlayerCharacterCameraMode CameraMode = ECL_PlayerCharacterCameraMode::Default;
 	ECL_PlayerCharacterMovementMode MovementMode = ECL_PlayerCharacterMovementMode::Default;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Config|Character Movement|Walking", Meta = (AllowPrivateAccess = "true"))
