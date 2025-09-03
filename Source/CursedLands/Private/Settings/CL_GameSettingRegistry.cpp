@@ -6,6 +6,7 @@
 #include "GameSettingCollection.h"
 #include "GameSettingValueDiscreteDynamic.h"
 #include "GameSettingValueScalarDynamic.h"
+#include "Characters/CL_PlayerCharacterCameraMode.h"
 #include "DataSource/GameSettingDataSourceDynamic.h"
 #include "EditCondition/WhenPlayingAsPrimaryPlayer.h"
 #include "GameFramework/GameUserSettings.h"
@@ -43,6 +44,29 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeGameSettings(UCL_Loca
 	GameSettingCollection->SetDisplayName(LOCTEXT("GameCollection_Name", "Game"));
 	GameSettingCollection->Initialize(InLocalPlayer);
 
+	// Camera
+	{
+		UGameSettingCollection* CameraSettings = NewObject<UGameSettingCollection>();
+		CameraSettings->SetDevName(TEXT("CameraCollection"));
+		CameraSettings->SetDisplayName(LOCTEXT("CameraCollection_Name", "Camera"));
+		GameSettingCollection->AddSetting(CameraSettings);
+
+		// Camera Distance
+		{
+			UGameSettingValueDiscreteDynamic_Enum* CameraDistanceSetting = NewObject<UGameSettingValueDiscreteDynamic_Enum>();
+			CameraDistanceSetting->SetDevName(TEXT("CameraDistance"));
+			CameraDistanceSetting->SetDisplayName(LOCTEXT("CameraDistance_Name", "Camera Distance"));
+			CameraDistanceSetting->SetDescriptionRichText(LOCTEXT("CameraDistance_Description", "TODO"));
+
+			CameraDistanceSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetCameraDistance));
+			CameraDistanceSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetCameraDistance));
+			CameraDistanceSetting->AddEnumOption(ECL_PlayerCharacterCameraMode::Default, LOCTEXT("CameraDistanceDefault", "Default"));
+			CameraDistanceSetting->AddEnumOption(ECL_PlayerCharacterCameraMode::Close, LOCTEXT("CameraDistanceClose", "Close"));
+
+			CameraSettings->AddSetting(CameraDistanceSetting);
+		}
+	}
+	
 	return GameSettingCollection;
 }
 
