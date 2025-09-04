@@ -67,6 +67,30 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeGameSettings(UCL_Loca
 			CameraSettings->AddSetting(CameraDistanceSetting);
 		}
 	}
+
+	// Lorem Ipsum
+	{
+		UGameSettingCollection* LoremIpsumSettings = NewObject<UGameSettingCollection>();
+		LoremIpsumSettings->SetDevName(TEXT("LoremIpsumCollection"));
+		LoremIpsumSettings->SetDisplayName(LOCTEXT("LoremIpsumCollection_Name", "Lorem Ipsum"));
+		GameSettingCollection->AddSetting(LoremIpsumSettings);
+
+		// Camera Distance 2
+		{
+			UGameSettingValueDiscreteDynamic_Enum* CameraDistanceSetting = NewObject<UGameSettingValueDiscreteDynamic_Enum>();
+			CameraDistanceSetting->SetDevName(TEXT("LoremIpsum"));
+			CameraDistanceSetting->SetDisplayName(LOCTEXT("LoremIpsum_Name", "Lorem Ipsum"));
+			CameraDistanceSetting->SetDescriptionRichText(LOCTEXT("LoremIpsum_Description", "TODO"));
+
+			CameraDistanceSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetCameraDistance));
+			CameraDistanceSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetCameraDistance));
+			CameraDistanceSetting->AddEnumOption(ECL_PlayerCharacterCameraMode::Default, LOCTEXT("CameraDistanceDefault", "Default"));
+			CameraDistanceSetting->AddEnumOption(ECL_PlayerCharacterCameraMode::Close, LOCTEXT("CameraDistanceClose", "Close"));
+			CameraDistanceSetting->SetDefaultValue(ECL_PlayerCharacterCameraMode::Default);
+
+			LoremIpsumSettings->AddSetting(CameraDistanceSetting);
+		}
+	}
 	
 	return GameSettingCollection;
 }
