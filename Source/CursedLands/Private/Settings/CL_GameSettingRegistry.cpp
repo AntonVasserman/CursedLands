@@ -56,7 +56,7 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeGameSettings(UCL_Loca
 			UGameSettingValueDiscreteDynamic_Enum* CameraDistanceSetting = NewObject<UGameSettingValueDiscreteDynamic_Enum>();
 			CameraDistanceSetting->SetDevName(TEXT("CameraDistance"));
 			CameraDistanceSetting->SetDisplayName(LOCTEXT("CameraDistance_Name", "Camera Distance"));
-			CameraDistanceSetting->SetDescriptionRichText(LOCTEXT("CameraDistance_Description", "TODO"));
+			CameraDistanceSetting->SetDescriptionRichText(LOCTEXT("CameraDistance_Description", "Switch between default and close over-the-shoulder camera mode."));
 
 			CameraDistanceSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetCameraDistance));
 			CameraDistanceSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetCameraDistance));
@@ -200,7 +200,7 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeUISettings(UCL_LocalP
 			UGameSettingValueDiscreteDynamic_Bool* RotateMinimapSetting = NewObject<UGameSettingValueDiscreteDynamic_Bool>();
 			RotateMinimapSetting->SetDevName(TEXT("RotateMinimap"));
 			RotateMinimapSetting->SetDisplayName(LOCTEXT("RotateMinimap_Name", "Rotate Minimap"));
-			RotateMinimapSetting->SetDescriptionRichText(LOCTEXT("RotateMinimap_Description", "TODO"));
+			RotateMinimapSetting->SetDescriptionRichText(LOCTEXT("RotateMinimap_Description", "Rotates the minimap with player view. Disable for a fixed map."));
 
 			RotateMinimapSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetRotateMinimap));
 			RotateMinimapSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetRotateMinimap));
