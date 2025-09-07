@@ -43,9 +43,9 @@ UGameSettingCollection* UCL_GameSettingRegistry::InitializeGameSettings(UCL_Loca
 	GameSettingCollection->SetDevName(TEXT("GameCollection"));
 	GameSettingCollection->SetDisplayName(LOCTEXT("GameCollection_Name", "Game"));
 	GameSettingCollection->Initialize(InLocalPlayer);
-
+	
 	// Camera
-	{
+	{ 
 		UGameSettingCollection* CameraSettings = NewObject<UGameSettingCollection>();
 		CameraSettings->SetDevName(TEXT("CameraCollection"));
 		CameraSettings->SetDisplayName(LOCTEXT("CameraCollection_Name", "Camera"));
