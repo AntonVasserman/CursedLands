@@ -33,7 +33,7 @@ void UCL_MinimapSubsystem::InitMinimapSensor(APawn* InNewPawn)
 	check(MinimapSensor);
 	
 	MinimapSensor->InitializeSensor(MinimapCollisionCapsuleRadius, MinimapCollisionCapsuleHalfHeight);
-	MinimapSensor->AttachToActor(InNewPawn, FAttachmentTransformRules::KeepRelativeTransform);
+	MinimapSensor->AttachToActor(InNewPawn, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
 	MinimapSensor->OnBeginOverlap.AddDynamic(this, &UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap);
 	MinimapSensor->OnEndOverlap.AddDynamic(this, &UCL_MinimapSubsystem::OnMinimapSensorEndOverlap);
@@ -103,7 +103,10 @@ void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* Actor, UCL_Minima
 	if (IsValid(Actor))
 	{
 		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received BEGIN OVERLAP with %s", *Actor->GetName());
-		const FVector MinimapIconRelativeLocation = Actor->GetActorLocation() - MinimapSensor->GetActorLocation();
+		
+		const FVector ActorLocation = Actor->GetActorLocation();
+		const FVector MinimapSensorLocation = MinimapSensor->GetActorLocation();
+		const FVector MinimapIconRelativeLocation = ActorLocation - MinimapSensorLocation;
 		MinimapIconToLastRelativeLocation.Add(MinimapIconComponent, MinimapIconRelativeLocation);
 		OnActorWithMinimapIconDetected.Broadcast(MinimapIconComponent, MinimapIconRelativeLocation);
 		CL_LOG_MINIMAP_SYSTEM_DISPLAY("New count of Minimap Icons: %d", MinimapIconToLastRelativeLocation.Num());
