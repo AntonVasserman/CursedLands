@@ -5,12 +5,22 @@ This is a Repository for Cursed Lands, a 3rd-Person, RPG, Open-World portfolio p
 
 This project's purpose is to serve as a portfolio piece, showcasing experience in the next areas and systems:
 * Gameplay Ability System
-* Gameplay Camera System
-* Advanced Locomotion System
-  * Animation Layers and Animation Layer Interfaces (for different equipped weapons)
-  * Animation Warping
-  * Motion Warping
-* State Trees for Character States and AI (TODO)
+* Gameplay Camera System (Experimental)
+* Animation
+  * (Previous, Part #1) ALS (Advanced Locomotion System) 
+    * Animation Layers and Animation Layer Interfaces (for different equipped weapons)
+    * Animation Warping
+    * Motion Warping
+  * (Current, Part #2) Motion Matching
+  * (Future, Part #3) UAF (Unreal Animation Framework)
+* State Trees
+  * Player Character
+  * AI
+  * Gameplay Camera System Director (Experimental)
+* UI
+  * MVVM
+  * CommonUI
+  * GameSettings (A Lyra Plugin)
 
 <!--
 ##  Documents
