@@ -26,7 +26,10 @@ public class CursedLands : ModuleRules
 				"NavigationSystem",
 				"PoseSearch",
 				"PropertyBindingUtils",
+				"Slate",
+				"SlateCore",
 				"StateTreeModule",
+				"UMG",
 			});
 		PrivateDependencyModuleNames.AddRange(
 			new string[]

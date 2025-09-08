@@ -23,11 +23,16 @@ UCL_PrimaryGameLayoutWidget* UCL_PrimaryGameLayoutWidget::GetPrimaryGameLayout(A
 
 UCommonActivatableWidget* UCL_PrimaryGameLayoutWidget::PushWidgetToLayerStack(FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> ActivatableWidgetClass)
 {
+	return PushWidgetToLayerStack(LayerName, ActivatableWidgetClass, [](UCommonActivatableWidget&) {});
+}
+
+UCommonActivatableWidget* UCL_PrimaryGameLayoutWidget::PushWidgetToLayerStack(FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> ActivatableWidgetClass, TFunctionRef<void(UCommonActivatableWidget&)> InitInstanceFunc)
+{
 	checkf(ActivatableWidgetClass, TEXT("%s: ActivatableWidgetClass uninitialized"), __FUNCTIONW__);
 	
 	if (UCommonActivatableWidgetContainerBase* Layer = GetLayerWidget(LayerName))
 	{
-		return Layer->AddWidget(ActivatableWidgetClass);
+		return Layer->AddWidget(ActivatableWidgetClass, InitInstanceFunc);
 	}
 
 	return nullptr;

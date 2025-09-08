@@ -23,7 +23,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "UI|Layer")
 	UCommonActivatableWidget* PushWidgetToLayerStack(UPARAM(Meta = (Categories = "UI.Layer")) FGameplayTag LayerTag, TSubclassOf<UCommonActivatableWidget> ActivatableWidgetClass);
-
+	
+	UCommonActivatableWidget* PushWidgetToLayerStack(UPARAM(Meta = (Categories = "UI.Layer")) FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> ActivatableWidgetClass, TFunctionRef<void(UCommonActivatableWidget&)> InitInstanceFunc);
+	
 	UFUNCTION(BlueprintCallable, Category = "UI|Layer")
 	UCommonActivatableWidgetContainerBase* GetLayerWidget(UPARAM(Meta = (Categories = "UI.Layer")) FGameplayTag LayerTag) const;
 	
