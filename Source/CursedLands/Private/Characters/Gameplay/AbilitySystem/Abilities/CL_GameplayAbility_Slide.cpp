@@ -5,6 +5,12 @@
 
 #include "Characters/CL_PlayerCharacter.h"
 
+void UCL_GameplayAbility_Slide::OnTraversalActionFinished(const ECL_TraversalAction TraversalAction)
+{
+	GetCLPlayerCharacterFromActorInfo(CachedActorInfo)->GetCharacterTraversal()->OnTraversalActionFinished.RemoveDynamic(this, &UCL_GameplayAbility_Slide::OnTraversalActionFinished);
+	EndAbility(CachedHandle, CachedActorInfo, CachedActivationInfo, false, false);
+}
+
 //~ Begin UCL_GameplayAbility_PlayerCharacterBase
 
 bool UCL_GameplayAbility_Slide::CanActivateAbilityInternal(const ACL_PlayerCharacter* PlayerCharacter, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
@@ -14,9 +20,12 @@ bool UCL_GameplayAbility_Slide::CanActivateAbilityInternal(const ACL_PlayerChara
 
 void UCL_GameplayAbility_Slide::ActivateAbilityInternal(ACL_PlayerCharacter* PlayerCharacter, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	CommitAbility(Handle, ActorInfo, ActivationInfo);
+	CachedHandle = Handle;
+	CachedActorInfo = ActorInfo;
+	CachedActivationInfo = ActivationInfo;
+	PlayerCharacter->GetCharacterTraversal()->OnTraversalActionFinished.AddDynamic(this, &UCL_GameplayAbility_Slide::OnTraversalActionFinished);
+	
 	PlayerCharacter->Slide();
-	EndAbility(Handle, ActorInfo, ActivationInfo, false, false);
 }
 
 //~ End UCL_GameplayAbility_PlayerCharacterBase 

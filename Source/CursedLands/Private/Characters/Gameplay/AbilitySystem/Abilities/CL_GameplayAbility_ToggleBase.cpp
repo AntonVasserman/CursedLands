@@ -15,8 +15,6 @@ bool UCL_GameplayAbility_ToggleBase::CanActivateAbilityInternal(const ACL_Player
 
 void UCL_GameplayAbility_ToggleBase::ActivateAbilityInternal(ACL_PlayerCharacter* PlayerCharacter, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	CommitAbility(Handle, ActorInfo, ActivationInfo);
-
 	if (IsToggled(PlayerCharacter))
 	{
 		UnToggle(PlayerCharacter);

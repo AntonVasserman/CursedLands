@@ -33,8 +33,14 @@ bool UCL_GameplayAbility_PlayerCharacterBase::CanActivateAbility(const FGameplay
 
 void UCL_GameplayAbility_PlayerCharacterBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+	{
+		// Cancel Ability
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);	
+	}
+	
 	ACL_PlayerCharacter* PlayerCharacter = GetCLPlayerCharacterFromActorInfo(ActorInfo);
-	return ActivateAbilityInternal(PlayerCharacter, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	ActivateAbilityInternal(PlayerCharacter, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 //~ End UCL_GameplayAbility

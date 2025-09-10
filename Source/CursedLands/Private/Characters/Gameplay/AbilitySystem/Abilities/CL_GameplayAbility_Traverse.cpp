@@ -14,7 +14,6 @@ bool UCL_GameplayAbility_Traverse::CanActivateAbilityInternal(const ACL_PlayerCh
 
 void UCL_GameplayAbility_Traverse::ActivateAbilityInternal(ACL_PlayerCharacter* PlayerCharacter, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	CommitAbility(Handle, ActorInfo, ActivationInfo);
 	PlayerCharacter->Traverse();
 	EndAbility(Handle, ActorInfo, ActivationInfo, false, false);
 }
