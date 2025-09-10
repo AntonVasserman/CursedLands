@@ -16,10 +16,14 @@ private:
 	bool bLerpHalfHeight = false;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "bLerpHalfHeight", EditConditionHides))
 	float NewHalfHeight = 40.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "bLerpHalfHeight", EditConditionHides))
+	float NewHalfHeightOnInterruption = 40.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (AllowPrivateAccess = "true"))
 	bool bLerpRadius = false;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "bLerpRadius", EditConditionHides))
 	float NewRadius = 40.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (AllowPrivateAccess = "true", EditCondition = "bLerpRadius", EditConditionHides))
+	float NewRadiusOnInterruption = 40.f;
 	
 	float ElapsedTime = 0.f;
 	float TotalLerpDuration = 0.f;

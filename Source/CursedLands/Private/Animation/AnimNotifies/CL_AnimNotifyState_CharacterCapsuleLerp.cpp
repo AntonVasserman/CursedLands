@@ -3,6 +3,7 @@
 
 #include "Animation/AnimNotifies/CL_AnimNotifyState_CharacterCapsuleLerp.h"
 
+#include "Animation/AnimNotifyLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 
@@ -111,6 +112,20 @@ void UCL_AnimNotifyState_CharacterCapsuleLerp::NotifyEnd(USkeletalMeshComponent*
 		return;
 	}
 
+	const bool bWasInterrupted = UAnimNotifyLibrary::NotifyStateReachedEnd(EventReference) == false;
+	if (bWasInterrupted)
+	{
+		if (bLerpHalfHeight)
+		{
+			Character->GetCapsuleComponent()->SetCapsuleHalfHeight(NewHalfHeightOnInterruption);
+		}
+		
+		if (bLerpRadius)
+		{
+			Character->GetCapsuleComponent()->SetCapsuleRadius(NewRadiusOnInterruption);
+		}
+	}
+	
 	InitialHalfHeight = 0.f;
 	InitialRadius = 0.f;
 	ElapsedTime = 0.f;
