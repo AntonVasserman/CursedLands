@@ -163,14 +163,20 @@ ECL_FallType ACL_PlayerCharacter::GetFallType() const
 
 bool ACL_PlayerCharacter::CanTraverse() const
 {
-	return CharacterTraversal->CanDoTraversalAction();
+	return CharacterTraversal->CanDoTraversalAction() || CanJump();
 }
 
 void ACL_PlayerCharacter::Traverse()
 {
 	if (CharacterTraversal->CanDoTraversalAction())
 	{
-		CharacterTraversal->RequestTraversalAction();
+		if (CharacterTraversal->RequestTraversalAction() == false)
+		{
+			if (CanJump())
+			{
+				Jump();
+			}
+		}
 	}
 }
 

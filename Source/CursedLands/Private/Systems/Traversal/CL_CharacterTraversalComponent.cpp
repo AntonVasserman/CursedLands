@@ -34,12 +34,12 @@ UCL_CharacterTraversalComponent::UCL_CharacterTraversalComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UCL_CharacterTraversalComponent::RequestTraversalAction()
+bool UCL_CharacterTraversalComponent::RequestTraversalAction()
 {
 	FCL_TraversalCheckResult TraversalCheckResult;
 	if (ExecuteTraversalCheck(TraversalCheckResult) == false)
 	{
-		return;
+		return false;
 	}
 
 	UpdateTraversalAnimMontageWarpTargets(TraversalCheckResult);
@@ -71,6 +71,8 @@ void UCL_CharacterTraversalComponent::RequestTraversalAction()
 	CharacterOwner->GetCapsuleComponent()->IgnoreComponentWhenMoving(TraversalCheckResult.HitComponent, true);
 	CharacterOwner->GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 	OnTraversalActionStarted.Broadcast(TraversalCheckResult.Action);
+
+	return true;
 }
 
 void UCL_CharacterTraversalComponent::RequestSlidingAction()

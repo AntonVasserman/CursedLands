@@ -32,7 +32,7 @@ public:
 	int32 AbilityLevel = 1;
 
 	// Tag used to process input for the ability.
-	UPROPERTY(EditDefaultsOnly, Meta = (Categories = "InputTag"))
+	UPROPERTY(EditDefaultsOnly, Meta = (Categories = "InputTag.Ability"))
 	FGameplayTag InputTag;
 };
 

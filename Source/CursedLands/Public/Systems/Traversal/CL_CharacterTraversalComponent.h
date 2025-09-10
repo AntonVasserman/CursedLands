@@ -85,7 +85,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	FORCEINLINE bool IsDoingTraversalAction() const { return bDoingTraversalAction; }
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
-	void RequestTraversalAction();
+	bool RequestTraversalAction();
 	UFUNCTION(BlueprintCallable, Category = "Character Traversal")
 	void RequestSlidingAction();
 
