@@ -313,7 +313,6 @@ void ACL_PlayerCharacter::OnCharacterTraversalActionStarted(const ECL_TraversalA
 	CL_LOG_PLAYER_CHARACTER(Display, "Started Traversal Action '%s'", *StaticEnum<ECL_TraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
 
 	SetTraversalActionTag(TraversalAction, true);
-	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	// Since CharacterMovementComponent might reset sprinting when we are "Flying" we need to be able to request sprinting once traversal is over
@@ -325,7 +324,6 @@ void ACL_PlayerCharacter::OnCharacterTraversalActionFinished(const ECL_Traversal
 	CL_LOG_PLAYER_CHARACTER(Display, "Finished Traversal Action '%s'", *StaticEnum<ECL_TraversalAction>()->GetAuthoredNameStringByValue(static_cast<int64>(TraversalAction)));
 
 	SetTraversalActionTag(TraversalAction, false);
-	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	// In case we were sprinting before traversal, return sprinting

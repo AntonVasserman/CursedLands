@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "CL_GameplayAbility_ToggleBase.h"
-#include "CL_GameplayAbility_SprintToggle.generated.h"
+#include "CL_GameplayAbility_SprintToggleBase.generated.h"
 
 UCLASS(Abstract)
-class CURSEDLANDS_API UCL_GameplayAbility_SprintToggle : public UCL_GameplayAbility_ToggleBase
+class CURSEDLANDS_API UCL_GameplayAbility_SprintToggleBase : public UCL_GameplayAbility_ToggleBase
 {
 	GENERATED_BODY()
 
 public:
-	UCL_GameplayAbility_SprintToggle(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
+	UCL_GameplayAbility_SprintToggleBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
 
 	//~ Begin UCL_GameplayAbility_ToggleBase
 	virtual bool IsToggled(const ACL_PlayerCharacter* PlayerCharacter) const override;

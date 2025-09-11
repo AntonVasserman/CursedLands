@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "CL_GameplayAbility_ToggleBase.h"
-#include "CL_GameplayAbility_CrouchToggle.generated.h"
+#include "CL_GameplayAbility_CrouchToggleBase.generated.h"
 
 UCLASS(Abstract)
-class CURSEDLANDS_API UCL_GameplayAbility_CrouchToggle : public UCL_GameplayAbility_ToggleBase
+class CURSEDLANDS_API UCL_GameplayAbility_CrouchToggleBase : public UCL_GameplayAbility_ToggleBase
 {
 	GENERATED_BODY()
 	
 public:
-	UCL_GameplayAbility_CrouchToggle(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
+	UCL_GameplayAbility_CrouchToggleBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
 
 	//~ Begin UCL_GameplayAbility_ToggleBase
 protected:

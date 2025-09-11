@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "CL_GameplayAbility_ToggleBase.h"
-#include "CL_GameplayAbility_WalkToggle.generated.h"
+#include "CL_GameplayAbility_WalkToggleBase.generated.h"
 
 UCLASS(Abstract)
-class CURSEDLANDS_API UCL_GameplayAbility_WalkToggle : public UCL_GameplayAbility_ToggleBase
+class CURSEDLANDS_API UCL_GameplayAbility_WalkToggleBase : public UCL_GameplayAbility_ToggleBase
 {
 	GENERATED_BODY()
 
 public:
-	UCL_GameplayAbility_WalkToggle(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
+	UCL_GameplayAbility_WalkToggleBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) { }
 	
 	//~ Begin UCL_GameplayAbility_ToggleBase
 protected:
