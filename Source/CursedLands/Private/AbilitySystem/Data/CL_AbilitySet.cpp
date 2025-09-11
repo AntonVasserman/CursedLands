@@ -111,6 +111,9 @@ void UCL_AbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemCompo
 		AbilitySpec.SourceObject = SourceObject;
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilityToGrant.InputTag);
 
+		// We also add the InputTag to the abilities tags, this is so abilities like Death can block Input Abilities
+		AbilitySpec.Ability->AbilityTags.AddTag(AbilityToGrant.InputTag);
+
 		const FGameplayAbilitySpecHandle AbilitySpecHandle = ASC->GiveAbility(AbilitySpec);
 
 		if (OutGrantedHandlers)

@@ -8,7 +8,7 @@
 #include "Systems/Traversal/CL_CharacterTraversalComponent.h"
 #include "CL_GameplayAbility_Slide.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class CURSEDLANDS_API UCL_GameplayAbility_Slide : public UCL_GameplayAbility_PlayerCharacterBase
 {
 	GENERATED_BODY()

@@ -24,6 +24,9 @@ namespace CLGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Move_KeyboardAndMouse, "InputTag.Move.KeyboardAndMouse", "InputTag for Move Action using Keyboard and Mouse");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Look, "InputTag.Look", "InputTag for Look Action");
 
+	// InputTags Abilities
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Ability, "InputTag.Ability", "Tag prefix for all InputTags that are Gameplay Abilities");
+	
 	// Statuses
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Alive, "Status.Alive", "Character status tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Dead, "Status.Dead", "Character status tag");

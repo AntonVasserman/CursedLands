@@ -6,7 +6,7 @@
 #include "CL_GameplayAbility_ToggleBase.h"
 #include "CL_GameplayAbility_WalkToggle.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class CURSEDLANDS_API UCL_GameplayAbility_WalkToggle : public UCL_GameplayAbility_ToggleBase
 {
 	GENERATED_BODY()

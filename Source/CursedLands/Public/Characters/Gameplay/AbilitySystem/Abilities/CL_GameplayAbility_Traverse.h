@@ -7,7 +7,7 @@
 #include "AbilitySystem/Abilities/CL_GameplayAbility.h"
 #include "CL_GameplayAbility_Traverse.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class CURSEDLANDS_API UCL_GameplayAbility_Traverse : public UCL_GameplayAbility_PlayerCharacterBase
 {
 	GENERATED_BODY()

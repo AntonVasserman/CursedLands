@@ -6,7 +6,7 @@
 #include "CL_GameplayAbility_ToggleBase.h"
 #include "CL_GameplayAbility_SprintToggle.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class CURSEDLANDS_API UCL_GameplayAbility_SprintToggle : public UCL_GameplayAbility_ToggleBase
 {
 	GENERATED_BODY()
