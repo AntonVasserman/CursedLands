@@ -55,6 +55,9 @@ public:
 	FORCEINLINE UGameplayCameraComponent* GetGameplayCamera() const { return GameplayCamera; }
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Camera System")
 	FORCEINLINE ECL_PlayerCharacterCameraMode GetCameraMode() const { return UCL_GameLocalUserSettings::Get()->GetCameraDistance(); }
+
+	UFUNCTION(BlueprintCallable, Category = "Motion Warping")
+	FORCEINLINE UMotionWarpingComponent* GetMotionWarping() const { return MotionWarping; }
 	
 	UFUNCTION(BlueprintCallable, Category = "Locomotion")
 	FORCEINLINE ECL_PlayerCharacterMovementMode GetMovementMode() const { return MovementMode; }

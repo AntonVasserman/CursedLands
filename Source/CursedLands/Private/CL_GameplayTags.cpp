@@ -107,6 +107,7 @@ namespace CLGameplayTags
 	
 	// Locomotion Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Rolling, "Locomotion.Rolling", "Locomotion tag indicating rolling");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_Dodging, "Locomotion.Dodging", "Locomotion tag indicating dodging");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Locomotion_StandingUp, "Locomotion.StandingUp", "Locomotion tag indicating standing up from fall");
 
 	// Falling Tags
