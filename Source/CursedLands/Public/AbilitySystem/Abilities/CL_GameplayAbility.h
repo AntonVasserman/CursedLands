@@ -26,7 +26,7 @@ public:
 	ECL_AbilityActivationPolicy GetActivationPolicy() const { return ActivationPolicy; }
 	ACL_Character* GetCLCharacterFromActorInfo(const FGameplayAbilityActorInfo* ActorInfo) const;
 	ACL_PlayerCharacter* GetCLPlayerCharacterFromActorInfo(const FGameplayAbilityActorInfo* ActorInfo) const;
-
+	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config|Ability Activation")
 	ECL_AbilityActivationPolicy ActivationPolicy;

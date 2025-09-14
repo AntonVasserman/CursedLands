@@ -104,18 +104,14 @@ void UCL_AbilitySet::GiveGameplayAbilitiesToAbilitySystem(UCL_AbilitySystemCompo
 			CL_LOG_GAMEPLAY_ABILITY_SYSTEM(Error, "GrantedGameplayAbilities[%d] on ability set [%s] is not valid", i, *GetNameSafe(this));
 			continue;
 		}
-
+		
 		UCL_GameplayAbility* AbilityCDO = AbilityToGrant.Ability->GetDefaultObject<UCL_GameplayAbility>();
 
 		FGameplayAbilitySpec AbilitySpec(AbilityCDO, AbilityToGrant.AbilityLevel);
 		AbilitySpec.SourceObject = SourceObject;
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilityToGrant.InputTag);
-
-		// We also add the InputTag to the abilities tags, this is so abilities like Death can block Input Abilities
-		AbilitySpec.Ability->AbilityTags.AddTag(AbilityToGrant.InputTag);
-
+		
 		const FGameplayAbilitySpecHandle AbilitySpecHandle = ASC->GiveAbility(AbilitySpec);
-
 		if (OutGrantedHandlers)
 		{
 			OutGrantedHandlers->AddAbilitySpecHandle(AbilitySpecHandle);

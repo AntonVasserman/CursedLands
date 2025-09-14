@@ -15,7 +15,6 @@ namespace CLGameplayTags
 	
 	// UI Layers
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Layer_Game, "UI.Layer.Game", "UI Layer for the Game HUD");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Layer_PauseMenu, "UI.Layer.PauseMenu", "UI Layer for the Pause Menu");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Layer_Menu, "UI.Layer.Menu", "UI Layer for the Main Menu");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Layer_Modal, "UI.Layer.Modal", "UI Layer for Modals such as Pop-ups");
 	
