@@ -116,9 +116,7 @@ bool ACL_PlayerCharacter::CanSprint() const
 	if (
 		!CanMove() || !IsStanding() || IsSprinting() || // Basic check
 		GetCharacterTraversal()->IsDoingTraversalAction() || // If the player is occupied (traversing) then it can't sprint
-		!GetCLCharacterMovement()->CanSprintInCurrentState() || // CMC check
-		GetStaminaComponent()->GetValue() <= 0 || // Check that the PlayerCharacter has Stamina
-		StaminaComponent->IsFatigued()
+		!GetCLCharacterMovement()->CanSprintInCurrentState()
 		)
 	{
 		return false;
