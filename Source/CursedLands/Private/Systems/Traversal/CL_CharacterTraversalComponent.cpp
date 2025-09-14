@@ -80,6 +80,7 @@ void UCL_CharacterTraversalComponent::RequestSlidingAction()
 	FCL_SlidingCheckResult SlidingCheckResult;
 	if (!ExecuteSlidingCheck(SlidingCheckResult))
 	{
+		SlidingActionFinished(SlidingCheckResult);
 		return;
 	}
 
