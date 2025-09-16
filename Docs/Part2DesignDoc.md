@@ -1,4 +1,13 @@
-﻿# Design Document - Cursed Lands Part #2 (???)
+﻿NOTES:
+
+2. Bow and Arrow might take too much time
+   1. 1st Iteration = Simple projectile that kills enemies
+   2. 2nd Iteration = Bow and Arrow if we have time
+   3. OR Magic projectiles instead of Bow and Arrow
+3. Sprinting into Vaulting should have a unique animation and super fast
+4. Maybe a Cursed Lands Icon/Logo in the Pause Menu
+
+# Design Document - Cursed Lands Part #2 (TODO: Put sub title here)
 
 ## Goals
 * Motion Matching
@@ -22,32 +31,32 @@ The game finishes either by clearing the last wave or by the Player dying.
 
 1. Choose Character + Difficulty
 2. Spawn in a random Arena (1 of 2)
-3. for each wave (10 waves total)
-    1. If Player Dies → Game Over, Score shown
-    2. If all enemies die → ???, Next wave starts
-4. If wave 11 reached then:
-    1. A mega ultra enemy appears and everything explodes
-    2. Game Won and Score shown
+3. ForEach wave:
+    1. If Player dies → Game Over Score Screen
+    2. If Enemies die →
+       1. If was last wave → Game Won Score Screen 
+       2. Else →
+          1. TODO: Reward here
+          2. Next wave starts
 
-## Mechanics
-
-## Arena
+## Features
+### Arena
 
 Two randomly chosen symmetrical maps that contain spawn points.
 
-### Arena #1
+#### Arena #1
 
 ![image.png](./Images/arena1-greybox.png)
 
 ![image.png](./Images/arena1-greybox-top.png)
 
-### Arena #2
+#### Arena #2
 
 ???
 
-## Combat
+### Combat
 
-### Player
+#### Player
 
 To defeat enemies the player has a bow and arrows which he can use to shoot.
 
@@ -57,7 +66,7 @@ Basic enemies die with a single shot.
 
 Maybe later waves will include enemies that don’t die from a single shot???
 
-### Enemies
+#### Enemies
 
 Enemies are simpletons who just follow to the character location.
 
@@ -69,32 +78,25 @@ Upon receiving too much damage the player dies.
 
 Enemies will move faster and spawn in larger numbers with each wave.
 
-### Enemy Spawning
+##### Enemy Spawning
 
 Each wave should include X numbers of spawns, where each Spawn should include Y numbers of Enemies spawning in random locations that aren’t near the Player.
 
 The wave number should be visible to the player.
 
-X should be visible and a countdown for the player.
+Y should be visible and a countdown for the player.
 
-Y shouldn’t be visible to the player.
+X shouldn’t be visible to the player.
 
 ### Spawn Table
 
-| Wave Number | Spawn Count | Enemy Count | Enemy Speed | Enemy Variation |
-| --- | --- | --- | --- | --- |
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
-| 6 |  |  |  |  |
-| 7 |  |  |  |  |
-| 8 |  |  |  |  |
-| 9 |  |  |  |  |
-| 10 |  |  |  |  |
+| Wave Number | Spawner Count | Enemy Count per Spawner | Enemy Speed | Enemy Variation |
+|-------------|---------------|-------------------------|-------------|-----------------|
+| 1           | 1             | 3                       | 0.75        | None            |
+| 2           | 2             | 5                       | 1           | None            |
+| 3           | 4             | 8                       | 1.25        | ???             |
 
-## Health
+### Health
 
 The player’s Health is presented in the Resource Bar.
 
@@ -106,7 +108,7 @@ Health is auto regenerated.
 
 Max Health can be increased ???
 
-## Mana ???
+### Mana ???
 
 The player’s Mana is presented in the Resource Bar.
 
@@ -118,7 +120,7 @@ Mana is not auto regenerated.
 
 Max Mana can be increased ???
 
-## Stamina
+### Stamina
 
 The player’s Stamina is presented in the Resource Bar.
 
@@ -132,30 +134,30 @@ Player gets fatigued upon Stamina reaching zero, preventing Stamina actions for 
 
 Max Stamina can be increased ???
 
-## Collectables
+### Collectables
 
 Collectables can appear in the game, such as Health/Mana Potions.
 
 What other collectables can we add ???
 
-## Abilities
+### Abilities
 
 Should the Player have abilities that are unlocked ???
 
-## Cheat Abilities
+### Cheat Abilities
 
 A number of abilities can be unlocked via a cheat console command, those are:
 
 1. White Monster - Granting infinite Stamina for a short period
 2. ???
 
-## Character Choice
+### Character Choice
 
 In the beginning of the game the player is presented with two Characters of choice, this is just to showcase the usage of “Dynamic Animation Retargeting”.
 
 (Maybe even show a text underneath the character creation explaining that…)
 
-# Controls
+## Controls
 
 | Action | Keyboard and Mouse | Gamepad | Is GAS Ability | Is Debug |
 | --- | --- | --- | --- | --- |
@@ -174,72 +176,54 @@ In the beginning of the game the player is presented with two Characters of choi
 | Shoot | Left Mouse Button | Right Trigger | Yes |  |
 | Abilities | ??? | ??? | Yes |  |
 
-# UI
+## UI
 
-## Main Menu
-
-???
-
-## Settings Menu
+### Main Menu
 
 ???
 
-## HUD
+### Settings Menu
 
-### Resources Bar
+???
+
+### HUD
+
+#### Resources Bar
 
 ![image.png](./Images/ui-hud-resourcebars.png)
 
-### Minimap
+#### Minimap
 
 ![image.png](./Images/ui-hud-minimap.png)
 
-### Ability/Action Bar
+#### Ability/Action Bar
 
 ???
 
-### Quest/Progress
+#### Quest/Progress
 
 ???
 
-## Pause Menu
+### Pause Menu
 
 ![image.png](./Images/ui-pausemenu.png)
 
-### Confirmation Modal
+#### Confirmation Modal
 
 ???
 
-## Death Screen
+### Death/Won Score Screens
 
 ???
 
-## UI Effects
+### UI Effects
 
 - Low Health Indicator
     - Overlay
     - Health Bar
 - Low Stamina Indicator
     - Stamina Bar
-- Sprinting Effect (TODO)
+- Sprinting Effect
     - Overlay
 - Fatigue Effect
     - Overlay
-
-# Deadlines
-
-- 2025-09-08:
-    - 90% of **UI**
-    - 100% **Animation** Gaps
-    - Preparation for **Core Game Loop**
-- 2025-09-15:
-    - 100% **UI**
-    - Share **UI** on LinkedIn
-    - Basic and first iteration of **Core Game Loop**
-- 2025-09-29:
-    - Playable **Piece**
-    - Only **Polishing** and **Bug Fixes** left
-- 2025-10-13:
-    - **Piece** ready
-    - Share **Piece** on LinkedIn
-    - Update Portfolio

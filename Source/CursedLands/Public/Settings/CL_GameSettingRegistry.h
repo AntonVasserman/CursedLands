@@ -6,12 +6,11 @@
 #include "GameSettingRegistry.h"
 #include "CL_GameSettingRegistry.generated.h"
 
-#define GET_LOCAL_SETTINGS_FUNCTION_PATH(FunctionOrPropertyName)							\
-	MakeShared<FGameSettingDataSourceDynamic>(TArray<FString>({								\
-		GET_FUNCTION_NAME_STRING_CHECKED(UCL_LocalPlayer, GetLocalSettings),				\
-		GET_FUNCTION_NAME_STRING_CHECKED(UCL_GameLocalUserSettings, FunctionOrPropertyName)	\
-	}))
-
+class UCL_AudioSettingsCollection;
+class UCL_GameSettingsCollection;
+class UCL_AccessibilitySettingsCollection;
+class UCL_VideoSettingsCollection;
+class UCL_UISettingsCollection;
 class ULocalPlayer;
 class UObject;
 class UGameSettingCollection;
@@ -27,31 +26,19 @@ public:
 
 protected:
 	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> VideoSettings;
+	TObjectPtr<UCL_VideoSettingsCollection> VideoSettings;
 
 	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> GameSettings;
+	TObjectPtr<UCL_GameSettingsCollection> GameSettings;
 	
 	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> AudioSettings;
+	TObjectPtr<UCL_AudioSettingsCollection> AudioSettings;
 
 	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> UISettings;
+	TObjectPtr<UCL_UISettingsCollection> UISettings;
 	
 	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> AccessibilitySettings;
-	
-	/*
-	UPROPERTY()
-	TObjectPtr<UGameSettingCollection> ControlsSettings;
-	*/
-
-	UGameSettingCollection* InitializeVideoSettings(UCL_LocalPlayer* InLocalPlayer);
-	UGameSettingCollection* InitializeGameSettings(UCL_LocalPlayer* InLocalPlayer);
-	UGameSettingCollection* InitializeAudioSettings(UCL_LocalPlayer* InLocalPlayer);
-	UGameSettingCollection* InitializeUISettings(UCL_LocalPlayer* InLocalPlayer);
-	UGameSettingCollection* InitializeAccessibilitySettings(UCL_LocalPlayer* InLocalPlayer);
-	// UGameSettingCollection* InitializeControlsSettings(UCL_LocalPlayer* InLocalPlayer);
+	TObjectPtr<UCL_AccessibilitySettingsCollection> AccessibilitySettings;
 	
 	//~ Begin UGameSettingRegistry
 public:
