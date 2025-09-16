@@ -27,15 +27,15 @@ void UCL_AudioMixSubsystem::PostInitialize()
 			}
 		}
 
-		if (UObject* ObjPath = AudioSettings->OverallVolumeControlBus.TryLoad())
+		if (UObject* ObjPath = AudioSettings->MasterVolumeControlBus.TryLoad())
 		{
 			if (USoundControlBus* SoundControlBus = Cast<USoundControlBus>(ObjPath))
 			{
-				OverallControlBus = SoundControlBus;
+				MasterControlBus = SoundControlBus;
 			}
 			else
 			{
-				ensureMsgf(SoundControlBus, TEXT("Overall Control Bus reference missing from Audio Settings."));
+				ensureMsgf(SoundControlBus, TEXT("Master Control Bus reference missing from Audio Settings."));
 			}
 		}
 
@@ -87,15 +87,15 @@ void UCL_AudioMixSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 			{
 				UAudioModulationStatics::ActivateBusMix(World, UserMix);
 
-				if (OverallControlBus && MusicControlBus && SFXControlBus && VoiceControlBus)
+				if (MasterControlBus && MusicControlBus && SFXControlBus && VoiceControlBus)
 				{
-					const FSoundControlBusMixStage OverallControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, OverallControlBus, LocalUserSettings->GetOverallVolume());
+					const FSoundControlBusMixStage MasterControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MasterControlBus, LocalUserSettings->GetMasterVolume());
 					const FSoundControlBusMixStage MusicControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MusicControlBus, LocalUserSettings->GetMusicVolume());
 					const FSoundControlBusMixStage SFXControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, SFXControlBus, LocalUserSettings->GetSFXVolume());
 					const FSoundControlBusMixStage VoiceControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, VoiceControlBus, LocalUserSettings->GetVoiceVolume());
 
 					TArray<FSoundControlBusMixStage> ControlBusMixStageArray;
-					ControlBusMixStageArray.Add(OverallControlBusMixStage);
+					ControlBusMixStageArray.Add(MasterControlBusMixStage);
 					ControlBusMixStageArray.Add(MusicControlBusMixStage);
 					ControlBusMixStageArray.Add(SFXControlBusMixStage);
 					ControlBusMixStageArray.Add(VoiceControlBusMixStage);

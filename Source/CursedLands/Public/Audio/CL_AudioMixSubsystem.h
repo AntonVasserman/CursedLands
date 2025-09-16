@@ -19,7 +19,7 @@ protected:
 	TObjectPtr<USoundControlBusMix> UserMix = nullptr;
 	
 	UPROPERTY(Transient)
-	TObjectPtr<USoundControlBus> OverallControlBus = nullptr;
+	TObjectPtr<USoundControlBus> MasterControlBus = nullptr;
 	
 	UPROPERTY(Transient)
 	TObjectPtr<USoundControlBus> MusicControlBus = nullptr;

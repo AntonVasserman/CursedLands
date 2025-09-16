@@ -13,6 +13,15 @@ enum class ECL_PlayerCharacterCameraMode : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnRotateMinimapChanged, bool, bNewRotateMinimap);
 
+UENUM(BlueprintType)
+enum class EColorBlindMode : uint8
+{
+	Off,
+	Deuteranope	UMETA(Description = "Deuteranope (green weak/blind)"),
+	Protanope	UMETA(Description = "Protanope (red weak/blind)"),
+	Tritanope	UMETA(Description = "Tritanope (blue weak/blind)")
+};
+
 UCLASS()
 class CURSEDLANDS_API UCL_GameLocalUserSettings : public UGameUserSettings
 {
@@ -24,6 +33,17 @@ public:
 	static UCL_GameLocalUserSettings* Get();
 
 	// Begin Video Settings
+public:
+	UFUNCTION()
+	float GetDisplayGamma() const;
+	UFUNCTION()
+	void SetDisplayGamma(float InGamma);
+	
+private:
+	void ApplyDisplayGamma();
+	
+	UPROPERTY(Config)
+	float DisplayGamma = 2.2;
 	// End Video Settings
 	
 	// Begin Game Settings
@@ -41,9 +61,9 @@ private:
 	// Begin Audio Settings
 public:
 	UFUNCTION()
-	float GetOverallVolume() const;
+	float GetMasterVolume() const;
 	UFUNCTION()
-	void SetOverallVolume(float InVolume);
+	void SetMasterVolume(float InVolume);
 
 	UFUNCTION()
 	float GetMusicVolume() const;
@@ -65,7 +85,7 @@ private:
 	void SetVolumeForControlBus(USoundControlBus* InSoundControlBus, float InVolume);
 	
 	UPROPERTY(Config)
-	float OverallVolume = 1.0f;
+	float MasterVolume = 1.0f;
 	UPROPERTY(Config)
 	float MusicVolume = 1.0f;
 	UPROPERTY(Config)
@@ -97,6 +117,24 @@ private:
 	// End UI Settings
 	
 	// Begin Accessibility Settings
+public:
+	UFUNCTION()
+	EColorBlindMode GetColorBlindMode() const;
+	UFUNCTION()
+	void SetColorBlindMode(EColorBlindMode InMode);
+
+	UFUNCTION()
+	int32 GetColorBlindStrength() const;
+	UFUNCTION()
+	void SetColorBlindStrength(int32 InColorBlindStrength);
+
+private:
+	UPROPERTY(Config)
+	EColorBlindMode ColorBlindMode = EColorBlindMode::Off;
+
+	UPROPERTY(Config)
+	int32 ColorBlindStrength = 10;
+
 	// End Accessibility Settings
 
 	//~ UGameUserSettings Begin

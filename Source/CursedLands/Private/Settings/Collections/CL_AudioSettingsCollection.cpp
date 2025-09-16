@@ -33,9 +33,9 @@ void UCL_AudioSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 			MasterVolumeSetting->SetDisplayName(LOCTEXT("MasterVolume_Name", "Master"));
 			MasterVolumeSetting->SetDescriptionRichText(LOCTEXT("MasterVolume_Description", "Adjusts the volume of everything."));
 
-			MasterVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetOverallVolume));
-			MasterVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetOverallVolume));
-			MasterVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetOverallVolume());
+			MasterVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetMasterVolume));
+			MasterVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetMasterVolume));
+			MasterVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetMasterVolume());
 			MasterVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
 
 			MasterVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());

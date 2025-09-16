@@ -16,7 +16,7 @@ public:
 	FSoftObjectPath UserSettingsControlBusMix;
 	
 	UPROPERTY(Config, EditAnywhere, Category = "UserMixSettings", Meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBus"))
-	FSoftObjectPath OverallVolumeControlBus;
+	FSoftObjectPath MasterVolumeControlBus;
 
 	UPROPERTY(Config, EditAnywhere, Category = "UserMixSettings", Meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBus"))
 	FSoftObjectPath MusicVolumeControlBus;

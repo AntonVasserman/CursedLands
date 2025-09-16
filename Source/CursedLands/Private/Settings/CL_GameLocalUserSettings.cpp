@@ -19,6 +19,25 @@ UCL_GameLocalUserSettings* UCL_GameLocalUserSettings::Get()
 }
 
 // Begin Video Settings
+float UCL_GameLocalUserSettings::GetDisplayGamma() const
+{
+	return DisplayGamma;
+}
+
+void UCL_GameLocalUserSettings::SetDisplayGamma(float InGamma)
+{
+	DisplayGamma = InGamma;
+	ApplyDisplayGamma();
+}
+
+void UCL_GameLocalUserSettings::ApplyDisplayGamma()
+{
+	if (GEngine)
+	{
+		GEngine->DisplayGamma = DisplayGamma;
+	}
+}
+
 // End Video Settings
 
 // Begin Game Settings
@@ -34,14 +53,14 @@ void UCL_GameLocalUserSettings::SetCameraDistance(ECL_PlayerCharacterCameraMode 
 // End Game Settings
 
 // Begin Audio Settings
-float UCL_GameLocalUserSettings::GetOverallVolume() const
+float UCL_GameLocalUserSettings::GetMasterVolume() const
 {
-	return OverallVolume;
+	return MasterVolume;
 }
 
-void UCL_GameLocalUserSettings::SetOverallVolume(float InVolume)
+void UCL_GameLocalUserSettings::SetMasterVolume(float InVolume)
 {
-	OverallVolume = InVolume;
+	MasterVolume = InVolume;
 
 	if (!bSoundControlBusMixLoaded)
 	{
@@ -50,7 +69,7 @@ void UCL_GameLocalUserSettings::SetOverallVolume(float InVolume)
 
 	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
 
-	if (const TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Overall")))
+	if (const TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Master")))
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
@@ -132,17 +151,17 @@ void UCL_GameLocalUserSettings::LoadUserControlBusMix()
 		{
 			ControlBusMap.Empty();
 			
-			USoundControlBus* OverallControlBus = nullptr;
-			if (UObject* ObjPath = AudioSettings->OverallVolumeControlBus.TryLoad())
+			USoundControlBus* MasterControlBus = nullptr;
+			if (UObject* ObjPath = AudioSettings->MasterVolumeControlBus.TryLoad())
 			{
 				if (USoundControlBus* SoundControlBus = Cast<USoundControlBus>(ObjPath))
 				{
-					OverallControlBus = SoundControlBus;
-					ControlBusMap.Add(TEXT("Overall"), OverallControlBus);
+					MasterControlBus = SoundControlBus;
+					ControlBusMap.Add(TEXT("Master"), MasterControlBus);
 				}
 				else
 				{
-					ensureMsgf(SoundControlBus, TEXT("Overall Control Bus reference missing from Audio Settings."));
+					ensureMsgf(SoundControlBus, TEXT("Master Control Bus reference missing from Audio Settings."));
 				}
 			}
 
@@ -194,13 +213,13 @@ void UCL_GameLocalUserSettings::LoadUserControlBusMix()
 				{
 					ControlBusMix = SoundControlBusMix;
 
-					const FSoundControlBusMixStage OverallControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, OverallControlBus, OverallVolume);
+					const FSoundControlBusMixStage MasterControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MasterControlBus, MasterVolume);
 					const FSoundControlBusMixStage MusicControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MusicControlBus, MusicVolume);
 					const FSoundControlBusMixStage SFXControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, SFXControlBus, SFXVolume);
 					const FSoundControlBusMixStage VoiceControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, VoiceControlBus, VoiceVolume);
 
 					TArray<FSoundControlBusMixStage> ControlBusMixStageArray;
-					ControlBusMixStageArray.Add(OverallControlBusMixStage);
+					ControlBusMixStageArray.Add(MasterControlBusMixStage);
 					ControlBusMixStageArray.Add(MusicControlBusMixStage);
 					ControlBusMixStageArray.Add(SFXControlBusMixStage);
 					ControlBusMixStageArray.Add(VoiceControlBusMixStage);
@@ -249,7 +268,6 @@ void UCL_GameLocalUserSettings::SetVolumeForControlBus(USoundControlBus* InSound
 		}
 	}
 }
-
 // End Audio Settings
 
 // Begin UI Settings
@@ -263,14 +281,42 @@ void UCL_GameLocalUserSettings::SetRotateMinimap(bool bInRotateMinimap)
 	bRotateMinimap = bInRotateMinimap;
 	OnRotateMinimapChanged.Broadcast(bRotateMinimap);
 }
-
 // End UI Settings
 
 // Begin Accessibility Settings
+EColorBlindMode UCL_GameLocalUserSettings::GetColorBlindMode() const
+{
+	return ColorBlindMode;
+}
+
+void UCL_GameLocalUserSettings::SetColorBlindMode(EColorBlindMode InMode)
+{
+	if (ColorBlindMode != InMode)
+	{
+		ColorBlindMode = InMode;
+		FSlateApplication::Get().GetRenderer()->SetColorVisionDeficiencyType(
+			static_cast<EColorVisionDeficiency>(static_cast<int32>(ColorBlindMode)), ColorBlindStrength, true, false);
+	}
+}
+
+int32 UCL_GameLocalUserSettings::GetColorBlindStrength() const
+{
+	return ColorBlindStrength;
+}
+
+void UCL_GameLocalUserSettings::SetColorBlindStrength(int32 InColorBlindStrength)
+{
+	InColorBlindStrength = FMath::Clamp(InColorBlindStrength, 0, 10);
+	if (ColorBlindStrength != InColorBlindStrength)
+	{
+		ColorBlindStrength = InColorBlindStrength;
+		FSlateApplication::Get().GetRenderer()->SetColorVisionDeficiencyType(
+			static_cast<EColorVisionDeficiency>(static_cast<int32>(ColorBlindMode)), ColorBlindStrength, true, false);
+	}
+}
 // End Accessibility Settings
 
 //~ UGameUserSettings Begin
-
 void UCL_GameLocalUserSettings::SetToDefaults()
 {
 	Super::SetToDefaults();
@@ -287,11 +333,11 @@ void UCL_GameLocalUserSettings::ApplyNonResolutionSettings()
 		LoadUserControlBusMix();
 	}
 
-	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Overall")))
+	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Master")))
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
-			SetVolumeForControlBus(ControlBusPtr, OverallVolume);
+			SetVolumeForControlBus(ControlBusPtr, MasterVolume);
 		}
 	}
 
@@ -318,6 +364,10 @@ void UCL_GameLocalUserSettings::ApplyNonResolutionSettings()
 			SetVolumeForControlBus(ControlBusPtr, VoiceVolume);
 		}
 	}
-}
 
+	if (FApp::CanEverRender())
+	{
+		ApplyDisplayGamma();
+	}
+}
 //~ UGameUserSettings End
