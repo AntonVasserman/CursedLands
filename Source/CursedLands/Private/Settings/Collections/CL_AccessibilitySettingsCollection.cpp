@@ -17,3 +17,5 @@ void UCL_AccessibilitySettingsCollection::InitializeSettings(UCL_LocalPlayer* In
 }
 
 //~ UCL_SettingsCollection End
+
+#undef LOCTEXT_NAMESPACE

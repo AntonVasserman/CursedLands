@@ -33,9 +33,9 @@ void UCL_AudioSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 			MasterVolumeSetting->SetDisplayName(LOCTEXT("MasterVolume_Name", "Master"));
 			MasterVolumeSetting->SetDescriptionRichText(LOCTEXT("MasterVolume_Description", "Adjusts the volume of everything."));
 
-			MasterVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetMasterVolume));
-			MasterVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetMasterVolume));
-			MasterVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetMasterVolume());
+			MasterVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetOverallVolume));
+			MasterVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetOverallVolume));
+			MasterVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetOverallVolume());
 			MasterVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
 
 			MasterVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
@@ -67,9 +67,9 @@ void UCL_AudioSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 			EffectsVolumeSetting->SetDisplayName(LOCTEXT("EffectsVolume_Name", "Effects"));
 			EffectsVolumeSetting->SetDescriptionRichText(LOCTEXT("EffectsVolume_Description", "Adjusts the effects volume."));
 
-			EffectsVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetEffectsVolume));
-			EffectsVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetEffectsVolume));
-			EffectsVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetEffectsVolume());
+			EffectsVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetSFXVolume));
+			EffectsVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetSFXVolume));
+			EffectsVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetSFXVolume());
 			EffectsVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
 
 			EffectsVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
@@ -97,3 +97,5 @@ void UCL_AudioSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 }
 
 //~ UCL_SettingsCollection End
+
+#undef LOCTEXT_NAMESPACE

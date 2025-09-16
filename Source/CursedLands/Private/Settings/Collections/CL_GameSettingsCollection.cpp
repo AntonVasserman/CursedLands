@@ -44,3 +44,5 @@ void UCL_GameSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPlay
 }
 
 //~ UCL_SettingsCollection End
+
+#undef LOCTEXT_NAMESPACE

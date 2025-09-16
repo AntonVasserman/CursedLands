@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SoundControlBus.h"
 #include "Characters/CL_PlayerCharacterCameraMode.h"
 #include "GameFramework/GameUserSettings.h"
 #include "CL_GameLocalUserSettings.generated.h"
 
+class USoundControlBusMix;
 enum class ECL_PlayerCharacterCameraMode : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnRotateMinimapChanged, bool, bNewRotateMinimap);
@@ -17,6 +19,8 @@ class CURSEDLANDS_API UCL_GameLocalUserSettings : public UGameUserSettings
 	GENERATED_BODY()
 
 public:
+	UCL_GameLocalUserSettings();
+	
 	static UCL_GameLocalUserSettings* Get();
 
 	// Begin Video Settings
@@ -37,9 +41,9 @@ private:
 	// Begin Audio Settings
 public:
 	UFUNCTION()
-	float GetMasterVolume() const;
+	float GetOverallVolume() const;
 	UFUNCTION()
-	void SetMasterVolume(float InVolume);
+	void SetOverallVolume(float InVolume);
 
 	UFUNCTION()
 	float GetMusicVolume() const;
@@ -47,9 +51,9 @@ public:
 	void SetMusicVolume(float InVolume);
 
 	UFUNCTION()
-	float GetEffectsVolume() const;
+	float GetSFXVolume() const;
 	UFUNCTION()
-	void SetEffectsVolume(float InVolume);
+	void SetSFXVolume(float InVolume);
 
 	UFUNCTION()
 	float GetVoiceVolume() const;
@@ -57,14 +61,26 @@ public:
 	void SetVoiceVolume(float InVolume);
 
 private:
+	void LoadUserControlBusMix();
+	void SetVolumeForControlBus(USoundControlBus* InSoundControlBus, float InVolume);
+	
 	UPROPERTY(Config)
-	float MasterVolume = 1.0f;
+	float OverallVolume = 1.0f;
 	UPROPERTY(Config)
 	float MusicVolume = 1.0f;
 	UPROPERTY(Config)
-	float EffectsVolume = 1.0f;
+	float SFXVolume = 1.0f;
 	UPROPERTY(Config)
 	float VoiceVolume = 1.0f;
+
+	UPROPERTY(Transient)
+	TMap<FName, TObjectPtr<USoundControlBus>> ControlBusMap;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USoundControlBusMix> ControlBusMix = nullptr;
+	
+	UPROPERTY(Transient)
+	bool bSoundControlBusMixLoaded;
 	// End Audio Settings
 
 	// Begin UI Settings
@@ -82,4 +98,10 @@ private:
 	
 	// Begin Accessibility Settings
 	// End Accessibility Settings
+
+	//~ UGameUserSettings Begin
+public:
+	virtual void SetToDefaults() override;
+	virtual void ApplyNonResolutionSettings() override;
+	//~ UGameUserSettings End
 };

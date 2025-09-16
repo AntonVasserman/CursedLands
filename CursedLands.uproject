@@ -80,6 +80,10 @@
 		{
 			"Name": "MotionTrajectory",
 			"Enabled": true
+		},
+		{
+			"Name": "AudioModulation",
+			"Enabled": true
 		}
 	]
 }

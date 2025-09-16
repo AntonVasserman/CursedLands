@@ -21,9 +21,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config", Meta = (ForceInlineRow, Categories = "InputTag.Ability"))
 	TMap<FGameplayTag, TObjectPtr<UInputAction>> AbilityInputActionsByTag;
 	
-	UFUNCTION(BlueprintCallable, Category = "Lyra|Pawn")
+	UFUNCTION(BlueprintCallable, Category = "Pawn")
 	const UInputAction* FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
 	
-	UFUNCTION(BlueprintCallable, Category = "Lyra|Pawn")
+	UFUNCTION(BlueprintCallable, Category = "Pawn")
 	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
 };

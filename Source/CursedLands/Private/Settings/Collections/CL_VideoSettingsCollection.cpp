@@ -17,3 +17,5 @@ void UCL_VideoSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 }
 
 //~ UCL_SettingsCollection End
+
+#undef LOCTEXT_NAMESPACE

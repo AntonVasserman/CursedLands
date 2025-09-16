@@ -37,10 +37,12 @@ public class CursedLands : ModuleRules
 				"AnimationWarpingRuntime",
 				"AnimGraphRuntime",
 				"AnimationLocomotionLibraryRuntime",
+				"AudioModulation",
 				"AVUtilities",
 				"Chooser",
 				"CommonInput",
 				"CommonUI",
+				"DeveloperSettings",
 				"GameSettings",
 				"MotionWarping"
 			});
