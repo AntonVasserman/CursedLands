@@ -41,6 +41,7 @@ public class CursedLands : ModuleRules
 				"AVUtilities",
 				"Chooser",
 				"CommonInput",
+				"CommonLoadingScreen",
 				"CommonUI",
 				"DeveloperSettings",
 				"GameSettings",
