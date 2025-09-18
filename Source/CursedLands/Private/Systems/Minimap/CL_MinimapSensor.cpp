@@ -23,8 +23,8 @@ ACL_MinimapSensor::ACL_MinimapSensor()
 	MinimapCollisionCapsule->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	MinimapCollisionCapsule->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
-	MinimapCollisionCapsule->SetVisibility(true);
-	MinimapCollisionCapsule->SetHiddenInGame(false);
+	MinimapCollisionCapsule->SetVisibility(false);
+	MinimapCollisionCapsule->SetHiddenInGame(true);
 }
 
 void ACL_MinimapSensor::InitializeSensor(float CapsuleRadius, float CapsuleHalfHeight) const
