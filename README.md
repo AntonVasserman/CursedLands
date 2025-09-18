@@ -69,6 +69,19 @@ Level Design - Anton Vasserman
 </details>
 
 <details>
+<summary><h3 style="display:inline"><strong>Content Examples (Epic Games)</strong></h3></summary>
+
+#### Materials
+- M_Button_Emissive
+- M_Metal
+#### Meshes
+- Button
+#### Textures
+- T_GrungySurface_slnneipc_4K_MR
+
+</details>
+
+<details>
 <summary><h3 style="display:inline"><strong>Game Animation Sample (Epic Games)</strong></h3></summary>
 
 TODO: Update this...
