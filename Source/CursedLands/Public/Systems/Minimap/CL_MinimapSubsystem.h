@@ -9,6 +9,7 @@
 
 class UCL_MinimapIconComponent;
 class ACL_MinimapSensor;
+class ACL_PlayerCharacter;
 class UCapsuleComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMinimapSensorOwningPawnChanged, APawn*, OldPawn, APawn*, NewPawn);
@@ -50,7 +51,7 @@ private:
 	APlayerController* CurrentPlayerController = nullptr;
 
 	UPROPERTY()
-	APawn* CurrentPawn = nullptr;
+	ACL_PlayerCharacter* CurrentPawn = nullptr;
 
 	UPROPERTY()
 	TMap<UCL_MinimapIconComponent*, FVector> MinimapIconToLastRelativeLocation;
@@ -62,7 +63,7 @@ private:
 	float ActorsWithMinimapLocationSamplingTimerInterval = 0.01f;
 	float ActorsLocationAcceptableDelta = 5.f;
 	
-	void InitMinimapSensor(APawn* InNewPawn);
+	void InitMinimapSensor(ACL_PlayerCharacter* InNewPawn);
 	void ClearMinimapSensor(APawn* InOldPawn);
 	void SampleActorsWithMinimapLocations();
 	

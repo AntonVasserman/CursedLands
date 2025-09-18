@@ -4,6 +4,7 @@
 #include "Systems/Minimap/CL_MinimapSubsystem.h"
 
 #include "CL_LogChannels.h"
+#include "Characters/CL_PlayerCharacter.h"
 #include "Settings/CL_GameLocalUserSettings.h"
 #include "Systems/Minimap/CL_MinimapSensor.h"
 #include "Systems/Minimap/Components/CL_MinimapIconComponent.h"
@@ -13,13 +14,13 @@ bool UCL_MinimapSubsystem::GetRotateMinimap() const
 	return UCL_GameLocalUserSettings::Get()->GetRotateMinimap();
 }
 
-void UCL_MinimapSubsystem::InitMinimapSensor(APawn* InNewPawn)
+void UCL_MinimapSubsystem::InitMinimapSensor(ACL_PlayerCharacter* InNewPawn)
 {
 	if (IsValid(InNewPawn) == false)
 	{
 		return;
 	}
-	
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = InNewPawn;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -93,9 +94,13 @@ void UCL_MinimapSubsystem::OnPlayerControllerPossessedPawnChanged(APawn* OldPawn
 		*(NewPawn != nullptr ? NewPawn->GetName() : FString("None")));
 
 	ClearMinimapSensor(OldPawn);
-	InitMinimapSensor(NewPawn);
-	CurrentPawn = NewPawn;
-	OnMinimapSensorOwningPawnChanged.Broadcast(OldPawn, CurrentPawn);
+
+	if (ACL_PlayerCharacter* PlayerCharacterPawn = Cast<ACL_PlayerCharacter>(NewPawn))
+	{
+		InitMinimapSensor(PlayerCharacterPawn);
+		CurrentPawn = PlayerCharacterPawn;
+		OnMinimapSensorOwningPawnChanged.Broadcast(OldPawn, CurrentPawn);	
+	}
 }
 
 void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent)
