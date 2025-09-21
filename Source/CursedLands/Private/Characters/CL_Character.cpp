@@ -93,7 +93,7 @@ void ACL_Character::BeginPlay()
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
 	HealthComponent->InitializeViewModel();
 	AbilitySystem->RegisterGameplayTagEvent(CLGameplayTags::Status_Dead, EGameplayTagEventType::NewOrRemoved)
-		.AddUObject(this, &ACL_Character::OnGameplayTagNewOrRemoved);
+		.AddUObject(this, &ThisClass::OnGameplayTagNewOrRemoved);
 }
 
 void ACL_Character::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
@@ -109,7 +109,7 @@ void ACL_Character::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	check(PawnData);
-
+	
 	for (const UCL_AbilitySet* AbilitySet : PawnData->AbilitySets)
 	{
 		check(AbilitySet);
