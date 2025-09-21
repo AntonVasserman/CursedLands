@@ -39,6 +39,7 @@ void ACL_EnemyPawn::OnGameplayTagNewOrRemoved(FGameplayTag GameplayTag, int NewC
 //~ ACL_Pawn Begin
 void ACL_EnemyPawn::BeginPlay()
 {
+	// TODO (???): Refactor this to align with how "Aura" does GAS for enemies... 
 	Super::BeginPlay();
 
 	check(PawnData);
@@ -51,6 +52,7 @@ void ACL_EnemyPawn::BeginPlay()
 
 	// Set up Health Component Initialization
 	HealthComponent->InitializeWithAbilitySystem(AbilitySystem);
+	HealthComponent->InitializeViewModel();
 
 	AbilitySystem->RegisterGameplayTagEvent(CLGameplayTags::Status_Dead, EGameplayTagEventType::NewOrRemoved)
 		.AddUObject(this, &ThisClass::OnGameplayTagNewOrRemoved);

@@ -12,6 +12,7 @@ class UMVVMViewModelBase;
 class UCL_AbilitySystemComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnResourceViewModelInstantiated, UCL_ResourceViewModel*, ResourceViewModel);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnResourceValueChanged, int32, NewHealth);
 
 UENUM()
 enum class ECL_ResourceState : uint8
@@ -50,6 +51,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FCL_OnResourceViewModelInstantiated OnResourceViewModelInstantiated;
+
+	UPROPERTY(BlueprintAssignable)
+	FCL_OnResourceValueChanged OnResourceValueChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Resource")
 	virtual void InitializeWithAbilitySystem(UCL_AbilitySystemComponent* InAbilitySystemComponent);

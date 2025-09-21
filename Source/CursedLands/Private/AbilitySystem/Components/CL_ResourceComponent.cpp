@@ -44,6 +44,8 @@ void UCL_ResourceComponent::InitializeWithAbilitySystem(UCL_AbilitySystemCompone
 			{
 				ResourceViewModel->SetCurrentValue(Data.NewValue);
 			}
+
+			OnResourceValueChanged.Broadcast(Data.NewValue);
 		});
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ResourceAttributeSet->GetMaxValueAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
