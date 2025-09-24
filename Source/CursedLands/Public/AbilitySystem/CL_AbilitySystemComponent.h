@@ -20,6 +20,9 @@ private:
 	TArray<FGameplayAbilitySpecHandle> InputPressedSpecHandles;
 	TArray<FGameplayAbilitySpecHandle> InputReleasedSpecHandles;
 	TArray<FGameplayAbilitySpecHandle> InputHeldSpecHandles;
+
+	void AbilitySpecInputPressed(FGameplayAbilitySpec& Spec);
+	void AbilitySpecInputReleased(FGameplayAbilitySpec& Spec);
 	
 	//~ UAbilitySystemComponent Begin
 	//~ UAbilitySystemComponent End

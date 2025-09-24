@@ -105,5 +105,31 @@ void UCL_AbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGame
 	InputReleasedSpecHandles.Reset();
 }
 
+void UCL_AbilitySystemComponent::AbilitySpecInputPressed(FGameplayAbilitySpec& Spec)
+{
+	Super::AbilitySpecInputPressed(Spec);
+
+	if (Spec.IsActive())
+	{
+		TArray<UGameplayAbility*> Instances = Spec.GetAbilityInstances();
+		const FGameplayAbilityActivationInfo& ActivationInfo = Instances.Last()->GetCurrentActivationInfoRef();
+		FPredictionKey OriginalPredictionKey = ActivationInfo.GetActivationPredictionKey();
+		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, Spec.Handle, OriginalPredictionKey);
+	}
+}
+
+void UCL_AbilitySystemComponent::AbilitySpecInputReleased(FGameplayAbilitySpec& Spec)
+{
+	Super::AbilitySpecInputReleased(Spec);
+
+	if (Spec.IsActive())
+	{
+		TArray<UGameplayAbility*> Instances = Spec.GetAbilityInstances();
+		const FGameplayAbilityActivationInfo& ActivationInfo = Instances.Last()->GetCurrentActivationInfoRef();
+		FPredictionKey OriginalPredictionKey = ActivationInfo.GetActivationPredictionKey();
+		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, Spec.Handle, OriginalPredictionKey);
+	}
+}
+
 //~ UAbilitySystemComponent Begin
 //~ UAbilitySystemComponent End
