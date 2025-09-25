@@ -26,6 +26,8 @@ void UCL_GameplayAbility_SlideBase::ActivateAbilityInternal(ACL_PlayerCharacter*
 	PlayerCharacter->GetCharacterTraversal()->OnTraversalActionFinished.AddDynamic(this, &UCL_GameplayAbility_SlideBase::OnTraversalActionFinished);
 	
 	PlayerCharacter->Slide();
+
+	
 }
 
 //~ End UCL_GameplayAbility_PlayerCharacterBase 
