@@ -45,7 +45,8 @@ public class CursedLands : ModuleRules
 				"CommonUI",
 				"DeveloperSettings",
 				"GameSettings",
-				"MotionWarping"
+				"MotionWarping",
+				"Niagara",
 			});
 	}
 }

@@ -63,8 +63,35 @@ Level Design - Anton Vasserman
 <summary><h3 style="display:inline"><strong>Aura (Stephen Ulibarri)</strong></h3></summary>
 
 #### Audio
+- att_InWorld
+- sfx_FireBolt
+- sfx_FireBolt_Impact
+- SFX_FireBall_Hit_0X
+- SFX_FireBall_Shoot_LowLevel_0X
 - SFX_Potion_Consume_0X
 - SFX_Potion_PopsOut_0X
+
+#### Effects
+- NS_FireBolt
+- NS_FireExplosion
+- NS_FireExplosion1
+
+#### Materials
+- M_DefaultSprite_trans
+- M_ExplosionSphere
+- M_ExplosionSphere1
+- M_Fire
+- M_Fireball
+- M_Ring
+- M_Spark
+
+#### Meshes
+- Sphere
+
+#### Textures
+- Noise_blur_1
+- Noise_blur_min
+- sparkle_01
 
 </details>
 
