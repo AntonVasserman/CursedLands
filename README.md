@@ -75,6 +75,7 @@ Level Design - Anton Vasserman
 - NS_FireBolt
 - NS_FireExplosion
 - NS_FireExplosion1
+- NS_SoulPickup
 
 #### Materials
 - M_DefaultSprite_trans
