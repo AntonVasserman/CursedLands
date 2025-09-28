@@ -29,6 +29,7 @@ namespace CLGameplayTags
 	// Statuses
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Alive, "Status.Alive", "Character status tag");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Dead, "Status.Dead", "Character status tag");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Status_Victorious, "Status.Victorious", "Character status tag");
 	
 	// Attributes
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes, "Attributes", "Base parent for all Attribute Gameplay Tags");
