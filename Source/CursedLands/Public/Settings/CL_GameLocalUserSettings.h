@@ -76,9 +76,9 @@ public:
 	void SetSFXVolume(float InVolume);
 
 	UFUNCTION()
-	float GetVoiceVolume() const;
+	float GetUIVolume() const;
 	UFUNCTION()
-	void SetVoiceVolume(float InVolume);
+	void SetUIVolume(float InVolume);
 
 private:
 	void LoadUserControlBusMix();
@@ -91,7 +91,7 @@ private:
 	UPROPERTY(Config)
 	float SFXVolume = 1.0f;
 	UPROPERTY(Config)
-	float VoiceVolume = 1.0f;
+	float UIVolume = 1.0f;
 
 	UPROPERTY(Transient)
 	TMap<FName, TObjectPtr<USoundControlBus>> ControlBusMap;

@@ -63,15 +63,15 @@ void UCL_AudioMixSubsystem::PostInitialize()
 			}
 		}
 
-		if (UObject* ObjPath = AudioSettings->VoiceVolumeControlBus.TryLoad())
+		if (UObject* ObjPath = AudioSettings->UIVolumeControlBus.TryLoad())
 		{
 			if (USoundControlBus* SoundControlBus = Cast<USoundControlBus>(ObjPath))
 			{
-				VoiceControlBus = SoundControlBus;
+				UIControlBus = SoundControlBus;
 			}
 			else
 			{
-				ensureMsgf(SoundControlBus, TEXT("Dialogue Control Bus reference missing from Audio Settings."));
+				ensureMsgf(SoundControlBus, TEXT("User Interface Control Bus reference missing from Audio Settings."));
 			}
 		}
 	}
@@ -87,18 +87,18 @@ void UCL_AudioMixSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 			{
 				UAudioModulationStatics::ActivateBusMix(World, UserMix);
 
-				if (MasterControlBus && MusicControlBus && SFXControlBus && VoiceControlBus)
+				if (MasterControlBus && MusicControlBus && SFXControlBus && UIControlBus)
 				{
 					const FSoundControlBusMixStage MasterControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MasterControlBus, LocalUserSettings->GetMasterVolume());
 					const FSoundControlBusMixStage MusicControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MusicControlBus, LocalUserSettings->GetMusicVolume());
 					const FSoundControlBusMixStage SFXControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, SFXControlBus, LocalUserSettings->GetSFXVolume());
-					const FSoundControlBusMixStage VoiceControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, VoiceControlBus, LocalUserSettings->GetVoiceVolume());
+					const FSoundControlBusMixStage UIControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, UIControlBus, LocalUserSettings->GetUIVolume());
 
 					TArray<FSoundControlBusMixStage> ControlBusMixStageArray;
 					ControlBusMixStageArray.Add(MasterControlBusMixStage);
 					ControlBusMixStageArray.Add(MusicControlBusMixStage);
 					ControlBusMixStageArray.Add(SFXControlBusMixStage);
-					ControlBusMixStageArray.Add(VoiceControlBusMixStage);
+					ControlBusMixStageArray.Add(UIControlBusMixStage);
 
 					UAudioModulationStatics::UpdateMix(World, UserMix, ControlBusMixStageArray);
 				}

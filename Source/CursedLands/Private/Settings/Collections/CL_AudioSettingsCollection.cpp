@@ -77,21 +77,21 @@ void UCL_AudioSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 			VolumeSettings->AddSetting(EffectsVolumeSetting);
 		}
 
-		// VoiceVolume
+		// UIVolume
 		{
-			UGameSettingValueScalarDynamic* VoiceVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
-			VoiceVolumeSetting->SetDevName(TEXT("VoiceVolume"));
-			VoiceVolumeSetting->SetDisplayName(LOCTEXT("VoiceVolume_Name", "Voice"));
-			VoiceVolumeSetting->SetDescriptionRichText(LOCTEXT("VoiceVolume_Description", "Adjusts the voice volume."));
+			UGameSettingValueScalarDynamic* UIVolumeSetting = NewObject<UGameSettingValueScalarDynamic>();
+			UIVolumeSetting->SetDevName(TEXT("UIVolume"));
+			UIVolumeSetting->SetDisplayName(LOCTEXT("UIVolume_Name", "UI"));
+			UIVolumeSetting->SetDescriptionRichText(LOCTEXT("UIVolume_Description", "Adjusts the User Interface volume."));
 
-			VoiceVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetVoiceVolume));
-			VoiceVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetVoiceVolume));
-			VoiceVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetVoiceVolume());
-			VoiceVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
+			UIVolumeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetUIVolume));
+			UIVolumeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetUIVolume));
+			UIVolumeSetting->SetDefaultValue(GetDefault<UCL_GameLocalUserSettings>()->GetUIVolume());
+			UIVolumeSetting->SetDisplayFormat(UGameSettingValueScalarDynamic::ZeroToOnePercent);
 
-			VoiceVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
+			UIVolumeSetting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
 
-			VolumeSettings->AddSetting(VoiceVolumeSetting);
+			VolumeSettings->AddSetting(UIVolumeSetting);
 		}
 	}
 }

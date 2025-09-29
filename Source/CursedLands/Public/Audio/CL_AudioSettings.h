@@ -24,6 +24,6 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category = "UserMixSettings", DisplayName="SFX Volume Control Bus", Meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBus"))
 	FSoftObjectPath SFXVolumeControlBus;
 
-	UPROPERTY(Config, EditAnywhere, Category = "UserMixSettings", Meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBus"))
-	FSoftObjectPath VoiceVolumeControlBus;
+	UPROPERTY(Config, EditAnywhere, Category = "UserMixSettings", DisplayName="UI Volume Control Bus", Meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBus"))
+	FSoftObjectPath UIVolumeControlBus;
 };

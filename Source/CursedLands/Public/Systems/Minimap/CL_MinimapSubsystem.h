@@ -44,7 +44,7 @@ public:
 	FORCEINLINE float GetMinimapCollisionCapsuleHalfHeight() const { return MinimapCollisionCapsuleHalfHeight; }
 	
 	UFUNCTION(BlueprintCallable, Category = "Minimap|Settings")
-	FORCEINLINE bool GetRotateMinimap() const;
+	bool GetRotateMinimap() const;
 	
 private:
 	UPROPERTY()

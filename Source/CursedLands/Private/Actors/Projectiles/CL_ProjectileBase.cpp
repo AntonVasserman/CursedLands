@@ -68,6 +68,7 @@ void ACL_ProjectileBase::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCo
 
 //~ AActor Begin
 
+#if WITH_EDITOR
 EDataValidationResult ACL_ProjectileBase::IsDataValid(FDataValidationContext& Context) const
 {
 	EDataValidationResult Result = Super::IsDataValid(Context);
@@ -82,7 +83,7 @@ EDataValidationResult ACL_ProjectileBase::IsDataValid(FDataValidationContext& Co
 	{
 		for (int32 i = 0; i < ImpactEffects.Num(); i++)
 		{
-			if (!ImpactEffects[i])
+			if (ImpactEffects[i] == nullptr)
 			{
 				Context.AddError(FText::FromString(FString::Printf(TEXT("ImpactEffects[%d] is null. Please assign a valid Niagara effect."), i)));
 				Result = EDataValidationResult::Invalid;
@@ -106,6 +107,7 @@ EDataValidationResult ACL_ProjectileBase::IsDataValid(FDataValidationContext& Co
 
 	return Result;
 }
+#endif
 
 void ACL_ProjectileBase::BeginPlay()
 {

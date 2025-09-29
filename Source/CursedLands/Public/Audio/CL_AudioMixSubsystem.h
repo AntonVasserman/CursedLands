@@ -28,7 +28,7 @@ protected:
 	TObjectPtr<USoundControlBus> SFXControlBus = nullptr;
 	
 	UPROPERTY(Transient)
-	TObjectPtr<USoundControlBus> VoiceControlBus = nullptr;
+	TObjectPtr<USoundControlBus> UIControlBus = nullptr;
 
 	//~ UWorldSubsystem Begin
 public:

@@ -27,6 +27,7 @@ EStateTreeRunStatus FCL_PlayForceFeedbackStateTreeTask::EnterState(FStateTreeExe
 	return EStateTreeRunStatus::Succeeded;
 }
 
+#if WITH_EDITOR
 FText FCL_PlayForceFeedbackStateTreeTask::GetDescription(const FGuid& ID, FStateTreeDataView InstanceDataView, const IStateTreeBindingLookup& BindingLookup, EStateTreeNodeFormatting Formatting) const
 {
 	const FInstanceDataType* InstanceData = InstanceDataView.GetPtr<FInstanceDataType>();
@@ -44,3 +45,4 @@ FText FCL_PlayForceFeedbackStateTreeTask::GetDescription(const FGuid& ID, FState
 
 	return FText::FromString(FString::Printf(TEXT("Play Force Feedback: %s"), *ForceFeedbackEffectName));
 }
+#endif

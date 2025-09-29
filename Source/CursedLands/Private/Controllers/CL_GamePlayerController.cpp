@@ -135,6 +135,7 @@ void ACL_GamePlayerController::RequestSlomoTriggered(const FInputActionValue& In
 	
 	bSlomoRequested = false;
 }
+#endif
 
 void ACL_GamePlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
 {
@@ -168,7 +169,6 @@ void ACL_GamePlayerController::OnUnPossess()
 	PossessedPlayerCharacter->GetGameplayCamera()->DeactivateCamera();
 	PossessedPlayerCharacter = nullptr;
 }
-#endif
 
 void ACL_GamePlayerController::SetupInputComponent()
 {

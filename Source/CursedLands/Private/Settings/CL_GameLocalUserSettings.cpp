@@ -118,18 +118,18 @@ void UCL_GameLocalUserSettings::SetSFXVolume(float InVolume)
 	}
 }
 
-float UCL_GameLocalUserSettings::GetVoiceVolume() const
+float UCL_GameLocalUserSettings::GetUIVolume() const
 {
-	return VoiceVolume;
+	return UIVolume;
 }
 
-void UCL_GameLocalUserSettings::SetVoiceVolume(float InVolume)
+void UCL_GameLocalUserSettings::SetUIVolume(float InVolume)
 {
-	VoiceVolume = InVolume;
+	UIVolume = InVolume;
 	
 	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
 
-	if (const TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Voice")))
+	if (const TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("UI")))
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
@@ -193,17 +193,17 @@ void UCL_GameLocalUserSettings::LoadUserControlBusMix()
 				}
 			}
 			
-			USoundControlBus* VoiceControlBus = nullptr;
-			if (UObject* ObjPath = AudioSettings->VoiceVolumeControlBus.TryLoad())
+			USoundControlBus* UIControlBus = nullptr;
+			if (UObject* ObjPath = AudioSettings->UIVolumeControlBus.TryLoad())
 			{
 				if (USoundControlBus* SoundControlBus = Cast<USoundControlBus>(ObjPath))
 				{
-					VoiceControlBus = SoundControlBus;
-					ControlBusMap.Add(TEXT("Voice"), VoiceControlBus);
+					UIControlBus = SoundControlBus;
+					ControlBusMap.Add(TEXT("UI"), UIControlBus);
 				}
 				else
 				{
-					ensureMsgf(SoundControlBus, TEXT("Voice Control Bus reference missing from Audio Settings."));
+					ensureMsgf(SoundControlBus, TEXT("UI Control Bus reference missing from Audio Settings."));
 				}
 			}
 			
@@ -216,13 +216,13 @@ void UCL_GameLocalUserSettings::LoadUserControlBusMix()
 					const FSoundControlBusMixStage MasterControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MasterControlBus, MasterVolume);
 					const FSoundControlBusMixStage MusicControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, MusicControlBus, MusicVolume);
 					const FSoundControlBusMixStage SFXControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, SFXControlBus, SFXVolume);
-					const FSoundControlBusMixStage VoiceControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, VoiceControlBus, VoiceVolume);
+					const FSoundControlBusMixStage UIControlBusMixStage = UAudioModulationStatics::CreateBusMixStage(World, UIControlBus, UIVolume);
 
 					TArray<FSoundControlBusMixStage> ControlBusMixStageArray;
 					ControlBusMixStageArray.Add(MasterControlBusMixStage);
 					ControlBusMixStageArray.Add(MusicControlBusMixStage);
 					ControlBusMixStageArray.Add(SFXControlBusMixStage);
-					ControlBusMixStageArray.Add(VoiceControlBusMixStage);
+					ControlBusMixStageArray.Add(UIControlBusMixStage);
 
 					UAudioModulationStatics::UpdateMix(World, ControlBusMix, ControlBusMixStageArray);
 					
@@ -357,11 +357,11 @@ void UCL_GameLocalUserSettings::ApplyNonResolutionSettings()
 		}
 	}
 
-	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Voice")))
+	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("UI")))
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
-			SetVolumeForControlBus(ControlBusPtr, VoiceVolume);
+			SetVolumeForControlBus(ControlBusPtr, UIVolume);
 		}
 	}
 
