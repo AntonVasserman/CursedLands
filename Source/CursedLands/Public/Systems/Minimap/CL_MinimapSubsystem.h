@@ -56,7 +56,7 @@ private:
 	UPROPERTY()
 	TMap<UCL_MinimapIconComponent*, FVector> MinimapIconToLastRelativeLocation;
 
-	float MinimapCollisionCapsuleRadius = 1000.f;
+	float MinimapCollisionCapsuleRadius = 2000.f;
 	float MinimapCollisionCapsuleHalfHeight = 5000.f;
 
 	FTimerHandle ActorsWithMinimapLocationSamplingTimer;

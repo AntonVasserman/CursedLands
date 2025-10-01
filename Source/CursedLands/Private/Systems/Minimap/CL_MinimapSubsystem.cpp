@@ -105,7 +105,7 @@ void UCL_MinimapSubsystem::OnPlayerControllerPossessedPawnChanged(APawn* OldPawn
 
 void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent)
 {
-	if (IsValid(Actor))
+	if (IsValid(Actor) && !MinimapIconToLastRelativeLocation.Contains(MinimapIconComponent))
 	{
 		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received BEGIN OVERLAP with %s", *Actor->GetName());
 		
@@ -120,7 +120,7 @@ void UCL_MinimapSubsystem::OnMinimapSensorBeginOverlap(AActor* Actor, UCL_Minima
 
 void UCL_MinimapSubsystem::OnMinimapSensorEndOverlap(AActor* Actor, UCL_MinimapIconComponent* MinimapIconComponent)
 {
-	if (IsValid(Actor))
+	if (IsValid(Actor) && MinimapIconToLastRelativeLocation.Contains(MinimapIconComponent))
 	{
 		CL_LOG_MINIMAP_SYSTEM_DISPLAY("Subsystem received END OVERLAP with %s", *Actor->GetName());
 		MinimapIconToLastRelativeLocation.Remove(MinimapIconComponent);
