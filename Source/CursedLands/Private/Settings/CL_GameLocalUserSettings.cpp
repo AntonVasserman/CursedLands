@@ -73,7 +73,7 @@ void UCL_GameLocalUserSettings::SetMasterVolume(float InVolume)
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
-			SetVolumeForControlBus(ControlBusPtr, InVolume);
+			SetVolumeForControlBus(ControlBusPtr, MasterVolume);
 		}
 	}
 }
@@ -93,7 +93,7 @@ void UCL_GameLocalUserSettings::SetMusicVolume(float InVolume)
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
-			SetVolumeForControlBus(ControlBusPtr, InVolume);
+			SetVolumeForControlBus(ControlBusPtr, MusicVolume);
 		}
 	}
 }
@@ -113,7 +113,7 @@ void UCL_GameLocalUserSettings::SetSFXVolume(float InVolume)
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
-			SetVolumeForControlBus(ControlBusPtr, InVolume);
+			SetVolumeForControlBus(ControlBusPtr, SFXVolume);
 		}
 	}
 }
@@ -133,7 +133,7 @@ void UCL_GameLocalUserSettings::SetUIVolume(float InVolume)
 	{
 		if (USoundControlBus* ControlBusPtr = *ControlBusDblPtr)
 		{
-			SetVolumeForControlBus(ControlBusPtr, InVolume);
+			SetVolumeForControlBus(ControlBusPtr, UIVolume);
 		}
 	}
 }
