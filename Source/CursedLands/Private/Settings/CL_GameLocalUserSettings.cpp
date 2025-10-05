@@ -314,7 +314,34 @@ void UCL_GameLocalUserSettings::SetColorBlindStrength(int32 InColorBlindStrength
 			static_cast<EColorVisionDeficiency>(static_cast<int32>(ColorBlindMode)), ColorBlindStrength, true, false);
 	}
 }
+
 // End Accessibility Settings
+
+// Begin In-Game Settings
+
+ECL_PlayableCharacter UCL_GameLocalUserSettings::GetPlayableCharacter() const
+{
+	return PlayableCharacter;
+}
+
+void UCL_GameLocalUserSettings::SetPlayableCharacter(ECL_PlayableCharacter InPlayableCharacter)
+{
+	PlayableCharacter = InPlayableCharacter;
+
+	OnPlayableCharacterChanged.Broadcast(PlayableCharacter);
+}
+
+ECL_Difficulty UCL_GameLocalUserSettings::GetDifficulty() const
+{
+	return Difficulty;
+}
+
+void UCL_GameLocalUserSettings::SetDifficulty(ECL_Difficulty InDifficulty)
+{
+	Difficulty = InDifficulty;
+}
+
+// End In-Game Settings
 
 //~ UGameUserSettings Begin
 void UCL_GameLocalUserSettings::SetToDefaults()

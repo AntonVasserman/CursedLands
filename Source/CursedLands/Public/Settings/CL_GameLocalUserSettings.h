@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CL_Difficulty.h"
+#include "CL_PlayableCharacter.h"
 #include "SoundControlBus.h"
 #include "Characters/CL_PlayerCharacterCameraMode.h"
 #include "GameFramework/GameUserSettings.h"
@@ -12,6 +14,7 @@ class USoundControlBusMix;
 enum class ECL_PlayerCharacterCameraMode : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnRotateMinimapChanged, bool, bNewRotateMinimap);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCL_OnPlayableCharacterChanged, ECL_PlayableCharacter, NewPlayableCharacter);
 
 UENUM(BlueprintType)
 enum class EColorBlindMode : uint8
@@ -22,7 +25,7 @@ enum class EColorBlindMode : uint8
 	Tritanope	UMETA(Description = "Tritanope (blue weak/blind)")
 };
 
-UCLASS()
+UCLASS(Blueprintable)
 class CURSEDLANDS_API UCL_GameLocalUserSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
@@ -136,6 +139,26 @@ private:
 	int32 ColorBlindStrength = 10;
 
 	// End Accessibility Settings
+
+	// Begin In-Game Settings
+public:
+	FCL_OnPlayableCharacterChanged OnPlayableCharacterChanged;
+	UFUNCTION(BlueprintCallable)
+	ECL_PlayableCharacter GetPlayableCharacter() const;
+	UFUNCTION(BlueprintCallable)
+	void SetPlayableCharacter(ECL_PlayableCharacter InPlayableCharacter);
+	
+	UFUNCTION(BlueprintCallable)
+	ECL_Difficulty GetDifficulty() const;
+	UFUNCTION(BlueprintCallable)
+	void SetDifficulty(ECL_Difficulty InDifficulty);
+private:
+	UPROPERTY(Config)
+	ECL_PlayableCharacter PlayableCharacter = ECL_PlayableCharacter::XBot;
+	
+	UPROPERTY(Config)
+	ECL_Difficulty Difficulty = ECL_Difficulty::Normal;
+	// End In-Game Settings
 
 	//~ UGameUserSettings Begin
 public:
