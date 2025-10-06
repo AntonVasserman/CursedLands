@@ -168,6 +168,19 @@ TODO: Update this...
 </details>
 
 <details>
+<summary><h3 style="display:inline"><strong>Paragon (Epic Games)</strong></h3></summary>
+
+Here we've used a lot of assets... And I mean, A LOT!
+
+Instead of listing them all, I've just linked the relevant products from the Fab library:
+1. Paragon: Agora and Monolith Environment
+2. Paragon: Gideon
+3. Paragon: Minions
+4. Paragon: Shinbi
+
+</details>
+
+<details>
 <summary><h3 style="display:inline"><strong>Valley of the Ancients (Epic Games)</strong></h3></summary>
 
 #### Audio
