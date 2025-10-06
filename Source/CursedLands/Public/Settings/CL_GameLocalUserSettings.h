@@ -154,7 +154,7 @@ public:
 	void SetDifficulty(ECL_Difficulty InDifficulty);
 private:
 	UPROPERTY(Config)
-	ECL_PlayableCharacter PlayableCharacter = ECL_PlayableCharacter::XBot;
+	ECL_PlayableCharacter PlayableCharacter = ECL_PlayableCharacter::Manny;
 	
 	UPROPERTY(Config)
 	ECL_Difficulty Difficulty = ECL_Difficulty::Normal;
