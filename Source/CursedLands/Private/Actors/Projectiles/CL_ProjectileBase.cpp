@@ -11,6 +11,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/DataValidation.h"
+#include "Settings/CL_GameLocalUserSettings.h"
 
 ACL_ProjectileBase::ACL_ProjectileBase()
 {
@@ -41,7 +42,19 @@ void ACL_ProjectileBase::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCo
 	check(GameplayEffectClass);
 	FGameplayEffectContextHandle ContextHandle = OtherActorASC->MakeEffectContext();
 	ContextHandle.AddSourceObject(GetInstigator());
-	const FGameplayEffectSpecHandle SpecHandle = OtherActorASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, ContextHandle);
+	float GameplayEffectLevel = 1.f;
+	switch (UCL_GameLocalUserSettings::Get()->GetDifficulty())
+	{
+	case ECL_Difficulty::Normal:
+		GameplayEffectLevel = 1.f;
+		break;
+	case ECL_Difficulty::Hard:
+		GameplayEffectLevel = 2.f;
+		break;
+	default:
+		checkNoEntry();
+	}
+	const FGameplayEffectSpecHandle SpecHandle = OtherActorASC->MakeOutgoingSpec(GameplayEffectClass, GameplayEffectLevel, ContextHandle);
 	OtherActorASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
 	if (ImpactEffects.Num() > 0)

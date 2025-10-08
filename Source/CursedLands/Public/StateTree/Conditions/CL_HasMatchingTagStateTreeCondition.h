@@ -15,6 +15,9 @@ struct CURSEDLANDS_API FCL_HasMatchingTagStateTreeConditionInstanceData
 
 	UPROPERTY(EditAnywhere, Category = "Parameter")
 	FGameplayTag Tag;
+
+	UPROPERTY(EditAnywhere, Category = "Parameter")
+	bool bInvert = false;
 };
 
 USTRUCT(DisplayName = "Has Matching Tag")

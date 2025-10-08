@@ -10,5 +10,5 @@ bool FCL_HasMatchingTagStateTreeCondition::TestCondition(FStateTreeExecutionCont
 	const FInstanceDataType& InstanceData = Context.GetInstanceData(*this);
 	const IGameplayTagAssetInterface* GameplayTagAssetInterface = Cast<IGameplayTagAssetInterface>(InstanceData.Actor);
 	
-	return GameplayTagAssetInterface->HasMatchingGameplayTag(InstanceData.Tag);
+	return GameplayTagAssetInterface->HasMatchingGameplayTag(InstanceData.Tag) ? !InstanceData.bInvert : InstanceData.bInvert;
 }

@@ -84,6 +84,10 @@
 		{
 			"Name": "AudioModulation",
 			"Enabled": true
+		},
+		{
+			"Name": "CascadeToNiagaraConverter",
+			"Enabled": true
 		}
 	]
 }
