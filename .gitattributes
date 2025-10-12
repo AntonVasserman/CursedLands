@@ -1,3 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 Content/CursedLands/Environment/BlackAlder/Textures/Decoration/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Imposter/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Tileable/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Trunk/* filter=lfs diff=lfs merge=lfs -text
