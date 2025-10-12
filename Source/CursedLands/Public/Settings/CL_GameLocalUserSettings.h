@@ -63,7 +63,7 @@ private:
 	
 	// Begin Audio Settings
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Audio")
 	float GetMasterVolume() const;
 	UFUNCTION()
 	void SetMasterVolume(float InVolume);

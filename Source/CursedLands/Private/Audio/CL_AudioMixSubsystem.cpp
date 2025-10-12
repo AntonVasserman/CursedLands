@@ -81,7 +81,7 @@ void UCL_AudioMixSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	if (const UWorld* World = InWorld.GetWorld())
 	{
-		if (const UCL_GameLocalUserSettings* LocalUserSettings = GetDefault<UCL_GameLocalUserSettings>())
+		if (const UCL_GameLocalUserSettings* LocalUserSettings = UCL_GameLocalUserSettings::Get())
 		{
 			if (UserMix)
 			{
