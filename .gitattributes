@@ -1,17 +1,17 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 Content/CursedLands/Environment/BlackAlder/Textures/Decoration/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Field/Field_01/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Field/Field_02/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Field/Field_03/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Field/Field_04/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Field/Field_05/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Forest/Forest_01/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Forest/Forest_02/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Forest/Forest_03/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Forest/Forest_04/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Forest/Forest_05/* filter=lfs diff=lfs merge=lfs -text
-Content/CursedLands/Environment/BlackAlder/Textures/Imposter/Forest/Forest_06/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Field/Field_01/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Field/Field_02/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Field/Field_03/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Field/Field_04/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Field/Field_05/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_01/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_02/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_03/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_04/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_05/* filter=lfs diff=lfs merge=lfs -text
+Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_06/* filter=lfs diff=lfs merge=lfs -text
 Content/CursedLands/Environment/BlackAlder/Textures/Tileable/* filter=lfs diff=lfs merge=lfs -text
 Content/CursedLands/Environment/BlackAlder/Textures/Trunk/Trunk_01/* filter=lfs diff=lfs merge=lfs -text
 Content/CursedLands/Environment/BlackAlder/Textures/Trunk/Trunk_02/* filter=lfs diff=lfs merge=lfs -text
