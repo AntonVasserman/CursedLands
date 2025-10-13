@@ -19,6 +19,13 @@ UCL_GameLocalUserSettings* UCL_GameLocalUserSettings::Get()
 }
 
 // Begin Video Settings
+void UCL_GameLocalUserSettings::SetFullscreenModeAndApply(EWindowMode::Type InFullscreenMode)
+{
+	SetFullscreenMode(InFullscreenMode);
+	ApplySettings(true);
+}
+
+
 float UCL_GameLocalUserSettings::GetDisplayGamma() const
 {
 	return DisplayGamma;

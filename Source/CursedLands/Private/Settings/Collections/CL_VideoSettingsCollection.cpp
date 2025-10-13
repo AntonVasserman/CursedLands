@@ -35,7 +35,7 @@ void UCL_VideoSettingsCollection::InitializeSettings(UCL_LocalPlayer* InLocalPla
 			WindowModeSetting->SetDescriptionRichText(LOCTEXT("WindowMode_Description", "Switch between windowed and fullscreen mode."));
 
 			WindowModeSetting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetFullscreenMode));
-			WindowModeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetFullscreenMode));
+			WindowModeSetting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetFullscreenModeAndApply));
 			WindowModeSetting->AddEnumOption(EWindowMode::Fullscreen, LOCTEXT("WindowModeFullscreen", "Fullscreen"));
 			WindowModeSetting->AddEnumOption(EWindowMode::WindowedFullscreen, LOCTEXT("WindowModeWindowedFullscreen", "Windowed Fullscreen"));
 			WindowModeSetting->AddEnumOption(EWindowMode::Windowed, LOCTEXT("WindowModeWindowed", "Windowed"));

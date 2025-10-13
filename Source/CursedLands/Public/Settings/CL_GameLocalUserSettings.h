@@ -38,6 +38,9 @@ public:
 	// Begin Video Settings
 public:
 	UFUNCTION()
+	void SetFullscreenModeAndApply(EWindowMode::Type InFullscreenMode);
+	
+	UFUNCTION()
 	float GetDisplayGamma() const;
 	UFUNCTION()
 	void SetDisplayGamma(float InGamma);
@@ -63,7 +66,7 @@ private:
 	
 	// Begin Audio Settings
 public:
-	UFUNCTION(BlueprintCallable, Category = "Audio")
+	UFUNCTION()
 	float GetMasterVolume() const;
 	UFUNCTION()
 	void SetMasterVolume(float InVolume);
