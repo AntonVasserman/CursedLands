@@ -15,3 +15,6 @@ Content/CursedLands/Environment/BlackAlder/Textures/Impostor/Forest/Forest_06/* 
 Content/CursedLands/Environment/BlackAlder/Textures/Tileable/* filter=lfs diff=lfs merge=lfs -text
 Content/CursedLands/Environment/BlackAlder/Textures/Trunk/Trunk_01/* filter=lfs diff=lfs merge=lfs -text
 Content/CursedLands/Environment/BlackAlder/Textures/Trunk/Trunk_02/* filter=lfs diff=lfs merge=lfs -text
+Content/KiteDemo/* filter=lfs diff=lfs merge=lfs -text
+Content/ParagonMinions/* filter=lfs diff=lfs merge=lfs -text
+Content/ParagonProps/* filter=lfs diff=lfs merge=lfs -text
