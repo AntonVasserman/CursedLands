@@ -1,6 +1,10 @@
 # CursedLands
 This is a Repository for Cursed Lands, a 3rd-Person, RPG, Open-World portfolio piece project in Unreal Engine.
 
+# ❗ DISLAIMER ❗
+- This project has been discontinued in favor of a different future portfolio piece.
+- This project is also currently un-downloadable as it contains a lot of assets that aren't migrated yet into GitHub due to their size and it won't run.
+
 <!-- This project takes inspiration from [_Evil Islands: Curse of the Lost Soul_]((https://en.nival.com/games/pc-games/evil-islands)), a Top-Down RPG PC game by [_Nival Interactive_](https://en.nival.com/) and by other AAA RPGs and Open World games. -->
 
 This project's purpose is to serve as a portfolio piece, showcasing experience in the next areas and systems:
